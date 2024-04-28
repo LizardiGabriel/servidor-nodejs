@@ -5,12 +5,17 @@
 
 Como Configurar:
 * tener instalado node.js
+1. (nvm install v22.0.0)
+2. (sudo apt install npm)
+3. verificar: 'node --version': v22.0.0
+4. verificar 'npm -v': 10.5.1
 
+
+*pasos*
 1. clonar el repositorio
-
-tener algun servidor de base de datos (de preferencia mysql)
-ejecutar el sql que esta en /sql/prueba.sql
-configurar el archivo .env con DATABASE_URL="mysql://usuario:password@localhost:3306/nameDataBase"
+* tener algun servidor de base de datos (de preferencia mysql)
+* ejecutar el sql que esta en /sql/prueba.sql
+* configurar el archivo .env con DATABASE_URL="mysql://usuario:password@localhost:3306/nameDataBase"
 
 
 2. ejecutar 'npm install'
