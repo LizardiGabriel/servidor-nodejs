@@ -1,14 +1,9 @@
+// historial de comandos
+
 npm init -y 
 npm install express
 npm install typescript ts-node nodemon @types/node @types/express
-
-
-
-// corer:
 npm run dev      
-
-// prisma
 npx prisma migrate dev --name "init"    // actualizar db
 npx prisma studio  // ver la db
-
 npm install @prisma/client
