@@ -13,41 +13,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Super_Administrador {
-  ID_SuperAdmin Int    @id @default(autoincrement())
-  Email         String @unique
-  Contrasena    String
+model Usuario {
+  ID_Usuario          Int                   @id @default(autoincrement())
+  Email               String               @unique
+  Contrasena          String
+  Nombre              String
+  Apellido_Paterno    String
+  Apellido_Materno    String
+  Telefono            Decimal
+  Anfitrion           Anfitrion[]
+  Super_Administrador Super_Administrador[]
 }
 
 model Anfitrion {
-  ID_Anfitrion     Int       @id @default(autoincrement())
-  Nombre           String
-  Apellido_Paterno String
-  Apellido_Materno String
-  Email            String   @unique
-  Telefono         Int
-  Contrasena       String
-  Reunion          Reunion[]
+  ID_Anfitrion Int       @id @default(autoincrement())
+  ID_Usuario   Int
+  usuario      Usuario   @relation(fields: [ID_Usuario], references: [ID_Usuario])
+  Reunion      Reunion[]
+}
+
+model Super_Administrador {
+  ID_Super_Administrador Int     @id @default(autoincrement())
+  ID_Usuario             Int
+  usuario                Usuario @relation(fields: [ID_Usuario], references: [ID_Usuario])
 }
 
 model Sala {
-  ID_Sala     Int    @id @default(autoincrement())
+  ID_Sala     Int       @id @default(autoincrement())
   Nombre_Sala String
   Capacidad   Int
   Piso        Int
-
-  Reunion Reunion[]
+  Reunion     Reunion[]
 }
 
 model Reunion {
   ID_Reunion    Int       @id @default(autoincrement())
-  Fecha_Reunion DateTime
-  Hora_Reunion  DateTime
-  Descripcion   String?
   Titulo        String
-  Repetibilidad Boolean
+  Fecha_Reunion String
+  Hora_Reunion  String
+  Descripcion   String
   ID_Sala       Int
   ID_Anfitrion  Int
-  Sala          Sala      @relation(fields: [ID_Sala], references: [ID_Sala])
-  Anfitrion     Anfitrion @relation(fields: [ID_Anfitrion], references: [ID_Anfitrion])
+  sala          Sala      @relation(fields: [ID_Sala], references: [ID_Sala])
+  anfitrion     Anfitrion @relation(fields: [ID_Anfitrion], references: [ID_Anfitrion])
 }

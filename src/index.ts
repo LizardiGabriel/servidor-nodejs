@@ -1,12 +1,14 @@
 import  express  from 'express';
 import adminRoutes from './routes/adminRoutes';
 import anfitrionRoutes from './routes/anfitrionRoutes';
+import inicioRoutes from './routes/inicioRoutes';
 
 const app = express();
 app.use(express.json());
 
 app.use('/admin', adminRoutes);
 app.use('/anfitrion', anfitrionRoutes);
+app.use('/home', inicioRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World 2');
