@@ -3,8 +3,12 @@ import adminRoutes from './routes/adminRoutes';
 import anfitrionRoutes from './routes/anfitrionRoutes';
 import inicioRoutes from './routes/inicioRoutes';
 
+const path = require('path');
+
 const app = express();
 app.use(express.json());
+
+app.use('/', express.static('./public'));
 
 app.use('/admin', adminRoutes);
 app.use('/anfitrion', anfitrionRoutes);

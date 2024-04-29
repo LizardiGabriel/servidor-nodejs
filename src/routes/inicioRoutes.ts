@@ -1,20 +1,25 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
+import express from 'express';
 
 const prisma = new PrismaClient();
 const router = Router();
+
+router.use('/login.html', express.static('./public/login.html'));
+router.use('/signup.html', express.static('./public/signup.html'));
+router.use('/recuperar.html', express.static('./public/recuperar.html'));
 
 router.get('/', (req, res) => {
     res.status(501).json({error: 'Not implemented: pagina home'});
 });
 
 // Usuario iniciar sesión
-router.get('/login/:email/:password', async (req, res) => {
+router.get('/login', async (req, res) => {
     try {
-        const { email, password } = req.params;
+        const { email, password } = req.query;
         const usuario = await prisma.usuario.findUnique({
             where: {
-                Email: email,
+                Email: email as string,
             },
         });
 
@@ -32,13 +37,13 @@ router.get('/login/:email/:password', async (req, res) => {
     }
 });
 
-// Usuario registrarse --> ejemplo: http://localhost:3000/home/signup/mail/pass/nom/ape/123
-router.get('/signup/:email/:password/:nombre/:apellido/:telefono', async (req, res) => {
+// Usuario registrarse --> 
+router.get('/signup', async (req, res) => {
     try {
-        const { email, password, nombre, apellido, telefono } = req.params;
+        const { nombre, apellido_paterno, apellido_materno, email, contrasena, telefono } = req.query;
         const usuario = await prisma.usuario.findUnique({
             where: {
-                Email: email,
+                Email: email as string,
             },
         });
 
@@ -48,19 +53,19 @@ router.get('/signup/:email/:password/:nombre/:apellido/:telefono', async (req, r
 
         await prisma.usuario.create({
             data: {
-                Email: email,
-                Contrasena: password,
-                Nombre: nombre,
-                Apellido_Paterno: apellido,
-                Apellido_Materno: '',
-                Telefono: telefono
+                Email: email as string,
+                Contrasena: contrasena as string,
+                Nombre: nombre as string,
+                Apellido_Paterno: apellido_paterno as string,
+                Apellido_Materno: apellido_materno as string,
+                Telefono: parseInt(telefono as string),
             }
         });
 
         res.status(201).json({ message: 'Usuario registrado' });
     } catch (error) {
         console.error('Error al registrar usuario:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
+        return res.status(500).json({ error: 'Usuario ya registrado' });
     }
 });
 
