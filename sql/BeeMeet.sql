@@ -1,59 +1,54 @@
+DROP DATABASE IF EXISTS BeeMeet;
 CREATE DATABASE IF NOT EXISTS BeeMeet;
 USE BeeMeet;
 
-CREATE TABLE Super_Administrador (
-    ID_SuperAdmin INT PRIMARY KEY,
+
+create table Rol(
+	ID_Rol int primary key,
+    Nombre varchar(20)
+);
+
+
+CREATE TABLE Usuario (
+    ID_Usuario INT PRIMARY KEY auto_increment,
     Email VARCHAR(50),
-    Contraseña VARCHAR(50)
-);
-
-CREATE TABLE Invitacion (
-    ID_Invit INT PRIMARY KEY,
-    Email_Invit VARCHAR(50),
-    Num_Acomp_Invit INT
-);
-
-CREATE TABLE Seguridad (
-    ID_Seguridad INT PRIMARY KEY,
+    Contrasena VARCHAR(50),
     Nombre VARCHAR(20),
     Apellido_Paterno VARCHAR(20),
     Apellido_Materno VARCHAR(20),
-    Email VARCHAR(50),
-    Teléfono NUMERIC(20),
-    Contraseña VARCHAR(50)
-);
+    Telefono NUMERIC(20),
+    
+    ID_Rol int,
+    FOREIGN KEY (ID_Rol) REFERENCES Rol(ID_Rol)
+    
 
-CREATE TABLE Anfitrion (
-    ID_Anfitrion INT PRIMARY KEY,
-    Nombre VARCHAR(20),
-    Apellido_Paterno VARCHAR(20),
-    Apellido_Materno VARCHAR(20),
-    Email VARCHAR(50),
-    Teléfono NUMERIC(20),
-    Contraseña VARCHAR(50)
 );
-
 
 
 CREATE TABLE Sala (
-    ID_Sala INT PRIMARY KEY,
+    ID_Sala INT PRIMARY KEY auto_increment,
     Nombre_Sala VARCHAR(50),
     Capacidad INT,
     Piso INT
 );
 
 CREATE TABLE Reunion (
-    ID_Reunion INT PRIMARY KEY,
-    Fecha_Reunion DATE,
-    Hora_Reunion TIME,
-    Descripcion TEXT,
+    ID_Reunion INT PRIMARY KEY auto_increment,
+    
+    /*anfitrion*/
+    ID_Usuario int,
     Titulo VARCHAR(50),
-    Repetibilidad BOOLEAN,
+    Fecha_Reunion VARCHAR(20),
+    Hora_Reunion VARCHAR(20),
+    Descripcion TEXT,
+    Lugar varchar(50),
+    
     ID_Sala INT,
     ID_Anfitrion INT,
     FOREIGN KEY (ID_Sala) REFERENCES Sala(ID_Sala),
-    FOREIGN KEY (ID_Anfitrion) REFERENCES Anfitrion(ID_Anfitrion)
+    FOREIGN KEY (ID_Usuario) REFERENCES Usuario(ID_Usuario)
 );
+
 CREATE TABLE Dispositivo (
     ID_Dispositivo INT PRIMARY KEY,
     Numero_Serie VARCHAR(50),
@@ -69,24 +64,74 @@ CREATE TABLE Automovil (
     Modelo VARCHAR(50)
 );
 
-CREATE TABLE Invitado (
-    ID_Invit INT PRIMARY KEY,
-    Nombre VARCHAR(20),
-    Apellido_Paterno VARCHAR(20),
-    Apellido_Materno VARCHAR(20),
-    Email VARCHAR(50),
-    Teléfono NUMERIC(20),
+CREATE TABLE Invitacion (
+	ID_Invitacion int primary key,
+	ID_Reunion int,
+    Num_Acomp_Invit INT,
+    correoExterno varchar(30)
+    
+);
+
+
+create table Externo(
+	ID_Externo int primary key,
+    
     Empresa VARCHAR(50),
     Identificacion VARCHAR(20),
-    QR BLOB,
-    Foto BLOB,
-    Contraseña VARCHAR(50),
-    ID_Anfitrion INT,
-    ID_Dispositivo INT,
-    ID_Reunion INT,
+    QR VARCHAR(50),
+    Foto VARCHAR(40),
     ID_Automovil INT,
-    FOREIGN KEY (ID_Anfitrion) REFERENCES Anfitrion(ID_Anfitrion),
-    FOREIGN KEY (ID_Dispositivo) REFERENCES Dispositivo(ID_Dispositivo),
-    FOREIGN KEY (ID_Reunion) REFERENCES Reunion(ID_Reunion),
+	ID_Usuario int,
+    
+    ID_Reunion int, 
+    
+    foreign key(ID_Usuario) references Usuario(ID_Usuario),
+    foreign key (ID_Reunion) references Reunion(ID_Reunion),
     FOREIGN KEY (ID_Automovil) REFERENCES Automovil(ID_Automovil)
+
 );
+ 
+create table EventoExternos(
+	ID_Evento int primary key,
+    ID_Externo int,
+    evento int, 
+    foreign key(ID_Externo) references Externo(ID_Externo)
+    
+);
+
+
+
+
+create table ExternoDispositivo(
+	ID_ExtDis int primary key,
+    ID_Externo int,
+    ID_Dispositivo int,
+    
+    FOREIGN KEY (ID_Externo) REFERENCES Externo(ID_Externo),
+	FOREIGN KEY (ID_Dispositivo) REFERENCES Dispositivo(ID_Dispositivo)
+    
+);
+
+CREATE TABLE Invitado (
+    ID_Invit INT PRIMARY KEY,
+    ID_Externo int,
+
+    foreign key (ID_Externo) references Externo(ID_Externo)
+);
+
+
+CREATE TABLE Colado (
+    ID_Colado INT PRIMARY KEY,
+    ID_Invit int,
+    ID_Externo int,
+    
+    foreign key (ID_Externo) references Externo(ID_Externo),
+    foreign key (ID_Invit) references Invitado(ID_Invit)
+);
+
+
+
+
+
+
+
