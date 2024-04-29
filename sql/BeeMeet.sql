@@ -4,7 +4,7 @@ USE BeeMeet;
 
 
 create table Rol(
-	ID_Rol int primary key,
+	ID_Rol int primary key auto_increment,
     Nombre varchar(20)
 );
 
@@ -50,14 +50,14 @@ CREATE TABLE Reunion (
 );
 
 CREATE TABLE Dispositivo (
-    ID_Dispositivo INT PRIMARY KEY,
+    ID_Dispositivo INT PRIMARY KEY auto_increment,
     Numero_Serie VARCHAR(50),
     Modelo VARCHAR(100),
     Marca VARCHAR(50)
 );
 
 CREATE TABLE Automovil (
-    ID_Automovil INT PRIMARY KEY,
+    ID_Automovil INT PRIMARY KEY auto_increment,
     Color VARCHAR(50),
     Matricula VARCHAR(20),
     Marca VARCHAR(50),
@@ -65,7 +65,7 @@ CREATE TABLE Automovil (
 );
 
 CREATE TABLE Invitacion (
-	ID_Invitacion int primary key,
+	ID_Invitacion int primary key auto_increment,
 	ID_Reunion int,
     Num_Acomp_Invit INT,
     correoExterno varchar(30)
@@ -74,7 +74,7 @@ CREATE TABLE Invitacion (
 
 
 create table Externo(
-	ID_Externo int primary key,
+	ID_Externo int primary key auto_increment,
     
     Empresa VARCHAR(50),
     Identificacion VARCHAR(20),
@@ -92,7 +92,7 @@ create table Externo(
 );
  
 create table EventoExternos(
-	ID_Evento int primary key,
+	ID_Evento int primary key auto_increment,
     ID_Externo int,
     evento int, 
     foreign key(ID_Externo) references Externo(ID_Externo)
@@ -103,7 +103,7 @@ create table EventoExternos(
 
 
 create table ExternoDispositivo(
-	ID_ExtDis int primary key,
+	ID_ExtDis int primary key auto_increment,
     ID_Externo int,
     ID_Dispositivo int,
     
@@ -113,7 +113,7 @@ create table ExternoDispositivo(
 );
 
 CREATE TABLE Invitado (
-    ID_Invit INT PRIMARY KEY,
+    ID_Invit INT PRIMARY KEY auto_increment,
     ID_Externo int,
 
     foreign key (ID_Externo) references Externo(ID_Externo)
@@ -121,7 +121,7 @@ CREATE TABLE Invitado (
 
 
 CREATE TABLE Colado (
-    ID_Colado INT PRIMARY KEY,
+    ID_Colado INT PRIMARY KEY auto_increment,
     ID_Invit int,
     ID_Externo int,
     
@@ -130,8 +130,15 @@ CREATE TABLE Colado (
 );
 
 
+INSERT INTO Rol (Nombre) VALUES ('Admin');
+INSERT INTO Rol (Nombre) VALUES ('Anfitrion');
+INSERT INTO Rol (Nombre) VALUES ('Seguridad');
+INSERT INTO Rol (Nombre) VALUES ('Externo');
 
 
+select * from Rol;
 
+
+select * from Usuario;
 
 

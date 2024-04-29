@@ -10,14 +10,14 @@ router.use('/signup.html', express.static('./public/signup.html'));
 router.use('/recuperar.html', express.static('./public/recuperar.html'));
 
 router.get('/', (req, res) => {
-    res.status(501).json({error: 'Not implemented: pagina home'});
+    res.status(501).json({error: 'Not implemented: pagina home djvcwduecfvweigcwiu'});
 });
 
 // Usuario iniciar sesión
 router.get('/login', async (req, res) => {
     try {
         const { email, password } = req.query;
-        const usuario = await prisma.usuario.findUnique({
+        const usuario = await prisma.usuario.findFirst({
             where: {
                 Email: email as string,
             },
@@ -41,7 +41,7 @@ router.get('/login', async (req, res) => {
 router.get('/signup', async (req, res) => {
     try {
         const { nombre, apellido_paterno, apellido_materno, email, contrasena, telefono } = req.query;
-        const usuario = await prisma.usuario.findUnique({
+        const usuario = await prisma.usuario.findFirst({
             where: {
                 Email: email as string,
             },
@@ -53,13 +53,16 @@ router.get('/signup', async (req, res) => {
 
         await prisma.usuario.create({
             data: {
-                Email: email as string,
-                Contrasena: contrasena as string,
-                Nombre: nombre as string,
-                Apellido_Paterno: apellido_paterno as string,
-                Apellido_Materno: apellido_materno as string,
-                Telefono: parseInt(telefono as string),
-            }
+            Nombre: nombre as string,
+            Apellido_Paterno: apellido_paterno as string,
+            Apellido_Materno: apellido_materno as string,
+            Email: email as string,
+            Contrasena: contrasena as string,
+            Telefono: parseInt(telefono as string), 
+            ID_Rol: parseInt('1'), 
+            
+
+            },
         });
 
         res.status(201).json({ message: 'Usuario registrado' });

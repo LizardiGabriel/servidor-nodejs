@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,29 +7,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Rol {
+  ID_Rol  Int       @id
+  Nombre  String
+  Usuario Usuario[]
+}
+
 model Usuario {
-  ID_Usuario          Int                   @id @default(autoincrement())
-  Email               String               @unique
-  Contrasena          String
-  Nombre              String
-  Apellido_Paterno    String
-  Apellido_Materno    String
-  Telefono            Decimal
-  Anfitrion           Anfitrion[]
-  Super_Administrador Super_Administrador[]
-}
-
-model Anfitrion {
-  ID_Anfitrion Int       @id @default(autoincrement())
-  ID_Usuario   Int
-  usuario      Usuario   @relation(fields: [ID_Usuario], references: [ID_Usuario])
-  Reunion      Reunion[]
-}
-
-model Super_Administrador {
-  ID_Super_Administrador Int     @id @default(autoincrement())
-  ID_Usuario             Int
-  usuario                Usuario @relation(fields: [ID_Usuario], references: [ID_Usuario])
+  ID_Usuario       Int       @id @default(autoincrement())
+  Email            String
+  Contrasena       String
+  Nombre           String
+  Apellido_Paterno String
+  Apellido_Materno String
+  Telefono         Int
+  ID_Rol           Int
+  Rol              Rol       @relation(fields: [ID_Rol], references: [ID_Rol])
+  Reunion          Reunion[]
+  Externo          Externo[]
 }
 
 model Sala {
@@ -47,13 +36,90 @@ model Sala {
 }
 
 model Reunion {
-  ID_Reunion    Int       @id @default(autoincrement())
+  ID_Reunion    Int          @id @default(autoincrement())
+  ID_Usuario    Int
   Titulo        String
   Fecha_Reunion String
   Hora_Reunion  String
   Descripcion   String
+  Lugar         String
   ID_Sala       Int
   ID_Anfitrion  Int
-  sala          Sala      @relation(fields: [ID_Sala], references: [ID_Sala])
-  anfitrion     Anfitrion @relation(fields: [ID_Anfitrion], references: [ID_Anfitrion])
+  Usuario       Usuario      @relation(fields: [ID_Usuario], references: [ID_Usuario])
+  Sala          Sala         @relation(fields: [ID_Sala], references: [ID_Sala])
+  Invitacion    Invitacion[]
+  Externo       Externo[]
+}
+
+model Dispositivo {
+  ID_Dispositivo     Int                  @id @default(autoincrement())
+  Numero_Serie       String
+  Modelo             String
+  Marca              String
+  ExternoDispositivo ExternoDispositivo[]
+}
+
+model Automovil {
+  ID_Automovil Int       @id @default(autoincrement())
+  Color        String
+  Matricula    String
+  Marca        String
+  Modelo       String
+  Externo      Externo[]
+}
+
+model Invitacion {
+  ID_Invitacion   Int     @id @default(autoincrement())
+  ID_Reunion      Int
+  Num_Acomp_Invit Int
+  correoExterno   String
+  Reunion         Reunion @relation(fields: [ID_Reunion], references: [ID_Reunion])
+}
+
+model Externo {
+  ID_Externo         Int                  @id @default(autoincrement())
+  Empresa            String
+  Identificacion     String
+  QR                 String
+  Foto               String
+  ID_Automovil       Int
+  ID_Usuario         Int
+  ID_Reunion         Int
+  Usuario            Usuario              @relation(fields: [ID_Usuario], references: [ID_Usuario])
+  Reunion            Reunion              @relation(fields: [ID_Reunion], references: [ID_Reunion])
+  Automovil          Automovil            @relation(fields: [ID_Automovil], references: [ID_Automovil])
+  EventoExternos     EventoExternos[]
+  ExternoDispositivo ExternoDispositivo[]
+  Invitado           Invitado[]
+  Colado             Colado[]
+}
+
+model EventoExternos {
+  ID_Evento  Int     @id @default(autoincrement())
+  ID_Externo Int
+  evento     Int
+  Externo    Externo @relation(fields: [ID_Externo], references: [ID_Externo])
+}
+
+model ExternoDispositivo {
+  ID_ExtDis      Int         @id @default(autoincrement())
+  ID_Externo     Int
+  ID_Dispositivo Int
+  Externo        Externo     @relation(fields: [ID_Externo], references: [ID_Externo])
+  Dispositivo    Dispositivo @relation(fields: [ID_Dispositivo], references: [ID_Dispositivo])
+}
+
+model Invitado {
+  ID_Invit   Int      @id @default(autoincrement())
+  ID_Externo Int
+  Externo    Externo  @relation(fields: [ID_Externo], references: [ID_Externo])
+  Colado     Colado[]
+}
+
+model Colado {
+  ID_Colado  Int      @id @default(autoincrement())
+  ID_Invit   Int
+  ID_Externo Int
+  Invitado   Invitado @relation(fields: [ID_Invit], references: [ID_Invit])
+  Externo    Externo  @relation(fields: [ID_Externo], references: [ID_Externo])
 }
