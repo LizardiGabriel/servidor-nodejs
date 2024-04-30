@@ -142,3 +142,9 @@ select * from Rol;
 select * from Usuario;
 
 
+
+
+
+
+
+
