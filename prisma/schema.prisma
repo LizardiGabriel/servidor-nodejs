@@ -27,11 +27,18 @@ model Usuario {
   Externo          Externo[]
 }
 
+enum Estado {
+  disponible
+  no_disponible
+}
+
 model Sala {
   ID_Sala     Int       @id @default(autoincrement())
   Nombre_Sala String
   Capacidad   Int
   Piso        Int
+  Numero_Sala Int
+  Estado       Estado
   Reunion     Reunion[]
 }
 
