@@ -5,6 +5,13 @@ import express from 'express';
 const prisma = new PrismaClient();
 const router = Router();
 
+// * castear a json los parametros de la peticion
+import bodyParser from 'body-parser';
+router.use(express.urlencoded({ extended: true }));
+router.use(bodyParser.json());
+
+
+
 router.use('/login.html', express.static('./public/login.html'));
 router.use('/signup.html', express.static('./public/signup.html'));
 router.use('/recuperar.html', express.static('./public/recuperar.html'));
@@ -14,9 +21,13 @@ router.get('/', (req, res) => {
 });
 
 // Usuario iniciar sesión
-router.get('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
-        const { email, password } = req.query;
+        const email = req.body.email;
+        const password = req.body.password;
+
+        console.log(req.body);
+        
         const usuario = await prisma.usuario.findFirst({
             where: {
                 Email: email as string,

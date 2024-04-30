@@ -1,12 +1,20 @@
-import  express  from 'express';
+import express from 'express';
 import adminRoutes from './routes/adminRoutes';
 import anfitrionRoutes from './routes/anfitrionRoutes';
 import inicioRoutes from './routes/inicioRoutes';
+import https from 'https';
+import fs from 'fs';
+
+import bodyParser from 'body-parser';
+
 
 const path = require('path');
 
 const app = express();
 app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.use('/', express.static('./public'));
 
@@ -18,14 +26,19 @@ app.get('/', (req, res) => {
   res.send('Hello World 2');
 });
 
+/*
+  Este par de claves se puede utilizar para desarrollo y pruebas, pero para un entorno de producción, deberías considerar obtener un
+  certificado de una Autoridad de Certificación (CA) confiable.
+*/
+// Configuración de SSL
+const opcionesSSL = {
+  key: fs.readFileSync('keys/clave-privada.pem'),
+  cert: fs.readFileSync('keys/certificado-publico.pem')
+};
 
-// implementaciones 
+// Crear servidor HTTPS
+const servidorHTTPS = https.createServer(opcionesSSL, app);
 
-
-
-
-app.listen(3000, () => {
-    console.log('Server ready at localhost:3000');
-
+servidorHTTPS.listen(3000, () => {
+  console.log('Servidor HTTPS listo en localhost:3000');
 });
-
