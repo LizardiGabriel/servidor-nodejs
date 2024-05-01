@@ -14,6 +14,7 @@ router.use('/signup.html', express.static('./public/signup.html'));
 router.use('/recuperar.html', express.static('./public/recuperar.html'));
 
 router.get('/', (req, res) => {
+    console.log('entro a home');
     res.status(501).json({error: 'Not implemented: pagina home djvcwduecfvweigcwiu'});
 });
 
