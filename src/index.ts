@@ -26,19 +26,8 @@ app.get('/', (req, res) => {
   res.send('Hello World 2');
 });
 
-/*
-  Este par de claves se puede utilizar para desarrollo y pruebas, pero para un entorno de producción, deberías considerar obtener un
-  certificado de una Autoridad de Certificación (CA) confiable.
-*/
-// Configuración de SSL
-const opcionesSSL = {
-  key: fs.readFileSync('keys/clave-privada.pem'),
-  cert: fs.readFileSync('keys/certificado-publico.pem')
-};
 
-// Crear servidor HTTPS
-const servidorHTTPS = https.createServer(opcionesSSL, app);
 
-servidorHTTPS.listen(3000, () => {
+app.listen(3000, () => {
   console.log('Servidor HTTPS listo en localhost:3000');
 });
