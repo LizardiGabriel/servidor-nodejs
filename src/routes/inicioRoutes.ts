@@ -5,10 +5,7 @@ import express from 'express';
 const prisma = new PrismaClient();
 const router = Router();
 
-// * castear a json los parametros de la peticion
-import bodyParser from 'body-parser';
-router.use(express.urlencoded({ extended: true }));
-router.use(bodyParser.json());
+
 
 
 

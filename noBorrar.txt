@@ -9,41 +9,17 @@ npx prisma studio  // ver la db
 npm install @prisma/client
 
 
+
+
+Hacer el servidor https:
 // generar llaves:
 openssl req -x509 -out keys/certificado-publico.pem -keyout keys/clave-privada.pem -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost' -extensions EXT -config <( printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
 
 
+// index.ts
 
-
-
-
-import express from 'express';
-import adminRoutes from './routes/adminRoutes';
-import anfitrionRoutes from './routes/anfitrionRoutes';
-import inicioRoutes from './routes/inicioRoutes';
 import https from 'https';
 import fs from 'fs';
-
-import bodyParser from 'body-parser';
-
-
-const path = require('path');
-
-const app = express();
-app.use(express.json());
-
-app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-app.use('/', express.static('./public'));
-
-app.use('/admin', adminRoutes);
-app.use('/anfitrion', anfitrionRoutes);
-app.use('/home', inicioRoutes);
-
-app.get('/', (req, res) => {
-  res.send('Hello World 2');
-});
 
 /*
   Este par de claves se puede utilizar para desarrollo y pruebas, pero para un entorno de producción, deberías considerar obtener un
@@ -61,3 +37,54 @@ const servidorHTTPS = https.createServer(opcionesSSL, app);
 servidorHTTPS.listen(3000, () => {
   console.log('Servidor HTTPS listo en localhost:3000');
 });
+
+
+
+
+salida sin usar helmet:
+
+comando>>> 
+curl http://localhost:3000/ --include
+respuesta>>>
+
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Accept-Ranges: bytes
+Cache-Control: public, max-age=0
+Last-Modified: Wed, 01 May 2024 04:48:12 GMT
+ETag: W/"138-18f327b4e15"
+Content-Type: text/html; charset=UTF-8
+Content-Length: 312
+Date: Wed, 01 May 2024 17:31:55 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+
+
+usando helmet>>>
+curl http://localhost:3000/ --include
+Respuesta>>>
+
+HTTP/1.1 200 OK
+Content-Security-Policy: default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Resource-Policy: same-origin
+Origin-Agent-Cluster: ?1
+Referrer-Policy: no-referrer
+Strict-Transport-Security: max-age=15552000; includeSubDomains
+X-Content-Type-Options: nosniff
+X-DNS-Prefetch-Control: off
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 0
+Accept-Ranges: bytes
+Cache-Control: public, max-age=0
+Last-Modified: Wed, 01 May 2024 04:48:12 GMT
+ETag: W/"138-18f327b4e15"
+Content-Type: text/html; charset=UTF-8
+Content-Length: 312
+Date: Wed, 01 May 2024 17:34:41 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+

@@ -2,16 +2,17 @@ import express from 'express';
 import adminRoutes from './routes/adminRoutes';
 import anfitrionRoutes from './routes/anfitrionRoutes';
 import inicioRoutes from './routes/inicioRoutes';
-import https from 'https';
-import fs from 'fs';
 
+
+import helmet from "helmet";
 import bodyParser from 'body-parser';
 
 
 const path = require('path');
 
 const app = express();
-app.use(express.json());
+app.use(helmet());
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -29,5 +30,5 @@ app.get('/', (req, res) => {
 
 
 app.listen(3000, () => {
-  console.log('Servidor HTTPS listo en localhost:3000');
+  console.log('Servidor HTTP listo en localhost:3000');
 });
