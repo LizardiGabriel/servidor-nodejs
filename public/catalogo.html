@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Salas</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Gestionar Salas</h1>
+    <button onclick="mostrarFormularioCrearSala()">Agregar Sala</button>
+
+    <table id="tablaSalas">
+        <tr>
+            <th>ID</th>
+            <th>Nombre de la Sala</th>
+            <th>Estado</th>
+            <th>Cupo Máximo</th>
+            <th>Número de Sala</th>
+            <th>Piso</th>
+            <th>Acciones</th>
+        </tr>
+    </table>
+
+    <div id="formularioCrearSala" style="display: none;">
+        <h2>Crear Sala</h2>
+        <form>
+            <label for="nombreSala">Nombre de la Sala:</label>
+            <input type="text" id="nombreSala" name="nombreSala" required>
+            <br>
+            <label for="cupoMaximo">Cupo Máximo:</label>
+            <input type="number" id="cupoMaximo" name="cupoMaximo" required>
+            <br>
+            <label for="numeroSala">Número de Sala:</label>
+            <input type="number" id="numeroSala" name="numeroSala" required>
+            <br>
+            <label for="piso">Piso:</label>
+            <input type="number" id="piso" name="piso" required>
+            <br>
+            <label for="estado">Estado:</label>
+            <select id="estado" name="estado">
+                <option value="disponible">Disponible</option>
+                <option value="no-disponible">No Disponible</option>
+            </select>
+            <br>
+            <button type="button" onclick="crearSala()">Crear</button>
+            <button type="button" onclick="hideFormCrearSala()">Cancelar</button>
+        </form>
+    </div>
+
+    <div id="formModificar" style="display: none;">
+        <h2>Modificar Sala</h2>
+        <form>
+            <input type="hidden" id="idSalaM" name="idSala">
+            <label for="nombreSala">Nombre de la Sala:</label>
+            <input type="text" id="nombreSalaM" name="nombreSala" required>
+            <br>
+            <label for="cupoMaximo">Cupo Máximo:</label>
+            <input type="number" id="cupoMaximoM" name="cupoMaximo" required>
+            <br>
+            <label for="numeroSala">Número de Sala:</label>
+            <input type="number" id="numeroSalaM" name="numeroSala" required>
+            <br>
+            <label for="piso">Piso:</label>
+            <input type="number" id="pisoM" name="piso" required>
+            <br>
+            <label for="estado">Estado:</label>
+            <select id="estadoM" name="estado">
+                <option value="disponible">Disponible</option>
+                <option value="no-disponible">No Disponible</option>
+            </select>
+            <br>
+            <button type="button" onclick="modifSala()">Modificar</button>
+            <button type="button" onclick="hideFormModificar()">Cancelar</button>
+        </form>
+    </div>
+
+    <script>
+        window.onload = function () {
+            obtenerSalas();
+        }
+
+        function mostrarFormularioCrearSala() {
+            document.getElementById('formularioCrearSala').style.display = 'block';
+        }
+        function hideFormCrearSala() {
+            document.getElementById('formularioCrearSala').style.display = 'none';
+        }
+        function crearSala() {
+            const nombreSala = document.getElementById('nombreSala').value;
+            const cupoMaximo = document.getElementById('cupoMaximo').value;
+            const numeroSala = document.getElementById('numeroSala').value;
+            const piso = document.getElementById('piso').value;
+            const estado = document.getElementById('estado').value;
+
+            fetch('/catalogo/salas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    nombreSala,
+                    cupoMaximo,
+                    numeroSala,
+                    piso,
+                    estado
+                })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        obtenerSalas();
+                        hideFormCrearSala();
+                    } else {
+                        console.error('Error al crear sala:', response.statusText);
+                    }
+                })
+                .catch(error => console.error('Error al crear sala:', error));
+        }
+
+        function obtenerSalas() {
+            fetch('/catalogo/salas')
+                .then(response => response.json())
+                .then(salas => {
+                    const tablaBody = document.getElementById('tablaSalas');
+                    tablaBody.innerHTML = '';
+                    salas.forEach(sala => {
+                        const fila = document.createElement('tr');
+                        fila.innerHTML = `
+              <td>${sala.ID_Sala}</td>
+              <td>${sala.Nombre_Sala}</td>
+              <td>${sala.Estado}</td>
+              <td>${sala.Capacidad}</td>
+              <td>${sala.Numero_Sala}</td>
+              <td>${sala.Piso}</td>
+              <td>
+                <button onclick="mostrarFormularioModificarSala(${sala.ID_Sala})">Modificar</button>
+                <button onclick="eliminarSala(${sala.ID_Sala})">Eliminar</button>
+              </td>
+            `;
+                        tablaBody.appendChild(fila);
+                    });
+                })
+                .catch(error => console.error('Error al obtener salas:', error));
+        }
+        function eliminarSala(idSala) {
+            fetch(`/catalogo/salas/${idSala}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        obtenerSalas();
+                    } else {
+                        console.error('Error al eliminar sala:', response.statusText);
+                    }
+                })
+                .catch(error => console.error('Error al eliminar sala:', error));
+        }
+        
+        // ? ?
+        function mostrarFormularioModificarSala(idSala) {
+            document.getElementById('formModificar').style.display = 'block';
+            document.getElementById('idSalaM').value = idSala;
+            fetch(`/catalogo/salas/${idSala}`)
+           
+                .then(response => response.json())
+                .then(sala => {
+                    document.getElementById('nombreSalaM').value = sala.Nombre_Sala;
+                    document.getElementById('cupoMaximoM').value = sala.Capacidad;
+                    document.getElementById('numeroSalaM').value = sala.Numero_Sala;
+                    document.getElementById('pisoM').value = sala.Piso;
+                    document.getElementById('estadoM').value = sala.Estado;
+                })
+                .catch(error => console.error('Error al obtener sala:', error));
+                
+        }
+
+        function hideFormModificar() {
+            document.getElementById('formModificar').style.display = 'none';
+        }
+        function modifSala() {
+            const idSala = document.getElementById('idSalaM').value;
+            const nombreSala = document.getElementById('nombreSalaM').value;
+            const cupoMaximo = document.getElementById('cupoMaximoM').value;
+            const numeroSala = document.getElementById('numeroSalaM').value;
+            const piso = document.getElementById('pisoM').value;
+            const estado = document.getElementById('estadoM').value;
+
+            fetch(`/catalogo/salas/${idSala}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    nombreSala,
+                    cupoMaximo,
+                    numeroSala,
+                    piso,
+                    estado
+                })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        obtenerSalas();
+                        hideFormModificar();
+                    } else {
+                        console.error('Error al modificar sala:', response.statusText);
+                    }
+                })
+                .catch(error => console.error('Error al modificar sala:', error));
+        }
+    </script>
+</body>
+
+</html>

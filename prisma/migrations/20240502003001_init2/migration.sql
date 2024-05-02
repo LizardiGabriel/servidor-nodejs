@@ -1,31 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the column `Repetibilidad` on the `Reunion` table. All the data in the column will be lost.
-  - You are about to drop the `Anfitrion` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Super_Administrador` table. If the table is not empty, all the data it contains will be lost.
-  - Added the required column `ID_Usuario` to the `Reunion` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `Lugar` to the `Reunion` table without a default value. This is not possible if the table is not empty.
-  - Made the column `Descripcion` on table `Reunion` required. This step will fail if there are existing NULL values in that column.
-
-*/
--- DropForeignKey
-ALTER TABLE `Reunion` DROP FOREIGN KEY `Reunion_ID_Anfitrion_fkey`;
-
--- AlterTable
-ALTER TABLE `Reunion` DROP COLUMN `Repetibilidad`,
-    ADD COLUMN `ID_Usuario` INTEGER NOT NULL,
-    ADD COLUMN `Lugar` VARCHAR(191) NOT NULL,
-    MODIFY `Fecha_Reunion` VARCHAR(191) NOT NULL,
-    MODIFY `Hora_Reunion` VARCHAR(191) NOT NULL,
-    MODIFY `Descripcion` VARCHAR(191) NOT NULL;
-
--- DropTable
-DROP TABLE `Anfitrion`;
-
--- DropTable
-DROP TABLE `Super_Administrador`;
-
 -- CreateTable
 CREATE TABLE `Rol` (
     `ID_Rol` INTEGER NOT NULL,
@@ -46,6 +18,33 @@ CREATE TABLE `Usuario` (
     `ID_Rol` INTEGER NOT NULL,
 
     PRIMARY KEY (`ID_Usuario`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Sala` (
+    `ID_Sala` INTEGER NOT NULL AUTO_INCREMENT,
+    `Nombre_Sala` VARCHAR(191) NOT NULL,
+    `Capacidad` INTEGER NOT NULL,
+    `Piso` INTEGER NOT NULL,
+    `Numero_Sala` INTEGER NOT NULL,
+    `Estado` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`ID_Sala`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Reunion` (
+    `ID_Reunion` INTEGER NOT NULL AUTO_INCREMENT,
+    `ID_Usuario` INTEGER NOT NULL,
+    `Titulo` VARCHAR(191) NOT NULL,
+    `Fecha_Reunion` VARCHAR(191) NOT NULL,
+    `Hora_Reunion` VARCHAR(191) NOT NULL,
+    `Descripcion` VARCHAR(191) NOT NULL,
+    `Lugar` VARCHAR(191) NOT NULL,
+    `ID_Sala` INTEGER NOT NULL,
+    `ID_Anfitrion` INTEGER NOT NULL,
+
+    PRIMARY KEY (`ID_Reunion`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -133,6 +132,9 @@ ALTER TABLE `Usuario` ADD CONSTRAINT `Usuario_ID_Rol_fkey` FOREIGN KEY (`ID_Rol`
 
 -- AddForeignKey
 ALTER TABLE `Reunion` ADD CONSTRAINT `Reunion_ID_Usuario_fkey` FOREIGN KEY (`ID_Usuario`) REFERENCES `Usuario`(`ID_Usuario`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Reunion` ADD CONSTRAINT `Reunion_ID_Sala_fkey` FOREIGN KEY (`ID_Sala`) REFERENCES `Sala`(`ID_Sala`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Invitacion` ADD CONSTRAINT `Invitacion_ID_Reunion_fkey` FOREIGN KEY (`ID_Reunion`) REFERENCES `Reunion`(`ID_Reunion`) ON DELETE RESTRICT ON UPDATE CASCADE;

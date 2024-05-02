@@ -29,7 +29,9 @@ CREATE TABLE Sala (
     ID_Sala INT PRIMARY KEY auto_increment,
     Nombre_Sala VARCHAR(50),
     Capacidad INT,
-    Piso INT
+    Piso INT,
+    Numero_Sala INT,
+    Estado varchar(20)
 );
 
 CREATE TABLE Reunion (
@@ -137,6 +139,12 @@ INSERT INTO Rol (Nombre) VALUES ('Externo');
 
 
 select * from Rol;
+
+insert into Sala (Nombre_Sala, Capacidad, Piso, Numero_Sala, Estado) values ('Sala 1', 10, 1, 1, 'a');
+insert into Sala (Nombre_Sala, Capacidad, Piso, Numero_Sala, Estado) values ('Sala 2', 10, 1, 2, 'a');
+insert into Sala (Nombre_Sala, Capacidad, Piso, Numero_Sala, Estado) values ('Sala 3', 10, 1, 3, 'b');
+
+SELECT * FROM Sala;
 
 
 select * from Usuario;

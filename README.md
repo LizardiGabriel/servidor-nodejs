@@ -38,7 +38,9 @@ localhost:3000
 
 
 instrucciones para modificar la base de datos.
-1. modificar el archivo sql y volverlo a correr en el servidor mysql
+1. modificar el archivo sql y volverlo a correr en el servidor mysql workbench local
 2. modificar el esquema en ./prisma/schema.prisma
 3. ejecutar 'npx prisma migrate dev --name "nombre_del_cambio"    '
-4. si es necesario ejecutar otra vez 'npx prisma studio'
+4. si es necesario ejecutar otra vez 'npx prisma generate' y despues 'npx prisma studio'
+5. volver a correr el archivo sql en el servidor mysql workbench local
+6. listo!

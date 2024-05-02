@@ -32,6 +32,8 @@ model Sala {
   Nombre_Sala String
   Capacidad   Int
   Piso        Int
+  Numero_Sala Int
+  Estado      String
   Reunion     Reunion[]
 }
 
