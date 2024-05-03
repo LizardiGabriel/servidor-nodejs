@@ -1,13 +1,10 @@
-import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
-import express from 'express';
+const Router = require('express');
+const express = require('express')
 
-const prisma = new PrismaClient();
 const router = Router();
 
-
-
-
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient();
 
 router.use('/login.html', express.static('./public/login.html'));
 router.use('/signup.html', express.static('./public/signup.html'));
@@ -26,9 +23,10 @@ router.post('/login', async (req, res) => {
 
         console.log(req.body);
         
+        
         const usuario = await prisma.usuario.findFirst({
             where: {
-                Email: email as string,
+                Email: email,
             },
         });
 
@@ -38,6 +36,7 @@ router.post('/login', async (req, res) => {
         if (usuario.Contrasena !== password) {
             return res.status(401).json({ error: 'Contraseña incorrecta' });
         }
+        
 
         res.status(200).json({ message: 'Inicio de sesión exitoso' });
     } catch (error) {
@@ -50,9 +49,11 @@ router.post('/login', async (req, res) => {
 router.get('/signup', async (req, res) => {
     try {
         const { nombre, apellido_paterno, apellido_materno, email, contrasena, telefono } = req.query;
+        
+        
         const usuario = await prisma.usuario.findFirst({
             where: {
-                Email: email as string,
+                Email: email,
             },
         });
 
@@ -62,17 +63,18 @@ router.get('/signup', async (req, res) => {
 
         await prisma.usuario.create({
             data: {
-            Nombre: nombre as string,
-            Apellido_Paterno: apellido_paterno as string,
-            Apellido_Materno: apellido_materno as string,
-            Email: email as string,
-            Contrasena: contrasena as string,
-            Telefono: parseInt(telefono as string), 
+            Nombre: nombre,
+            Apellido_Paterno: apellido_paterno,
+            Apellido_Materno: apellido_materno,
+            Email: email,
+            Contrasena: contrasena,
+            Telefono: parseInt(telefono), 
             ID_Rol: parseInt('1'), 
             
 
             },
         });
+        
 
         res.status(201).json({ message: 'Usuario registrado' });
     } catch (error) {
@@ -82,4 +84,4 @@ router.get('/signup', async (req, res) => {
 });
 
 
-export default router;
+module.exports = router;

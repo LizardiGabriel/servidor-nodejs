@@ -1,10 +1,10 @@
-import {Router} from 'express';
-import { PrismaClient } from '@prisma/client';
-import express from 'express';
-
-const prisma = new PrismaClient();
+const Router = require('express');
+const express = require('express')
 
 const router = Router();
+
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient();
 
 
 router.get('/', (req, res) => {
@@ -70,4 +70,4 @@ router.get('/', (req, res) => {
 
 //}
 
-export default router;
+module.exports = router;
