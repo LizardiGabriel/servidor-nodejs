@@ -8,6 +8,7 @@ const inicioRoutes = require('./routes/inicioRoutes');
 const catalogoRoutes = require('./routes/catalogoRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const anfitrionRoutes = require('./routes/anfitrionRoutes');
+const pruebaRoutes = require('./routes/sessionRoutes');
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use('/home', inicioRoutes);
 app.use('/admin', adminRoutes);
 app.use('/anfitrion', anfitrionRoutes);
 app.use('/catalogo', catalogoRoutes);
+app.use('/prueba', pruebaRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World 2');
