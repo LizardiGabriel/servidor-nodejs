@@ -1,8 +1,8 @@
-import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
-import express from 'express';
-import { parse } from 'path';
+const Router = require('express');
+const express = require('express');
+const parse = require('path');
 
+const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient();
 
 const router = Router();
@@ -36,6 +36,7 @@ router.post('/salas', async (req, res) => {
             }
         });
         res.json(nuevaSala);
+
     } catch (error) {
         console.error('Error al crear sala:', error);
         res.status(500).json({ error: 'Error al crear sala' });
@@ -46,11 +47,13 @@ router.post('/salas', async (req, res) => {
 router.get('/salas/:id', async (req, res) => {
     try {
         const { id } = req.params;
+        
         const sala = await prisma.sala.findUnique({
             where: { ID_Sala: Number(id) }
         });
         //// console.log(sala);
         res.json(sala);
+        
         
     } catch (error) {
         console.error('Error al obtener sala:', error);
@@ -63,6 +66,7 @@ router.put('/salas/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const { nombreSala, cupoMaximo, numeroSala, piso, estado } = req.body;
+    
         const salaActualizada = await prisma.sala.update({
             where: { ID_Sala: Number(id) },
             data: {
@@ -74,6 +78,7 @@ router.put('/salas/:id', async (req, res) => {
             }
         });
         res.json(salaActualizada);
+        
     } catch (error) {
         console.error('Error al actualizar sala:', error);
         res.status(500).json({ error: 'Error al actualizar sala' });
@@ -84,14 +89,16 @@ router.put('/salas/:id', async (req, res) => {
 router.delete('/salas/:id', async (req, res) => {
     try {
         const { id } = req.params;
+        
         const salaEliminada = await prisma.sala.delete({
             where: { ID_Sala: Number(id) }
         });
         res.json(salaEliminada);
+        
     } catch (error) {
         console.error('Error al eliminar sala:', error);
         res.status(500).json({ error: 'Error al eliminar sala' });
     }
 });
 
-export default router;
+module.exports = router;

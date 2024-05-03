@@ -1,5 +1,5 @@
-import {Router} from 'express';
-import express from 'express';
+const Router = require('express');
+const express = require('express')
 
 const router = Router();
 
@@ -92,5 +92,4 @@ const router = Router();
 //}
 
 
-
-export default router;
+module.exports = router;
