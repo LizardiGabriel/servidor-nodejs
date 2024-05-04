@@ -84,26 +84,26 @@
             <input type="text" id="editTelefono" name="editTelefono"><br>
             <label for="editIdRol">ID Rol:</label><br>
             <input type="text" id="editIdRol" name="editIdRol"><br>
-            <button onclick="mostrarFormularioModificarU()">Editar</button>
-
+            <button type="button" onclick="modifUsuario()">Modificar</button>
             <button type="button" onclick="hideFormModificarU()">Cancelar</button>
         </form>
     </div>
-
+    
     <script>
+        //funcion para cargar o mostrar los usuarios al cargar la pestañax
         window.onload = function () {
             cargarUsuarios();
         }
-       
+        //funcion para mostrar el formulario de crear usuario
         function mostrarFormularioCrearUsuario() {
             document.getElementById('formularioCrearUsuario').style.display = 'block';
         }
-
+        //funcion para ocultar el formulario de crear usuario
         function hideFormCrearUsuario() {
             document.getElementById('formularioCrearUsuario').style.display = 'none';
         }
         
-
+        //funcion para crear usuario
         async function crearUsuario() {
             const email = document.getElementById('email').value;
             const contrasena = document.getElementById('contrasena').value;
@@ -139,31 +139,79 @@
                 .catch(error => console.error('Error al crear usuario:', error));
         }
 
-        function mostrarFormularioModificarU() {
-            document.getElementById('formularioEditarU').style.display = 'block';
-            const userId = this.event.target.closest('tr').querySelector('td:first-child').innerText;
-            document.getElementById('editUserId').value = userId;
-            fetch(`/gestusuario/usuarios/${userId}`)
+         // Crear la fila de encabezado de la tabla fuera de la función cargarUsuarios()
+         const tablaBody = document.getElementById('tablaUsuarios');
+        const filaEncabezado = document.createElement('tr');
+        filaEncabezado.innerHTML = `
+            <th>ID</th>
+            <th>Nombre de Usuario</th>
+            <th>Correo Electrónico</th>
+            <th>Tipo de Usuario</th>
+            <th>Acciones</th>
+        `;
+        tablaBody.appendChild(filaEncabezado);
+
+        //funcion para cargar o mostrar los usuarios
+        function cargarUsuarios() {
+            fetch('/gestusuario/usuarios')
                 .then(response => response.json())
-                .then(usuario => {
-                    document.getElementById('editEmail').value = usuario.email;
-                    document.getElementById('editContrasena').value = usuario.contrasena;
-                    document.getElementById('editNombre').value = usuario.nombre;
-                    document.getElementById('editApellidoPaterno').value = usuario.apellidoPaterno;
-                    document.getElementById('editApellidoMaterno').value = usuario.apellidoMaterno;
-                    document.getElementById('editTelefono').value = usuario.telefono;
-                    document.getElementById('editIdRol').value = usuario.idRol;
+                .then(usuarios => {
+                    tablaBody.innerHTML = filaEncabezado.outerHTML;
+                    usuarios.forEach(usuario => {
+                        const fila = document.createElement('tr');
+                        fila.innerHTML = `
+                            <td>${usuario.ID_Usuario}</td>
+                            <td>${usuario.Nombre} ${usuario.Apellido_Paterno} ${usuario.Apellido_Materno}</td>
+                            <td>${usuario.Email}</td>
+                            <td>${usuario.ID_Rol}</td>
+                            <td>
+                                <button onclick="mostrarFormularioModificarU(${usuario.ID_Usuario})">Modificar</button>
+                                <button onclick="eliminarUsuario(${usuario.ID_Usuario})">Eliminar</button>
+                            </td>
+                        `;
+                        tablaBody.appendChild(fila);
+                    });
                 })
-                .catch(error => console.error('Error al obtener usuario:', error));
+                .catch(error => console.error('Error al obtener usuarios:', error));
         }
 
 
+        //funcion para eliminar usuario
+        async function eliminarUsuario(userId) {
+            const response = await fetch(`/gestusuario/usuarios/${userId}`, {
+                method: 'DELETE'
+            });
+            const data = await response.json();
+            console.log(data);
+            cargarUsuarios();
+        }
 
+        //funcion para mostrar el formulario de modificar usuario
+        function mostrarFormularioModificarU(userId) {
+                document.getElementById('formularioEditarU').style.display = 'block';
+                document.getElementById('editUserId').value = userId;
+                fetch(`/gestusuario/usuarios/${userId}`)
+                    .then(response => response.json())
+                    .then(usuario => {
+                        document.getElementById('editEmail').value = usuario.Email;
+                        document.getElementById('editContrasena').value = usuario.Contrasena;
+                        document.getElementById('editNombre').value = usuario.Nombre;
+                        document.getElementById('editApellidoPaterno').value = usuario.Apellido_Paterno;
+                        document.getElementById('editApellidoMaterno').value = usuario.Apellido_Materno;
+                        document.getElementById('editTelefono').value = usuario.Telefono;
+                        document.getElementById('editIdRol').value = usuario.ID_Rol;
+                    })
+                    .catch(error => console.error('Error al obtener usuario:', error));
+        }
+        
+
+
+        //funcion para ocultar el formulario de modificar usuario
         function hideFormModificarU() {
             document.getElementById('formularioEditarU').style.display = 'none';
         }
 
-
+        //funcion para modificar usuario
         async function modifUsuario() {
             const userId = document.getElementById('editUserId').value;
             const email = document.getElementById('editEmail').value;
@@ -199,53 +247,6 @@
                 })
                 .catch(error => console.error('Error al modificar usuario:', error));
         }
-
-
-        async function eliminarUsuario(userId) {
-            const response = await fetch(`/gestusuario/usuarios/${userId}`, {
-                method: 'DELETE'
-            });
-            const data = await response.json();
-            console.log(data);
-            cargarUsuarios();
-        }
-
-
-
-        // Crear la fila de encabezado de la tabla fuera de la función cargarUsuarios()
-        const tablaBody = document.getElementById('tablaUsuarios');
-        const filaEncabezado = document.createElement('tr');
-        filaEncabezado.innerHTML = `
-            <th>Nombre de Usuario</th>
-            <th>Correo Electrónico</th>
-            <th>Tipo de Usuario</th>
-            <th>Acciones</th>
-        `;
-        tablaBody.appendChild(filaEncabezado);
-
-        function cargarUsuarios() {
-            fetch('/gestusuario/usuarios')
-                .then(response => response.json())
-                .then(usuarios => {
-                    // Limpiar el contenido de la tabla excepto la fila de encabezado
-                    tablaBody.innerHTML = filaEncabezado.outerHTML;
-                    usuarios.forEach(usuario => {
-                        const fila = document.createElement('tr');
-                        fila.innerHTML = `
-                            <td>${usuario.ID_Usuario}</td>
-                            <td>${usuario.Email}</td>
-                            <td>${usuario.ID_Rol}</td>
-                            <td>
-                                <button onclick="editarUsuarioForm(${usuario.ID_Usuario})">Editar</button>
-                                <button onclick="eliminarUsuario(${usuario.ID_Usuario})">Eliminar</button>
-                            </td>
-                        `;
-                        tablaBody.appendChild(fila);
-                    });
-                })
-                .catch(error => console.error('Error al obtener usuarios:', error));
-        }
-
         
     </script>
 </body>
