@@ -9,12 +9,12 @@ const catalogoRoutes = require('./routes/catalogoRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const anfitrionRoutes = require('./routes/anfitrionRoutes');
 const pruebaRoutes = require('./routes/sessionRoutes');
+const gestusuarioRoutes = require('./routes/gestusuarioRoutes');
 
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
 
 
 app.use('/', express.static('./public'));
@@ -23,6 +23,7 @@ app.use('/admin', adminRoutes);
 app.use('/anfitrion', anfitrionRoutes);
 app.use('/catalogo', catalogoRoutes);
 app.use('/prueba', pruebaRoutes);
+app.use('/gestusuario', gestusuarioRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World 2');
