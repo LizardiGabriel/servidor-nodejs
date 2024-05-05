@@ -4,29 +4,154 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-const inicioRoutes = require('./routes/inicioRoutes');
-const catalogoRoutes = require('./routes/catalogoRoutes');
-const adminRoutes = require('./routes/adminRoutes');
-const anfitrionRoutes = require('./routes/anfitrionRoutes');
-const pruebaRoutes = require('./routes/sessionRoutes');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const logger = require('morgan');
+const errorHandler = require('errorhandler');
+const methodOverride = require('method-override');
+
+
+const home = require('./routes/home');
+const salas = require('./routes/salas');
+const reuniones = require('./routes/reuniones');
+
+const admin = require('./routes/admin');
+const anfitrion = require('./routes/anfitrion');
+const seguridad = require('./routes/seguridad');
+const externo = require('./routes/externo');
+
+
+
+
+
 
 const app = express();
+app.locals.appTitle = 'beemeetings';
 
-app.use(express.urlencoded({ extended: true }));
+app.use(logger('dev'));
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride());
+
+
+app.use(cookieParser('3CCC4ACD-6ED1-4844-9217-82131BDCB239'));
+
+app.use(session({
+  secret: '2C44774A-D649-4D44-9535-46E296EF984F',
+  resave: true, saveUninitialized: true
+}));
+
+app.use(errorHandler());
 
 
 
 app.use('/', express.static('./public'));
-app.use('/home', inicioRoutes);
-app.use('/admin', adminRoutes);
-app.use('/anfitrion', anfitrionRoutes);
-app.use('/catalogo', catalogoRoutes);
-app.use('/prueba', pruebaRoutes);
+app.post('/home/login', home.login);
+app.get('/home/signup', home.signup);
+app.use('/home/login.html', express.static('./public/login.html'));
+app.use('/home/signup.html', express.static('./public/signup.html'));
+app.use('/home/recuperar.html', express.static('./public/recuperar.html'));
+
+app.use('/catalogo/catalogo.html', express.static('./public/catalogo.html'));
+app.get('/catalogo/salas', salas.getSalas);
+app.post('/catalogo/salas', salas.setNewSala);
+app.get('/catalogo/salas/:id', salas.getSalaById);
+app.put('/catalogo/salas/:id', salas.updateSala);
+app.delete('/catalogo/salas/:id', salas.deleteSala);
+
+app.get('/catalogo/reuniones', reuniones.getReuniones);
+
+
+
+
+
+
+app.use('/admin', (req, res, next) => {
+  if (req.session && req.session.rol === 1) {
+    next();
+  } else {
+    res.status(401).send('Unauthorized');
+  }
+});
+
+// admin
+
+app.use('/admin/admin.html', express.static('./public/admin.html'));
+app.get('/admin/logout', admin.logout);
+
+app.get('/admin/test', (req, res) => {
+  console.log('test');
+  console.log(req.session);
+  res.send('test');
+});
+
+
+// anfitrion
+
+app.use('/anfitrion', (req, res, next) => {
+  if (req.session && req.session.rol === 2) {
+    next();
+  } else {
+    res.status(401).send('Unauthorized');
+  }
+}
+);
+app.use('/anfitrion/anfitrion.html', express.static('./public/anfitrion.html'));
+app.get('/anfitrion/logout', anfitrion.logout);
+app.get('/anfitrion/test', (req, res) => {
+  console.log('test');
+  console.log(req.session);
+  res.send('test');
+});
+
+// seguridad
+app.use('/seguridad', (req, res, next) => {
+  if (req.session && req.session.rol === 3) {
+    next();
+  } else {
+    res.status(401).send('Unauthorized');
+  }
+});
+app.use('/seguridad/seguridad.html', express.static('./public/seguridad.html'));
+app.get('/seguridad/logout', seguridad.logout);
+app.get('/seguridad/test', (req, res) => {
+  console.log('test');
+  console.log(req.session);
+  res.send('test');
+});
+
+// externo
+app.use('/externo', (req, res, next) => {
+  if (req.session && req.session.rol === 4) {
+    next();
+  } else {
+    res.status(401).send('Unauthorized');
+  }
+});
+app.use('/externo/externo.html', express.static('./public/externo.html'));
+app.get('/externo/logout', externo.logout);
+app.get('/externo/test', (req, res) => {
+  console.log('test');
+  console.log(req.session);
+  res.send('test');
+});
+
+
+
+
+
+
+
+
 
 app.get('/', (req, res) => {
   res.send('Hello World 2');
 });
+
+app.all('*', function (req, res) {
+  res.status(404).send()
+});
+
 
 app.listen(3000, () => {
   console.log('Servidor HTTP listo en localhost:3000');

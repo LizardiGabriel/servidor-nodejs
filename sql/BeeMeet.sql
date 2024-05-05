@@ -12,7 +12,7 @@ create table Rol(
 CREATE TABLE Usuario (
     ID_Usuario INT PRIMARY KEY auto_increment,
     Email VARCHAR(50),
-    Contrasena VARCHAR(50),
+    Contrasena VARCHAR(70),
     Nombre VARCHAR(20),
     Apellido_Paterno VARCHAR(20),
     Apellido_Materno VARCHAR(20),
@@ -146,6 +146,24 @@ insert into Sala (Nombre_Sala, Capacidad, Piso, Numero_Sala, Estado) values ('Sa
 
 SELECT * FROM Sala;
 
+/* COMMENT: password = password */
+INSERT into Usuario (Email, Contrasena, Nombre, Apellido_Paterno, Apellido_Materno, Telefono, ID_Rol) values (
+    'admin@test.com', '$2b$11$tpeJKZANQoWqhevVHHTq0ODNibR0RUDcgmGVoNAiWzhjX5Iw1MR2q', 
+    'Juan', 'Perez', 'Lopez', 1234567890, 1
+);
+
+INSERT into Usuario (Email, Contrasena, Nombre, Apellido_Paterno, Apellido_Materno, Telefono, ID_Rol) values (
+    'anfitrion@test.com', '$2b$11$tpeJKZANQoWqhevVHHTq0ODNibR0RUDcgmGVoNAiWzhjX5Iw1MR2q',
+    'Maria', 'Gomez', 'Gonzalez', 1234567890, 2
+);
+INSERT into Usuario (Email, Contrasena, Nombre, Apellido_Paterno, Apellido_Materno, Telefono, ID_Rol) values (
+    'seguridad@test.com', '$2b$11$tpeJKZANQoWqhevVHHTq0ODNibR0RUDcgmGVoNAiWzhjX5Iw1MR2q',
+    'Pedro', 'Garcia', 'Gonzalez', 1234567890, 3
+);
+INSERT into Usuario (Email, Contrasena, Nombre, Apellido_Paterno, Apellido_Materno, Telefono, ID_Rol) values (
+    'externo@test.com', '$2b$11$tpeJKZANQoWqhevVHHTq0ODNibR0RUDcgmGVoNAiWzhjX5Iw1MR2q',
+    'Luis', 'Garcia', 'Gonzalez', 1234567890, 4
+);
 
 select * from Usuario;
 
