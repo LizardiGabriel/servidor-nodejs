@@ -148,7 +148,7 @@ SELECT * FROM Sala;
 
 /* COMMENT: password = password */
 INSERT into Usuario (Email, Contrasena, Nombre, Apellido_Paterno, Apellido_Materno, Telefono, ID_Rol) values (
-    'admin@test.com', '$2b$11$tpeJKZANQoWqhevVHHTq0ODNibR0RUDcgmGVoNAiWzhjX5Iw1MR2q', 
+    'lizardigabriel9@gmail.com', '$2b$11$tpeJKZANQoWqhevVHHTq0ODNibR0RUDcgmGVoNAiWzhjX5Iw1MR2q', 
     'Juan', 'Perez', 'Lopez', 1234567890, 1
 );
 

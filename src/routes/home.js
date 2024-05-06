@@ -1,5 +1,6 @@
 const {getUsersByEmailBD, createUserBD} = require('../tools/peticiones');
 const { hashPassword, comparePassword } = require('../tools/cipher');
+const { json } = require('body-parser');
 
 
 async function login(req, res) {
@@ -73,7 +74,21 @@ async function signup(req, res) {
     }
 }
 
+async function recuperar(req, res) {
+    try {
+        const email = req.body.email;
+        const usuario = await getUsersByEmailBD(email);
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+        res.status(200).json({ message: 'Usuario encontrado' });
+    } catch (error) {
+        console.error('Error en recuperar:', error);
+    }
+}
+
 module.exports = {
     login,
-    signup
+    signup,
+    recuperar,
 };

@@ -129,6 +129,90 @@ async function getReunionesBD() {
     }
 }
 
+
+// usuarios
+
+async function getUsuariosBD() {
+    console.log('peticion a la bd de getUsuarios');
+    try {
+        const usuarios = await prisma.usuario.findMany();
+        return usuarios;
+    } catch (error) {
+        console.error('Error al obtener usuarios:', error);
+        return json({ error: 'Error al obtener usuarios' });
+    }
+}
+
+async function setNewUsuarioBD(email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol){
+    console.log('peticion a la bd de setNewUsuario');
+    try {
+        const nuevoUsuario = await prisma.usuario.create({
+            data: {
+                Email: email,
+                Contrasena: contrasena,
+                Nombre: nombre,
+                Apellido_Paterno: apellidoPaterno,
+                Apellido_Materno: apellidoMaterno,
+                Telefono: parseInt(telefono),
+                ID_Rol: parseInt(idRol)
+            }
+        });
+        return nuevoUsuario;
+    } catch (error) {
+        console.error('Error al crear usuario:', error);
+        return json({ error: 'Error al crear usuario' });
+    }
+}
+
+async function getUsuarioByIdBD(id){
+    console.log('peticion a la bd de getUsuarioById');
+    try {
+        const usuario = await prisma.usuario.findUnique({
+            where: { ID_Usuario: Number(id) }
+        });
+        return usuario;
+    } catch (error) {
+        console.error('Error al obtener usuario:', error);
+        return json({ error: 'Error al obtener usuario' });
+    }
+}
+
+
+async function updateUsuarioBD(id, email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol){
+    console.log('peticion a la bd de updateUsuario');
+    try {
+        const usuarioActualizado = await prisma.usuario.update({
+            where: { ID_Usuario: Number(id) },
+            data: {
+                Email: email,
+                Contrasena: contrasena,
+                Nombre: nombre,
+                Apellido_Paterno: apellidoPaterno,
+                Apellido_Materno: apellidoMaterno,
+                Telefono: parseInt(telefono),
+                ID_Rol: parseInt(idRol)
+            }
+        });
+        return usuarioActualizado;
+    } catch (error) {
+        console.error('Error al actualizar usuario:', error);
+        return json({ error: 'Error al actualizar usuario' });
+    }
+}
+
+async function deleteUsuarioBD(id){
+    console.log('peticion a la bd de deleteUsuario');
+    try {
+        const usuarioEliminado = await prisma.usuario.delete({
+            where: { ID_Usuario: Number(id) }
+        });
+        return usuarioEliminado;
+    } catch (error) {
+        console.error('Error al eliminar usuario:', error);
+        return json({ error: 'Error al eliminar usuario' });
+    }
+}
+
 module.exports = {
     getUsersByEmailBD,
     createUserBD,
@@ -138,4 +222,11 @@ module.exports = {
     updateSalaBD,
     deleteSalaBD,
     getReunionesBD,
+
+    getUsuariosBD,
+    setNewUsuarioBD,
+    getUsuarioByIdBD,
+    updateUsuarioBD,
+    deleteUsuarioBD
+
 };

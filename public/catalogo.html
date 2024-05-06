@@ -111,7 +111,7 @@
             const piso = document.getElementById('piso').value;
             const estado = document.getElementById('estado').value;
 
-            fetch('/catalogo/salas', {
+            fetch('/admin/catalogo/salas', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -136,7 +136,7 @@
         }
 
         function obtenerSalas() {
-            fetch('/catalogo/salas')
+            fetch('/admin/catalogo/salas')
                 .then(response => response.json())
                 .then(salas => {
                     const tablaBody = document.getElementById('tablaSalas');
@@ -161,7 +161,7 @@
                 .catch(error => console.error('Error al obtener salas:', error));
         }
         function eliminarSala(idSala) {
-            fetch(`/catalogo/salas/${idSala}`, {
+            fetch(`/admin/catalogo/salas/${idSala}`, {
                 method: 'DELETE'
             })
                 .then(response => {
@@ -178,7 +178,7 @@
         function mostrarFormularioModificarSala(idSala) {
             document.getElementById('formModificar').style.display = 'block';
             document.getElementById('idSalaM').value = idSala;
-            fetch(`/catalogo/salas/${idSala}`)
+            fetch(`/admin/catalogo/salas/${idSala}`)
            
                 .then(response => response.json())
                 .then(sala => {
@@ -203,7 +203,7 @@
             const piso = document.getElementById('pisoM').value;
             const estado = document.getElementById('estadoM').value;
 
-            fetch(`/catalogo/salas/${idSala}`, {
+            fetch(`/admin/catalogo/salas/${idSala}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

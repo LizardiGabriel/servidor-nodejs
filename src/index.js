@@ -12,7 +12,6 @@ const methodOverride = require('method-override');
 
 
 const home = require('./routes/home');
-const salas = require('./routes/salas');
 const reuniones = require('./routes/reuniones');
 
 const admin = require('./routes/admin');
@@ -44,20 +43,22 @@ app.use(session({
 app.use(errorHandler());
 
 
+app.get('/prueba.ico', (req, res) => {
+  console.log('---> peticion de favicon.ico');
+  res.sendFile(path.join(__dirname, '../public/favicon.ico'));
+});
+
+
 
 app.use('/', express.static('./public'));
 app.post('/home/login', home.login);
 app.get('/home/signup', home.signup);
+app.post('/home/recuperar', home.recuperar);
 app.use('/home/login.html', express.static('./public/login.html'));
 app.use('/home/signup.html', express.static('./public/signup.html'));
 app.use('/home/recuperar.html', express.static('./public/recuperar.html'));
 
-app.use('/catalogo/catalogo.html', express.static('./public/catalogo.html'));
-app.get('/catalogo/salas', salas.getSalas);
-app.post('/catalogo/salas', salas.setNewSala);
-app.get('/catalogo/salas/:id', salas.getSalaById);
-app.put('/catalogo/salas/:id', salas.updateSala);
-app.delete('/catalogo/salas/:id', salas.deleteSala);
+
 
 app.get('/catalogo/reuniones', reuniones.getReuniones);
 
@@ -78,6 +79,23 @@ app.use('/admin', (req, res, next) => {
 
 app.use('/admin/admin.html', express.static('./public/admin.html'));
 app.get('/admin/logout', admin.logout);
+
+
+app.use('/admin/catalogo/catalogo.html', express.static('./public/catalogo.html'));
+app.get('/admin/catalogo/salas', admin.getSalas);
+app.post('/admin/catalogo/salas', admin.setNewSala);
+app.get('/admin/catalogo/salas/:id', admin.getSalaById);
+app.put('/admin/catalogo/salas/:id', admin.updateSala);
+app.delete('/admin/catalogo/salas/:id', admin.deleteSala);
+
+
+app.use('/admin/catalogo/usuarios.html', express.static('./public/gestionarusuarios.html'));
+app.get('/admin/catalogo/usuarios', admin.getUsuarios);
+app.post('/admin/catalogo/usuarios', admin.setNewUsuario);
+app.get('/admin/catalogo/usuarios/:id', admin.getUsuarioById);
+app.put('/admin/catalogo/usuarios/:id', admin.updateUsuario);
+app.delete('/admin/catalogo/usuarios/:id', admin.deleteUsuario);
+
 
 app.get('/admin/test', (req, res) => {
   console.log('test');
@@ -137,7 +155,7 @@ app.get('/externo/test', (req, res) => {
 });
 
 
-
+app.use('/not-found', express.static('./public/notFound.html'));
 
 
 
@@ -148,9 +166,10 @@ app.get('/', (req, res) => {
   res.send('Hello World 2');
 });
 
-app.all('*', function (req, res) {
-  res.status(404).send()
+app.all('*', (req, res) => {  
+  res.redirect('/not-found');
 });
+
 
 
 app.listen(3000, () => {

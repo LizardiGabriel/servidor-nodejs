@@ -6,11 +6,40 @@
 <body>
     <h1>Recuperar Contraseña</h1>
     
-    <form action="/recuperar-contrasena" method="POST">
+    <form action="/home/recuperar" method="post" id="recuperarForm">
         <label for="email">Correo Electrónico:</label>
         <input type="email" id="email" name="email" required>
         <br>
         <input type="submit" value="Recuperar Contraseña">
     </form>
+
+    <div id="respuestaServidor"></div>
+
+    <script>
+        document.getElementById('recuperarForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar el envío del formulario
+
+            var formData = new FormData(this);
+
+            fetch('/home/recuperar', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    var respuestaDiv = document.getElementById('respuestaServidor');
+                    if (data.error) {
+                        respuestaDiv.textContent = 'Error: ' + data.error;
+                    } else {
+                        respuestaDiv.textContent = 'Mensaje del servidor: ' + data.message;
+                    }
+                })
+                .catch(error => {
+                    var respuestaDiv = document.getElementById('respuestaServidor');
+                    respuestaDiv.textContent = 'Error al procesar la solicitud: ' + error;
+                });
+        });
+    </script>
+
 </body>
 </html>
