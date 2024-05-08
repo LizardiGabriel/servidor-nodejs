@@ -17,28 +17,29 @@ async function login(req, res) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
-        const isMatch = await comparePassword(password, usuario.Contrasena);
+        const isMatch = await comparePassword(password, usuario.password_usuario);
         console.log('es la contrasena?: ' + isMatch);
         if (!isMatch) {
             return res.status(401).json({ error: 'Contraseña incorrecta' });
         }
-        const rol = usuario.ID_Rol;
+        const rol = usuario.rol_usuario;
         
-        req.session.userId = usuario.ID_Usuario;
+        req.session.userId = usuario.id_usuario;
         req.session.email = email;
-        req.session.rol = rol;
+
+    
         switch (rol) {
-            case 1:
+            case 'SuperAdmin':
+                req.session.rol = 1;
                 res.redirect('/admin/admin.html');
                 break;
-            case 2:
+            case 'Anfitrion':
+                req.session.rol = 2;
                 res.redirect('/anfitrion/anfitrion.html');
                 break;
-            case 3:
+            case 'Seguridad':
+                req.session.rol = 3;
                 res.redirect('/seguridad/seguridad.html');
-                break;
-            case 4:
-                res.redirect('/externo/externo.html');
                 break;
             default:
                 res.status(401).json({ error: 'Rol no encontrado' });

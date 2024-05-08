@@ -7,121 +7,161 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Rol {
-  ID_Rol  Int       @id
-  Nombre  String
-  Usuario Usuario[]
+model Usuario {
+  id_usuario               Int        @id @default(autoincrement())
+  email_usuario            String     @unique
+  password_usuario         String
+  nombre_usuario           String
+  apellido_paterno_usuario String
+  apellido_materno_usuario String
+  telefono_usuario         Int
+  rol_usuario              RolUsuario
+  foto_usuario             String
+  Reunion                  Reunion[]
 }
 
-model Usuario {
-  ID_Usuario       Int       @id @default(autoincrement())
-  Email            String
-  Contrasena       String
-  Nombre           String
-  Apellido_Paterno String
-  Apellido_Materno String
-  Telefono         Int
-  ID_Rol           Int
-  Rol              Rol       @relation(fields: [ID_Rol], references: [ID_Rol])
-  Reunion          Reunion[]
-  Externo          Externo[]
+enum RolUsuario {
+  SuperAdmin
+  Anfitrion
+  Seguridad
 }
 
 model Sala {
-  ID_Sala     Int       @id @default(autoincrement())
-  Nombre_Sala String
-  Capacidad   Int
-  Piso        Int
-  Numero_Sala Int
-  Estado      String
-  Reunion     Reunion[]
+  id_sala        Int         @id @default(autoincrement())
+  nombre_sala    String
+  capacidad_sala Int
+  piso_sala      Int
+  ubicacion_sala String
+  estatus_sala   EstatusSala
+  Reunion        Reunion[]
+}
+
+enum EstatusSala {
+  NoDisponible
+  Disponible
 }
 
 model Reunion {
-  ID_Reunion    Int          @id @default(autoincrement())
-  ID_Usuario    Int
-  Titulo        String
-  Fecha_Reunion String
-  Hora_Reunion  String
-  Descripcion   String
-  Lugar         String
-  ID_Sala       Int
-  ID_Anfitrion  Int
-  Usuario       Usuario      @relation(fields: [ID_Usuario], references: [ID_Usuario])
-  Sala          Sala         @relation(fields: [ID_Sala], references: [ID_Sala])
-  Invitacion    Invitacion[]
-  Externo       Externo[]
-}
+  id_reunion          Int      @id @default(autoincrement())
+  id_usuario          Int
+  id_sala             Int
+  titulo_reunion      String
+  fecha_reunion       DateTime
+  descripcion_reunion String
 
-model Dispositivo {
-  ID_Dispositivo     Int                  @id @default(autoincrement())
-  Numero_Serie       String
-  Modelo             String
-  Marca              String
-  ExternoDispositivo ExternoDispositivo[]
-}
-
-model Automovil {
-  ID_Automovil Int       @id @default(autoincrement())
-  Color        String
-  Matricula    String
-  Marca        String
-  Modelo       String
-  Externo      Externo[]
-}
-
-model Invitacion {
-  ID_Invitacion   Int     @id @default(autoincrement())
-  ID_Reunion      Int
-  Num_Acomp_Invit Int
-  correoExterno   String
-  Reunion         Reunion @relation(fields: [ID_Reunion], references: [ID_Reunion])
-}
-
-model Externo {
-  ID_Externo         Int                  @id @default(autoincrement())
-  Empresa            String
-  Identificacion     String
-  QR                 String
-  Foto               String
-  ID_Automovil       Int
-  ID_Usuario         Int
-  ID_Reunion         Int
-  Usuario            Usuario              @relation(fields: [ID_Usuario], references: [ID_Usuario])
-  Reunion            Reunion              @relation(fields: [ID_Reunion], references: [ID_Reunion])
-  Automovil          Automovil            @relation(fields: [ID_Automovil], references: [ID_Automovil])
-  EventoExternos     EventoExternos[]
-  ExternoDispositivo ExternoDispositivo[]
-  Invitado           Invitado[]
-  Colado             Colado[]
-}
-
-model EventoExternos {
-  ID_Evento  Int     @id @default(autoincrement())
-  ID_Externo Int
-  evento     Int
-  Externo    Externo @relation(fields: [ID_Externo], references: [ID_Externo])
-}
-
-model ExternoDispositivo {
-  ID_ExtDis      Int         @id @default(autoincrement())
-  ID_Externo     Int
-  ID_Dispositivo Int
-  Externo        Externo     @relation(fields: [ID_Externo], references: [ID_Externo])
-  Dispositivo    Dispositivo @relation(fields: [ID_Dispositivo], references: [ID_Dispositivo])
+  usuario    Usuario      @relation(fields: [id_usuario], references: [id_usuario])
+  sala       Sala         @relation(fields: [id_sala], references: [id_sala])
+  Invitacion Invitacion[]
+  Acceso     Acceso[]
 }
 
 model Invitado {
-  ID_Invit   Int      @id @default(autoincrement())
-  ID_Externo Int
-  Externo    Externo  @relation(fields: [ID_Externo], references: [ID_Externo])
-  Colado     Colado[]
+  id_invitado               Int              @id @default(autoincrement())
+  nombre_invitado           String
+  apellido_paterno_invitado String
+  apellido_materno_invitado String
+  email_invitado            String           @unique
+  password_invitado         String
+  telefono_invitado         Int
+  empresa_invitado          String
+  foto_invitado             String
+  identificacion_invitado   String
+  es_colado_invitado        Boolean
+  habilitado                Boolean
+  Invitacion                Invitacion[]
+  Colado                    Colado[]
+  ColadoInvitado            ColadoInvitado[]
+}
+
+model Invitacion {
+  id_invitacion Int        @id @default(autoincrement())
+  id_reunion    Int
+  id_invitado   Int
+  qr_acceso     String
+  habilitado    Habilitado
+
+  reunion                Reunion                  @relation(fields: [id_reunion], references: [id_reunion])
+  invitado               Invitado                 @relation(fields: [id_invitado], references: [id_invitado])
+  Acceso                 Acceso[]
+  DispositivoElectronico DispositivoElectronico[]
+  Acompaniante           Acompaniante[]
+  Automovil              Automovil[]
+}
+
+enum Habilitado {
+  Si
+  No
+}
+
+model Acceso {
+  id_acceso           Int       @id @default(autoincrement())
+  id_invitacion       Int
+  id_reunion          Int
+  nota_acceso         String?
+  hora_entrada_acceso DateTime
+  hora_salida_acceso  DateTime?
+
+  invitacion                   Invitacion                     @relation(fields: [id_invitacion], references: [id_invitacion])
+  reunion                      Reunion                        @relation(fields: [id_reunion], references: [id_reunion])
+  AccesoDispositivoElectronico AccesoDispositivoElectronico[]
+}
+
+model DispositivoElectronico {
+  id_dispositivo_electronico       Int    @id @default(autoincrement())
+  id_invitacion                    Int
+  no_serie_dispositivo_electronico String
+  modelo_dispositivo_electronico   String
+  marca_dispositivo_electronico    String
+
+  invitacion                   Invitacion                     @relation(fields: [id_invitacion], references: [id_invitacion])
+  AccesoDispositivoElectronico AccesoDispositivoElectronico[]
+}
+
+model Acompaniante {
+  id_acompaniante               Int    @id @default(autoincrement())
+  id_invitacion                 Int
+  nombre_acompaniante           String
+  apellido_paterno_acompaniante String
+  apellido_materno_acompaniante String
+  email_acompaniante            String
+
+  invitacion Invitacion @relation(fields: [id_invitacion], references: [id_invitacion])
+}
+
+model Automovil {
+  id_automovil        Int    @id @default(autoincrement())
+  id_invitacion       Int
+  color_automovil     String
+  matricula_automovil String
+  marca_automovil     String
+  modelo_automovil    String
+
+  invitacion Invitacion @relation(fields: [id_invitacion], references: [id_invitacion])
 }
 
 model Colado {
-  ID_Colado  Int      @id @default(autoincrement())
-  ID_Invit   Int
-  ID_Externo Int
-  Invitado   Invitado @relation(fields: [ID_Invit], references: [ID_Invit])
-  Externo    Externo  @relation(fields: [ID_Externo], references: [ID_Externo])
+  id_colado   Int @id @default(autoincrement())
+  id_invitado Int
+
+  invitado       Invitado         @relation(fields: [id_invitado], references: [id_invitado])
+  ColadoInvitado ColadoInvitado[]
+}
+
+model ColadoInvitado {
+  id_colado_invitado Int @id @default(autoincrement())
+  id_colado          Int
+  id_invitado        Int
+
+  colado   Colado   @relation(fields: [id_colado], references: [id_colado])
+  invitado Invitado @relation(fields: [id_invitado], references: [id_invitado])
+}
+
+model AccesoDispositivoElectronico {
+  id_acceso_dispositivo_electronico Int     @id @default(autoincrement())
+  id_acceso                         Int
+  id_dispositivo_electronico        Int
+  check                             Boolean
+
+  acceso                  Acceso                 @relation(fields: [id_acceso], references: [id_acceso])
+  dispositivo_electronico DispositivoElectronico @relation(fields: [id_dispositivo_electronico], references: [id_dispositivo_electronico])
 }

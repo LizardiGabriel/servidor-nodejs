@@ -144,12 +144,12 @@
                     salas.forEach(sala => {
                         const fila = document.createElement('tr');
                         fila.innerHTML = `
-              <td>${sala.ID_Sala}</td>
-              <td>${sala.Nombre_Sala}</td>
-              <td>${sala.Estado}</td>
-              <td>${sala.Capacidad}</td>
-              <td>${sala.Numero_Sala}</td>
-              <td>${sala.Piso}</td>
+              <td>${sala.id_sala}</td>
+              <td>${sala.nombre_sala}</td>
+              <td>${sala.capacidad_sala}</td>
+              <td>${sala.piso_sala}</td>
+              <td>${sala.ubicacion_sala}</td>
+              <td>${sala.estatus_sala}</td>
               <td>
                 <button onclick="mostrarFormularioModificarSala(${sala.ID_Sala})">Modificar</button>
                 <button onclick="eliminarSala(${sala.ID_Sala})">Eliminar</button>

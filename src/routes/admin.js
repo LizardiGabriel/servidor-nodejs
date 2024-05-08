@@ -54,6 +54,7 @@ async function deleteSala(req, res) {
 
 async function getUsuarios(req, res) {
     const usuarios = await getUsuariosBD();
+    console.log('usuarios en json: ', usuarios);
     res.json(usuarios);
 }
 

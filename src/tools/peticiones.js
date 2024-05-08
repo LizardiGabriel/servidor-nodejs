@@ -7,7 +7,7 @@ async function getUsersByEmailBD(email) {
     try {
         const usuario = await prisma.usuario.findFirst({
             where: {
-                Email: email,
+                email_usuario: email,
             },
         });
         return usuario;
@@ -17,26 +17,28 @@ async function getUsersByEmailBD(email) {
     }
 }
 
-async function createUserBD({ nombre, apellido_paterno, apellido_materno, email, hashedPassword, telefono }) {
+async function createUserBD({ email, hashedPassword, nombre, apellido_paterno, apellido_materno, telefono, rol, foto_usuario}) {
     console.log('peticion a la bd de createUser');
+
     try {
+
         await prisma.usuario.create({
             data: {
-            Nombre: nombre,
-            Apellido_Paterno: apellido_paterno,
-            Apellido_Materno: apellido_materno,
-            Email: email,
-            Contrasena: hashedPassword,
-            Telefono: parseInt(telefono), 
-            ID_Rol: parseInt('1'), 
-            
+                email_usuario: email,
+                password_usuario: hashedPassword,
+                nombre_usuario: nombre,
+                apellido_paterno_usuario: apellido_paterno,
+                apellido_materno_usuario: apellido_materno,
+                telefono_usuario: parseInt(telefono),
+                rol_usuario: 'SuperAdmin',
+                foto_usuario: 'prueba.jpg'
 
             },
         });
         return 'Usuario creado correctamente';
     } catch (error) {
         console.error('Error al crear usuario:', error);
-        return  'Error interno del servidor';
+        return 'Error interno del servidor';
     }
 }
 
@@ -44,6 +46,7 @@ async function getSalasBD() {
     console.log('peticion a la bd de getSalas');
     try {
         const salas = await prisma.sala.findMany();
+        console.log('respuesta en json: ', salas);
         return salas;
     } catch (error) {
         console.error('Error al obtener salas:', error);
@@ -51,16 +54,16 @@ async function getSalasBD() {
     }
 }
 
-async function setNewSalaBD(nombreSala, cupoMaximo, numeroSala, piso, estado){
+async function setNewSalaBD(nombreSala, cupoMaximo, piso, ubicacion, estatus) {
     console.log('peticion a la bd de setNewSala');
     try {
         const nuevaSala = await prisma.sala.create({
             data: {
-                Nombre_Sala: nombreSala,
-                Capacidad: parseInt(cupoMaximo),
-                Numero_Sala: parseInt(numeroSala),
-                Piso: parseInt(piso),
-                Estado: (estado)
+                nombre_sala: nombreSala,
+                capacidad_sala: parseInt(cupoMaximo),
+                piso_sala: parseInt(piso),
+                ubicacion_sala: ubicacion,
+                estatus_sala: (estatus)
             }
         });
         return nuevaSala;
@@ -75,7 +78,7 @@ async function getSalaByIdBD(id) {
     console.log('peticion a la bd de getSalaById');
     try {
         const sala = await prisma.sala.findUnique({
-            where: { ID_Sala: Number(id) }
+            where: { id_sala: Number(id) }
         });
         return sala;
     } catch (error) {
@@ -84,17 +87,17 @@ async function getSalaByIdBD(id) {
     }
 }
 
-async function updateSalaBD(id, nombreSala, cupoMaximo, numeroSala, piso, estado){
+async function updateSalaBD(id, nombreSala, cupoMaximo, piso, ubicacion, estatus) {
     console.log('peticion a la bd de updateSala');
     try {
         const salaActualizada = await prisma.sala.update({
-            where: { ID_Sala: Number(id) },
+            where: { id_sala: Number(id) },
             data: {
-                Nombre_Sala: nombreSala,
-                Capacidad: parseInt(cupoMaximo),
-                Numero_Sala: parseInt(numeroSala),
-                Piso: parseInt(piso),
-                Estado: (estado)
+                nombre_sala: nombreSala,
+                capacidad_sala: parseInt(cupoMaximo),
+                piso_sala: parseInt(piso),
+                ubicacion_sala: ubicacion,
+                estatus_sala: (estatus)
             }
         });
         return salaActualizada;
@@ -104,11 +107,11 @@ async function updateSalaBD(id, nombreSala, cupoMaximo, numeroSala, piso, estado
     }
 }
 
-async function deleteSalaBD(id){
+async function deleteSalaBD(id) {
     console.log('peticion a la bd de deleteSala');
     try {
         const salaEliminada = await prisma.sala.delete({
-            where: { ID_Sala: Number(id) }
+            where: { id_sala: Number(id) }
         });
         return salaEliminada;
     } catch (error) {
@@ -143,18 +146,20 @@ async function getUsuariosBD() {
     }
 }
 
-async function setNewUsuarioBD(email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol){
+async function setNewUsuarioBD(email, passwordHashed, nombre, apellidoPaterno, apellidoMaterno, telefono, rol, fotoUsuario) {
     console.log('peticion a la bd de setNewUsuario');
     try {
         const nuevoUsuario = await prisma.usuario.create({
             data: {
-                Email: email,
-                Contrasena: contrasena,
-                Nombre: nombre,
-                Apellido_Paterno: apellidoPaterno,
-                Apellido_Materno: apellidoMaterno,
-                Telefono: parseInt(telefono),
-                ID_Rol: parseInt(idRol)
+                email_usuario: email,
+                password_usuario: passwordHashed,
+                nombre_usuario: nombre,
+                apellido_paterno_usuario: apellidoPaterno,
+                apellido_materno_usuario: apellidoMaterno,
+                telefono_usuario: parseInt(telefono),
+                rol_usuario: rol,
+                foto_usuario: fotoUsuario
+
             }
         });
         return nuevoUsuario;
@@ -164,11 +169,11 @@ async function setNewUsuarioBD(email, contrasena, nombre, apellidoPaterno, apell
     }
 }
 
-async function getUsuarioByIdBD(id){
+async function getUsuarioByIdBD(id) {
     console.log('peticion a la bd de getUsuarioById');
     try {
         const usuario = await prisma.usuario.findUnique({
-            where: { ID_Usuario: Number(id) }
+            where: { id_usuario: Number(id) }
         });
         return usuario;
     } catch (error) {
@@ -178,19 +183,20 @@ async function getUsuarioByIdBD(id){
 }
 
 
-async function updateUsuarioBD(id, email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol){
+async function updateUsuarioBD(id, email, passwordHashed, nombre, apellidoPaterno, apellidoMaterno, telefono, rol, fotoUsuario) {
     console.log('peticion a la bd de updateUsuario');
     try {
         const usuarioActualizado = await prisma.usuario.update({
-            where: { ID_Usuario: Number(id) },
+            where: { id_usuario: Number(id) },
             data: {
-                Email: email,
-                Contrasena: contrasena,
-                Nombre: nombre,
-                Apellido_Paterno: apellidoPaterno,
-                Apellido_Materno: apellidoMaterno,
-                Telefono: parseInt(telefono),
-                ID_Rol: parseInt(idRol)
+                email_usuario: email,
+                password_usuario: passwordHashed,
+                nombre_usuario: nombre,
+                apellido_paterno_usuario: apellidoPaterno,
+                apellido_materno_usuario: apellidoMaterno,
+                telefono_usuario: parseInt(telefono),
+                rol_usuario: rol,
+                foto_usuario: fotoUsuario
             }
         });
         return usuarioActualizado;
@@ -200,11 +206,11 @@ async function updateUsuarioBD(id, email, contrasena, nombre, apellidoPaterno, a
     }
 }
 
-async function deleteUsuarioBD(id){
+async function deleteUsuarioBD(id) {
     console.log('peticion a la bd de deleteUsuario');
     try {
         const usuarioEliminado = await prisma.usuario.delete({
-            where: { ID_Usuario: Number(id) }
+            where: { id_usuario: Number(id) }
         });
         return usuarioEliminado;
     } catch (error) {
