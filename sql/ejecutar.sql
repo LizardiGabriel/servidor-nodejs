@@ -34,8 +34,7 @@ CREATE TABLE IF NOT EXISTS `beemeet`.`reunion` (
     `id_usuario` INT NOT NULL,
     `id_sala` INT NOT NULL,
     `titulo_reunion` VARCHAR(100) NOT NULL,
-    `fecha_reunion` DATE NOT NULL,
-    `hora_reunion` TIME NOT NULL,
+    `fecha_reunion` DATEtime,
     `descripcion_reunion` VARCHAR(200) NOT NULL,
 
     FOREIGN KEY (`id_usuario`) REFERENCES `beemeet`.`usuario` (`id_usuario`),
@@ -178,4 +177,11 @@ VALUES ( 'Sala 2', 10, 1, 'Ubicacion 2', 'Disponible');
 
 INSERT INTO sala ( nombre_sala, capacidad_sala, piso_sala, ubicacion_sala, estatus_sala)
 VALUES ( 'Sala 3', 10, 1, 'Ubicacion 3', 'NoDisponible');
+
+
+insert INTO reunion ( id_usuario, id_sala, titulo_reunion, fecha_reunion, descripcion_reunion)
+VALUES ( 1, 1, 'Reunion 1', '2021-10-10T15:45:30', 'Descripcion 1');
+
+select * from reunion;
+
 
