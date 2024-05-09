@@ -179,3 +179,8 @@ VALUES ( 'Sala 2', 10, 1, 'Ubicacion 2', 'Disponible');
 INSERT INTO sala ( nombre_sala, capacidad_sala, piso_sala, ubicacion_sala, estatus_sala)
 VALUES ( 'Sala 3', 10, 1, 'Ubicacion 3', 'NoDisponible');
 
+INSERT INTO reunion ( id_reunion, id_usuario, id_sala,titulo_reunion,fecha_reunion,hora_reunion,descripcion_reunion)
+VALUES ( '1','2','1', 'Reunion de prueba ', '2024-05-08','15:45:30','Reunion Beecoders');
+
+INSERT INTO reunion ( id_reunion, id_usuario, id_sala,titulo_reunion,fecha_reunion,hora_reunion,descripcion_reunion)
+VALUES ( '2','2','1', 'Reunion de prueba 2 ', '2024-05-07','12:45:30','Reunion Backend');

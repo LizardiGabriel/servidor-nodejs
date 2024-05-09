@@ -17,6 +17,21 @@ async function getUsersByEmailBD(email) {
     }
 }
 
+async function getUsersByIDBD(ID) {
+    console.log('peticion a la bd de getUsersByID');
+    try {
+        const usuario = await prisma.usuario.findFirst({
+            where: {
+                id_usuario: ID,
+            },
+        });
+        return usuario;
+    } catch (error) {
+        console.error('Error al obtener usuario por ID:', error);
+        return null;
+    }
+}
+
 async function createUserBD({ email, hashedPassword, nombre, apellido_paterno, apellido_materno, telefono, rol, foto_usuario}) {
     console.log('peticion a la bd de createUser');
 
@@ -218,6 +233,17 @@ async function deleteUsuarioBD(id) {
         return json({ error: 'Error al eliminar usuario' });
     }
 }
+async function getReunionesBD() {
+    console.log('peticion a la bd de getReuniones');
+    try {
+        const reuniones = await prisma.reunion.findMany();
+        console.log('respuesta en json: ', reuniones);
+        return reuniones;
+    } catch (error) {
+        console.error('Error al obtener reuniones:', error);
+        return json({ error: 'Error al obtener reuniones' });
+    }
+}
 
 module.exports = {
     getUsersByEmailBD,
@@ -233,6 +259,8 @@ module.exports = {
     setNewUsuarioBD,
     getUsuarioByIdBD,
     updateUsuarioBD,
-    deleteUsuarioBD
+    deleteUsuarioBD,
+    getReunionesBD,
+    getUsersByIDBD
 
 };

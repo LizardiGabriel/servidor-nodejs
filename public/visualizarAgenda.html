@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Agenda</title>
+</head>
+<body>
+        <h1>Visualizar Agenda</h1>
+        <script>
+            window.onload = function () {
+                obtenerReuniones();
+            }
+            function obtenerReuniones() {
+                fetch("/seguridad/visualizarAgenda", {
+                    method: "GET"
+                })
+                .then(response => response.json()) 
+                .then(data=>{
+                    console.log(data);
+                })
+                    .catch(error => console.error("Error al visualizar los datos:", error));
+            }
+        </script>
+</body>
+</html>
