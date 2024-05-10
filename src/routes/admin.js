@@ -20,8 +20,9 @@ async function getSalas(req, res) {
 }
 
 async function setNewSala(req, res) {
-    const { nombreSala, cupoMaximo, numeroSala, piso, estado } = req.body;
-    const nuevaSala = await setNewSalaBD(nombreSala, cupoMaximo, numeroSala, piso, estado);
+    const { nombreSala, cupoMaximo, piso, ubicacion, estado } = req.body;
+    console.log('nombreSala: ', nombreSala, 'cupoMaximo: ', cupoMaximo, 'piso: ', piso, 'ubicacion:', ubicacion, 'estado: ', estado);
+    const nuevaSala = await setNewSalaBD( nombreSala, cupoMaximo, piso, ubicacion, estado);
     res.json(nuevaSala);
 }
 
@@ -36,9 +37,9 @@ async function getSalaById(req, res) {
 
 async function updateSala(req, res) {
     const { id } = req.params;
-    const { nombreSala, cupoMaximo, numeroSala, piso, estado } = req.body;
-
-    const salaActualizada = await updateSalaBD(id, nombreSala, cupoMaximo, numeroSala, piso, estado);
+    const { nombreSala, cupoMaximo, piso, ubicacion, estado } = req.body;
+    console.log('nombreSala: ', nombreSala, 'cupoMaximo: ', cupoMaximo, 'piso: ', piso, 'ubicacion:', ubicacion, 'estado: ', estado);
+    const salaActualizada = await updateSalaBD(id, nombreSala, cupoMaximo, piso, ubicacion, estado);
     res.json(salaActualizada);
 }
 
@@ -59,8 +60,9 @@ async function getUsuarios(req, res) {
 }
 
 async function setNewUsuario(req, res) {
-    const { email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol } = req.body;
-    const nuevoUsuario = await setNewUsuarioBD(email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol);
+    const { email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario } = req.body;
+    console.log('email: ', email, 'contrasena: ', contrasena, 'nombre: ', nombre, 'apellidoPaterno:', apellidoPaterno, 'apellidoMaterno: ', apellidoMaterno, 'telefono: ', telefono, 'idRol: ', idRol, 'foto_usuario: ', foto_usuario);
+    const nuevoUsuario = await setNewUsuarioBD(email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario);
     res.json(nuevoUsuario);
 }
 
@@ -72,8 +74,8 @@ async function getUsuarioById(req, res) {
 
 async function updateUsuario(req, res) {
     const { id } = req.params;
-    const { email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol } = req.body;
-    const usuarioActualizado = await updateUsuarioBD(id, email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol);
+    const { email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario } = req.body;
+    const usuarioActualizado = await updateUsuarioBD(id, email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario);
     res.json(usuarioActualizado);
 }
 

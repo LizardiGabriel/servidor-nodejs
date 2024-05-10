@@ -22,8 +22,8 @@ CREATE TABLE IF NOT EXISTS `beemeet`.`sala` (
     `id_sala` int primary key auto_increment,
     `nombre_sala` VARCHAR(100) NOT NULL,
     `capacidad_sala` INT NOT NULL,
+    `numero_sala` INT NOT NULL,
     `piso_sala` INT NOT NULL,
-    `ubicacion_sala` VARCHAR(100) NOT NULL,
     `estatus_sala` ENUM('NoDisponible', 'Disponible') NOT NULL
 
 );

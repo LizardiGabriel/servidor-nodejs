@@ -34,8 +34,8 @@
             <th>Nombre de la Sala</th>
             <th>Estado</th>
             <th>Cupo Máximo</th>
-            <th>Número de Sala</th>
             <th>Piso</th>
+            <th>Ubicacion</th>
             <th>Acciones</th>
         </tr>
     </table>
@@ -49,16 +49,16 @@
             <label for="cupoMaximo">Cupo Máximo:</label>
             <input type="number" id="cupoMaximo" name="cupoMaximo" required>
             <br>
-            <label for="numeroSala">Número de Sala:</label>
-            <input type="number" id="numeroSala" name="numeroSala" required>
+            <label for="Piso">Piso:</label>
+            <input type="number" id="Piso" name="Piso" required>
             <br>
-            <label for="piso">Piso:</label>
-            <input type="number" id="piso" name="piso" required>
+            <label for="ubicacion">Ubicacion de Sala:</label>
+            <input type="text" id="ubicacion" name="ubicacion" required>
             <br>
             <label for="estado">Estado:</label>
             <select id="estado" name="estado">
-                <option value="disponible">Disponible</option>
-                <option value="no-disponible">No Disponible</option>
+                <option value="Disponible">Disponible</option>
+                <option value="NoDisponible">No Disponible</option>
             </select>
             <br>
             <button type="button" onclick="crearSala()">Crear</button>
@@ -76,16 +76,16 @@
             <label for="cupoMaximo">Cupo Máximo:</label>
             <input type="number" id="cupoMaximoM" name="cupoMaximo" required>
             <br>
-            <label for="numeroSala">Número de Sala:</label>
-            <input type="number" id="numeroSalaM" name="numeroSala" required>
+            <label for="Piso">Piso:</label>
+            <input type="number" id="PisoM" name="Piso" required>
             <br>
-            <label for="piso">Piso:</label>
-            <input type="number" id="pisoM" name="piso" required>
+            <label for="ubicacion">Ubicacion de Sala:</label>
+            <input type="text" id="ubicacionM" name="ubicacion" required>
             <br>
             <label for="estado">Estado:</label>
             <select id="estadoM" name="estado">
-                <option value="disponible">Disponible</option>
-                <option value="no-disponible">No Disponible</option>
+                <option value="Disponible">Disponible</option>
+                <option value="NoDisponible">No Disponible</option>
             </select>
             <br>
             <button type="button" onclick="modifSala()">Modificar</button>
@@ -107,8 +107,8 @@
         function crearSala() {
             const nombreSala = document.getElementById('nombreSala').value;
             const cupoMaximo = document.getElementById('cupoMaximo').value;
-            const numeroSala = document.getElementById('numeroSala').value;
-            const piso = document.getElementById('piso').value;
+            const piso = document.getElementById('Piso').value;
+            const ubicacion = document.getElementById('ubicacion').value;
             const estado = document.getElementById('estado').value;
 
             fetch('/admin/catalogo/salas', {
@@ -119,8 +119,8 @@
                 body: JSON.stringify({
                     nombreSala,
                     cupoMaximo,
-                    numeroSala,
                     piso,
+                    ubicacion,
                     estado
                 })
             })
@@ -151,8 +151,8 @@
               <td>${sala.ubicacion_sala}</td>
               <td>${sala.estatus_sala}</td>
               <td>
-                <button onclick="mostrarFormularioModificarSala(${sala.ID_Sala})">Modificar</button>
-                <button onclick="eliminarSala(${sala.ID_Sala})">Eliminar</button>
+                <button onclick="mostrarFormularioModificarSala(${sala.id_sala})">Modificar</button>
+                <button onclick="eliminarSala(${sala.id_sala})">Eliminar</button>
               </td>
             `;
                         tablaBody.appendChild(fila);
@@ -182,11 +182,11 @@
            
                 .then(response => response.json())
                 .then(sala => {
-                    document.getElementById('nombreSalaM').value = sala.Nombre_Sala;
-                    document.getElementById('cupoMaximoM').value = sala.Capacidad;
-                    document.getElementById('numeroSalaM').value = sala.Numero_Sala;
-                    document.getElementById('pisoM').value = sala.Piso;
-                    document.getElementById('estadoM').value = sala.Estado;
+                    document.getElementById('nombreSalaM').value = sala.nombre_sala;
+                    document.getElementById('cupoMaximoM').value = sala.capacidad_sala;
+                    document.getElementById('PisoM').value = sala.piso_sala;
+                    document.getElementById('ubicacionM').value = sala.ubicacion_sala;
+                    document.getElementById('estadoM').value = sala.estatus_sala;
                 })
                 .catch(error => console.error('Error al obtener sala:', error));
                 
@@ -199,8 +199,8 @@
             const idSala = document.getElementById('idSalaM').value;
             const nombreSala = document.getElementById('nombreSalaM').value;
             const cupoMaximo = document.getElementById('cupoMaximoM').value;
-            const numeroSala = document.getElementById('numeroSalaM').value;
-            const piso = document.getElementById('pisoM').value;
+            const piso = document.getElementById('PisoM').value;
+            const ubicacion = document.getElementById('ubicacionM').value;
             const estado = document.getElementById('estadoM').value;
 
             fetch(`/admin/catalogo/salas/${idSala}`, {
@@ -211,8 +211,8 @@
                 body: JSON.stringify({
                     nombreSala,
                     cupoMaximo,
-                    numeroSala,
                     piso,
+                    ubicacion,
                     estado
                 })
             })

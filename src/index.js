@@ -80,7 +80,7 @@ app.use('/admin', (req, res, next) => {
 app.use('/admin/admin.html', express.static('./public/admin.html'));
 app.get('/admin/logout', admin.logout);
 
-
+//salas admin
 app.use('/admin/catalogo/catalogo.html', express.static('./public/catalogo.html'));
 app.get('/admin/catalogo/salas', admin.getSalas);
 app.post('/admin/catalogo/salas', admin.setNewSala);
@@ -88,7 +88,7 @@ app.get('/admin/catalogo/salas/:id', admin.getSalaById);
 app.put('/admin/catalogo/salas/:id', admin.updateSala);
 app.delete('/admin/catalogo/salas/:id', admin.deleteSala);
 
-
+//usuarios admin
 app.use('/admin/catalogo/usuarios.html', express.static('./public/gestionarusuarios.html'));
 app.get('/admin/catalogo/usuarios', admin.getUsuarios);
 app.post('/admin/catalogo/usuarios', admin.setNewUsuario);
