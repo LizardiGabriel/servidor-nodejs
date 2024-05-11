@@ -245,6 +245,82 @@ async function getReunionesBD() {
     }
 }
 
+async function getReunionByIdBD(id) {
+    console.log('peticion a la bd de getReunionById');
+    try {
+        const reunion = await prisma.reunion.findUnique({
+            where: { id_reunion: Number(id) }
+        });
+        return reunion;
+    } catch (error) {
+        console.error('Error al obtener la reunion:', error);
+        return json({ error: 'Error al obtener la reunion' });
+    }
+}
+
+async function getInvitacionByIdBD(id) {
+    console.log('peticion a la bd de getInvitacionByIdBD');
+    try {
+        const invitacion = await prisma.invitacion.findUnique({
+            where: { id_invitacion: Number(id) }
+        });
+        return invitacion;
+    } catch (error) {
+        console.error('Error al obtener la invitacion:', error);
+        return json({ error: 'Error al obtener la invitacion' });
+    }
+}
+
+async function getInvitadoByIdBD(id) {
+    console.log('peticion a la bd de getInvitadonByIdBD');
+    try {
+        const invitado = await prisma.invitado.findUnique({
+            where: { id_invitado: Number(id) }
+        });
+        return invitado;
+    } catch (error) {
+        console.error('Error al obtener el invitado:', error);
+        return json({ error: 'Error al obtener el invitado' });
+    }
+}
+async function getInvitadoByNameBD(nombre) {
+    console.log('peticion a la bd de getInvitadonByIdBD');
+    try {
+        const invitado = await prisma.invitado.findUnique({
+            where: { nombre_usuario: String(nombre) }
+        });
+        return invitado;
+    } catch (error) {
+        console.error('Error al obtener el invitado:', error);
+        return json({ error: 'Error al obtener el invitado' });
+    }
+}
+async function getInvitacionesByIdInv(id) {
+    console.log('Petición a la BD de getInvitacionesByIdInvitado');
+    try {
+        const invitaciones = await prisma.invitacion.findMany({
+            where: { id_invitado: Number(id) }
+        });
+        return invitaciones;
+    } catch (error) {
+        console.error('Error al obtener las invitaciones para el invitado:', error);
+        return json({ error: 'Error al obtener las invitaciones' });
+    }
+}
+async function getReunionByIdInvBD(id) {
+    console.log('peticion a la bd de getReunionByIdInv');
+    try {
+        const reunion = await prisma.reunion.findUnique({
+            where: { id_invitacion: Number(id) }
+        });
+        return reunion;
+    } catch (error) {
+        console.error('Error al obtener la reunion:', error);
+        return json({ error: 'Error al obtener la reunion' });
+    }
+}
+
+
 module.exports = {
     getUsersByEmailBD,
     createUserBD,
@@ -261,6 +337,10 @@ module.exports = {
     updateUsuarioBD,
     deleteUsuarioBD,
     getReunionesBD,
-    getUsersByIDBD
-
+    getReunionByIdBD,
+    getInvitacionByIdBD,
+    getInvitadoByIdBD,
+    getInvitadoByNameBD,
+    getInvitacionesByIdInv,
+    getReunionByIdInvBD
 };
