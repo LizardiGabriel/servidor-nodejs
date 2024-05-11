@@ -133,8 +133,8 @@ app.use('/seguridad', (req, res, next) => {
 app.use('/seguridad/seguridad.html', express.static('./public/seguridad.html'));
 app.get('/seguridad/logout', seguridad.logout);
 app.use('/seguridad/visualizarAgenda.html', express.static('./public/visualizarAgenda.html'));
-app.get('/seguridad/visualizarAgenda', seguridad.getReunionesAll);
-app.get('/seguridad/visualizarAgenda/:id', seguridad.getReunionByIdAll);
+app.get('/seguridad/getAgendas', seguridad.getReunionesAll);
+app.get('/seguridad/getAgendaID/:id', seguridad.getReunionByIdAll);
 app.use('/seguridad/verDatosInv.html', express.static('./public/verDatosInv.html'));
 app.get('/seguridad/test', (req, res) => {
   console.log('test');

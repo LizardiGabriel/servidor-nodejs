@@ -20,7 +20,7 @@ CREATE TABLE `Sala` (
     `nombre_sala` VARCHAR(191) NOT NULL,
     `capacidad_sala` INTEGER NOT NULL,
     `piso_sala` INTEGER NOT NULL,
-    `ubicacion_sala` VARCHAR(191) NOT NULL,
+    `numero_sala` INTEGER NOT NULL,
     `estatus_sala` ENUM('NoDisponible', 'Disponible') NOT NULL,
 
     PRIMARY KEY (`id_sala`)
@@ -50,8 +50,8 @@ CREATE TABLE `Invitado` (
     `empresa_invitado` VARCHAR(191) NOT NULL,
     `foto_invitado` VARCHAR(191) NOT NULL,
     `identificacion_invitado` VARCHAR(191) NOT NULL,
-    `es_colado_invitado` BOOLEAN NOT NULL,
-    `habilitado` BOOLEAN NOT NULL,
+    `es_colado_invitado` INTEGER NOT NULL,
+    `habilitado` INTEGER NOT NULL,
 
     UNIQUE INDEX `Invitado_email_invitado_key`(`email_invitado`),
     PRIMARY KEY (`id_invitado`)
@@ -73,15 +73,15 @@ CREATE TABLE `Acceso` (
     `id_acceso` INTEGER NOT NULL AUTO_INCREMENT,
     `id_invitacion` INTEGER NOT NULL,
     `id_reunion` INTEGER NOT NULL,
-    `nota_acceso` VARCHAR(191) NULL,
+    `nota_acceso` VARCHAR(191) NOT NULL,
     `hora_entrada_acceso` DATETIME(3) NOT NULL,
-    `hora_salida_acceso` DATETIME(3) NULL,
+    `hora_salida_acceso` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`id_acceso`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `DispositivoElectronico` (
+CREATE TABLE `dispositivo_electronico` (
     `id_dispositivo_electronico` INTEGER NOT NULL AUTO_INCREMENT,
     `id_invitacion` INTEGER NOT NULL,
     `no_serie_dispositivo_electronico` VARCHAR(191) NOT NULL,
@@ -124,7 +124,7 @@ CREATE TABLE `Colado` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `ColadoInvitado` (
+CREATE TABLE `colado_invitado` (
     `id_colado_invitado` INTEGER NOT NULL AUTO_INCREMENT,
     `id_colado` INTEGER NOT NULL,
     `id_invitado` INTEGER NOT NULL,
@@ -133,11 +133,11 @@ CREATE TABLE `ColadoInvitado` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `AccesoDispositivoElectronico` (
+CREATE TABLE `acceso_dispositivo_electronico` (
     `id_acceso_dispositivo_electronico` INTEGER NOT NULL AUTO_INCREMENT,
     `id_acceso` INTEGER NOT NULL,
     `id_dispositivo_electronico` INTEGER NOT NULL,
-    `check` BOOLEAN NOT NULL,
+    `checka` INTEGER NOT NULL,
 
     PRIMARY KEY (`id_acceso_dispositivo_electronico`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -161,7 +161,7 @@ ALTER TABLE `Acceso` ADD CONSTRAINT `Acceso_id_invitacion_fkey` FOREIGN KEY (`id
 ALTER TABLE `Acceso` ADD CONSTRAINT `Acceso_id_reunion_fkey` FOREIGN KEY (`id_reunion`) REFERENCES `Reunion`(`id_reunion`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `DispositivoElectronico` ADD CONSTRAINT `DispositivoElectronico_id_invitacion_fkey` FOREIGN KEY (`id_invitacion`) REFERENCES `Invitacion`(`id_invitacion`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `dispositivo_electronico` ADD CONSTRAINT `dispositivo_electronico_id_invitacion_fkey` FOREIGN KEY (`id_invitacion`) REFERENCES `Invitacion`(`id_invitacion`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Acompaniante` ADD CONSTRAINT `Acompaniante_id_invitacion_fkey` FOREIGN KEY (`id_invitacion`) REFERENCES `Invitacion`(`id_invitacion`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -173,13 +173,13 @@ ALTER TABLE `Automovil` ADD CONSTRAINT `Automovil_id_invitacion_fkey` FOREIGN KE
 ALTER TABLE `Colado` ADD CONSTRAINT `Colado_id_invitado_fkey` FOREIGN KEY (`id_invitado`) REFERENCES `Invitado`(`id_invitado`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `ColadoInvitado` ADD CONSTRAINT `ColadoInvitado_id_colado_fkey` FOREIGN KEY (`id_colado`) REFERENCES `Colado`(`id_colado`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `colado_invitado` ADD CONSTRAINT `colado_invitado_id_colado_fkey` FOREIGN KEY (`id_colado`) REFERENCES `Colado`(`id_colado`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `ColadoInvitado` ADD CONSTRAINT `ColadoInvitado_id_invitado_fkey` FOREIGN KEY (`id_invitado`) REFERENCES `Invitado`(`id_invitado`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `colado_invitado` ADD CONSTRAINT `colado_invitado_id_invitado_fkey` FOREIGN KEY (`id_invitado`) REFERENCES `Invitado`(`id_invitado`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `AccesoDispositivoElectronico` ADD CONSTRAINT `AccesoDispositivoElectronico_id_acceso_fkey` FOREIGN KEY (`id_acceso`) REFERENCES `Acceso`(`id_acceso`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `acceso_dispositivo_electronico` ADD CONSTRAINT `acceso_dispositivo_electronico_id_acceso_fkey` FOREIGN KEY (`id_acceso`) REFERENCES `Acceso`(`id_acceso`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `AccesoDispositivoElectronico` ADD CONSTRAINT `AccesoDispositivoElectronico_id_dispositivo_electronico_fkey` FOREIGN KEY (`id_dispositivo_electronico`) REFERENCES `DispositivoElectronico`(`id_dispositivo_electronico`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `acceso_dispositivo_electronico` ADD CONSTRAINT `acceso_dispositivo_electronico_id_dispositivo_electronico_fkey` FOREIGN KEY (`id_dispositivo_electronico`) REFERENCES `dispositivo_electronico`(`id_dispositivo_electronico`) ON DELETE RESTRICT ON UPDATE CASCADE;

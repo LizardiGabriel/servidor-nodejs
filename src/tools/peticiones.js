@@ -69,7 +69,7 @@ async function getSalasBD() {
     }
 }
 
-async function setNewSalaBD(nombreSala, cupoMaximo, piso, ubicacion, estatus) {
+async function setNewSalaBD(nombreSala, cupoMaximo, piso, numerito, estatus) {
     console.log('peticion a la bd de setNewSala');
     try {
         const nuevaSala = await prisma.sala.create({
@@ -77,7 +77,7 @@ async function setNewSalaBD(nombreSala, cupoMaximo, piso, ubicacion, estatus) {
                 nombre_sala: nombreSala,
                 capacidad_sala: parseInt(cupoMaximo),
                 piso_sala: parseInt(piso),
-                ubicacion_sala: ubicacion,
+                numero_sala: parseInt(numerito),
                 estatus_sala: (estatus)
             }
         });
@@ -102,7 +102,7 @@ async function getSalaByIdBD(id) {
     }
 }
 
-async function updateSalaBD(id, nombreSala, cupoMaximo, piso, ubicacion, estatus) {
+async function updateSalaBD(id, nombreSala, cupoMaximo, piso, numerito, estatus) {
     console.log('peticion a la bd de updateSala');
     try {
         const salaActualizada = await prisma.sala.update({
@@ -111,7 +111,7 @@ async function updateSalaBD(id, nombreSala, cupoMaximo, piso, ubicacion, estatus
                 nombre_sala: nombreSala,
                 capacidad_sala: parseInt(cupoMaximo),
                 piso_sala: parseInt(piso),
-                ubicacion_sala: ubicacion,
+                numero_sala: parseInt(numerito),
                 estatus_sala: (estatus)
             }
         });
@@ -135,17 +135,8 @@ async function deleteSalaBD(id) {
     }
 }
 
-// reuniones
-async function getReunionesBD() {
-    console.log('peticion a la bd de getReuniones');
-    try {
-        const reuniones = await prisma.reunion.findMany();
-        return reuniones;
-    } catch (error) {
-        console.error('Error al obtener reuniones:', error);
-        return json({ error: 'Error al obtener reuniones' });
-    }
-}
+
+
 
 
 // usuarios
@@ -237,7 +228,6 @@ async function getReunionesBD() {
     console.log('peticion a la bd de getReuniones');
     try {
         const reuniones = await prisma.reunion.findMany();
-        console.log('respuesta en json: ', reuniones);
         return reuniones;
     } catch (error) {
         console.error('Error al obtener reuniones:', error);
@@ -284,7 +274,7 @@ async function getInvitadoByIdBD(id) {
     }
 }
 async function getInvitadoByNameBD(nombre) {
-    console.log('peticion a la bd de getInvitadonByIdBD');
+    console.log('peticion a la bd de getInvitadonByNameBD');
     try {
         const invitado = await prisma.invitado.findUnique({
             where: { nombre_usuario: String(nombre) }

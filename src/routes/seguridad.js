@@ -1,6 +1,7 @@
 const { log } = require('console');
 const { getReunionesBD, getUsuarioByIdBD,getReunionByIdBD,getSalaByIdBD,getInvitacionByIdBD,getInvitadoByIdBD,getInvitadoByNameBD,getInvitacionesByIdInv} = require('../tools/peticiones');
 const { response } = require('express');
+const { json } = require('body-parser');
 
 
 async function logout(req, res) {
@@ -16,15 +17,17 @@ async function getReuniones(req, res) {
 }
 
 async function getReunionesAll(req,res){
+    console.log('entre a  xd getreunionesAll');
     const reuniones = await getReunionesBD();
     let reunionesInfo= [];
     for (const reunion of reuniones) {
         try {
+            console.log('reunion --->:' + reunion.id_reunion)
             const user = await getUsuarioByIdBD(reunion.id_usuario);
             const sala = await getSalaByIdBD(reunion.id_sala);
             const invitacion= await getInvitacionByIdBD(reunion.id_reunion);
             const invitado= await getInvitadoByIdBD(invitacion.id_invitado);
-            console.log(invitado);
+            console.log('id invitado' + invitado.id_invitado);
             const respuesta = {
                 id_reunion: reunion.id_reunion,
                 nombre_user: user.nombre_usuario,
@@ -32,7 +35,7 @@ async function getReunionesAll(req,res){
                 nombre_sala: sala.nombre_sala,
                 titulo_reunion: reunion.titulo_reunion,
                 fecha_reunion: reunion.fecha_reunion,
-                descripcion_reunion: reunion.descripcion_reunion,
+                    descripcion_reunion: reunion.descripcion_reunion,
                 id_inv: invitado.id_invitado,
                 nombre_inv:invitado.nombre_invitado,
                 apellido_inv: invitado.apellido_paterno_invitado
@@ -48,6 +51,7 @@ async function getReunionesAll(req,res){
 
 async function getReunionByIdAll(req,res){
     const { id } = req.params;
+    console.log('=========> get reunion por id: id_reunion--->' + id);
     try {
         const reunion = await getReunionByIdBD(id);
         const user = await getUsuarioByIdBD(reunion.id_usuario);

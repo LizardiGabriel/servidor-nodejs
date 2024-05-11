@@ -31,7 +31,7 @@ model Sala {
   nombre_sala    String
   capacidad_sala Int
   piso_sala      Int
-  ubicacion_sala String
+  numero_sala    Int
   estatus_sala   EstatusSala
   Reunion        Reunion[]
 }
@@ -66,11 +66,11 @@ model Invitado {
   empresa_invitado          String
   foto_invitado             String
   identificacion_invitado   String
-  es_colado_invitado        Boolean
-  habilitado                Boolean
+  es_colado_invitado        Int
+  habilitado                Int
   Invitacion                Invitacion[]
   Colado                    Colado[]
-  ColadoInvitado            ColadoInvitado[]
+  colado_invitado            colado_invitado[]
 }
 
 model Invitacion {
@@ -82,8 +82,8 @@ model Invitacion {
 
   reunion                Reunion                  @relation(fields: [id_reunion], references: [id_reunion])
   invitado               Invitado                 @relation(fields: [id_invitado], references: [id_invitado])
-  Acceso                 Acceso[]
-  DispositivoElectronico DispositivoElectronico[]
+  Acceso                 Acceso[]                 
+  dispositivo_electronico dispositivo_electronico[]
   Acompaniante           Acompaniante[]
   Automovil              Automovil[]
 }
@@ -97,16 +97,16 @@ model Acceso {
   id_acceso           Int       @id @default(autoincrement())
   id_invitacion       Int
   id_reunion          Int
-  nota_acceso         String?
+  nota_acceso         String
   hora_entrada_acceso DateTime
-  hora_salida_acceso  DateTime?
+  hora_salida_acceso  DateTime
 
   invitacion                   Invitacion                     @relation(fields: [id_invitacion], references: [id_invitacion])
   reunion                      Reunion                        @relation(fields: [id_reunion], references: [id_reunion])
-  AccesoDispositivoElectronico AccesoDispositivoElectronico[]
+  acceso_dispositivo_electronico acceso_dispositivo_electronico[]
 }
 
-model DispositivoElectronico {
+model dispositivo_electronico {
   id_dispositivo_electronico       Int    @id @default(autoincrement())
   id_invitacion                    Int
   no_serie_dispositivo_electronico String
@@ -114,7 +114,7 @@ model DispositivoElectronico {
   marca_dispositivo_electronico    String
 
   invitacion                   Invitacion                     @relation(fields: [id_invitacion], references: [id_invitacion])
-  AccesoDispositivoElectronico AccesoDispositivoElectronico[]
+  acceso_dispositivo_electronico acceso_dispositivo_electronico[]
 }
 
 model Acompaniante {
@@ -144,10 +144,10 @@ model Colado {
   id_invitado Int
 
   invitado       Invitado         @relation(fields: [id_invitado], references: [id_invitado])
-  ColadoInvitado ColadoInvitado[]
+  colado_invitado colado_invitado[]
 }
 
-model ColadoInvitado {
+model colado_invitado {
   id_colado_invitado Int @id @default(autoincrement())
   id_colado          Int
   id_invitado        Int
@@ -156,12 +156,12 @@ model ColadoInvitado {
   invitado Invitado @relation(fields: [id_invitado], references: [id_invitado])
 }
 
-model AccesoDispositivoElectronico {
+model acceso_dispositivo_electronico {
   id_acceso_dispositivo_electronico Int     @id @default(autoincrement())
   id_acceso                         Int
   id_dispositivo_electronico        Int
-  check                             Boolean
+  checka                            Int
 
   acceso                  Acceso                 @relation(fields: [id_acceso], references: [id_acceso])
-  dispositivo_electronico DispositivoElectronico @relation(fields: [id_dispositivo_electronico], references: [id_dispositivo_electronico])
+  dispositivo_electronico dispositivo_electronico @relation(fields: [id_dispositivo_electronico], references: [id_dispositivo_electronico])
 }

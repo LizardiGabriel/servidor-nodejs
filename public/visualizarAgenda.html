@@ -1,71 +1,80 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizar Agenda</title>
 </head>
+
 <body>
-        <h1>Visualizar Agenda</h1>
-        <table id="tablaReunion">
-            <tr>
-                <th></th>
-                <th>Nombre del invitado</th>
-                <th>Hora de llegada</th>
-                <th>Anfitrion</th>
-            </tr>
-            <tbody id="cuerpoTabla"> <!-- Añadido cuerpo de la tabla -->
-            </tbody>
-        </table>
+    <h1>Visualizar Agenda</h1>
+    <table id="tablaReunion">
+        <tr>
+            <th></th>
+            <th>Nombre del invitado</th>
+            <th>Hora de llegada</th>
+            <th>Anfitrion</th>
+        </tr>
+        <tbody id="cuerpoTabla"> <!-- Añadido cuerpo de la tabla -->
+        </tbody>
+    </table>
 
+    <div id="detallesReunion">
+        <h1>Detalles de la reunión</h1>
+        <p id="texto"></p>
+    </div>
 
+    <script>
+        window.onload = function () {
+            obtenerReuniones();
+        }
 
-        <script>
-            window.onload = function () {
-                obtenerReuniones();
-            }
-    function obtenerReuniones() {
-    fetch("/seguridad/visualizarAgenda", {
-        method: "GET"
-    })
-    .then(response => response.json()) 
-    .then(data => {
-        console.log(data);
-        const tablaBody = document.getElementById('cuerpoTabla');
-        tablaBody.innerHTML = '';
-        data.forEach(reunion => {
-            let fecha = new Date(reunion.fecha_reunion);
-            const fila = document.createElement('tr');
-            console.log(reunion.id_inv);
-            fila.innerHTML = `
-            <td>
-                <button onclick="verDetallesInv(${reunion.id_inv})">Ver</button>
-            </td>
-            <td>${reunion.nombre_inv}</td>
-            <td>${fecha.getUTCHours()}:${fecha.getUTCMinutes()}</td>
-            <td>${reunion.nombre_user}</td>
-            </tr>`;
-            tablaBody.appendChild(fila);
-        });
-    })
-    .catch(error => console.error("Error al visualizar los datos:", error));
-}
-
-
-    function obtenerReunionById(idReunion) {
-                fetch(`/seguridad/visualizarAgenda/${idReunion}`)
+        function obtenerReuniones() {
+            fetch("/seguridad/getAgendas", {
+                method: "GET"
+            })
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
+                    const tablaBody = document.getElementById('cuerpoTabla');
+                    tablaBody.innerHTML = '';
+                    data.forEach(reunion => {
+                        let fecha = new Date(reunion.fecha_reunion);
+                        const fila = document.createElement('tr');
+                        console.log(reunion.id_inv);
+                        fila.innerHTML = `
+                            <td>
+                                <button onclick="verDetallesInv(${reunion.id_inv})">Ver</button>
+                            </td>
+                            <td>${reunion.nombre_inv}</td>
+                            <td>${fecha.getUTCHours()}:${fecha.getUTCMinutes()}</td>
+                            <td>${reunion.nombre_user}</td>
+                        `;
+                        tablaBody.appendChild(fila);
+                    });
+                })
+                .catch(error => console.error("Error al visualizar los datos:", error));
+        }
+
+        function verDetallesInv(idInvitado) {
+            fetch(`/seguridad/getAgendaID/${idInvitado}`, {
+                method: "GET"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    document.getElementById('detallesReunion').innerHTML = `
+                    <h1>Detalles de la reunión</h1>
+                        <p>Id de la reunión: ${data.id_reunion}</p>
+                        <p>Nombre del anfitrión: ${data.nombre_user} ${data.apellido_user}</p>
+                        <p>Nombre de la sala: ${data.nombre_sala}</p>
+                        <p>Título de la reunión: ${data.titulo_reunion}</p>
+                    `;
                 })
                 .catch(error => console.error('Error al obtener usuario:', error));
-    }
-
-    function verDetallesInv(idInvitado){
-        let nuevaURL = 'http://localhost:3000/seguridad/verDatosInv.html?ID=' + idInvitado;
-         window.location.href = nuevaURL;
-    }
-
-        </script>
+        }
+    </script>
 </body>
+
 </html>
