@@ -135,6 +135,7 @@ app.get('/seguridad/logout', seguridad.logout);
 app.use('/seguridad/visualizarAgenda.html', express.static('./public/visualizarAgenda.html'));
 app.get('/seguridad/getAgendas', seguridad.getReunionesAll);
 app.get('/seguridad/getAgendaID/:id', seguridad.getReunionByIdAll);
+app.get('/seguridad/getInvitadoById/:id', seguridad.getInvitadoById);
 app.use('/seguridad/verDatosInv.html', express.static('./public/verDatosInv.html'));
 app.get('/seguridad/test', (req, res) => {
   console.log('test');
