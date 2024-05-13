@@ -12,6 +12,7 @@
     <table id="tablaReunion">
         <tr>
             <th></th>
+            <th>Datos del invitado</th> 
             <th>Nombre del invitado</th>
             <th>Hora de llegada</th>
             <th>Anfitrion</th>
@@ -44,9 +45,8 @@
                         const fila = document.createElement('tr');
                         console.log(reunion.id_inv);
                         fila.innerHTML = `
-                            <td>
-                                <button onclick="verDetallesInv(${reunion.id_inv})">Ver</button>
-                            </td>
+                            <td><button onclick="verDetallesReu(${reunion.id_inv})">Ver</button></td>
+                            <td><button onclick="VerDatosInvitado(${reunion.id_inv})">Ver Datos</button></td>
                             <td>${reunion.nombre_inv}</td>
                             <td>${fecha.getUTCHours()}:${fecha.getUTCMinutes()}</td>
                             <td>${reunion.nombre_user}</td>
@@ -57,7 +57,7 @@
                 .catch(error => console.error("Error al visualizar los datos:", error));
         }
 
-        function verDetallesInv(idInvitado) {
+        function verDetallesReu(idInvitado) {
             fetch(`/seguridad/getAgendaID/${idInvitado}`, {
                 method: "GET"
             })
@@ -65,7 +65,7 @@
                 .then(data => {
                     console.log(data);
                     document.getElementById('detallesReunion').innerHTML = `
-                    <h1>Detalles de la reunión</h1>
+                        <h1>Detalles de la reunión</h1>
                         <p>Id de la reunión: ${data.id_reunion}</p>
                         <p>Nombre del anfitrión: ${data.nombre_user} ${data.apellido_user}</p>
                         <p>Nombre de la sala: ${data.nombre_sala}</p>
@@ -73,6 +73,10 @@
                     `;
                 })
                 .catch(error => console.error('Error al obtener usuario:', error));
+        }
+        function VerDatosInvitado(idInvitado) {
+            const url = `verDatosInv.html?idInvitado=${idInvitado}`;    
+            window.open(url);
         }
     </script>
 </body>

@@ -310,6 +310,41 @@ async function getReunionByIdInvBD(id) {
     }
 }
 
+//ver datos invitado
+async function getInvitadoByIdBD(id) {
+    try {
+        const invitado = await prisma.invitado.findUnique({
+            where: { id_invitado: Number(id) },
+            include: {
+                Invitacion: {
+                    include: {
+                        Automovil: true,
+                        dispositivo_electronico: true,
+                        Acceso: true,
+                        reunion: {
+                            include: {
+                                usuario: true,
+                                sala: true
+                            }
+                        }
+                    }
+                },
+                
+                colado_invitado: true,
+                Colado: true
+            }
+        });
+       
+        return invitado;
+    } catch (error) {
+        console.error('Error al obtener el invitado:', error);
+        return null;
+    }
+}
+
+
+    
+
 
 module.exports = {
     getUsersByEmailBD,
