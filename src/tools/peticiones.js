@@ -3,14 +3,17 @@ const { json } = require('body-parser');
 const prisma = new PrismaClient();
 
 async function getUsersByEmailBD(email) {
-    console.log('peticion a la bd de getUsersByEmail');
+    console.log('peticion a la bd de getUsersByEmail param: email: ', email);
     try {
         const usuario = await prisma.usuario.findFirst({
             where: {
                 email_usuario: email,
             },
         });
-        return usuario;
+        console.log('respuesta de la bd: ', usuario);
+        
+            return usuario;
+        
     } catch (error) {
         console.error('Error al obtener usuario por email:', error);
         return null;
@@ -32,7 +35,7 @@ async function getUsersByIDBD(ID) {
     }
 }
 
-async function createUserBD({ email, hashedPassword, nombre, apellido_paterno, apellido_materno, telefono, rol, foto_usuario}) {
+async function createUserBD({ email, hashedPassword, nombre, apellido_paterno, apellido_materno, telefono, rol, foto_usuario }) {
     console.log('peticion a la bd de createUser');
 
     try {
@@ -55,6 +58,25 @@ async function createUserBD({ email, hashedPassword, nombre, apellido_paterno, a
         console.error('Error al crear usuario:', error);
         return 'Error interno del servidor';
     }
+}
+
+async function updateUserBD(id, email, hashedPassword) {
+    console.log('peticion a la bd de updateUser, param-> id: ', id, 'email: ', email, 'hashedPassword: ', hashedPassword);
+    try {
+        const usuarioActualizado = await prisma.usuario.update({
+            where: { id_usuario: Number(id) },
+            data: {
+                email_usuario: email,
+                password_usuario: hashedPassword,
+            },
+        });
+        console.log('respuesta de la bd: ', usuarioActualizado);
+        return usuarioActualizado;
+    }catch (error) {
+        console.error('Error al actualizar usuario:', error);
+        return json({ error: 'Error al actualizar usuario' });
+    }
+    
 }
 
 async function getSalasBD() {
@@ -168,10 +190,11 @@ async function setNewUsuarioBD(email, passwordHashed, nombre, apellidoPaterno, a
 
             }
         });
-        return nuevoUsuario;
+
+        return 'true';
     } catch (error) {
         console.error('Error al crear usuario:', error);
-        return json({ error: 'Error al crear usuario' });
+        return 'false';
     }
 }
 
@@ -180,6 +203,19 @@ async function getUsuarioByIdBD(id) {
     try {
         const usuario = await prisma.usuario.findUnique({
             where: { id_usuario: Number(id) }
+        });
+        return usuario;
+    } catch (error) {
+        console.error('Error al obtener usuario:', error);
+        return json({ error: 'Error al obtener usuario' });
+    }
+}
+
+async function getUsuarioByEmailBD(email) {
+    console.log('peticion a la bd de getUsuarioByEmail');
+    try {
+        const usuario = await prisma.usuario.findFirst({
+            where: { email_usuario: email }
         });
         return usuario;
     } catch (error) {
@@ -320,14 +356,18 @@ module.exports = {
     updateSalaBD,
     deleteSalaBD,
     getReunionesBD,
+    updateUserBD,
 
     getUsuariosBD,
     setNewUsuarioBD,
     getUsuarioByIdBD,
     updateUsuarioBD,
     deleteUsuarioBD,
+    getUsuarioByEmailBD,
+
     getReunionesBD,
     getReunionByIdBD,
+
     getInvitacionByIdBD,
     getInvitadoByIdBD,
     getInvitadoByNameBD,

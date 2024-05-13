@@ -1,5 +1,5 @@
 const { getSalasBD, setNewSalaBD, getSalaByIdBD, updateSalaBD, deleteSalaBD } = require('../tools/peticiones');
-const {getUsuariosBD, setNewUsuarioBD, getUsuarioByIdBD, updateUsuarioBD, deleteUsuarioBD } = require('../tools/peticiones');
+const { getUsuariosBD, setNewUsuarioBD, getUsuarioByIdBD, getUsuarioByEmailBD, updateUsuarioBD, deleteUsuarioBD } = require('../tools/peticiones');
 
 
 
@@ -21,7 +21,7 @@ async function getSalas(req, res) {
 async function setNewSala(req, res) {
     const { nombreSala, cupoMaximo, piso, numerito, estado } = req.body;
     console.log('nombreSala: ', nombreSala, 'cupoMaximo: ', cupoMaximo, 'piso: ', piso, 'numerito:', numerito, 'estado: ', estado);
-    const nuevaSala = await setNewSalaBD( nombreSala, cupoMaximo, piso, numerito, estado);
+    const nuevaSala = await setNewSalaBD(nombreSala, cupoMaximo, piso, numerito, estado);
     res.json(nuevaSala);
 }
 
@@ -59,10 +59,23 @@ async function getUsuarios(req, res) {
 }
 
 async function setNewUsuario(req, res) {
-    const { email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario } = req.body;
-    console.log('email: ', email, 'contrasena: ', contrasena, 'nombre: ', nombre, 'apellidoPaterno:', apellidoPaterno, 'apellidoMaterno: ', apellidoMaterno, 'telefono: ', telefono, 'idRol: ', idRol, 'foto_usuario: ', foto_usuario);
-    const nuevoUsuario = await setNewUsuarioBD(email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario);
-    res.json(nuevoUsuario);
+    console.log('=============================mensaje --> setNewUsuario');
+    const { email, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario } = req.body;
+    const contrasena = '123456';
+
+    const isEmailAlreadyRegistered = await getUsuarioByEmailBD(email);
+    if (isEmailAlreadyRegistered) {
+        console.log('El email yaaaa esta registrado');
+        res.status(200).json({ message: 'false' });
+    } else {
+        console.log('El email noo esta registrado');
+        console.log('email: ', email, 'contrasena: ', contrasena, 'nombre: ', nombre, 'apellidoPaterno:', apellidoPaterno, 'apellidoMaterno: ', apellidoMaterno, 'telefono: ', telefono, 'idRol: ', idRol, 'foto_usuario: ', foto_usuario);
+        const nuevoUsuario = await setNewUsuarioBD(email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario);
+        console.log('respuesta de la bd xd: ', nuevoUsuario);
+        res.status(200).json({ message: nuevoUsuario });
+    }
+
+
 }
 
 async function getUsuarioById(req, res) {

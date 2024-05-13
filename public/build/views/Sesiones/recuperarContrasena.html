@@ -41,10 +41,17 @@
 
     <script>
         function enviar(){
+            event.preventDefault();
             var email = document.getElementById('loginEmail').value;
+            console.log('param email', email);
             fetch('/home/recuperar', {
                 method: 'POST',
-                body: JSON.stringify({email: email})
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email,
+                })
             })
                 .then(response => response.json())
                 .then(data => {
@@ -52,7 +59,10 @@
                         alert('Error: ' + data.error);
                     } else {
                         console.log(data.message);
+                        console.log(data.id);
                         document.getElementById('op-enviada').style.display = 'block';
+
+                        window.location.href = '/home/recuperar2.html?id=' + data.id + '&email=' + email;
 
                     }
                 })

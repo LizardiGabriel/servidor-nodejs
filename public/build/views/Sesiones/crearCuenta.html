@@ -24,11 +24,11 @@
         </div>
         <div class="registerForm">
             <h1 class="registerForm__titulo">Crear Cuenta</h1>
-            <form class="form" novalidate>
+            <form class="form" novalidate action="/admin/catalogo/confirmarCuenta.html">
                 <div class="form__cargo-container">
                     <label class="form__puesto">Cargo*</label>
                     <div class="checkbox-wrapper-1">
-                        <input type="checkbox" id="cbx-1" class="inp-cbx" />
+                        <input type="checkbox" id="cbx-1" class="inp-cbx" name="rolSeguridad" />
                         <label for="cbx-1" class="cbx">
                             <span>
                             <svg viewBox="0 0 12 10" height="10px" width="12px">
@@ -38,7 +38,7 @@
                         </label>
                     </div>  
                     <div class="checkbox-wrapper-2">
-                        <input type="checkbox" id="cbx-2" class="inp-cbx" />
+                        <input type="checkbox" id="cbx-2" class="inp-cbx" name="rolAnfitrion" />
                         <label for="cbx-2" class="cbx">
                             <span>
                             <svg viewBox="0 0 12 10" height="10px" width="12px">
@@ -51,21 +51,21 @@
                 
                 <label class="registerForm__email">Correo Electrónico*</label>
                 <div class="inputForm">
-                    <input autocomplete="off" id="loginEmail" type="email" class="input" placeholder="rafaelc_203@beecoders.com">
+                    <input name="email" autocomplete="off" id="loginEmail" type="email" class="input" placeholder="rafaelc_203@beecoders.com">
                 </div>
                 <div id="emailForm"></div>
 
                 <label class="registerForm__email">Nombre*</label>
                 <div class="inputForm">
-                    <input type="text" class="input" placeholder="Rafael">
+                    <input name="nombre" type="text" class="input" placeholder="Rafael">
                 </div>
                 <label class="registerForm__email">Apellido Paterno*</label>
                 <div class="inputForm">
-                    <input type="text" class="input" placeholder="Cabañas">
+                    <input name="apellidoPaterno" type="text" class="input" placeholder="Cabañas">
                 </div>
                 <label class="registerForm__email">Apellido Materno*</label>
                 <div class="inputForm">
-                    <input type="text" class="input" placeholder="Rocha">
+                    <input name="apellidoMaterno" type="text" class="input" placeholder="Rocha">
                 </div>
                 
                 <div class="nota-password">
@@ -73,11 +73,67 @@
                 </div>
                 
                 <div class="button-container">
-                    <input type="submit" class="button-submit1" value="Crear Cuenta" onclick="return confirmacion()">
+                    <input type="submit" class="button-submit1" value="Crear Cuenta" onclick="crearCuenta()">
                     <button class="button-submit2">Cancelar</button>
                 </div>
+            </form>
         </div>
     </main>
     <script src="../../js/validaciones.js"></script>
+    <!--<script>
+        async function crearCuenta(){
+            // evitar que se envíe el formulario
+            event.preventDefault();
+
+            const email = document.getElementById('loginEmail').value;
+            const nombre = document.getElementsByName('nombre')[0].value;
+            const apellidoPaterno = document.getElementsByName('apellidoPaterno')[0].value;
+            const apellidoMaterno = document.getElementsByName('apellidoMaterno')[0].value;
+            const rolSeguridad = document.getElementsByName('rolSeguridad')[0].checked;
+            const rolAnfitrion = document.getElementsByName('rolAnfitrion')[0].checked;
+
+            const idRol = rolSeguridad ? 'Seguridad' : rolAnfitrion ? 'Anfitrion' : null;
+            const foto_usuario = 'prueba.jpg';
+            const telefono = '1234567890';
+
+
+            fetch('/admin/catalogo/usuarios', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email,
+                    nombre,
+                    apellidoPaterno,
+                    apellidoMaterno,
+                    telefono,
+                    idRol,
+                    foto_usuario
+                })
+            })
+            .then(response => {
+                console.log('Respuesta:');
+                console.log(response);
+                if (response.ok) {
+                    response.json().then(data => {
+                        console.log('Usuario creado con éxito:', data.message);
+                        if (data.message === 'true') {
+                            alert("Cuenta creada con exito")
+                            window.location.href = '/admin/catalogo/confirmarCuenta.html';
+                        }else{
+                            alert("Error al crear cuenta")
+                        }
+                    });
+                } else {
+                    console.log('Error al crear usuario:', response.statusText);
+                }
+            })
+            .catch(error => console.error('Error al crear usuario:', error));
+
+
+        }
+    </script>
+-->
 </body>
 </html>

@@ -45,32 +45,30 @@ app.use(errorHandler());
 
 app.get('/prueba.ico', (req, res) => {
   console.log('---> peticion de favicon.ico');
-  res.sendFile(path.join(__dirname, '../public/favicon.ico'));
+  res.status(200).sendFile(path.join(__dirname, '../public/favicon.ico'));
 });
 
 app.get('/css/app.css', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/build/css/app.css'));
+  res.status(200).sendFile(path.join(__dirname, '../public/build/css/app.css'));
 });
 
 app.get('/img/BeeMeet2.png', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/build/img/BeeMeet2.png'));
+  res.status(200).sendFile(path.join(__dirname, '../public/build/img/BeeMeet2.png'));
 });
 app.get('/js/validaciones.js', (req, res) => {
-
-  res.sendFile(path.join(__dirname, '../public/build/js/validaciones.js'));
+  res.status(200).sendFile(path.join(__dirname, '../public/build/js/validaciones.js'));
 });
 
 app.get('/js/ventanas-modales.js', (req, res) => {
-
-  res.sendFile(path.join(__dirname, '../public/build/js/ventanas-modales.js'));
+  res.status(200).sendFile(path.join(__dirname, '../public/build/js/ventanas-modales.js'));
 });
 
 app.get('/img/BeeMeet.png', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/build/img/BeeMeet.png'));
+  res.status(200).sendFile(path.join(__dirname, '../public/build/img/BeeMeet.png'));
 });
 
 app.get('/css/app.css.map', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/build/css/app.css.map'));
+  res.status(200).sendFile(path.join(__dirname, '../public/build/css/app.css.map'));
 });
 
 
@@ -78,12 +76,13 @@ app.use('/', express.static('./public'));
 app.post('/home/login', home.login);
 app.get('/home/signup', home.signup);
 app.post('/home/recuperar', home.recuperar);
+app.post('/home/cambiar', home.cambiar);
 
 app.use('/home/login.html', express.static('./public/build/views/Sesiones/iniciarSesion.html'));
 app.use('/home/signup.html', express.static('./public/signup.html'));
 app.use('/home/recuperar.html', express.static('./public/build/views/Sesiones/recuperarContrasena.html'));
 
-
+app.use('/home/recuperar2.html', express.static('./public/build/views/Sesiones/cambiarContrasena.html'));
 
 app.get('/catalogo/reuniones', reuniones.getReuniones);
 
@@ -120,6 +119,11 @@ app.post('/admin/catalogo/usuarios', admin.setNewUsuario);
 app.get('/admin/catalogo/usuarios/:id', admin.getUsuarioById);
 app.put('/admin/catalogo/usuarios/:id', admin.updateUsuario);
 app.delete('/admin/catalogo/usuarios/:id', admin.deleteUsuario);
+
+
+app.use('/admin/catalogo/crearCuenta.html', express.static('./public/build/views/Sesiones/crearCuenta.html'));
+app.use('/admin/catalogo/confirmarCuenta.html', express.static('./public/build/views/Sesiones/confirmarCrearCuenta.html'));
+
 
 
 app.get('/admin/test', (req, res) => {

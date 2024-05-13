@@ -1,4 +1,4 @@
-const {getUsersByEmailBD, createUserBD} = require('../tools/peticiones');
+const {getUsersByEmailBD, createUserBD, updateUserBD} = require('../tools/peticiones');
 const { hashPassword, comparePassword } = require('../tools/cipher');
 const { json } = require('body-parser');
 
@@ -77,14 +77,29 @@ async function signup(req, res) {
 
 async function recuperar(req, res) {
     try {
+        console.log(req.body);
         const email = req.body.email;
+        console.log('peticion contorlador, param: email: ' + email);
         const usuario = await getUsersByEmailBD(email);
-        if (!usuario) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
+        if (usuario === null) {
+            return res.status(404).json({ error: 'notFound' });
         }
-        res.status(200).json({ message: 'Usuario encontrado' });
+        res.status(200).json({ message: 'Usuario encontrado', id: usuario.id_usuario});
     } catch (error) {
         console.error('Error en recuperar:', error);
+    }
+}
+
+async function cambiar(req, res) {
+    try {
+        const { id, email, password } = req.body;
+        console.log('peticion contorlador, param: id: ' + id + ' email: ' + email + ' contrasena: ' + password);
+        const hashedPassword = await hashPassword(password);
+        const usuario = await updateUserBD(id, email, hashedPassword);
+        res.status(200).json({ message: 'Contraseña actualizada efectivamente' });
+    }
+    catch (error) {
+        console.error('Error en cambiar:', error);
     }
 }
 
@@ -92,4 +107,5 @@ module.exports = {
     login,
     signup,
     recuperar,
+    cambiar
 };
