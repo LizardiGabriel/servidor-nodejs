@@ -145,6 +145,18 @@ app.use('/anfitrion', (req, res, next) => {
 );
 app.use('/anfitrion/anfitrion.html', express.static('./public/anfitrion.html'));
 app.get('/anfitrion/logout', anfitrion.logout);
+app.use('/anfitrion/reuniones.html', express.static('./public/reunionesAnf.html'));
+app.use('/anfitrion/salas.html', express.static('./public/salasAnf.html'));
+app.use('/anfitrion/cuenta.html', express.static('./public/cuentaAnf.html'));
+
+app.get('/anfitrion/reuniones', anfitrion.getReunionesAnfitrion);
+app.get('/anfitrion/salas', anfitrion.getSalasAnfitrion);
+app.post('/anfitrion/reuniones', anfitrion.setNewReunion);
+
+app.get('/anfitrion/crearInvitacion.html/:idReunion', anfitrion.crearInvitacion);
+
+
+
 app.get('/anfitrion/test', (req, res) => {
   console.log('test');
   console.log(req.session);

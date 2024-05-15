@@ -10,10 +10,10 @@ async function getUsersByEmailBD(email) {
                 email_usuario: email,
             },
         });
-        console.log('respuesta de la bd: ', usuario);
-        
-            return usuario;
-        
+        //console.log('respuesta de la bd: ', usuario);
+
+        return usuario;
+
     } catch (error) {
         console.error('Error al obtener usuario por email:', error);
         return null;
@@ -70,20 +70,20 @@ async function updateUserBD(id, email, hashedPassword) {
                 password_usuario: hashedPassword,
             },
         });
-        console.log('respuesta de la bd: ', usuarioActualizado);
+        //console.log('respuesta de la bd: ', usuarioActualizado);
         return usuarioActualizado;
-    }catch (error) {
+    } catch (error) {
         console.error('Error al actualizar usuario:', error);
         return json({ error: 'Error al actualizar usuario' });
     }
-    
+
 }
 
 async function getSalasBD() {
     console.log('peticion a la bd de getSalas');
     try {
         const salas = await prisma.sala.findMany();
-        console.log('respuesta en json: ', salas);
+        //console.log('respuesta en json: ', salas);
         return salas;
     } catch (error) {
         console.error('Error al obtener salas:', error);
@@ -346,6 +346,109 @@ async function getReunionByIdInvBD(id) {
     }
 }
 
+async function getReunionesConRepeticionByIdOfUserBD(id_usuario) {
+    console.log('peticion a la bd de getSalasConRepeticionByIdOfUser');
+    try {
+
+        const reuniones = await prisma.reunion.findMany({
+            where: { id_usuario: Number(id_usuario) }
+        });
+
+
+        for (let i = 0; i < reuniones.length; i++) {
+            const numRepeticion = await prisma.repeticion.count({
+                where: { id_reunion: reuniones[i].id_reunion }
+            });
+
+            reuniones[i].numRepeticion = numRepeticion;
+        }
+
+        //tambien añadir el numero de invitados
+
+        // añadir las fechas de repeticion
+
+        for (let i = 0; i < reuniones.length; i++) {
+            const repeticiones = await prisma.repeticion.findMany({
+                where: { id_reunion: reuniones[i].id_reunion }
+            });
+            var fechasRep = [];
+            for (let j = 0; j < repeticiones.length; j++) {
+                const fechasRep2 = {
+                    id_repeticion: repeticiones[j].id_repeticion,
+                    fecha_repeticion: repeticiones[j].fecha_repeticion,
+                    estatus_repeticion: repeticiones[j].estatus_repeticion
+                };
+                fechasRep.push(fechasRep2);
+            }
+            reuniones[i].fechasRepeticion = fechasRep;
+        }
+
+        //console.log('respuesta en json bd: ', reuniones);
+
+        return reuniones;
+
+    } catch (error) {
+        console.error('Error al obtener las salas con repeticion:', error);
+        return json({ error: 'Error al obtener las salas con repeticion' });
+    }
+}
+
+async function setNewReunionBD(
+    titulo_reunion, descripcion_reunion, fecha_reunion, hora_inicio_reunion,
+    hora_fin_reunion, isRepetible, nombreSala, fechasRepetir, id_usuario) {
+    console.log('peticion a la bd de setNewReunion');
+    /*
+    titulo, desc1, 2024-05-30, 00:01, 14:02, true, 5, [ '2024-05-31', '2024-05-28' ]
+    */
+    try {
+        const nuevaReunion = await prisma.reunion.create({
+            data: {
+                // id_usuario, id_sala, titulo_reunion, descripcion_reunion
+                id_usuario: id_usuario,
+                id_sala: Number(nombreSala),
+                titulo_reunion: titulo_reunion,
+                descripcion_reunion: descripcion_reunion
+            }
+        });
+
+        await prisma.repeticion.create({
+            data: {
+                // id_reunion, subtema_repeticion, descripcion_repeticion, fecha_repeticion, 
+                // hora_inicio_repeticion, hora_fin_repeticion, estatus_repeticion
+                id_reunion: nuevaReunion.id_reunion,
+                fecha_repeticion: fecha_reunion,
+                hora_inicio_repeticion: hora_inicio_reunion,
+                hora_fin_repeticion: hora_fin_reunion,
+                estatus_repeticion: 'Pendiente'
+
+            }
+        });
+
+        if (isRepetible) {
+            for (let i = 0; i < fechasRepetir.length; i++) {
+                await prisma.repeticion.create({
+                    data: {
+                        // id_reunion, subtema_repeticion, descripcion_repeticion, fecha_repeticion, 
+                        // hora_inicio_repeticion, hora_fin_repeticion, estatus_repeticion
+                        id_reunion: nuevaReunion.id_reunion,
+                        fecha_repeticion: fechasRepetir[i],
+                        hora_inicio_repeticion: hora_inicio_reunion,
+                        hora_fin_repeticion: hora_fin_reunion,
+                        estatus_repeticion: 'Pendiente'
+
+                    }
+                });
+            }
+        }
+
+        return 'true';
+    } catch (error) {
+        console.error('Error al crear reunion:', error);
+        return 'false';
+    }
+
+}
+
 
 module.exports = {
     getUsersByEmailBD,
@@ -372,5 +475,9 @@ module.exports = {
     getInvitadoByIdBD,
     getInvitadoByNameBD,
     getInvitacionesByIdInv,
-    getReunionByIdInvBD
+    getReunionByIdInvBD,
+
+
+    getReunionesConRepeticionByIdOfUserBD,
+    setNewReunionBD
 };

@@ -55,8 +55,8 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.error) {
-                        alert('Error: ' + data.error);
+                    if (data.status == 404) {
+                        alert('Error user not found: ' + data.error);
                     } else {
                         console.log(data.message);
                         console.log(data.id);
