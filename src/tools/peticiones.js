@@ -398,6 +398,7 @@ async function getReunionesConRepeticionByIdOfUserBD(id_usuario) {
                 console.log('invitado email: ', invitadito.email_invitado)
 
                 const nombreInvColados = {
+                    id_invitado: invitacionesReunion[j].id_invitado,
                     numero_colados: invitacionesReunion[j].numero_colados,
                     correo_invitado: invitadito.email_invitado
                 };
