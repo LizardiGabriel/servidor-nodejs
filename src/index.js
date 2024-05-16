@@ -45,44 +45,20 @@ app.use(errorHandler());
 
 app.get('/prueba.ico', (req, res) => {
   console.log('---> peticion de favicon.ico');
-  res.status(200).sendFile(path.join(__dirname, '../public/favicon.ico'));
+  res.sendFile(path.join(__dirname, '../public/favicon.ico'));
 });
 
-app.get('/css/app.css', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../public/build/css/app.css'));
-});
-
-app.get('/img/BeeMeet2.png', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../public/build/img/BeeMeet2.png'));
-});
-app.get('/js/validaciones.js', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../public/build/js/validaciones.js'));
-});
-
-app.get('/js/ventanas-modales.js', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../public/build/js/ventanas-modales.js'));
-});
-
-app.get('/img/BeeMeet.png', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../public/build/img/BeeMeet.png'));
-});
-
-app.get('/css/app.css.map', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../public/build/css/app.css.map'));
-});
 
 
 app.use('/', express.static('./public'));
 app.post('/home/login', home.login);
 app.get('/home/signup', home.signup);
 app.post('/home/recuperar', home.recuperar);
-app.post('/home/cambiar', home.cambiar);
-
-app.use('/home/login.html', express.static('./public/build/views/Sesiones/iniciarSesion.html'));
+app.use('/home/login.html', express.static('./public/login.html'));
 app.use('/home/signup.html', express.static('./public/signup.html'));
-app.use('/home/recuperar.html', express.static('./public/build/views/Sesiones/recuperarContrasena.html'));
+app.use('/home/recuperar.html', express.static('./public/recuperar.html'));
 
-app.use('/home/recuperar2.html', express.static('./public/build/views/Sesiones/cambiarContrasena.html'));
+
 
 app.get('/catalogo/reuniones', reuniones.getReuniones);
 
@@ -121,11 +97,6 @@ app.put('/admin/catalogo/usuarios/:id', admin.updateUsuario);
 app.delete('/admin/catalogo/usuarios/:id', admin.deleteUsuario);
 
 
-app.use('/admin/catalogo/crearCuenta.html', express.static('./public/build/views/Sesiones/crearCuenta.html'));
-app.use('/admin/catalogo/confirmarCuenta.html', express.static('./public/build/views/Sesiones/confirmarCrearCuenta.html'));
-
-
-
 app.get('/admin/test', (req, res) => {
   console.log('test');
   console.log(req.session);
@@ -145,18 +116,6 @@ app.use('/anfitrion', (req, res, next) => {
 );
 app.use('/anfitrion/anfitrion.html', express.static('./public/anfitrion.html'));
 app.get('/anfitrion/logout', anfitrion.logout);
-app.use('/anfitrion/reuniones.html', express.static('./public/reunionesAnf.html'));
-app.use('/anfitrion/salas.html', express.static('./public/salasAnf.html'));
-app.use('/anfitrion/cuenta.html', express.static('./public/cuentaAnf.html'));
-
-app.get('/anfitrion/reuniones', anfitrion.getReunionesAnfitrion);
-app.get('/anfitrion/salas', anfitrion.getSalasAnfitrion);
-app.post('/anfitrion/reuniones', anfitrion.setNewReunion);
-app.post('/anfitrion/reuniones/invitacion', anfitrion.setInvitacion);
-
-
-
-
 app.get('/anfitrion/test', (req, res) => {
   console.log('test');
   console.log(req.session);
@@ -176,6 +135,7 @@ app.get('/seguridad/logout', seguridad.logout);
 app.use('/seguridad/visualizarAgenda.html', express.static('./public/visualizarAgenda.html'));
 app.get('/seguridad/getAgendas', seguridad.getReunionesAll);
 app.get('/seguridad/getAgendaID/:id', seguridad.getReunionByIdAll);
+app.get('/seguridad/getInvitadoById/:id', seguridad.getInvitadoById);
 app.use('/seguridad/verDatosInv.html', express.static('./public/verDatosInv.html'));
 app.get('/seguridad/test', (req, res) => {
   console.log('test');

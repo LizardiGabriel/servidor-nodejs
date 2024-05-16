@@ -3,17 +3,14 @@ const { json } = require('body-parser');
 const prisma = new PrismaClient();
 
 async function getUsersByEmailBD(email) {
-    console.log('peticion a la bd de getUsersByEmail param: email: ', email);
+    console.log('peticion a la bd de getUsersByEmail');
     try {
         const usuario = await prisma.usuario.findFirst({
             where: {
                 email_usuario: email,
             },
         });
-        //console.log('respuesta de la bd: ', usuario);
-
         return usuario;
-
     } catch (error) {
         console.error('Error al obtener usuario por email:', error);
         return null;
@@ -35,7 +32,7 @@ async function getUsersByIDBD(ID) {
     }
 }
 
-async function createUserBD({ email, hashedPassword, nombre, apellido_paterno, apellido_materno, telefono, rol, foto_usuario }) {
+async function createUserBD({ email, hashedPassword, nombre, apellido_paterno, apellido_materno, telefono, rol, foto_usuario}) {
     console.log('peticion a la bd de createUser');
 
     try {
@@ -60,30 +57,11 @@ async function createUserBD({ email, hashedPassword, nombre, apellido_paterno, a
     }
 }
 
-async function updateUserBD(id, email, hashedPassword) {
-    console.log('peticion a la bd de updateUser, param-> id: ', id, 'email: ', email, 'hashedPassword: ', hashedPassword);
-    try {
-        const usuarioActualizado = await prisma.usuario.update({
-            where: { id_usuario: Number(id) },
-            data: {
-                email_usuario: email,
-                password_usuario: hashedPassword,
-            },
-        });
-        //console.log('respuesta de la bd: ', usuarioActualizado);
-        return usuarioActualizado;
-    } catch (error) {
-        console.error('Error al actualizar usuario:', error);
-        return json({ error: 'Error al actualizar usuario' });
-    }
-
-}
-
 async function getSalasBD() {
     console.log('peticion a la bd de getSalas');
     try {
         const salas = await prisma.sala.findMany();
-        //console.log('respuesta en json: ', salas);
+        console.log('respuesta en json: ', salas);
         return salas;
     } catch (error) {
         console.error('Error al obtener salas:', error);
@@ -190,11 +168,10 @@ async function setNewUsuarioBD(email, passwordHashed, nombre, apellidoPaterno, a
 
             }
         });
-
-        return 'true';
+        return nuevoUsuario;
     } catch (error) {
         console.error('Error al crear usuario:', error);
-        return 'false';
+        return json({ error: 'Error al crear usuario' });
     }
 }
 
@@ -203,19 +180,6 @@ async function getUsuarioByIdBD(id) {
     try {
         const usuario = await prisma.usuario.findUnique({
             where: { id_usuario: Number(id) }
-        });
-        return usuario;
-    } catch (error) {
-        console.error('Error al obtener usuario:', error);
-        return json({ error: 'Error al obtener usuario' });
-    }
-}
-
-async function getUsuarioByEmailBD(email) {
-    console.log('peticion a la bd de getUsuarioByEmail');
-    try {
-        const usuario = await prisma.usuario.findFirst({
-            where: { email_usuario: email }
         });
         return usuario;
     } catch (error) {
@@ -346,194 +310,40 @@ async function getReunionByIdInvBD(id) {
     }
 }
 
-async function getReunionesConRepeticionByIdOfUserBD(id_usuario) {
-    console.log('peticion a la bd de getSalasConRepeticionByIdOfUser');
+//ver datos invitado
+async function getInvitadoByIdBD(id) {
     try {
-
-        const reuniones = await prisma.reunion.findMany({
-            where: { id_usuario: Number(id_usuario) }
-        });
-
-
-        for (let i = 0; i < reuniones.length; i++) {
-            const numRepeticion = await prisma.repeticion.count({
-                where: { id_reunion: reuniones[i].id_reunion }
-            });
-
-            reuniones[i].numRepeticion = numRepeticion;
-        }
-
-        //tambien añadir el numero de invitados
-
-        // añadir las fechas de repeticion
-
-        for (let i = 0; i < reuniones.length; i++) {
-            const repeticiones = await prisma.repeticion.findMany({
-                where: { id_reunion: reuniones[i].id_reunion }
-            });
-            var fechasRep = [];
-            for (let j = 0; j < repeticiones.length; j++) {
-                const fechasRep2 = {
-                    id_repeticion: repeticiones[j].id_repeticion,
-                    fecha_repeticion: repeticiones[j].fecha_repeticion,
-                    estatus_repeticion: repeticiones[j].estatus_repeticion,
-                    hora_inicio_repeticion: repeticiones[j].hora_inicio_repeticion,
-                    hora_fin_repeticion: repeticiones[j].hora_fin_repeticion
-                };
-                fechasRep.push(fechasRep2);
-            }
-            reuniones[i].fechasRepeticion = fechasRep;
-        }
-
-
-        for(let i = 0; i < reuniones.length; i++){
-            const invitacionesReunion = await prisma.invitacion.findMany({
-                where: { id_reunion: reuniones[i].id_reunion }
-            });
-            
-            var infoInvitados = [];
-            for(let j = 0; j < invitacionesReunion.length; j++){
-
-                const invitadito = await getInvitadoByIdBD(invitacionesReunion[j].id_invitado);
-                console.log('invitado email: ', invitadito.email_invitado)
-
-                const nombreInvColados = {
-                    numero_colados: invitacionesReunion[j].numero_colados,
-                    correo_invitado: invitadito.email_invitado
-                };
-                infoInvitados.push(nombreInvColados);
-            }
-            reuniones[i].infoInvitados = infoInvitados;
-
-        }
-        
-
-        console.log('=============================>>>>>>>>>>>> respuesta en json bd: ', reuniones);
-
-        return reuniones;
-
-    } catch (error) {
-        console.error('Error al obtener las salas con repeticion:', error);
-        return json({ error: 'Error al obtener las salas con repeticion' });
-    }
-}
-
-async function setNewReunionBD(
-    titulo_reunion, descripcion_reunion, fecha_reunion, hora_inicio_reunion,
-    hora_fin_reunion, isRepetible, nombreSala, fechasRepetir, id_usuario) {
-    console.log('peticion a la bd de setNewReunion');
-    /*
-    titulo, desc1, 2024-05-30, 00:01, 14:02, true, 5, [ '2024-05-31', '2024-05-28' ]
-    */
-    try {
-        const nuevaReunion = await prisma.reunion.create({
-            data: {
-                // id_usuario, id_sala, titulo_reunion, descripcion_reunion
-                id_usuario: id_usuario,
-                id_sala: Number(nombreSala),
-                titulo_reunion: titulo_reunion,
-                descripcion_reunion: descripcion_reunion
-            }
-        });
-
-        await prisma.repeticion.create({
-            data: {
-                // id_reunion, subtema_repeticion, descripcion_repeticion, fecha_repeticion, 
-                // hora_inicio_repeticion, hora_fin_repeticion, estatus_repeticion
-                id_reunion: nuevaReunion.id_reunion,
-                fecha_repeticion: fecha_reunion,
-                hora_inicio_repeticion: hora_inicio_reunion,
-                hora_fin_repeticion: hora_fin_reunion,
-                estatus_repeticion: 'Pendiente'
-
-            }
-        });
-
-        if (isRepetible) {
-            for (let i = 0; i < fechasRepetir.length; i++) {
-                await prisma.repeticion.create({
-                    data: {
-                        // id_reunion, subtema_repeticion, descripcion_repeticion, fecha_repeticion, 
-                        // hora_inicio_repeticion, hora_fin_repeticion, estatus_repeticion
-                        id_reunion: nuevaReunion.id_reunion,
-                        fecha_repeticion: fechasRepetir[i],
-                        hora_inicio_repeticion: hora_inicio_reunion,
-                        hora_fin_repeticion: hora_fin_reunion,
-                        estatus_repeticion: 'Pendiente'
-
+        const invitado = await prisma.invitado.findUnique({
+            where: { id_invitado: Number(id) },
+            include: {
+                Invitacion: {
+                    include: {
+                        Automovil: true,
+                        dispositivo_electronico: true,
+                        Acceso: true,
+                        reunion: {
+                            include: {
+                                usuario: true,
+                                sala: true
+                            }
+                        }
                     }
-                });
+                },
+                
+                colado_invitado: true,
+                Colado: true
             }
-        }
-
-        return 'true';
-    } catch (error) {
-        console.error('Error al crear reunion:', error);
-        return 'false';
-    }
-
-}
-
-async function getInvitadoByEmailBD(email) {
-    console.log('peticion a la bd de getInvitadoByEmail');
-    try {
-        const invitado = await prisma.invitado.findFirst({
-            where: { email_invitado: email }
         });
+       
         return invitado;
     } catch (error) {
-        console.error('Error al obtener invitado:', error);
-        return null;
-    }
-
-}
-async function setNewInvitadoBD(email) {
-    console.log('peticion a la bd de setNewInvitado');
-    try {
-        const nuevoInvitado = await prisma.invitado.create({
-            data: {
-                email_invitado: email,
-                nombre_invitado: "",
-                apellido_paterno_invitado: "",
-                apellido_materno_invitado: "",
-                password_invitado: "",
-                telefono_invitado: 0,
-                empresa_invitado: "",
-                foto_invitado: "",
-                identificacion_invitado: "",
-                es_colado_invitado: 1,
-                habilitado: 1
-
-            }
-        });
-        return nuevoInvitado;
-    } catch (error) {
-        console.error('Error al crear invitado:', error);
-        return null;
-    }
-
-
-}
-
-async function setNewInvitacionBD(idReunion, id_invitado, acompanantesInv) {
-    console.log('peticion a la bd de setNewInvitacion');
-    console.log('idReunion: ', idReunion, 'id_invitado: ', id_invitado);
-    try {
-        const nuevaInvitacion = await prisma.invitacion.create({
-            data: {
-                id_reunion: idReunion,
-                id_invitado: id_invitado,
-                habilitado: "No",
-                qr_acceso: "",
-                numero_colados: Number(acompanantesInv)
-            }
-        });
-        return nuevaInvitacion;
-    } catch (error) {
-        console.error('Error al crear invitacion:', error);
+        console.error('Error al obtener el invitado:', error);
         return null;
     }
 }
+
+
+    
 
 
 module.exports = {
@@ -545,30 +355,17 @@ module.exports = {
     updateSalaBD,
     deleteSalaBD,
     getReunionesBD,
-    updateUserBD,
 
     getUsuariosBD,
     setNewUsuarioBD,
     getUsuarioByIdBD,
     updateUsuarioBD,
     deleteUsuarioBD,
-    getUsuarioByEmailBD,
-
     getReunionesBD,
     getReunionByIdBD,
-
     getInvitacionByIdBD,
     getInvitadoByIdBD,
     getInvitadoByNameBD,
     getInvitacionesByIdInv,
-    getReunionByIdInvBD,
-
-
-    getReunionesConRepeticionByIdOfUserBD,
-    setNewReunionBD,
-
-    getInvitadoByEmailBD,
-    setNewInvitadoBD,
-
-    setNewInvitacionBD
+    getReunionByIdInvBD
 };
