@@ -445,6 +445,11 @@ async function getInvitadoByEmailBD(email) {
         const invitado = await prisma.invitado.findFirst({
             where: { email_invitado: email }
         });
+    } catch (error) {
+        console.error('Error al obtener invitado por email:', error);
+        return null;
+    }   
+}
 //ver datos invitado
 async function getInvitadoByIdBD(id) {
     try {
