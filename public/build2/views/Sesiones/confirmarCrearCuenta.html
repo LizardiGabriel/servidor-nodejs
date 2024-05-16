@@ -23,17 +23,17 @@
             <form class="form">
                 <label class="confirmarForm__puesto">Puesto*</label>
                 <div class="inputForm">
-                    <input disabled type="text" class="input" value="Seguridad del Edificio">
+                    <input id="puesto" disabled type="text" class="input" value="Seguridad del Edificio">
                 </div>
                 
                 <label class="confirmarForm__email">Correo electrónico*</label>
                 <div class="inputForm">
-                    <input disabled type="email" class="input" value="rafaelc_203@beecoders.com" >
+                    <input disabled id="email" type="email" class="input" value="rafaelc_203@beecoders.com" >
                 </div>
 
                 <label class="confirmarForm__nombre">Nombre*</label>
                 <div class="inputForm">
-                    <input disabled type="text" class="input" value="Rafael Cabañas Rocha">
+                    <input disabled id="name" type="text" class="input" value="Rafael Cabañas Rocha">
                 </div>
 
                 <label class="confirmarForm__password">Contraseña*</label>
@@ -43,12 +43,98 @@
                 </div>
 
                 <div class="button-container">
-                    <input type="button" id = "btnConfirmarCuenta" class="button-submit" value="Confirmar Cuenta" required>
+                    <input type="button" id = "btnConfirmarCuenta" class="button-submit" value="Confirmar Cuenta" onclick="enviarDatos()" required>
                 </div>
             </form>
         </div>
     </main class="confirmarCuenta">
-    
+    <script>
+
+        var url = 'a';
+        var urlParams = 'a';
+        var rolSeguridad = 'a';
+        var rolAnfitrion = 'a';
+        var idRol = 'a';
+        var email = 'a';
+        var nombre = 'a';
+        var apellidoPaterno = 'a';
+        var apellidoMaterno = 'a';
+        var foto_usuario = 'a';
+        var telefono = 'a';
+
+        
+        window.onload = function () {
+            cargarInfoDelUrl();
+        }
+        async function cargarInfoDelUrl() {
+            url = window.location.href;
+             urlParams = new URLSearchParams(window.location.search);
+
+             rolSeguridad = urlParams.get('rolSeguridad');
+             rolAnfitrion = urlParams.get('rolAnfitrion');
+
+             idRol = 'a';
+
+            if (rolSeguridad == 'on') {
+                idRol = 'Seguridad';
+            } else {
+                idRol = 'Anfitrion';
+            }
+
+             email = urlParams.get('email');
+             nombre = urlParams.get('nombre');
+             apellidoPaterno = urlParams.get('apellidoPaterno');
+             apellidoMaterno = urlParams.get('apellidoMaterno');
+
+
+             foto_usuario = 'prueba.jpg';
+             telefono = '1234567890';
+
+            document.getElementById('puesto').value = idRol;
+            document.getElementById('email').value = email;
+            document.getElementById('name').value = nombre + ' ' + apellidoPaterno + ' ' + apellidoMaterno;
+            
+        }
+        async function enviarDatos() {
+            fetch('/admin/catalogo/usuarios', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email,
+                    nombre,
+                    apellidoPaterno,
+                    apellidoMaterno,
+                    telefono,
+                    idRol,
+                    foto_usuario
+                })
+            })
+            .then(response => {
+                console.log('Respuesta:');
+                console.log(response);
+                if (response.ok) {
+                    response.json().then(data => {
+                        console.log('Usuario creado con éxito:', data.message);
+                        if (data.message === 'true') {
+                            alert("Cuenta creada con exito")
+                            window.location.href = '/admin.html';
+                        }else{
+                            alert("Error al crear cuenta")
+                        }
+                    });
+                } else {
+                    console.log('Error al crear usuario:', response.statusText);
+                }
+            })
+            .catch(error => console.error('Error al crear usuario:', error));
+        }
+
+
+
+
+    </script>
     <!--Ventana emergente-->
     <div id="cuenta-exito" class="ventanas__close Operacion">
         <p class="Operacion__titulo">Cuenta creada con éxito</p>

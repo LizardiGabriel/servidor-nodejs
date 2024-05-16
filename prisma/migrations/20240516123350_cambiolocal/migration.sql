@@ -32,10 +32,21 @@ CREATE TABLE `Reunion` (
     `id_usuario` INTEGER NOT NULL,
     `id_sala` INTEGER NOT NULL,
     `titulo_reunion` VARCHAR(191) NOT NULL,
-    `fecha_reunion` DATETIME(3) NOT NULL,
     `descripcion_reunion` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id_reunion`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Repeticion` (
+    `id_repeticion` INTEGER NOT NULL AUTO_INCREMENT,
+    `id_reunion` INTEGER NOT NULL,
+    `fecha_repeticion` VARCHAR(191) NOT NULL,
+    `hora_inicio_repeticion` VARCHAR(191) NOT NULL,
+    `hora_fin_repeticion` VARCHAR(191) NOT NULL,
+    `estatus_repeticion` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id_repeticion`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -64,6 +75,7 @@ CREATE TABLE `Invitacion` (
     `id_invitado` INTEGER NOT NULL,
     `qr_acceso` VARCHAR(191) NOT NULL,
     `habilitado` ENUM('Si', 'No') NOT NULL,
+    `numero_colados` INTEGER NOT NULL,
 
     PRIMARY KEY (`id_invitacion`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -74,8 +86,8 @@ CREATE TABLE `Acceso` (
     `id_invitacion` INTEGER NOT NULL,
     `id_reunion` INTEGER NOT NULL,
     `nota_acceso` VARCHAR(191) NOT NULL,
-    `hora_entrada_acceso` DATETIME(3) NOT NULL,
-    `hora_salida_acceso` DATETIME(3) NOT NULL,
+    `hora_entrada_acceso` VARCHAR(191) NOT NULL,
+    `hora_salida_acceso` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id_acceso`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -147,6 +159,9 @@ ALTER TABLE `Reunion` ADD CONSTRAINT `Reunion_id_usuario_fkey` FOREIGN KEY (`id_
 
 -- AddForeignKey
 ALTER TABLE `Reunion` ADD CONSTRAINT `Reunion_id_sala_fkey` FOREIGN KEY (`id_sala`) REFERENCES `Sala`(`id_sala`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Repeticion` ADD CONSTRAINT `Repeticion_id_reunion_fkey` FOREIGN KEY (`id_reunion`) REFERENCES `Reunion`(`id_reunion`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Invitacion` ADD CONSTRAINT `Invitacion_id_reunion_fkey` FOREIGN KEY (`id_reunion`) REFERENCES `Reunion`(`id_reunion`) ON DELETE RESTRICT ON UPDATE CASCADE;

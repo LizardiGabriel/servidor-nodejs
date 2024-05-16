@@ -45,7 +45,7 @@
                 </div>
                 <div id="passwordFormR"></div>
                 <div class="button-container">
-                    <input type="submit" id="editForm" class="button-submit" value="Cambiar Contraseña">
+                    <input type="submit" onclick="cambiarCon()" id="editForm" class="button-submit" value="Cambiar Contraseña">
                 </div>
             </form>
         </div>
@@ -79,6 +79,65 @@
             document.getElementById('editForm').submit();
         }
     </script>
+
+    <script>
+        var id = 'a';
+        var email = 'a';
+        window.onload = function () {
+            cargarInfoDelUrl();
+        }
+
+        async function cargarInfoDelUrl() {
+            url = window.location.href;
+            urlParams = new URLSearchParams(window.location.search);
+
+            id = urlParams.get('id');
+            email = urlParams.get('email');
+
+
+        }
+
+        async function cambiarCon(){
+            event.preventDefault();
+            var password = document.getElementById('loginPassword').value;
+            var passwordR = document.getElementById('loginPasswordR').value;
+            console.log('param password', password);
+            console.log('param passwordR', passwordR);
+            if (password != passwordR) {
+                alert('Las contraseñas no coinciden');
+                return;
+            }else{
+                fetch('/home/cambiar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id,
+                        email,
+                        password,
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert('Error: ' + data.error);
+                        } else {
+                            console.log(data.message);
+                            console.log(data.id);
+                            confirmacion();
+                            window.location.href = '/';
+                        }
+                    })
+                    .catch(error => {
+                        alert('Error al procesar la solicitud: ' + error);
+                    });
+            }
+        }
+       
+
+    </script>
+
 
     <!-- html -->
     <div>

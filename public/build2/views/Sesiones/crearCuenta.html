@@ -28,11 +28,11 @@
         </div>
         <div class="registerForm">
             <h1 class="registerForm__titulo">Crear Cuenta</h1>
-            <form class="form needs-validation" novalidate>
+            <form class="form" novalidate action="/admin/catalogo/confirmarCuenta.html">
                 <div class="form__cargo-container">
                     <label class="form__puesto">Cargo*</label>
                     <div class="checkbox-wrapper-1">
-                        <input type="checkbox" id="cbx-1" class="inp-cbx" required />
+                        <input type="checkbox" id="cbx-1" class="inp-cbx" name="rolSeguridad" required />
                         <label for="cbx-1" class="cbx">
                             <span>
                                 <svg viewBox="0 0 12 10" height="10px" width="12px">
@@ -43,7 +43,7 @@
                         </label>
                     </div>
                     <div class="checkbox-wrapper-2">
-                        <input type="checkbox" id="cbx-2" class="inp-cbx" required />
+                        <input type="checkbox" id="cbx-2" class="inp-cbx" name="rolAnfitrion" required />
                         <label for="cbx-2" class="cbx">
                             <span>
                                 <svg viewBox="0 0 12 10" height="10px" width="12px">
@@ -57,7 +57,7 @@
 
                 <label class="registerForm__email">Correo Electrónico*</label>
                 <div class="inputForm">
-                    <input autocomplete="off" id="loginEmail" type="email" class="input"
+                    <input name="email" autocomplete="off" id="loginEmail" type="email" class="input"
                         placeholder="rafaelc_203@beecoders.com" required>
                     <div class="invalid-feedback">
                         Ingrese su correo electrónico.
@@ -67,21 +67,21 @@
 
                 <label class="registerForm__email">Nombre*</label>
                 <div class="inputForm">
-                    <input type="text" class="input" placeholder="Rafael" required>
+                    <input name="nombre" type="text" class="input" placeholder="Rafael" required>
                     <div class="invalid-feedback">
                         Ingrese su Nombre.
                     </div>
                 </div>
                 <label class="registerForm__email">Apellido Paterno*</label>
                 <div class="inputForm">
-                    <input type="text" class="input" placeholder="Cabañas" required>
+                    <input name="apellidoPaterno" type="text" class="input" placeholder="Cabañas" required>
                     <div class="invalid-feedback">
                         Ingrese su Apellido Paterno.
                     </div>
                 </div>
                 <label class="registerForm__email">Apellido Materno*</label>
                 <div class="inputForm">
-                    <input type="text" class="input" placeholder="Rocha" required>
+                    <input name="apellidoMaterno" type="text" class="input" placeholder="Rocha" required>
                     <div class="invalid-feedback">
                         Ingrese su Apellido Materno.
                     </div>
@@ -92,9 +92,10 @@
                 </div>
 
                 <div class="button-container">
-                    <input type="submit" class="button-submit1" value="Crear Cuenta" onclick="return confirmacion()">
+                    <input type="submit" class="button-submit1" value="Crear Cuenta" onclick="return confirmacion()"> <!--onclick="return confirmacion()"-->
                     <button class="button-submit2">Cancelar</button>
                 </div>
+            </form>
         </div>
     </main>
     

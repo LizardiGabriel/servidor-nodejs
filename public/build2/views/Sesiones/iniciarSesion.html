@@ -19,7 +19,7 @@
         </div>
         <div class="loginForm">
             <h1 class="loginForm__titulo">Iniciar Sesión 🐝</h1>
-            <form class="form needs-validation" novalidate>
+            <form class="form" novalidate action="/home/login" method="post">
                 <label class="loginForm__email">Correo Electrónico*</label>
                 <div class="inputForm">
                     <input id="loginEmail" autocomplete="off" type="email" class="input" placeholder="rafaelc_203@beecoders.com" required>
@@ -41,17 +41,64 @@
 
                 <div class="form__recuerdame">
                     <div class="recuerdame__checkbox">
-                        <input type="checkbox">
+                        <input type="checkbox" id="recuerdame">
                         <label>Recuerdame</label>
                     </div>
                     <a href="#" class="link">¿Olvidaste tu contraseña?</a>
                 </div>
                 <div class="button-container">
-                    <input type="submit" class="button-submit" value="Iniciar Sesión">
+                    <input type="submit" class="button-submit" value="Iniciar Sesión" onclick="checkCredenciales()">
                 </div>
+            </form>
         </div>
     </main>
     <script src="../../js/validaciones.js"></script>
     <script src="../../js/plantilla-formularios.js"></script>
+
+    <script>
+        function checkCredenciales(){
+            event.preventDefault();
+            let email = document.getElementById('loginEmail').value;
+            let password = document.getElementById('loginPassword').value;
+            let Recuerdame = document.getElementById('recuerdame').value;
+
+            fetch('/home/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                    Recuerdame: Recuerdame
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('data: ', data);
+                switch (data.status) {
+                    case 200:
+                        //alert(data.ruta);
+                        window.location.href = data.ruta;
+                        break;
+                    case 401:
+                        alert(data.error);
+                        break;
+                    case 404:
+                        alert(data.error);
+                        break;
+                    case 500:
+                        alert(data.error);
+                        break;
+                    default:
+                        break;
+                }
+                
+            })
+
+
+        }
+    </script>
+
 </body>
 </html>

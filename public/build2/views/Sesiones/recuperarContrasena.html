@@ -22,27 +22,60 @@
             <h1 class="recuperarInfo__titulo">Recuperar Contraseña</h1>
             <p>Ingresa el correo electrónico  que registraste en el sistema. 
                 Te enviaremos un correo de verificación para restablecer tu contraseña.</p>
-            <form action="" class="form needs-validation" novalidate>
-                <div>
-                    <label class="recuperarForm__email">Correo Electrónico*</label>
-                    <div class="inputForm">
-                        <input autocomplete="off" id="loginEmail" type="email" class="input" placeholder="rafaelc_203@beecoders.com" required>
-                        <div class="invalid-feedback">
-                            Ingrese su correo electrónico.
+                <form action="" class="form needs-validation" novalidate>
+                    <div>
+                        <label class="recuperarForm__email">Correo Electrónico*</label>
+                        <div class="inputForm">
+                            <input name="email" autocomplete="off" id="loginEmail" type="email" class="input" placeholder="rafaelc_203@beecoders.com" required>
+                            <div class="invalid-feedback">
+                                Ingrese su correo electrónico.
+                            </div>
                         </div>
+                        <div id="emailForm"></div>
                     </div>
-                    <div id="emailForm"></div>
-                </div>
-                <div class="button-container">
-                    <input type="submit"  class="button-submit1" id= "boton4" value="Enviar Correo">
-                    <!--Antes el input era: type="summit" pero el mensaje no se veia bien-->
-                    <button type="button" class="button-submit2" >Cancelar</button>
-                </div>
-            </form>
+                    <div class="button-container">
+                        <input type="submit" onclick="enviar()"  class="button-submit1" id= "boton4" value="Enviar Correo">
+                        <!--Antes el input era: type="summit" pero el mensaje no se veia bien-->
+                        <button type="button" class="button-submit2" >Cancelar</button>
+                    </div>
+                </form>
         </div>
     </main>
     <script src="../../js/plantilla-formularios.js"></script>
     <script src="../../js/validaciones.js"></script>
+
+    <script>
+        function enviar(){
+            event.preventDefault();
+            var email = document.getElementById('loginEmail').value;
+            console.log('param email', email);
+            fetch('/home/recuperar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email,
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status == 404) {
+                        alert('Error user not found: ' + data.error);
+                    } else {
+                        console.log(data.message);
+                        console.log(data.id);
+
+                        window.location.href = '/home/recuperar2.html?id=' + data.id + '&email=' + email;
+
+                    }
+                })
+                .catch(error => {
+                    alert('Error al procesar la solicitud: ' + error);
+                });
+        }
+    </script>
+    
 </body>
 </html>
 
