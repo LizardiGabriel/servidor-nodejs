@@ -80,60 +80,6 @@
         </div>
     </main>
     <script src="../../js/validaciones.js"></script>
-    <!--<script>
-        async function crearCuenta(){
-            // evitar que se envíe el formulario
-            event.preventDefault();
 
-            const email = document.getElementById('loginEmail').value;
-            const nombre = document.getElementsByName('nombre')[0].value;
-            const apellidoPaterno = document.getElementsByName('apellidoPaterno')[0].value;
-            const apellidoMaterno = document.getElementsByName('apellidoMaterno')[0].value;
-            const rolSeguridad = document.getElementsByName('rolSeguridad')[0].checked;
-            const rolAnfitrion = document.getElementsByName('rolAnfitrion')[0].checked;
-
-            const idRol = rolSeguridad ? 'Seguridad' : rolAnfitrion ? 'Anfitrion' : null;
-            const foto_usuario = 'prueba.jpg';
-            const telefono = '1234567890';
-
-
-            fetch('/admin/catalogo/usuarios', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email,
-                    nombre,
-                    apellidoPaterno,
-                    apellidoMaterno,
-                    telefono,
-                    idRol,
-                    foto_usuario
-                })
-            })
-            .then(response => {
-                console.log('Respuesta:');
-                console.log(response);
-                if (response.ok) {
-                    response.json().then(data => {
-                        console.log('Usuario creado con éxito:', data.message);
-                        if (data.message === 'true') {
-                            alert("Cuenta creada con exito")
-                            window.location.href = '/admin/catalogo/confirmarCuenta.html';
-                        }else{
-                            alert("Error al crear cuenta")
-                        }
-                    });
-                } else {
-                    console.log('Error al crear usuario:', response.statusText);
-                }
-            })
-            .catch(error => console.error('Error al crear usuario:', error));
-
-
-        }
-    </script>
--->
 </body>
 </html>

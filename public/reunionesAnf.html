@@ -64,7 +64,6 @@
 
 <body>
     <button onclick="obtenerReuniones()">Actualizar Reuniones</button>
-    <button onclick="crearReunion()">Crear Reunion</button>
     <h1>Gestionar reuniones</h1>
 
 
@@ -168,44 +167,51 @@
                     reuniones.forEach(reunion => {
                         const card = document.createElement('div');
                         card.classList.add('card');
-                        /*
-                        descripcion_reunion: "Presentación del proyecto para aprobación"
-                        fechasRepeticion: [
-                            {id_repeticion: 2, fecha_repeticion: "2024-05-14T14:00:00.000Z", estatus_repeticion: "Activa"}, 
-                            {id_repeticion: 5, fecha_repeticion: "2024-05-15T14:00:00.000Z", estatus_repeticion: "Activa"}, 
-                            {id_repeticion: 6, fecha_repeticion: "2024-05-16T14:00:00.000Z", estatus_repeticion: "Activa"}
-                        ]
-                        id_reunion: 2
-                        id_sala: 3
-                        id_usuario: 2
-                        numRepeticion: 3
-                        titulo_reunion: "Presentación de Proyecto"
-                        */
                         card.innerHTML = `
-                            <button onclick="detallesReunion(${reunion.id_reunion})">Detalles</button>
-                            <button onclick="crearInvitacion(${reunion.id_reunion})">Crear Invitación</button>
-                            <button onclick="editarReunion(${reunion.id_reunion})">Editar</button>
-                            <button onclick="eliminarReunion(${reunion.id_reunion})">Eliminar</button>
+                            <h4><b>Id Reunion: </b>${reunion.id_reunion}</h4>
 
-                            <h4><b>Id Reunion: </b></h4>
-                            <p>${reunion.id_reunion}</p>
-                            <h4><b>Titulo Reunion: </b></h4>
+                            <h4><b>Asunto de la Reunion: </b></h4>
                             <p>${reunion.titulo_reunion}</p>
-                            <h4><b>Descripción</b></h4>
-                            <p>${reunion.descripcion_reunion}</p>
-                            <h4><b>id Sala: </b></h4>
-                            <p>${reunion.id_sala}</p>
-                            <h4><b>Numero de repeticion: </b></h4>
-                            <p>${reunion.numRepeticion}</p>
-                            <h4><b>Fechas de la reunion: </b></h4>
+
+
+                            <h4><b>Fechas de la reunion: </b>${reunion.numRepeticion}</h4>
                             <ul>${reunion.fechasRepeticion.map(fecha =>
                             `<li>${fecha.id_repeticion} , 
-                                ${fecha.fecha_repeticion}, 
+                                ${fecha.fecha_repeticion}, ${fecha.hora_inicio_repeticion} - ${fecha.hora_fin_repeticion},
                                 ${fecha.estatus_repeticion}</li>
                                     
                             `).join('')}
                             </ul>
-                        `;
+
+
+                            <h4><b>Descripción</b></h4>
+                            <p>${reunion.descripcion_reunion}</p>
+
+                            <h4><b>id Sala: </b>${reunion.id_sala}</h4>
+
+
+                            <h4><b>Lista de los correos de los invitados: - acompañantes disponibles</b></h4>
+                            <p>example@correo.com - 5</p>
+                            <p>example2@correo.com - 3</p>
+
+                            <button onclick="detallesReunion(${reunion.id_reunion})">Detalles</button>
+                            <button onclick="mostrarFormulario(${reunion.id_reunion})">Crear Invitación</button>
+                            <button onclick="eliminarReunion(${reunion.id_reunion})">Eliminar</button>
+
+                            <div id="formulario-${reunion.id_reunion}" style="display: none;">
+                                <h4><b>Formulario de Invitación</b></h4>
+                                <form id="form-${reunion.id_reunion}">
+                                    <label for="correos">Correo de invitación:</label><br>
+                                    <input type="text" id="correoInv" name="correos" rows="4" cols="50"><br>
+
+                                    <label for="acompanantes">numero de acompañantes:</label><br>
+                                    <input type="number" id="acompanantesInv" name="acompanantes" required><br>
+
+                                    <button type="button" onclick="enviarInvitacion(${reunion.id_reunion})">añadir</button>
+                                </form>
+                            </div>
+
+                            `;
                         divReuniones.appendChild(card);
                     });
 
@@ -213,6 +219,11 @@
                 .catch(error => {
                     console.error('Error:', error);
                 });
+        }
+
+        function mostrarFormulario(idReunion) {
+            const formulario = document.getElementById(`formulario-${idReunion}`);
+            formulario.style.display = 'block';
         }
 
 
@@ -264,16 +275,36 @@
 
 
         }
-        function crearInvitacion(idReunion) {
-            console.log('Crear invitacion para la reunion:', idReunion);
-            window.location.href = "crearInvitacion.html?idReunion=" + idReunion;
+        function enviarInvitacion(idReunion) {
+            const correoInv = document.getElementById(`correoInv`).value;
+            const acompanantesInv = document.getElementById(`acompanantesInv`).value;
+
+            const envJson = {
+                idReunion,
+                correoInv,
+                acompanantesInv
+                
+            };
+
+            fetch(`reuniones/invitacion`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(envJson)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('data:', data);
+                    obtenerReuniones();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
 
         function detallesReunion(idReunion) {
             console.log('Detalles de la reunion:', idReunion);
-
-        }
-        function editarReunion(idReunion) {
 
         }
         function eliminarReunion(idReunion) {

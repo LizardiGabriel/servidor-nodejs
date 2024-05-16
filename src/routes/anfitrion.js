@@ -1,7 +1,11 @@
 const { ok } = require('assert');
+const path = require('path');
+
+
 const { getReunionesBD,
     getReunionesConRepeticionByIdOfUserBD,
-    getSalasBD, setNewReunionBD
+    getSalasBD, setNewReunionBD,
+    getInvitadoByEmailBD, setNewInvitadoBD, setNewInvitacionBD
 
 } = require('../tools/peticiones');
 
@@ -47,12 +51,35 @@ async function setNewReunion(req, res) {
 }
 
 async function crearInvitacion(req, res) {
-    console.log('mensaje --> crearInvitacion');
-    idReunion = req.params.idReunion;
+    console.log('mensaje --> crearInvitacion dcervrvwcececwfr')
+    const idReunion = req.params;
+    console.log(idReunion);
 
     res.sendFile(path.resolve('./public/crearInvitacion.html'));
 }
 
+async function setInvitacion(req, res) {
+    console.log('mensaje --> setInvitacion');
+    const {idReunion, correoInv, acompanantesInv} = req.body;
+
+    //console.log('idAnfitrion: ', req.session.userId, 'idReunion: ', idReunion, 'correoInv: ', correoInv, 'numAcomp: ', acompanantesInv);
+    
+    var invitado = await getInvitadoByEmailBD(correoInv);
+    if (invitado === null) {
+        invitado = await setNewInvitadoBD(correoInv);
+    }
+    const id_invitado = invitado.id_invitado;
+    
+    const setInvitacion = await setNewInvitacionBD(idReunion, id_invitado, acompanantesInv);
+
+    if(setInvitacion !== null){
+        res.json({ message: 'succesful', status: 200});
+    }
+    else{
+        res.json({ message: 'error', status: 400});
+    }    
+
+}
 
 
 module.exports = {
@@ -60,5 +87,6 @@ module.exports = {
     getReunionesAnfitrion,
     getSalasAnfitrion,
     setNewReunion,
-    crearInvitacion
+    crearInvitacion,
+    setInvitacion
 };

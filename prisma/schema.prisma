@@ -94,6 +94,8 @@ model Invitacion {
   qr_acceso     String
   habilitado    Habilitado
 
+  numero_colados          Int
+
   reunion                Reunion                  @relation(fields: [id_reunion], references: [id_reunion])
   invitado               Invitado                 @relation(fields: [id_invitado], references: [id_invitado])
   Acceso                 Acceso[]                 

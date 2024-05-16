@@ -79,6 +79,7 @@ CREATE TABLE IF NOT EXISTS `beemeet`.`invitacion` (
     `id_invitado` INT ,
     `qr_acceso` VARCHAR(500) ,
     `habilitado` ENUM('Si', 'No') ,
+    `numero_colados` INT ,
 
     FOREIGN KEY (`id_invitado`) REFERENCES `beemeet`.`invitado` (`id_invitado`),
     FOREIGN KEY (`id_reunion`) REFERENCES `beemeet`.`reunion` (`id_reunion`)

@@ -376,14 +376,39 @@ async function getReunionesConRepeticionByIdOfUserBD(id_usuario) {
                 const fechasRep2 = {
                     id_repeticion: repeticiones[j].id_repeticion,
                     fecha_repeticion: repeticiones[j].fecha_repeticion,
-                    estatus_repeticion: repeticiones[j].estatus_repeticion
+                    estatus_repeticion: repeticiones[j].estatus_repeticion,
+                    hora_inicio_repeticion: repeticiones[j].hora_inicio_repeticion,
+                    hora_fin_repeticion: repeticiones[j].hora_fin_repeticion
                 };
                 fechasRep.push(fechasRep2);
             }
             reuniones[i].fechasRepeticion = fechasRep;
         }
 
-        //console.log('respuesta en json bd: ', reuniones);
+
+        for(let i = 0; i < reuniones.length; i++){
+            const invitacionesReunion = await prisma.invitacion.findMany({
+                where: { id_reunion: reuniones[i].id_reunion }
+            });
+            
+            var infoInvitados = [];
+            for(let j = 0; j < invitacionesReunion.length; j++){
+
+                const invitadito = await getInvitadoByIdBD(invitacionesReunion[j].id_invitado);
+                console.log('invitado email: ', invitadito.email_invitado)
+
+                const nombreInvColados = {
+                    numero_colados: invitacionesReunion[j].numero_colados,
+                    correo_invitado: invitadito.email_invitado
+                };
+                infoInvitados.push(nombreInvColados);
+            }
+            reuniones[i].infoInvitados = infoInvitados;
+
+        }
+        
+
+        console.log('=============================>>>>>>>>>>>> respuesta en json bd: ', reuniones);
 
         return reuniones;
 
@@ -449,6 +474,67 @@ async function setNewReunionBD(
 
 }
 
+async function getInvitadoByEmailBD(email) {
+    console.log('peticion a la bd de getInvitadoByEmail');
+    try {
+        const invitado = await prisma.invitado.findFirst({
+            where: { email_invitado: email }
+        });
+        return invitado;
+    } catch (error) {
+        console.error('Error al obtener invitado:', error);
+        return null;
+    }
+
+}
+async function setNewInvitadoBD(email) {
+    console.log('peticion a la bd de setNewInvitado');
+    try {
+        const nuevoInvitado = await prisma.invitado.create({
+            data: {
+                email_invitado: email,
+                nombre_invitado: "",
+                apellido_paterno_invitado: "",
+                apellido_materno_invitado: "",
+                password_invitado: "",
+                telefono_invitado: 0,
+                empresa_invitado: "",
+                foto_invitado: "",
+                identificacion_invitado: "",
+                es_colado_invitado: 1,
+                habilitado: 1
+
+            }
+        });
+        return nuevoInvitado;
+    } catch (error) {
+        console.error('Error al crear invitado:', error);
+        return null;
+    }
+
+
+}
+
+async function setNewInvitacionBD(idReunion, id_invitado, acompanantesInv) {
+    console.log('peticion a la bd de setNewInvitacion');
+    console.log('idReunion: ', idReunion, 'id_invitado: ', id_invitado);
+    try {
+        const nuevaInvitacion = await prisma.invitacion.create({
+            data: {
+                id_reunion: idReunion,
+                id_invitado: id_invitado,
+                habilitado: "No",
+                qr_acceso: "",
+                numero_colados: Number(acompanantesInv)
+            }
+        });
+        return nuevaInvitacion;
+    } catch (error) {
+        console.error('Error al crear invitacion:', error);
+        return null;
+    }
+}
+
 
 module.exports = {
     getUsersByEmailBD,
@@ -479,5 +565,10 @@ module.exports = {
 
 
     getReunionesConRepeticionByIdOfUserBD,
-    setNewReunionBD
+    setNewReunionBD,
+
+    getInvitadoByEmailBD,
+    setNewInvitadoBD,
+
+    setNewInvitacionBD
 };

@@ -152,8 +152,8 @@ app.use('/anfitrion/cuenta.html', express.static('./public/cuentaAnf.html'));
 app.get('/anfitrion/reuniones', anfitrion.getReunionesAnfitrion);
 app.get('/anfitrion/salas', anfitrion.getSalasAnfitrion);
 app.post('/anfitrion/reuniones', anfitrion.setNewReunion);
+app.post('/anfitrion/reuniones/invitacion', anfitrion.setInvitacion);
 
-app.get('/anfitrion/crearInvitacion.html/:idReunion', anfitrion.crearInvitacion);
 
 
 
