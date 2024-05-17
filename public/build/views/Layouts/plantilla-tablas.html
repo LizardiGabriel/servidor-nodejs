@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeeMeet - Plantilla Tabla</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="stylesheet" href="../../css/app.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!--DataTables-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.6/css/dataTables.dataTables.css" />
+    <script src="https://cdn.datatables.net/2.0.6/js/dataTables.js"></script>
+
+</head>
+
+<body>
+    <div class="container">
+        <br>
+        <h1 class="title-example text-center">Plantilla de Tabla</h1>
+        <br>
+
+        <!--Barra de búsqueda
+        <input class="form-control" id="Busqueda" type="text" placeholder="Buscar..">-->
+        <br>
+
+        <div class="__Tabla table-responsive paragraph-example">
+            <table class="tabla table table-hover table-bordered table-striped" id="Tabla">
+                <thead class="tabla__cabecera">
+                    <tr>
+                        <th scope="col" data-sort="id" class="cabecera">ID</th>
+                        <th scope="col" data-sort="nombre" class="cabecera">Nombre</th>
+                        <th scope="col" data-sort="email" class="cabecera">Correo Electrónico</th>
+                        <th scope="col" data-sort="tipoU" class="cabecera">Tipo de Usuario</th>
+                        <th scope="col" data-sort="acciones" class="cabecera">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="tabla__cuerpo">
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <script src="../../js/plantilla-tablas.js"></script>
+</body>
+
+</html>

@@ -4,6 +4,7 @@ const { response } = require('express');
 const { json } = require('body-parser');
 
 
+
 async function logout(req, res) {
     console.log('mensaje --> logout');
     req.session.destroy();
@@ -35,7 +36,7 @@ async function getReunionesAll(req,res){
                 nombre_sala: sala.nombre_sala,
                 titulo_reunion: reunion.titulo_reunion,
                 fecha_reunion: reunion.fecha_reunion,
-                    descripcion_reunion: reunion.descripcion_reunion,
+                descripcion_reunion: reunion.descripcion_reunion,
                 id_inv: invitado.id_invitado,
                 nombre_inv:invitado.nombre_invitado,
                 apellido_inv: invitado.apellido_paterno_invitado
@@ -105,9 +106,26 @@ async function getReunionByNaveInv(req,res){
             console.error("Error al recuperar los datos:", error);
         }
     }
-
-
 }
+
+async function getInvitadoById(req, res) {
+    const { id } = req.params;
+    try {
+        const invitado = await getInvitadoByIdBD(id);
+        if (invitado) {
+            res.json(invitado);
+        } else {
+            res.status(404).json({ error: 'Invitado no encontrado' });
+        }
+    } catch (error) {
+        console.error('Error al obtener el invitado:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
+
+
+  
+
 //Visualizar agenda
 module.exports = {
     logout,
@@ -115,5 +133,6 @@ module.exports = {
     getReunionById,
     getReunionByIdAll,
     getReunionesAll,
-    getReunionByNaveInv
+    getReunionByNaveInv,
+    getInvitadoById
 };
