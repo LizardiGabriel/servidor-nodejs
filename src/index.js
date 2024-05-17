@@ -110,11 +110,11 @@ app.use('/admin', (req, res, next) => {
 
 // admin
 
-app.use('/admin/admin.html', express.static('./public/admin.html'));
+app.use('/admin/admin.html', express.static('./public/build2/views/Admin/admin.html'));
 app.get('/admin/logout', admin.logout);
 
 
-app.use('/admin/catalogo/catalogo.html', express.static('./public/catalogo.html'));
+app.use('/admin/catalogo/catalogo.html', express.static('./public/build2/views/Admin/catalogo.html'));
 app.get('/admin/catalogo/salas', admin.getSalas);
 app.post('/admin/catalogo/salas', admin.setNewSala);
 app.get('/admin/catalogo/salas/:id', admin.getSalaById);
@@ -122,7 +122,7 @@ app.put('/admin/catalogo/salas/:id', admin.updateSala);
 app.delete('/admin/catalogo/salas/:id', admin.deleteSala);
 
 
-app.use('/admin/catalogo/usuarios.html', express.static('./public/gestionarusuarios.html'));
+app.use('/admin/catalogo/usuarios.html', express.static('./public/build2/views/Admin/gestionarusuarios.html'));
 app.get('/admin/catalogo/usuarios', admin.getUsuarios);
 app.post('/admin/catalogo/usuarios', admin.setNewUsuario);
 app.get('/admin/catalogo/usuarios/:id', admin.getUsuarioById);
@@ -130,8 +130,8 @@ app.put('/admin/catalogo/usuarios/:id', admin.updateUsuario);
 app.delete('/admin/catalogo/usuarios/:id', admin.deleteUsuario);
 
 
-app.use('/admin/catalogo/crearCuenta.html', express.static('./public/build2/views/Sesiones/crearCuenta.html'));
-app.use('/admin/catalogo/confirmarCuenta.html', express.static('./public/build2/views/Sesiones/confirmarCrearCuenta.html'));
+app.use('/admin/catalogo/crearCuenta.html', express.static('./public/build2/views/Admin/crearCuenta.html'));
+app.use('/admin/catalogo/confirmarCuenta.html', express.static('./public/build2/views/Admin/confirmarCrearCuenta.html'));
 
 
 
