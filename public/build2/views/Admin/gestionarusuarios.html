@@ -21,6 +21,32 @@
         th {
             background-color: #f2f2f2;
         }
+
+        .card{
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        .fechas li{
+            list-style: none;
+            
+        }
+
+        .cardszzz {
+
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .card p {
+            margin: 0;
+            white-space: nowrap;
+            display: inline-flex;
+        }
+
     </style>
 </head>
 
@@ -38,6 +64,14 @@
             <th>Acciones</th>
         </tr>
     </table>
+
+
+    <!-- cards -->
+
+    <div id="divReuniones" class="cardszzz"></div>
+    
+
+
 
     <div id="formularioCrearUsuario" style="display: none;">
         <h2>Crear Usuario</h2>
@@ -166,6 +200,8 @@
                         `;
                         tablaBody.appendChild(fila);
                     });
+
+                    // cargar las cards
                 })
                 .catch(error => console.error('Error al obtener usuarios:', error));
         }
