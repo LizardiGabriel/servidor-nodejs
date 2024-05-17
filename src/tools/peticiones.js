@@ -482,7 +482,35 @@ async function getInvitadoByIdBD(id) {
     }
 }
 
+async function setNewInvitadoBD(email) {
+    console.log('peticion a la bd de setNewInvitado');
+    try {
+        const nuevoInvitado = await prisma.invitado.create({
+            data: { email_invitado: email }
+        });
+        return nuevoInvitado;
+    } catch (error) {
+        console.error('Error al crear nuevo invitado:', error);
+        return null;
+    }
+}
 
+async function setNewInvitacionBD(idReunion, idInvitado, numAcomp) {
+    console.log('peticion a la bd de setNewInvitacion');
+    try {
+        const nuevaInvitacion = await prisma.invitacion.create({
+            data: {
+                id_reunion: Number(idReunion),
+                id_invitado: Number(idInvitado),
+                numero_colados: Number(numAcomp)
+            }
+        });
+        return nuevaInvitacion;
+    } catch (error) {
+        console.error('Error al crear invitacion:', error);
+        return null;
+    }
+}
     
 
 
@@ -507,5 +535,7 @@ module.exports = {
     getInvitadoByIdBD,
     getInvitadoByNameBD,
     getInvitacionesByIdInv,
-    getReunionByIdInvBD
+    getReunionByIdInvBD,
+    setNewInvitacionBD,
+    setNewInvitadoBD
 };
