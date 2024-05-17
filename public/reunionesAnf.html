@@ -195,6 +195,10 @@
                     reuniones.forEach(reunion => {
                         const card = document.createElement('div');
                         card.classList.add('card');
+
+                        const emailDiv = 'correoInv-' + reunion.id_reunion;
+                        const acompanantesDiv = 'acompanantesInv-' + reunion.id_reunion;
+
                         card.innerHTML = `
                         
                             <h4><b>Reunion id: </b>${reunion.id_reunion}</h4>
@@ -238,10 +242,10 @@
                                 <h4><b>Formulario de Invitación</b></h4>
                                 <form id="form-${reunion.id_reunion}">
                                     <label for="correos">Correo de invitación:</label><br>
-                                    <input type="text" id="correoInv" name="correos" rows="4" cols="50"><br>
+                                    <input type="text" id="${emailDiv}" name="correos" rows="4" cols="50"><br>
 
                                     <label for="acompanantes">numero de acompañantes:</label><br>
-                                    <input type="number" id="acompanantesInv" name="acompanantes" required><br>
+                                    <input type="number" id="${acompanantesDiv}" name="acompanantes" required><br>
 
                                     <button type="button" onclick="enviarInvitacion(${reunion.id_reunion})">añadir</button>
                                 </form>
@@ -312,8 +316,9 @@
 
         }
         function enviarInvitacion(idReunion) {
-            const correoInv = document.getElementById(`correoInv`).value;
-            const acompanantesInv = document.getElementById(`acompanantesInv`).value;
+            const emailDiv = 'correoInv-' + idReunion;
+            const correoInv = document.getElementById(emailDiv).value;
+            const acompanantesInv = document.getElementById(`acompanantesInv-`+idReunion).value;
 
             const envJson = {
                 idReunion,
