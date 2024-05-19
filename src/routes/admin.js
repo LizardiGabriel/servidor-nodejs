@@ -1,7 +1,7 @@
 const { getSalasBD, setNewSalaBD, getSalaByIdBD, updateSalaBD, deleteSalaBD } = require('../tools/peticiones');
 const { getUsuariosBD, setNewUsuarioBD, getUsuarioByIdBD, getUsuarioByEmailBD, updateUsuarioBD, deleteUsuarioBD } = require('../tools/peticiones');
 
-
+const { getInvitadosBD } = require('../tools/peticiones');
 
 async function logout(req, res) {
     console.log('mensaje --> logout');
@@ -54,8 +54,13 @@ async function deleteSala(req, res) {
 
 async function getUsuarios(req, res) {
     const usuarios = await getUsuariosBD();
-    console.log('usuarios en json: ', usuarios);
+    //console.log('usuarios en json: ', usuarios);
     res.json(usuarios);
+}
+
+async function getInvitados(req, res) {
+    const invitados = await getInvitadosBD();
+    res.json(invitados);
 }
 
 async function setNewUsuario(req, res) {
@@ -110,5 +115,7 @@ module.exports = {
     setNewUsuario,
     getUsuarioById,
     updateUsuario,
-    deleteUsuario
+    deleteUsuario,
+
+    getInvitados
 };

@@ -43,43 +43,42 @@ app.use(session({
 app.use(errorHandler());
 
 
-app.get('/prueba.ico', (req, res) => {
-  console.log('---> peticion de favicon.ico');
-  res.status(200).sendFile(path.join(__dirname, '../public/favicon.ico'));
+
+const rutas = [
+    ['/prueba.ico', '../public/favicon.ico'],
+    ['/img/BeeMeet2.png', '../public/build2/img/BeeMeet2.png'],
+    ['/img/BeeMeet.png', '../public/build2/img/BeeMeet.png'],
+    ['/img/icons/ico-editar.svg', '../public/build2/img/icons/ico-editar.svg'],
+    ['/img/icons/ico-trash.svg', '../public/build2/img/icons/ico-trash.svg'],
+    ['/img/usuario.webp', '../public/build2/img/usuario.webp'],
+    ['/build/img/BeeMeet2.png', '../public/build2/img/BeeMeet2.png'],
+    ['/build/img/BeeMeet.png', '../public/build2/img/BeeMeet.png'],
+
+
+    ['/js/validaciones.js', '../public/build2/js/validaciones.js'],
+    ['/js/ventanas-modales.js', '../public/build2/js/ventanas-modales.js'],
+    ['/js/plantilla-formularios.js', '../public/build2/js/plantilla-formularios.js'],
+    ['/js/sidebar.js', '../public/build2/js/sidebar.js'],
+    ['/js/gestionUsuarios.js', '../public/build2/js/gestionUsuarios.js'],
+    ['/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', '../public/build2/js/bootstrap.bundle.min.js' ],
+    ['/build/js/header.js', '../public/build2/js/header.js'],
+    ['/js/gestionarSalas.js', '../public/build2/js/gestionarSalas.js'],
+
+
+    ['/css/app.css', '../public/build2/css/app.css'],
+    ['/css/app.css.map', '../public/build2/css/app.css.map'],
+
+
+];
+
+
+
+rutas.forEach(([rutaEntrada, rutaArchivo]) => {
+  app.get(rutaEntrada, (req, res) => {
+      res.status(200).sendFile(path.join(__dirname, rutaArchivo));
+  });
 });
 
-app.get('/css/app.css', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../public/build2/css/app.css'));
-});
-
-app.get('/img/BeeMeet2.png', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../public/build2/img/BeeMeet2.png'));
-});
-app.get('/js/validaciones.js', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../public/build2/js/validaciones.js'));
-});
-
-app.get('/js/ventanas-modales.js', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../public/build2/js/ventanas-modales.js'));
-});
-
-app.get('/img/BeeMeet.png', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../public/build2/img/BeeMeet.png'));
-});
-
-app.get('/css/app.css.map', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../public/build2/css/app.css.map'));
-});
-
-app.get('/js/plantilla-formularios.js', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../public/build2/js/plantilla-formularios.js'));
-});
-/*
-// /node_modules/bootstrap/dist/js/bootstrap.bundle.min.js
-app.get('/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../public/build2/js/plantilla-formularios.js'));
-});
-*/
 
 app.use('/', express.static('./public'));
 app.post('/home/login', home.login);
@@ -124,16 +123,23 @@ app.delete('/admin/catalogo/salas/:id', admin.deleteSala);
 
 app.use('/admin/catalogo/usuarios.html', express.static('./public/build2/views/Admin/gestionarusuarios.html'));
 app.get('/admin/catalogo/usuarios', admin.getUsuarios);
+app.get('/admin/catalogo/invitados', admin.getInvitados);
 app.post('/admin/catalogo/usuarios', admin.setNewUsuario);
 app.get('/admin/catalogo/usuarios/:id', admin.getUsuarioById);
 app.put('/admin/catalogo/usuarios/:id', admin.updateUsuario);
 app.delete('/admin/catalogo/usuarios/:id', admin.deleteUsuario);
 
 
+app.use('/admin/catalogo/invitados.html', express.static('./public/build2/views/Admin/gestiondeinvitados.html'));
+
+
 app.use('/admin/catalogo/crearCuenta.html', express.static('./public/build2/views/Admin/crearCuenta.html'));
 app.use('/admin/catalogo/confirmarCuenta.html', express.static('./public/build2/views/Admin/confirmarCrearCuenta.html'));
 
-
+app.use('/admin/catalogo/crearSala.html', express.static('./public/build2/views/Admin/CrearSala.html'));
+app.use('/admin/catalogo/GestionDeUsuarios.html', express.static('./public/build2/views/Admin/GestionDeUsuarios.html'));
+app.use('/admin/catalogo/GestionarSalas.html', express.static('./public/build2/views/Admin/GestionarSalas.html'));
+app.use('/admin/editarPersonal.html', express.static('./public/build2/views/Admin/EditarCuentaAnfitrionSeguridad.html'));
 
 app.get('/admin/test', (req, res) => {
   console.log('test');
@@ -221,7 +227,8 @@ app.get('/', (req, res) => {
 });
 
 app.all('*', (req, res) => {  
-  res.redirect('/not-found');
+    console.log('============================  intento entrar a la ruta: ', req.url);
+    res.redirect('/not-found');
 });
 
 

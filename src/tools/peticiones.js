@@ -158,7 +158,19 @@ async function deleteSalaBD(id) {
 }
 
 
+// invitados
 
+async function getInvitadosBD() {
+    console.log('peticion a la bd de getInvitados');
+    try {
+        const invitados = await prisma.invitado.findMany();
+        return invitados;
+    } catch (error) {
+        console.error('Error al obtener invitados:', error);
+        return json({ error: 'Error al obtener invitados' });
+    }
+
+}
 
 
 // usuarios
@@ -570,5 +582,7 @@ module.exports = {
     getInvitadoByEmailBD,
     setNewInvitadoBD,
 
-    setNewInvitacionBD
+    setNewInvitacionBD,
+
+    getInvitadosBD
 };
