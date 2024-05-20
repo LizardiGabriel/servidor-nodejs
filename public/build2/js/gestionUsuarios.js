@@ -59,7 +59,7 @@ loadTableData();
 
 function editarPersonal(id) {
   console.log(`Editar usuario con id: ${id}`);
-  window.location.href = `/admin/editarPersonal.html?idUsuario=${id}`;
+  window.location.href = `/admin/editarPersonal.html?id=${id}`;
 }
 
 function eliminarPersonal(id) {

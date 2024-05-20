@@ -139,53 +139,55 @@
         <div class="container-shadow">
             <div class="editForm">
                 <h1 class="editForm__titulo">Editar cuenta invitado</h1>
-                <form class="Formulario needs-validation paragraph-example" novalidate>
+                <form id="miFormulario" class="Formulario needs-validation paragraph-example" novalidate>
+                    <input type="hidden" id="idUsuarioInput" >
                     <!--Correo-->
                     <div>
-                        <label class="editForm__label">Correo Electrónico*</label>
+                        <label for="emailInput" class="editForm__label">Correo Electrónico*</label>
                         <div class="inputForm">
-                            <input type="email" class="input" placeholder="email@example.com" required>
+                            <input type="email" id="emailInput" class="input" placeholder="email@example.com" required>
                             <div class="invalid-feedback">Ingrese un correo válido.</div>
                         </div>
                     </div>
                     <!--Nombre-->
                     <div>
-                        <label class="editForm__label">Nombre(s)*</label>
+                        <label for="nombreInput" class="editForm__label">Nombre(s)*</label>
                         <div class="inputForm">
-                            <input type="text" class="input" placeholder="Nombre" required>
+                            <input type="text" id="nombreInput" class="input" placeholder="Nombre" required>
                             <div class="invalid-feedback">Ingrese su Nombre.</div>
                         </div>
                     </div>
                     <!--Apellido Pa-->
                     <div>
-                        <label class="editForm__label">Apellido Paterno*</label>
+                        <label for="apellidoPaternoInput" class="editForm__label">Apellido Paterno*</label>
                         <div class="inputForm">
-                            <input type="text" class="input" placeholder="Apellido Paterno" required>
+                            <input type="text" id="apellidoPaternoInput" class="input" placeholder="Apellido Paterno" required>
                             <div class="invalid-feedback">Ingrese su Apellido Paterno.</div>
                         </div>
                     </div>
                     <!--Apellido Ma-->
                     <div>
-                        <label class="editForm__label">Apellido Materno*</label>
+                        <label for="apellidoMaternoInput" class="editForm__label">Apellido Materno*</label>
                         <div class="inputForm">
-                            <input type="text" class="input" placeholder="Apellido Materno" required>
-                            <div class="invalid-feedback"> Ingrese su Apellido Materno.</div>
+                            <input type="text" id="apellidoMaternoInput" class="input" placeholder="Apellido Materno" required>
+                            <div class="invalid-feedback">Ingrese su Apellido Materno.</div>
                         </div>
                     </div>
                     <!--Número de Teléfono-->
                     <div>
-                        <label class="editForm__label">Número de teléfono*</label>
+                        <label for="telefonoInput" class="editForm__label">Número de teléfono*</label>
                         <div class="inputForm">
-                            <input type="tel" class="input" placeholder="55 + 1234 5678" min="0" pattern="[0-9]{10}" required>
+                            <input type="tel" id="telefonoInput" class="input" placeholder="55 + 1234 5678" min="0" pattern="[0-9]{10}" required>
                             <div class="invalid-feedback">Ingrese un número telefónico válido.</div>
                         </div>
                     </div>
                     <!--Botones-->
                     <div class="button-container">
                         <button class="button-submit">Cancelar</button>
-                        <input type="submit" class="button" value="Crear Cuenta"> 
+                        <input type="submit" class="button" value="Modificar" onclick="modificarInvi()">
                     </div>
                 </form>
+
             </div>
         </div>
     </main>
@@ -228,6 +230,56 @@
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/sidebar.js"></script>
     <script src="/build/js/header.js"></script>
+
+    <script>
+        window.onload = function () {
+            cargarDatos();
+        }
+
+        function cargarDatos() {
+            console.log("Cargando datos");
+
+            let urlParams = new URLSearchParams(window.location.search);
+            const idUsuario = urlParams.get('id');
+
+            fetch(`/admin/catalogo/invitados/${idUsuario}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // Rellenar los campos del formulario con los datos obtenidos
+                    document.getElementById('idUsuarioInput').value = data.id_invitado;
+                    document.getElementById('emailInput').value = data.email_invitado;
+                    document.getElementById('nombreInput').value = data.nombre_invitado;
+                    document.getElementById('apellidoPaternoInput').value = data.apellido_paterno_invitado;
+                    document.getElementById('apellidoMaternoInput').value = data.apellido_materno_invitado;
+                    document.getElementById('telefonoInput').value = data.telefono_invitado;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+
+        function modificarInvi(){
+            event.preventDefault();
+            const idUsuario = document.getElementById('idUsuarioInput').value;
+            const email = document.getElementById('emailInput').value;
+            const nombre = document.getElementById('nombreInput').value;
+            const apellidoPaterno = document.getElementById('apellidoPaternoInput').value;
+            const apellidoMaterno = document.getElementById('apellidoMaternoInput').value;
+            const telefono = document.getElementById('telefonoInput').value;
+
+            const data = {
+                email_invitado: email,
+                nombre_invitado: nombre,
+                apellido_paterno_invitado: apellidoPaterno,
+                apellido_materno_invitado: apellidoMaterno,
+                telefono_invitado: telefono
+            };
+
+            console.log(data);
+        }
+
+    </script>
     
 </body>
 

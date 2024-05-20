@@ -1,7 +1,7 @@
 const { getSalasBD, setNewSalaBD, getSalaByIdBD, updateSalaBD, deleteSalaBD } = require('../tools/peticiones');
 const { getUsuariosBD, setNewUsuarioBD, getUsuarioByIdBD, getUsuarioByEmailBD, updateUsuarioBD, deleteUsuarioBD } = require('../tools/peticiones');
 
-const { getInvitadosBD } = require('../tools/peticiones');
+const { getInvitadosBD, getInvitadoByIdBD } = require('../tools/peticiones');
 
 async function logout(req, res) {
     console.log('mensaje --> logout');
@@ -63,6 +63,12 @@ async function getInvitados(req, res) {
     res.json(invitados);
 }
 
+async function getInvitadoById(req, res) {
+    const { id } = req.params;
+    const invitado = await getInvitadoByIdBD(id);
+    res.json(invitado);
+}
+
 async function setNewUsuario(req, res) {
     console.log('=============================mensaje --> setNewUsuario');
     const { email, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario } = req.body;
@@ -84,6 +90,7 @@ async function setNewUsuario(req, res) {
 }
 
 async function getUsuarioById(req, res) {
+    console.log('=========================Dqedewfqewfrfrfrgfrgetgt4g2qreg', req.params)
     const { id } = req.params;
     const usuario = await getUsuarioByIdBD(id);
     res.json(usuario);
@@ -91,8 +98,8 @@ async function getUsuarioById(req, res) {
 
 async function updateUsuario(req, res) {
     const { id } = req.params;
-    const { email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario } = req.body;
-    const usuarioActualizado = await updateUsuarioBD(id, email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario);
+    const { email, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario } = req.body;
+    const usuarioActualizado = await updateUsuarioBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario);
     res.json(usuarioActualizado);
 }
 
@@ -117,5 +124,6 @@ module.exports = {
     updateUsuario,
     deleteUsuario,
 
-    getInvitados
+    getInvitados,
+    getInvitadoById
 };

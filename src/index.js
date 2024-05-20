@@ -123,7 +123,6 @@ app.delete('/admin/catalogo/salas/:id', admin.deleteSala);
 
 app.use('/admin/catalogo/usuarios.html', express.static('./public/build2/views/Admin/gestionarusuarios.html'));
 app.get('/admin/catalogo/usuarios', admin.getUsuarios);
-app.get('/admin/catalogo/invitados', admin.getInvitados);
 app.post('/admin/catalogo/usuarios', admin.setNewUsuario);
 app.get('/admin/catalogo/usuarios/:id', admin.getUsuarioById);
 app.put('/admin/catalogo/usuarios/:id', admin.updateUsuario);
@@ -131,6 +130,8 @@ app.delete('/admin/catalogo/usuarios/:id', admin.deleteUsuario);
 
 
 app.use('/admin/catalogo/invitados.html', express.static('./public/build2/views/Admin/gestiondeinvitados.html'));
+app.get('/admin/catalogo/invitados', admin.getInvitados);
+app.get('/admin/catalogo/invitados/:id', admin.getInvitadoById);
 
 
 app.use('/admin/catalogo/crearCuenta.html', express.static('./public/build2/views/Admin/crearCuenta.html'));
@@ -140,6 +141,7 @@ app.use('/admin/catalogo/crearSala.html', express.static('./public/build2/views/
 app.use('/admin/catalogo/GestionDeUsuarios.html', express.static('./public/build2/views/Admin/GestionDeUsuarios.html'));
 app.use('/admin/catalogo/GestionarSalas.html', express.static('./public/build2/views/Admin/GestionarSalas.html'));
 app.use('/admin/editarPersonal.html', express.static('./public/build2/views/Admin/EditarCuentaAnfitrionSeguridad.html'));
+app.use('/admin/editarinvitados.html', express.static('./public/build2/views/Admin/EditarCuentaInvitado.html'));
 
 app.get('/admin/test', (req, res) => {
   console.log('test');

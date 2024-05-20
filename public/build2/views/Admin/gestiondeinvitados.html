@@ -256,15 +256,11 @@
             .catch(error => console.error('Error al obtener usuarios:', error));
     }
 
-    function modificarUsu(id){
-        console.log('Modificar usuario:', id);
-    }
-    function eliminarUsu(id){
-        console.log('Eliminar usuario:', id);
-    }
 
     function modificarInv(id){
         console.log('Modificar invitado:', id);
+        window.location.href = `/admin/editarinvitados.html?id=${id}`;
+
     }
     function eliminarInv(id){
         console.log('Eliminar invitado:', id);

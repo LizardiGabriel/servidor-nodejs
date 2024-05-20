@@ -211,7 +211,7 @@ async function setNewUsuarioBD(email, passwordHashed, nombre, apellidoPaterno, a
 }
 
 async function getUsuarioByIdBD(id) {
-    console.log('peticion a la bd de getUsuarioById');
+    console.log('peticion a la bd de getUsuarioById, id: ', id);
     try {
         const usuario = await prisma.usuario.findUnique({
             where: { id_usuario: Number(id) }
@@ -237,14 +237,13 @@ async function getUsuarioByEmailBD(email) {
 }
 
 
-async function updateUsuarioBD(id, email, passwordHashed, nombre, apellidoPaterno, apellidoMaterno, telefono, rol, fotoUsuario) {
+async function updateUsuarioBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono, rol, fotoUsuario) {
     console.log('peticion a la bd de updateUsuario');
     try {
         const usuarioActualizado = await prisma.usuario.update({
             where: { id_usuario: Number(id) },
             data: {
                 email_usuario: email,
-                password_usuario: passwordHashed,
                 nombre_usuario: nombre,
                 apellido_paterno_usuario: apellidoPaterno,
                 apellido_materno_usuario: apellidoMaterno,
@@ -310,7 +309,7 @@ async function getInvitacionByIdBD(id) {
 }
 
 async function getInvitadoByIdBD(id) {
-    console.log('peticion a la bd de getInvitadonByIdBD');
+    console.log('peticion a la bd de getInvitadonByIdBD, id:', id);
     try {
         const invitado = await prisma.invitado.findUnique({
             where: { id_invitado: Number(id) }
