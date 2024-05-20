@@ -622,51 +622,66 @@ async function getReunionesAdminBD() {
 }
 
 async function getInvitacionesAdminBD() {
-        const invitaciones = await prisma.invitacion.findMany({
-            include: {
-                reunion: {
-                    include: {
-                        usuario: {
-                            select: {
-                                id_usuario: true,
-                            }
-                        },
-                        sala: {
-                            select: {
-                                id_sala: true,
-                            }
-                        },
-                        Repeticion: {
-                            select: {
-                                hora_inicio_repeticion: true,
-                                hora_fin_repeticion: true,
-                            },
-                            take: 1, // Tomamos solo la primera repetición como referencia de horarios
-                        }
-                    }
+    const invitaciones = await prisma.invitacion.findMany({
+        include: {
+            invitado: {
+                select: {
+                    email_invitado: true,
                 },
-                invitado: {
-                    select: {
-                        email_invitado: true,
-                    }
-                }
-            }
-        });
+            },
+            reunion: {
+                include: {
+                    usuario: {
+                        select: {
+                            id_usuario: true,
+                            nombre_usuario: true,
+                            apellido_paterno_usuario: true,
+                            apellido_materno_usuario: true,
+                        },
+                    },
+                    sala: {
+                        select: {
+                            nombre_sala: true,
+                            capacidad_sala: true,
+                        },
+                    },
+                    Repeticion: {
+                        select: {
+                            fecha_repeticion: true,
+                            hora_inicio_repeticion: true,
+                            hora_fin_repeticion: true,
+                        },
+                    },
+                    _count: {
+                        select: {
+                            Invitacion: true,
+                        },
+                    },
+                },
+            },
+        },
+    });
 
-        // Transformar los datos para obtener el formato deseado
-        const resultado = invitaciones.map(invitacion => ({
+    // Transformar los datos para obtener el formato deseado
+    const resultado = invitaciones.map((invitacion) => {
+        const reunion = invitacion.reunion;
+        const repeticiones = reunion.Repeticion.map((repeticion) => ({
             id_invitacion: invitacion.id_invitacion,
-            id_usuario: invitacion.reunion.usuario.id_usuario,
-            correo_invitado: invitacion.invitado.email_invitado,
-            colados_invitacion: invitacion.numero_colados,
-            id_sala: invitacion.reunion.sala.id_sala,
-            qr_invitacion: invitacion.qr_acceso,
-            hora_inicio: invitacion.reunion.Repeticion[0]?.hora_inicio_repeticion || null,
-            hora_fin: invitacion.reunion.Repeticion[0]?.hora_fin_repeticion || null,
+            id_usuario: reunion.usuario.id_usuario,
+            nombre_usuario: `${reunion.usuario.nombre_usuario} ${reunion.usuario.apellido_paterno_usuario} ${reunion.usuario.apellido_materno_usuario}`,
+            fecha_repeticion: repeticion.fecha_repeticion,
+            hora_inicio_repeticion: repeticion.hora_inicio_repeticion,
+            hora_fin_repeticion: repeticion.hora_fin_repeticion,
+            nombre_sala: reunion.sala.nombre_sala,
+            numero_invitaciones: reunion._count.Invitacion,
+            capacidad_sala: reunion.sala.capacidad_sala,
+            correo_invitado: invitacion.invitado.email_invitado, // Agregar correo del invitado
         }));
 
-        return resultado;
+        return repeticiones;
+    }).flat();
 
+    return resultado;
 }
 
 

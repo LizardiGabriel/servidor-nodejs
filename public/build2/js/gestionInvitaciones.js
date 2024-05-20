@@ -1,6 +1,6 @@
 async function obtenerInvitaciones() {
     var info = [];
-    console.log('Cargando salas...');
+    console.log('Cargando invitaciones...');
     try {
         const response = await fetch('/admin/catalogo/invitaciones');
         const invitaciones = await response.json();
@@ -8,28 +8,20 @@ async function obtenerInvitaciones() {
         // Limpiar el arreglo 'info'
         info.length = 0;
 
-        /*
-            id_invitacion: invitacion.id_invitacion,
-            id_usuario: invitacion.reunion.usuario.id_usuario,
-            correo_invitado: invitacion.invitado.email_invitado,
-            colados_invitacion: invitacion.numero_colados,
-            id_sala: invitacion.reunion.sala.id_sala,
-            qr_invitacion: invitacion.qr_acceso,
-            hora_inicio: invitacion.reunion.Repeticion[0]?.hora_inicio_repeticion || null,
-            hora_fin: invitacion.reunion.Repeticion[0]?.hora_fin_repeticion || null,
-        * */
-
         // Agregar cada sala al arreglo 'info'
         invitaciones.forEach(invitacion => {
             info.push({
-                id_invitacion: invitacion.id_invitacion,
-                id_usuario: invitacion.id_usuario,
-                correo: invitacion.correo_invitado,
-                colados: invitacion.colados_invitacion,
-                id_sala: invitacion.id_sala,
-                qr: invitacion.qr_invitacion,
-                horaInicio: invitacion.hora_inicio,
-                horaFin: invitacion.hora_fin
+                id_inv: invitacion.id_invitacion,
+                id_usu: invitacion.id_usuario,
+                nombre_usu: invitacion.nombre_usuario,
+                fecha_rep: invitacion.fecha_repeticion,
+                hora_ini: invitacion.hora_inicio_repeticion,
+                hora_fin: invitacion.hora_fin_repeticion,
+                nombre_sala: invitacion.nombre_sala,
+                num_inv: invitacion.numero_invitaciones,
+                cap_sala: invitacion.capacidad_sala,
+                correo_invitado: invitacion.correo_invitado
+
 
             });
         });
@@ -43,18 +35,21 @@ async function obtenerInvitaciones() {
 }
 
 // Función para llenar la tabla con datos iniciales
-function loadTableData() {
+async function loadTableData() {
+    const data = await obtenerInvitaciones();
     const tbody = document.querySelector('tbody');
     data.forEach(item => {
         const row = document.createElement('tr');
-        row.innerHTML = `<td class="id">${item.id}</td>
-                    <td class="nombreAnfi">${item.nombreAnfi}</td>
-                    <td class="fecha">${item.fecha}</td>
-                    <td class="horaInicio">${item.horaInicio}</td>
-                    <td class="horaFin">${item.horaFin}</td>
-                    <td class="sala">${item.sala}</td>
-                    <td class="numInvi">${item.numInvi}</td>
-                    <td class="numAcompa">${item.numAcompa}</td>`;
+        row.innerHTML = `
+            <td class="id">${item.id_inv}</td>
+            <td class="nombreAnfi">${item.nombre_usu}</td>
+            <td class="fecha">${item.fecha_rep}</td>
+            <td class="horaInicio">${item.hora_ini}</td>
+            <td class="horaFin">${item.hora_fin}</td>
+            <td class="sala">${item.nombre_sala}</td>
+            <td class="numInvi">${item.num_inv}</td>
+            <td class="numAcompa">${item.correo_invitado}</td>
+        `;
         tbody.appendChild(row);
     });
 }
@@ -62,6 +57,7 @@ function loadTableData() {
 // Cargar datos en la tabla al iniciar la página
 loadTableData();
 
+/*
 // Activación de DataTables
 $(document).ready(function () {
     $('#Tabla').DataTable({
@@ -81,3 +77,6 @@ $(document).ready(function () {
     });
 
 });
+
+
+ */
