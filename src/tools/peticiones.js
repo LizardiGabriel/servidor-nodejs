@@ -573,6 +573,103 @@ async function setNewInvitacionBD(idReunion, id_invitado, acompanantesInv) {
 }
 
 
+async function getReunionesAdminBD() {
+    console.log('peticion a la bd de getReunionesAdmin');
+    try {
+        const reuniones = await prisma.reunion.findMany({
+            include: {
+                usuario: {
+                    select: {
+                        nombre_usuario: true,
+                        apellido_paterno_usuario: true,
+                        apellido_materno_usuario: true
+                    }
+                },
+                sala: {
+                    select: {
+                        nombre_sala: true
+                    }
+                },
+                Repeticion: {
+                    select: {
+                        fecha_repeticion: true,
+                        hora_inicio_repeticion: true,
+                        hora_fin_repeticion: true
+                    }
+                }
+            }
+        });
+
+        const resultado = reuniones.flatMap(reunion =>
+            reunion.Repeticion.map(repeticion => ({
+                id_reunion: reunion.id_reunion,
+                titulo_reunion: reunion.titulo_reunion,
+                nombre_anfitrion: `${reunion.usuario.nombre_usuario} ${reunion.usuario.apellido_paterno_usuario} ${reunion.usuario.apellido_materno_usuario}`,
+                fecha_repeticion: repeticion.fecha_repeticion,
+                hora_inicio_repeticion: repeticion.hora_inicio_repeticion,
+                hora_fin_repeticion: repeticion.hora_fin_repeticion,
+                nombre_sala: reunion.sala.nombre_sala
+            }))
+        );
+
+        return resultado;
+
+
+    } catch (error) {
+        console.error('Error al obtener reuniones:', error);
+        return json({ error: 'Error al obtener reuniones' });
+    }
+}
+
+async function getInvitacionesAdminBD() {
+        const invitaciones = await prisma.invitacion.findMany({
+            include: {
+                reunion: {
+                    include: {
+                        usuario: {
+                            select: {
+                                id_usuario: true,
+                            }
+                        },
+                        sala: {
+                            select: {
+                                id_sala: true,
+                            }
+                        },
+                        Repeticion: {
+                            select: {
+                                hora_inicio_repeticion: true,
+                                hora_fin_repeticion: true,
+                            },
+                            take: 1, // Tomamos solo la primera repetición como referencia de horarios
+                        }
+                    }
+                },
+                invitado: {
+                    select: {
+                        email_invitado: true,
+                    }
+                }
+            }
+        });
+
+        // Transformar los datos para obtener el formato deseado
+        const resultado = invitaciones.map(invitacion => ({
+            id_invitacion: invitacion.id_invitacion,
+            id_usuario: invitacion.reunion.usuario.id_usuario,
+            correo_invitado: invitacion.invitado.email_invitado,
+            colados_invitacion: invitacion.numero_colados,
+            id_sala: invitacion.reunion.sala.id_sala,
+            qr_invitacion: invitacion.qr_acceso,
+            hora_inicio: invitacion.reunion.Repeticion[0]?.hora_inicio_repeticion || null,
+            hora_fin: invitacion.reunion.Repeticion[0]?.hora_fin_repeticion || null,
+        }));
+
+        return resultado;
+
+}
+
+
 module.exports = {
     getUsersByEmailBD,
     createUserBD,
@@ -601,6 +698,7 @@ module.exports = {
     getReunionByIdInvBD,
 
 
+
     getReunionesConRepeticionByIdOfUserBD,
     setNewReunionBD,
 
@@ -610,5 +708,9 @@ module.exports = {
     setNewInvitacionBD,
 
     getInvitadosBD,
-    updateInvitadoBD
+    updateInvitadoBD,
+
+
+    getReunionesAdminBD,
+    getInvitacionesAdminBD
 };

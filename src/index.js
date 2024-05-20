@@ -53,6 +53,7 @@ const rutas = [
     ['/img/usuario.webp', '../public/build2/img/usuario.webp'],
     ['/build/img/BeeMeet2.png', '../public/build2/img/BeeMeet2.png'],
     ['/build/img/BeeMeet.png', '../public/build2/img/BeeMeet.png'],
+    ['/img/icons/ico-view.svg', '../public/build2/img/icons/view.png'],
 
 
     ['/js/validaciones.js', '../public/build2/js/validaciones.js'],
@@ -63,6 +64,9 @@ const rutas = [
     ['/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', '../public/build2/js/bootstrap.bundle.min.js' ],
     ['/build/js/header.js', '../public/build2/js/header.js'],
     ['/js/gestionarSalas.js', '../public/build2/js/gestionarSalas.js'],
+    ['/js/gestionarReuniones.js', '../public/build2/js/gestionarReuniones.js'],
+    ['/js/gestionInvitaciones.js', '../public/build2/js/gestionInvitaciones.js'],
+
 
 
     ['/css/app.css', '../public/build2/css/app.css'],
@@ -103,7 +107,7 @@ app.use('/admin', (req, res, next) => {
   if (req.session && req.session.rol === 1) {
     next();
   } else {
-    res.status(401).send('Unauthorized');
+      res.redirect('/home/login.html');
   }
 });
 
@@ -143,6 +147,14 @@ app.use('/admin/catalogo/GestionDeUsuarios.html', express.static('./public/build
 app.use('/admin/catalogo/GestionarSalas.html', express.static('./public/build2/views/Admin/GestionarSalas.html'));
 app.use('/admin/editarPersonal.html', express.static('./public/build2/views/Admin/EditarCuentaAnfitrionSeguridad.html'));
 app.use('/admin/editarinvitados.html', express.static('./public/build2/views/Admin/EditarCuentaInvitado.html'));
+
+
+app.use('/admin/catalogo/GestionarReuniones.html', express.static('./public/build2/views/Admin/GestionarReuniones.html'));
+app.use('/admin/catalogo/GestionDeInvitaciones.html', express.static('./public/build2/views/Admin/GestionDeInvitaciones.html'));
+
+app.get('/admin/catalogo/reuniones', admin.getReuniones);
+app.get('/admin/catalogo/invitaciones', admin.getInvitaciones);
+
 
 app.get('/admin/test', (req, res) => {
   console.log('test');

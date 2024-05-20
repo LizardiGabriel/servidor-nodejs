@@ -1,7 +1,7 @@
 const { getSalasBD, setNewSalaBD, getSalaByIdBD, updateSalaBD, deleteSalaBD } = require('../tools/peticiones');
 const { getUsuariosBD, setNewUsuarioBD, getUsuarioByIdBD, getUsuarioByEmailBD, updateUsuarioBD, deleteUsuarioBD } = require('../tools/peticiones');
 
-const { getInvitadosBD, getInvitadoByIdBD, updateInvitadoBD } = require('../tools/peticiones');
+const { getInvitadosBD, getInvitadoByIdBD, updateInvitadoBD, getReunionesAdminBD, getInvitacionesAdminBD } = require('../tools/peticiones');
 
 async function logout(req, res) {
     console.log('mensaje --> logout');
@@ -116,6 +116,17 @@ async function deleteUsuario(req, res) {
     res.json(usuarioEliminado);
 }
 
+async function getReuniones(req, res) {
+    const reuniones = await getReunionesAdminBD();
+    console.log(' ===========> =======> ===> => reuniones en json: ', reuniones);
+    res.json(reuniones);
+
+}
+
+async function getInvitaciones(req, res) {
+    const invitaciones = await getInvitacionesAdminBD();
+    res.json(invitaciones);
+}
 
 module.exports = {
     logout,
@@ -133,5 +144,8 @@ module.exports = {
 
     getInvitados,
     getInvitadoById,
-    updateInvitado
+    updateInvitado,
+
+    getReuniones,
+    getInvitaciones
 };

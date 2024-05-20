@@ -1,26 +1,46 @@
-const data = [
-    { id: 1, nombreAnfi: "Rafael Cabañas", fecha: "2024-03-10", horaInicio: "10:30 AM", horaFin: "11:30 AM", sala: "Multiusos", numInvi: "25", numAcompa: "7" },
-    { id: 2, nombreAnfi: "Paola Fernández", fecha: "2024-03-23", horaInicio: "11:30 AM", horaFin: "01:30 PM", sala: "Multiusos", numInvi: "39", numAcompa: "10" },
-    { id: 3, nombreAnfi: "Diego López", fecha: "2024-04-05", horaInicio: "09:00 AM", horaFin: "10:30 AM", sala: "Salón Principal", numInvi: "18", numAcompa: "5" },
-    { id: 4, nombreAnfi: "María Rodriguez", fecha: "2024-04-18", horaInicio: "02:00 PM", horaFin: "04:00 PM", sala: "Sala de Conferencias", numInvi: "30", numAcompa: "8" },
-    { id: 5, nombreAnfi: "Juan Pérez", fecha: "2024-04-22", horaInicio: "08:30 AM", horaFin: "10:00 AM", sala: "Sala A", numInvi: "20", numAcompa: "6" },
-    { id: 6, nombreAnfi: "Luisa Gómez", fecha: "2024-05-02", horaInicio: "01:00 PM", horaFin: "02:30 PM", sala: "Sala B", numInvi: "15", numAcompa: "4" },
-    { id: 7, nombreAnfi: "Daniel Martínez", fecha: "2024-05-15", horaInicio: "11:00 AM", horaFin: "12:30 PM", sala: "Sala de Reuniones", numInvi: "12", numAcompa: "3" },
-    { id: 8, nombreAnfi: "Ana Jiménez", fecha: "2024-05-29", horaInicio: "03:00 PM", horaFin: "04:30 PM", sala: "Salón Principal", numInvi: "22", numAcompa: "6" },
-    { id: 9, nombreAnfi: "Roberto Sánchez", fecha: "2024-06-10", horaInicio: "10:30 AM", horaFin: "12:00 PM", sala: "Sala de Conferencias", numInvi: "28", numAcompa: "8" },
-    { id: 10, nombreAnfi: "Laura Pérez", fecha: "2024-06-25", horaInicio: "02:30 PM", horaFin: "04:00 PM", sala: "Sala A", numInvi: "35", numAcompa: "9" },
-    { id: 11, nombreAnfi: "Jorge González", fecha: "2024-07-08", horaInicio: "09:30 AM", horaFin: "11:00 AM", sala: "Sala B", numInvi: "17", numAcompa: "5" },
-    { id: 12, nombreAnfi: "Marisol Torres", fecha: "2024-07-20", horaInicio: "11:00 AM", horaFin: "12:30 PM", sala: "Sala de Reuniones", numInvi: "10", numAcompa: "3" },
-    { id: 13, nombreAnfi: "Pedro Ramírez", fecha: "2024-08-03", horaInicio: "02:00 PM", horaFin: "03:30 PM", sala: "Multiusos", numInvi: "26", numAcompa: "7" },
-    { id: 14, nombreAnfi: "Lucía Rodríguez", fecha: "2024-08-16", horaInicio: "10:00 AM", horaFin: "11:30 AM", sala: "Salón Principal", numInvi: "19", numAcompa: "5" },
-    { id: 15, nombreAnfi: "Fernando Díaz", fecha: "2024-08-29", horaInicio: "03:30 PM", horaFin: "05:00 PM", sala: "Sala de Conferencias", numInvi: "33", numAcompa: "9" },
-    { id: 16, nombreAnfi: "Gabriela Ruiz", fecha: "2024-09-12", horaInicio: "01:30 PM", horaFin: "03:00 PM", sala: "Sala A", numInvi: "24", numAcompa: "6" },
-    { id: 17, nombreAnfi: "Andrés González", fecha: "2024-09-25", horaInicio: "09:30 AM", horaFin: "11:00 AM", sala: "Sala B", numInvi: "16", numAcompa: "4" },
-    { id: 18, nombreAnfi: "Valeria Sánchez", fecha: "2024-10-08", horaInicio: "11:00 AM", horaFin: "12:30 PM", sala: "Sala de Reuniones", numInvi: "13", numAcompa: "3" },
-    { id: 19, nombreAnfi: "Mario López", fecha: "2024-10-21", horaInicio: "02:00 PM", horaFin: "03:30 PM", sala: "Multiusos", numInvi: "29", numAcompa: "8" },
-    { id: 20, nombreAnfi: "Camila Torres", fecha: "2024-11-03", horaInicio: "10:00 AM", horaFin: "11:30 AM", sala: "Salón Principal", numInvi: "21", numAcompa: "6" },
-    { id: 21, nombreAnfi: "Javier Martínez", fecha: "2024-11-16", horaInicio: "03:30 PM", horaFin: "05:00 PM", sala: "Sala de Conferencias", numInvi: "36", numAcompa: "10" }
-];
+async function obtenerInvitaciones() {
+    var info = [];
+    console.log('Cargando salas...');
+    try {
+        const response = await fetch('/admin/catalogo/invitaciones');
+        const invitaciones = await response.json();
+
+        // Limpiar el arreglo 'info'
+        info.length = 0;
+
+        /*
+            id_invitacion: invitacion.id_invitacion,
+            id_usuario: invitacion.reunion.usuario.id_usuario,
+            correo_invitado: invitacion.invitado.email_invitado,
+            colados_invitacion: invitacion.numero_colados,
+            id_sala: invitacion.reunion.sala.id_sala,
+            qr_invitacion: invitacion.qr_acceso,
+            hora_inicio: invitacion.reunion.Repeticion[0]?.hora_inicio_repeticion || null,
+            hora_fin: invitacion.reunion.Repeticion[0]?.hora_fin_repeticion || null,
+        * */
+
+        // Agregar cada sala al arreglo 'info'
+        invitaciones.forEach(invitacion => {
+            info.push({
+                id_invitacion: invitacion.id_invitacion,
+                id_usuario: invitacion.id_usuario,
+                correo: invitacion.correo_invitado,
+                colados: invitacion.colados_invitacion,
+                id_sala: invitacion.id_sala,
+                qr: invitacion.qr_invitacion,
+                horaInicio: invitacion.hora_inicio,
+                horaFin: invitacion.hora_fin
+
+            });
+        });
+
+        console.log('reuniones cargadas:', info);
+        return info;
+    } catch (error) {
+        console.error('Error al obtener salas:', error);
+        return [];
+    }
+}
 
 // Función para llenar la tabla con datos iniciales
 function loadTableData() {

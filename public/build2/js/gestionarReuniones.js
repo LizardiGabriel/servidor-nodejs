@@ -1,33 +1,46 @@
-const data = [
-    { id: 1, nombreReu: "Contrato", nombreAnfi: "Rafael Cabañas", fecha: "2024-11-01", horario: "09:30 AM", sala: "42" },
-    { id: 2, nombreReu: "Revisión de Proyecto", nombreAnfi: "Laura Martínez", fecha: "2024-02-02", horario: "10:00 AM", sala: "30" },
-    { id: 3, nombreReu: "Negociación con Cliente", nombreAnfi: "Alejandro Gutiérrez", fecha: "2024-04-03", horario: "11:00 AM", sala: "25" },
-    { id: 4, nombreReu: "Capacitación de Equipo", nombreAnfi: "Patricia Ramírez", fecha: "2024-04-04", horario: "12:00 PM", sala: "50" },
-    { id: 5, nombreReu: "Junta Directiva", nombreAnfi: "Paola Herrera", fecha: "2024-03-05", horario: "01:00 PM", sala: "60" },
-    { id: 6, nombreReu: "Seguimiento de Tareas", nombreAnfi: "Ana López", fecha: "2024-02-08", horario: "09:30 AM", sala: "42" },
-    { id: 7, nombreReu: "Lanzamiento de Producto", nombreAnfi: "Francisco Pérez", fecha: "2024-07-09", horario: "10:00 AM", sala: "30" },
-    { id: 8, nombreReu: "Entrevista con Candidato", nombreAnfi: "Mariana Gómez", fecha: "2024-08-10", horario: "11:00 AM", sala: "25" },
-    { id: 9, nombreReu: "Planeación Estratégica", nombreAnfi: "Pedro Vargas", fecha: "2024-06-11", horario: "12:00 PM", sala: "50" },
-    { id: 10, nombreReu: "Celebración de Cumpleaños", nombreAnfi: "Todos", fecha: "2024-10-12", horario: "01:00 PM", sala: "60" },
-    { id: 11, nombreReu: "Revisión de Metas", nombreAnfi: "Isabel Juárez", fecha: "2024-11-15", horario: "09:30 AM", sala: "42" },
-    { id: 12, nombreReu: "Tormenta de Ideas", nombreAnfi: "Diego Ortiz", fecha: "2024-12-16", horario: "10:00 AM", sala: "30" },
-    { id: 13, nombreReu: "Firma de Contrato", nombreAnfi: "Gabriela Moreno", fecha: "2024-01-17", horario: "11:00 AM", sala: "25" },
-    { id: 14, nombreReu: "Capacitación en Software", nombreAnfi: "Luis Hernández", fecha: "2024-02-18", horario: "12:00 PM", sala: "50" },
-    { id: 15, nombreReu: "Evento de Networking", nombreAnfi: "Claudia Rivera", fecha: "2024-03-19", horario: "01:00 PM", sala: "60" },
-    { id: 16, nombreReu: "Presentación de Resultados", nombreAnfi: "Enrique Martínez", fecha: "2024-04-22", horario: "09:30 AM", sala: "42" }
-];
+async function obtenerSalas() {
+    var info = [];
+    console.log('Cargando salas...');
+    try {
+        const response = await fetch('/admin/catalogo/reuniones');
+        const reuniones = await response.json();
 
+        // Limpiar el arreglo 'info'
+        info.length = 0;
+
+        // Agregar cada sala al arreglo 'info'
+        reuniones.forEach(reunion => {
+            info.push({
+                id: reunion.id_reunion,
+                titulo: reunion.titulo_reunion,
+                anfitrion: reunion.nombre_anfitrion,
+                fecha: reunion.fecha_repeticion,
+                horaInicio: reunion.hora_inicio_repeticion,
+                horaFin: reunion.hora_fin_repeticion,
+                sala: reunion.nombre_sala
+
+            });
+        });
+
+        console.log('reuniones cargadas:', info);
+        return info;
+    } catch (error) {
+        console.error('Error al obtener salas:', error);
+        return [];
+    }
+}
 
 // Función para llenar la tabla con datos iniciales
-function loadTableData() {
+async function loadTableData() {
+    const data = await obtenerSalas();
     const tbody = document.querySelector('tbody');
     data.forEach(item => {
         const row = document.createElement('tr');
         row.innerHTML = `<td class="id">${item.id}</td>
-                    <td class="nombreR">${item.nombreReu}</td>
-                    <td class="nombreA">${item.nombreAnfi}</td>
+                    <td class="nombreR">${item.titulo}</td>
+                    <td class="nombreA">${item.anfitrion}</td>
                     <td class="fecha">${item.fecha}</td>
-                    <td class="horario">${item.horario}</td>
+                    <td class="horario">${item.horaInicio} - ${item.horaFin}</td>
                     <td class="sala">${item.sala}</td>
                     <td class="accion">
                       <button class="btn btn-sm visualizar" data-id="${item.id}"><img src="../../img/icons/ico-view.svg"></button>
@@ -40,6 +53,7 @@ function loadTableData() {
 // Cargar datos en la tabla al iniciar la página
 loadTableData();
 
+/*
 //Activación de DataTables
 new DataTable('#Tabla', {
     pagingType: 'full_numbers', //Tipo de paginación 
@@ -56,4 +70,4 @@ new DataTable('#Tabla', {
     ],
     autoWidth: true
 });
-
+*/
