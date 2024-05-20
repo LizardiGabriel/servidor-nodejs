@@ -63,7 +63,7 @@ CREATE TABLE `Invitado` (
     `apellido_materno_invitado` VARCHAR(191) NOT NULL,
     `email_invitado` VARCHAR(191) NOT NULL,
     `password_invitado` VARCHAR(191) NOT NULL,
-    `telefono_invitado` INTEGER NOT NULL,
+    `telefono_invitado` VARCHAR(191) NOT NULL,
     `empresa_invitado` VARCHAR(191) NOT NULL,
     `foto_invitado` VARCHAR(191) NOT NULL,
     `identificacion_invitado` VARCHAR(191) NOT NULL,

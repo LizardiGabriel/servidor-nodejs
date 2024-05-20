@@ -332,6 +332,32 @@ async function getInvitadoByNameBD(nombre) {
         return json({ error: 'Error al obtener el invitado' });
     }
 }
+
+async function updateInvitadoBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono) {
+    console.log('peticion a la bd de updateInvitado');
+    try {
+        const invitadoActualizado = await prisma.invitado.update({
+            where: { id_invitado: Number(id) },
+            data: {
+                email_invitado: email,
+                nombre_invitado: nombre,
+                apellido_paterno_invitado: apellidoPaterno,
+                apellido_materno_invitado: apellidoMaterno,
+                telefono_invitado: telefono
+            }
+        });
+        if (invitadoActualizado != null) {
+            return { message: 'Invitado actualizado correctamente', status: 200};
+        }else{
+            return { message: 'Error al actualizar invitado', status: 500};
+        }
+    } catch (error) {
+        console.error('Error al actualizar invitado:', error);
+        return { message: 'Error al actualizar invitado', status: 500 };
+    }
+
+}
+
 async function getInvitacionesByIdInv(id) {
     console.log('Petición a la BD de getInvitacionesByIdInvitado');
     try {
@@ -508,7 +534,7 @@ async function setNewInvitadoBD(email) {
                 apellido_paterno_invitado: "",
                 apellido_materno_invitado: "",
                 password_invitado: "",
-                telefono_invitado: 0,
+                telefono_invitado: "",
                 empresa_invitado: "",
                 foto_invitado: "",
                 identificacion_invitado: "",
@@ -583,5 +609,6 @@ module.exports = {
 
     setNewInvitacionBD,
 
-    getInvitadosBD
+    getInvitadosBD,
+    updateInvitadoBD
 };

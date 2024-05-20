@@ -132,6 +132,7 @@ app.delete('/admin/catalogo/usuarios/:id', admin.deleteUsuario);
 app.use('/admin/catalogo/invitados.html', express.static('./public/build2/views/Admin/gestiondeinvitados.html'));
 app.get('/admin/catalogo/invitados', admin.getInvitados);
 app.get('/admin/catalogo/invitados/:id', admin.getInvitadoById);
+app.put('/admin/catalogo/invitados', admin.updateInvitado);
 
 
 app.use('/admin/catalogo/crearCuenta.html', express.static('./public/build2/views/Admin/crearCuenta.html'));

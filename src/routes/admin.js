@@ -1,7 +1,7 @@
 const { getSalasBD, setNewSalaBD, getSalaByIdBD, updateSalaBD, deleteSalaBD } = require('../tools/peticiones');
 const { getUsuariosBD, setNewUsuarioBD, getUsuarioByIdBD, getUsuarioByEmailBD, updateUsuarioBD, deleteUsuarioBD } = require('../tools/peticiones');
 
-const { getInvitadosBD, getInvitadoByIdBD } = require('../tools/peticiones');
+const { getInvitadosBD, getInvitadoByIdBD, updateInvitadoBD } = require('../tools/peticiones');
 
 async function logout(req, res) {
     console.log('mensaje --> logout');
@@ -69,6 +69,13 @@ async function getInvitadoById(req, res) {
     res.json(invitado);
 }
 
+async function updateInvitado(req, res) {
+    const { id, email, nombre, apellidoPaterno, apellidoMaterno, telefono  } = req.body;
+    const invitadoActualizado = await updateInvitadoBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono);
+    res.json(invitadoActualizado);
+
+}
+
 async function setNewUsuario(req, res) {
     console.log('=============================mensaje --> setNewUsuario');
     const { email, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario } = req.body;
@@ -125,5 +132,6 @@ module.exports = {
     deleteUsuario,
 
     getInvitados,
-    getInvitadoById
+    getInvitadoById,
+    updateInvitado
 };

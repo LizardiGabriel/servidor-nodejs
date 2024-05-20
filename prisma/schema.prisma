@@ -76,7 +76,7 @@ model Invitado {
   apellido_materno_invitado String
   email_invitado            String           @unique
   password_invitado         String
-  telefono_invitado         Int
+  telefono_invitado         String
   empresa_invitado          String
   foto_invitado             String
   identificacion_invitado   String
