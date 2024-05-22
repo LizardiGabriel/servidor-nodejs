@@ -175,6 +175,9 @@ app.use('/anfitrion', (req, res, next) => {
   }
 }
 );
+
+app.use('/anfitrion/reuniones2.html', express.static('./public/build2/views/Anfitrion/reunionesAnf.html'));
+
 app.use('/anfitrion/anfitrion.html', express.static('./public/build2/views/Anfitrion/anfitrion.html'));
 app.get('/anfitrion/logout', anfitrion.logout);
 app.use('/anfitrion/reuniones.html', express.static('./public/build2/views/Anfitrion/consultarReuniones.html'));
