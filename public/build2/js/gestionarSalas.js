@@ -45,15 +45,26 @@ async function loadTableData() {
                          <td class="numeroS">${item.numeroS}</td>
                          <td class="pisoS">${item.pisoS}</td>
                          <td class="acciones">
-                            <button class="btn btn-sm editar" data-id="${item.id}">
+                            <button class="btn btn-sm editar" data-id="${item.id}" onclick="editarSala(${item.id})">
                                 <img src="../../img/icons/ico-editar.svg" alt="Editar">
                             </button>
-                            <button class="btn btn-sm eliminar" data-id="${item.id}">
+                            <button class="btn btn-sm eliminar" data-id="${item.id}" onclick="eliminarSala(${item.id})">
                                 <img src="../../img/icons/ico-trash.svg" alt="Eliminar">
                             </button>
                          </td>`;
         tbody.appendChild(row);
     });
+}
+
+function editarSala(idSala){
+  alert('editar sala id: ' + idSala);
+  window.location.href = `/admin/EditarSala.html?idSala=${idSala}`;  
+
+}
+
+function eliminarSala(idSala){
+  alert('eliminar sala, id: ' + idSala);
+
 }
 
 // Cargar datos en la tabla al iniciar la página

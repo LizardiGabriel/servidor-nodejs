@@ -155,6 +155,8 @@ app.use('/admin/catalogo/GestionDeInvitaciones.html', express.static('./public/b
 app.get('/admin/catalogo/reuniones', admin.getReuniones);
 app.get('/admin/catalogo/invitaciones', admin.getInvitaciones);
 
+app.use('/admin/EditarSala.html', express.static('./public/build2/views/Admin/EditarSala.html'));
+
 
 app.get('/admin/test', (req, res) => {
   console.log('test');
