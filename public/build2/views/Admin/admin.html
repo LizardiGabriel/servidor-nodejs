@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Panel de Administración</title>
+</head>
+
+<body>
+    <h1>Bienvenido al Panel de Administración</h1>
+
+    <button onclick="logout()">Cerrar Sesión</button>
+    <button onclick="salas()">Admin Salas</button>
+    <button onclick="usuarios()">Admin Usuarios</button>
+
+    <br>
+    <button onclick="crearCuenta()">Crear Cuenta</button>
+    <button onclick="crearSala()">Crear Sala</button>
+    <button onclick="gestionDeUsuarios()">Gestion de personal</button>
+    <button onclick="gestionDeInvitados()">Gestion de invitados</button>
+
+    <button onclick="gestionarSalas()"> Gestionar Salas</button>
+
+    <br>
+    <button onclick="gestionarReuniones()">Gestionar Reuniones</button>
+    <button onclick="gestionarInvitaciones()">Gestionar Invitaciones</button>
+
+
+    <script>
+        function logout() {
+            fetch("/admin/logout", {
+                method: "GET"
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = "/";
+                    } else {
+                        console.error("Error al cerrar sesión:", response.statusText);
+                    }
+                })
+                .catch(error => console.error("Error al cerrar sesión:", error));
+
+        }
+
+        function salas() {
+            window.location.href = "/admin/catalogo/catalogo.html";
+        }
+        function usuarios() {
+            window.location.href = "/admin/catalogo/usuarios.html";
+        }
+        function crearCuenta() {
+            window.location.href = "/admin/catalogo/crearCuenta.html";
+        }
+
+        function crearSala() {
+            window.location.href = "/admin/catalogo/CrearSala.html";
+        }
+
+        function gestionDeUsuarios() {
+            window.location.href = "/admin/catalogo/GestionDeUsuarios.html";
+        }
+
+        function gestionDeInvitados() {
+            window.location.href = "/admin/catalogo/invitados.html";
+        }
+
+        function gestionarSalas() {
+            window.location.href = "/admin/catalogo/GestionarSalas.html";
+        }
+
+        function gestionarReuniones() {
+            window.location.href = "/admin/catalogo/GestionarReuniones.html";
+        }
+
+        function gestionarInvitaciones() {
+            window.location.href = "/admin/catalogo/GestionDeInvitaciones.html";
+        }
+
+    </script>
+</body>
+
+</html>
