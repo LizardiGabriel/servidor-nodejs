@@ -285,9 +285,9 @@
             })
                 .then(response => {
                     if (response.ok) {
-                        obtenerSalas();
-                        hideFormCrearSala();
+                        window.location.href = '/admin/catalogo/GestionarSalas.html';
                     } else {
+                        alert('Error al crear sala: ' + response.statusText);
                         console.error('Error al crear sala:', response.statusText);
                     }
                 })

@@ -211,7 +211,7 @@
                     </div>
                     <br>
                     <div class="cSalaHeroForm__button-Container">
-                    <input type="submit"  class="cSalaHeroForm__button-Container__button__Secundario" value="Cancelar" id="" >
+                    <input onclick="cancelar()" type="submit"  class="cSalaHeroForm__button-Container__button__Secundario" value="Cancelar" id="" >
                         <div class="Boton">
                             <input onclick="enviarForm()" type="submit" class="cSalaHeroForm__button-Container__button__Primario" value="Aceptar" id="">
                             <script src="https://cdn.jsdelivr.net/npm/mdb-ui-kit@3.11.0/dist/js/mdb.min.js"></script>
@@ -306,13 +306,12 @@
 
             //alert("nombreSala: " + nombreSala + "\ncupoMaximo: " + cupoMaximo + "\npiso: " + piso + "\nnumerito: " + numerito + "\nselectedOption: " + selectedOption);
 
-            fetch('/admin/catalogo/salas', {
-                method: 'POST',
+            fetch(`/admin/catalogo/salas/${salita}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    // id: salita,
                     nombreSala,
                     cupoMaximo,
                     piso,
@@ -320,17 +319,22 @@
                     estado
                 })
             })
-                .then(response => {
-                    if (response.ok) {
-                        obtenerSalas();
-                        hideFormCrearSala();
-                    } else {
-                        console.error('Error al crear sala:', response.statusText);
-                    }
-                })
-                .catch(error => console.error('Error al crear sala:', error));
+            .then(response => {
+                if (response.ok) {
+                    // redirigir a salas
+                    window.location.href = '/admin/catalogo/GestionarSalas.html';
+                } else {
+                    alert('Error al modificar sala: ' + response.statusText);
+                    console.error('Error al modificar sala:', response.statusText);
+                }
+            })
+            .catch(error => console.error('Error al modificar sala:', error));
 
+        }
 
+        function cancelar() {
+            event.preventDefault();
+            window.location.href = '/admin/catalogo/GestionarSalas.html';
         }
     </script>
 
