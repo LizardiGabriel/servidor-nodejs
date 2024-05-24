@@ -106,6 +106,20 @@ async function getReunionByNaveInv(req,res){
         }
     }
 
+    async function getInvitadoById(req, res) {
+        const { id } = req.params;
+        try {
+            const invitado = await getInvitadoByIdBD(id);
+            if (invitado) {
+                res.json(invitado);
+            } else {
+                res.status(404).json({ error: 'Invitado no encontrado' });
+            }
+        } catch (error) {
+            console.error('Error al obtener el invitado:', error);
+            res.status(500).json({ error: 'Error interno del servidor' });
+        }
+    }
 
 }
 //Visualizar agenda
@@ -115,5 +129,6 @@ module.exports = {
     getReunionById,
     getReunionByIdAll,
     getReunionesAll,
-    getReunionByNaveInv
+    getReunionByNaveInv,
+    getInvitadoById
 };
