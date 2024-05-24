@@ -46,14 +46,28 @@ model Reunion {
   id_usuario          Int
   id_sala             Int
   titulo_reunion      String
-  fecha_reunion       DateTime
   descripcion_reunion String
 
+  Repeticion          Repeticion[]
   usuario    Usuario      @relation(fields: [id_usuario], references: [id_usuario])
   sala       Sala         @relation(fields: [id_sala], references: [id_sala])
   Invitacion Invitacion[]
   Acceso     Acceso[]
 }
+
+model Repeticion {
+  id_repeticion Int      @id @default(autoincrement())
+  id_reunion    Int
+
+  fecha_repeticion String
+  hora_inicio_repeticion String
+  hora_fin_repeticion    String
+  estatus_repeticion     String
+
+
+  reunion Reunion @relation(fields: [id_reunion], references: [id_reunion])
+}
+
 
 model Invitado {
   id_invitado               Int              @id @default(autoincrement())
@@ -62,7 +76,7 @@ model Invitado {
   apellido_materno_invitado String
   email_invitado            String           @unique
   password_invitado         String
-  telefono_invitado         Int
+  telefono_invitado         String
   empresa_invitado          String
   foto_invitado             String
   identificacion_invitado   String
@@ -71,6 +85,9 @@ model Invitado {
   Invitacion                Invitacion[]
   Colado                    Colado[]
   colado_invitado            colado_invitado[]
+
+  newCount Int?
+  changeFirstPass Int?
 }
 
 model Invitacion {
@@ -79,6 +96,8 @@ model Invitacion {
   id_invitado   Int
   qr_acceso     String
   habilitado    Habilitado
+
+  numero_colados          Int
 
   reunion                Reunion                  @relation(fields: [id_reunion], references: [id_reunion])
   invitado               Invitado                 @relation(fields: [id_invitado], references: [id_invitado])
@@ -98,8 +117,8 @@ model Acceso {
   id_invitacion       Int
   id_reunion          Int
   nota_acceso         String
-  hora_entrada_acceso DateTime
-  hora_salida_acceso  DateTime
+  hora_entrada_acceso String
+  hora_salida_acceso  String
 
   invitacion                   Invitacion                     @relation(fields: [id_invitacion], references: [id_invitacion])
   reunion                      Reunion                        @relation(fields: [id_reunion], references: [id_reunion])

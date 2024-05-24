@@ -1,7 +1,7 @@
 const { getSalasBD, setNewSalaBD, getSalaByIdBD, updateSalaBD, deleteSalaBD } = require('../tools/peticiones');
-const {getUsuariosBD, setNewUsuarioBD, getUsuarioByIdBD, updateUsuarioBD, deleteUsuarioBD } = require('../tools/peticiones');
+const { getUsuariosBD, setNewUsuarioBD, getUsuarioByIdBD, getUsuarioByEmailBD, updateUsuarioBD, deleteUsuarioBD } = require('../tools/peticiones');
 
-
+const { getInvitadosBD, getInvitadoByIdBD, updateInvitadoBD, getReunionesAdminBD, getInvitacionesAdminBD } = require('../tools/peticiones');
 
 async function logout(req, res) {
     console.log('mensaje --> logout');
@@ -21,7 +21,7 @@ async function getSalas(req, res) {
 async function setNewSala(req, res) {
     const { nombreSala, cupoMaximo, piso, numerito, estado } = req.body;
     console.log('nombreSala: ', nombreSala, 'cupoMaximo: ', cupoMaximo, 'piso: ', piso, 'numerito:', numerito, 'estado: ', estado);
-    const nuevaSala = await setNewSalaBD( nombreSala, cupoMaximo, piso, numerito, estado);
+    const nuevaSala = await setNewSalaBD(nombreSala, cupoMaximo, piso, numerito, estado);
     res.json(nuevaSala);
 }
 
@@ -54,18 +54,50 @@ async function deleteSala(req, res) {
 
 async function getUsuarios(req, res) {
     const usuarios = await getUsuariosBD();
-    console.log('usuarios en json: ', usuarios);
+    //console.log('usuarios en json: ', usuarios);
     res.json(usuarios);
 }
 
+async function getInvitados(req, res) {
+    const invitados = await getInvitadosBD();
+    res.json(invitados);
+}
+
+async function getInvitadoById(req, res) {
+    const { id } = req.params;
+    const invitado = await getInvitadoByIdBD(id);
+    res.json(invitado);
+}
+
+async function updateInvitado(req, res) {
+    const { id, email, nombre, apellidoPaterno, apellidoMaterno, telefono  } = req.body;
+    const invitadoActualizado = await updateInvitadoBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono);
+    res.json(invitadoActualizado);
+
+}
+
 async function setNewUsuario(req, res) {
-    const { email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario } = req.body;
-    console.log('email: ', email, 'contrasena: ', contrasena, 'nombre: ', nombre, 'apellidoPaterno:', apellidoPaterno, 'apellidoMaterno: ', apellidoMaterno, 'telefono: ', telefono, 'idRol: ', idRol, 'foto_usuario: ', foto_usuario);
-    const nuevoUsuario = await setNewUsuarioBD(email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario);
-    res.json(nuevoUsuario);
+    console.log('=============================mensaje --> setNewUsuario');
+    const { email, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario } = req.body;
+    const contrasena = '123456';
+
+    const isEmailAlreadyRegistered = await getUsuarioByEmailBD(email);
+    if (isEmailAlreadyRegistered) {
+        console.log('El email yaaaa esta registrado');
+        res.status(200).json({ message: 'false' });
+    } else {
+        console.log('El email noo esta registrado');
+        console.log('email: ', email, 'contrasena: ', contrasena, 'nombre: ', nombre, 'apellidoPaterno:', apellidoPaterno, 'apellidoMaterno: ', apellidoMaterno, 'telefono: ', telefono, 'idRol: ', idRol, 'foto_usuario: ', foto_usuario);
+        const nuevoUsuario = await setNewUsuarioBD(email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario);
+        console.log('respuesta de la bd xd: ', nuevoUsuario);
+        res.status(200).json({ message: nuevoUsuario });
+    }
+
+
 }
 
 async function getUsuarioById(req, res) {
+    console.log('=========================Dqedewfqewfrfrfrgfrgetgt4g2qreg', req.params)
     const { id } = req.params;
     const usuario = await getUsuarioByIdBD(id);
     res.json(usuario);
@@ -73,8 +105,8 @@ async function getUsuarioById(req, res) {
 
 async function updateUsuario(req, res) {
     const { id } = req.params;
-    const { email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario } = req.body;
-    const usuarioActualizado = await updateUsuarioBD(id, email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario);
+    const { email, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario } = req.body;
+    const usuarioActualizado = await updateUsuarioBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario);
     res.json(usuarioActualizado);
 }
 
@@ -84,6 +116,17 @@ async function deleteUsuario(req, res) {
     res.json(usuarioEliminado);
 }
 
+async function getReuniones(req, res) {
+    const reuniones = await getReunionesAdminBD();
+    console.log(' ===========> =======> ===> => reuniones en json: ', reuniones);
+    res.json(reuniones);
+
+}
+
+async function getInvitaciones(req, res) {
+    const invitaciones = await getInvitacionesAdminBD();
+    res.json(invitaciones);
+}
 
 module.exports = {
     logout,
@@ -97,5 +140,12 @@ module.exports = {
     setNewUsuario,
     getUsuarioById,
     updateUsuario,
-    deleteUsuario
+    deleteUsuario,
+
+    getInvitados,
+    getInvitadoById,
+    updateInvitado,
+
+    getReuniones,
+    getInvitaciones
 };

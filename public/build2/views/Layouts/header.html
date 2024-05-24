@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeeMeet</title>
+    <link rel="stylesheet" href="../../css/app.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand navbar-dark">
+            <div class="container-fluid">
+                <a id="navbar-img" class="navbar-brand" href="#">
+                    <img id="navbar-imgs" src="/build/img/BeeMeet.png" alt="Logo">
+                </a>
+                <div class="navbar-nav ms-auto">
+                    <div class="nav-item dropdown">
+                        <button class="navbar__profile-container nav-link profile-button" onclick="toggleMenu()">
+                            <div id="user-menu" style="display: none;">
+                                <a href="#">Mis datos</a>
+                                <a href="#">Cerrar sesión</a>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <script src="/build/js/header.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeeMeet - Crear Cuenta</title>
+    <link rel="stylesheet" href="../../css/app.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+</head>
+<script>
+    function confirmacion() {
+        alert("Cuenta creada con exito")
+    }
+</script>
+
+<body>
+    <main class="register">
+        <div class="registerHero">
+            <h1 class="registerHero__titulo">Crear Cuenta</h1>
+            <div class="registerHero__imagen">
+                <img class="registerHero__img" src="../../img/BeeMeet2.png" alt="Logo BeeMeet">
+            </div>
+        </div>
+        <div class="registerForm">
+            <h1 class="registerForm__titulo">Crear Cuenta</h1>
+            <form class="form" novalidate action="/admin/catalogo/confirmarCuenta.html">
+                <div class="form__cargo-container">
+                    <label class="form__puesto">Cargo*</label>
+                    <div class="checkbox-wrapper-1">
+                        <input type="checkbox" id="cbx-1" class="inp-cbx" name="rolSeguridad" required />
+                        <label for="cbx-1" class="cbx">
+                            <span>
+                                <svg viewBox="0 0 12 10" height="10px" width="12px">
+                                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                </svg>
+                            </span>
+                            <span>Seguridad del edificio</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-wrapper-2">
+                        <input type="checkbox" id="cbx-2" class="inp-cbx" name="rolAnfitrion" required />
+                        <label for="cbx-2" class="cbx">
+                            <span>
+                                <svg viewBox="0 0 12 10" height="10px" width="12px">
+                                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                </svg>
+                            </span>
+                            <span>Anfitrión</span>
+                        </label>
+                    </div>
+                </div>
+
+                <label class="registerForm__email">Correo Electrónico*</label>
+                <div class="inputForm">
+                    <input name="email" autocomplete="off" id="loginEmail" type="email" class="input"
+                        placeholder="rafaelc_203@beecoders.com" required>
+                    <div class="invalid-feedback">
+                        Ingrese su correo electrónico.
+                    </div>
+                </div>
+                <div id="emailForm"></div>
+
+                <label class="registerForm__email">Nombre*</label>
+                <div class="inputForm">
+                    <input name="nombre" type="text" class="input" placeholder="Rafael" required>
+                    <div class="invalid-feedback">
+                        Ingrese su Nombre.
+                    </div>
+                </div>
+                <label class="registerForm__email">Apellido Paterno*</label>
+                <div class="inputForm">
+                    <input name="apellidoPaterno" type="text" class="input" placeholder="Cabañas" required>
+                    <div class="invalid-feedback">
+                        Ingrese su Apellido Paterno.
+                    </div>
+                </div>
+                <label class="registerForm__email">Apellido Materno*</label>
+                <div class="inputForm">
+                    <input name="apellidoMaterno" type="text" class="input" placeholder="Rocha" required>
+                    <div class="invalid-feedback">
+                        Ingrese su Apellido Materno.
+                    </div>
+                </div>
+
+                <div class="nota-password">
+                    <p>La contraseña se genera de manera automática despues de enviar este formulario</p>
+                </div>
+
+                <div class="button-container">
+                    <input type="submit" class="button-submit1" value="Crear Cuenta" onclick="return confirmacion()"> <!--onclick="return confirmacion()"-->
+                    <button class="button-submit2">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    
+    <script src="../../js/plantilla-formularios.js"></script>
+    <script src="../../js/validaciones.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Panel de anfitrion</title>
+</head>
+
+<body>
+    <h1>Bienvenido al Panel de anfitrion</h1>
+    <button onclick="refReuniones()" >Reuniones</button>
+    <button onclick="reuniones2()" >Reuniones2</button>
+    <button onclick="refSalas()" >Salas</button>
+    <button onclick="refCuenta()" >Mi cuenta</button>
+
+    <button onclick="logout()">Cerrar Sesión</button>
+
+    <script>
+        function logout() {
+            fetch("/anfitrion/reuniones", {
+                method: "GET"
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = "/";
+                    } else {
+                        console.error("Error al cerrar sesión:", response.statusText);
+                    }
+                })
+                .catch(error => console.error("Error al cerrar sesión:", error));
+
+        }
+
+        function refReuniones() {
+            window.location.href = "/anfitrion/reuniones.html";
+        }
+        function refSalas() {
+            window.location.href = "/anfitrion/salas.html";
+        }
+        function refCuenta() {
+            window.location.href = "/anfitrion/cuenta.html";
+        }
+        function reuniones2() {
+            window.location.href = "/anfitrion/reuniones2.html";
+        }
+
+    </script>
+</body>
+
+</html>
