@@ -51,6 +51,7 @@ async function setNewReunion(req, res) {
 }
 
 async function crearInvitacion(req, res) {
+    // no usages
     console.log('mensaje --> crearInvitacion dcervrvwcececwfr')
     const idReunion = req.params;
     console.log(idReunion);
@@ -64,15 +65,37 @@ async function setInvitacion(req, res) {
 
     //console.log('idAnfitrion: ', req.session.userId, 'idReunion: ', idReunion, 'correoInv: ', correoInv, 'numAcomp: ', acompanantesInv);
     
-    var invitado = await getInvitadoByEmailBD(correoInv);
+    let invitado = await getInvitadoByEmailBD(correoInv);
+    let wasRegistred = 1;
     if (invitado === null) {
-        invitado = await setNewInvitadoBD(correoInv);
+        wasRegistred = 0;
+        const password = "ABCDEFGH";
+        invitado = await setNewInvitadoBD(correoInv, password);
     }
+
     const id_invitado = invitado.id_invitado;
     
     const setInvitacion = await setNewInvitacionBD(idReunion, id_invitado, acompanantesInv);
 
     if(setInvitacion !== null){
+
+        let emailText = "";
+        if(wasRegistred){
+            // si el cliente ya ha sido invitado a reuniones antes --> el email debe de decir que se le envio una nueva invitacion y revise su cuenta
+            emailText = "se te ha enviado una nueva invitacion, inicia sesion para registrarte";
+
+        }else{
+            emailText = "invitado@test.com, has sido invitado a una reunion (detalles)... entra a la plataforma beemeet.com para conocer los detalles "+ 
+            "tu usuario es: invitado@test y tu contrasena es **** ****";
+        }
+
+        // mandar el email, el email debe tener
+        // email y la contrasena temporal de la cuenta
+        // un mensaje como de 'esta es tu correo, es tu cuenta, entra para que aceptes la reunion a la que se te invito
+
+        //
+
+
         res.json({ message: 'succesful', status: 200});
     }
     else{

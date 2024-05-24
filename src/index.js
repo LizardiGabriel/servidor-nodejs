@@ -66,6 +66,8 @@ const rutas = [
     ['/js/gestionarSalas.js', '../public/build2/js/gestionarSalas.js'],
     ['/js/gestionarReuniones.js', '../public/build2/js/gestionarReuniones.js'],
     ['/js/gestionInvitaciones.js', '../public/build2/js/gestionInvitaciones.js'],
+    ['/js/index.global.min.js', '../public/build2/js/index.global.min.js'],
+
 
 
 

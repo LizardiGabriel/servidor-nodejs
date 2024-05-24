@@ -524,7 +524,7 @@ async function getInvitadoByEmailBD(email) {
     }
 
 }
-async function setNewInvitadoBD(email) {
+async function setNewInvitadoBD(email, password) {
     console.log('peticion a la bd de setNewInvitado');
     try {
         const nuevoInvitado = await prisma.invitado.create({
@@ -533,7 +533,7 @@ async function setNewInvitadoBD(email) {
                 nombre_invitado: "",
                 apellido_paterno_invitado: "",
                 apellido_materno_invitado: "",
-                password_invitado: "",
+                password_invitado: password,
                 telefono_invitado: "",
                 empresa_invitado: "",
                 foto_invitado: "",

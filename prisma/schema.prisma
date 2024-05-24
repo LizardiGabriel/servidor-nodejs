@@ -85,6 +85,9 @@ model Invitado {
   Invitacion                Invitacion[]
   Colado                    Colado[]
   colado_invitado            colado_invitado[]
+
+  newCount Int?
+  changeFirstPass Int?
 }
 
 model Invitacion {
