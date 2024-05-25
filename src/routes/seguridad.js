@@ -78,11 +78,11 @@ async function getReunionById(req,res){
     res.json(reunion);
 }
 
-async function getReunionByNaveInv(req,res){
-    const {nombre}=req.params;
-    const invitado= await getInvitadoByNameBD(nombre);
-    const invitaciones= await getInvitacionesByIdInv(invitado.id_invitado);
-    let reunionesInfo= [];
+async function getReunionByNaveInv(req,res) {
+    const {nombre} = req.params;
+    const invitado = await getInvitadoByNameBD(nombre);
+    const invitaciones = await getInvitacionesByIdInv(invitado.id_invitado);
+    let reunionesInfo = [];
     for (const invitacion of invitaciones) {
         try {
             const reunion = await getReunionByIdBD(invitacion.id_reunion);
@@ -97,7 +97,7 @@ async function getReunionByNaveInv(req,res){
                 fecha_reunion: reunion.fecha_reunion,
                 descripcion_reunion: reunion.descripcion_reunion,
                 id_inv: invitado.id_invitado,
-                nombre_inv:invitado.nombre_invitado,
+                nombre_inv: invitado.nombre_invitado,
                 apellido_inv: invitado.apellido_paterno_invitado
             };
             reunionesInfo.push(respuesta);
@@ -105,7 +105,7 @@ async function getReunionByNaveInv(req,res){
             console.error("Error al recuperar los datos:", error);
         }
     }
-
+}
     async function getInvitadoById(req, res) {
         const { id } = req.params;
         try {
@@ -121,7 +121,7 @@ async function getReunionByNaveInv(req,res){
         }
     }
 
-}
+
 //Visualizar agenda
 module.exports = {
     logout,
