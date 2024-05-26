@@ -2,7 +2,12 @@ const {getUsersByEmailBD, createUserBD, updateUserBD} = require('../tools/petici
 const { hashPassword, comparePassword } = require('../tools/cipher');
 const { json } = require('body-parser');
 const { stat } = require('fs');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
+function generateAccessToken(email, idUsuario, rolNum) {
+    return jwt.sign({ email: email, idUsuario: idUsuario, rol: rolNum }, process.env.SECRET_KEY, { expiresIn: '5m' });
+}
 
 async function login(req, res) {
     try {
@@ -25,32 +30,37 @@ async function login(req, res) {
             return res.status(401).json({ error: 'Contraseña incorrecta', status: 401});
         }
         const rol = usuario.rol_usuario;
-        
-        req.session.userId = usuario.id_usuario;
-        req.session.email = email;
 
+        let rolNum = 0;
+        let ruta = '';
     
         switch (rol) {
             case 'SuperAdmin':
-                req.session.rol = 1;
-                res.status(200).json({ ruta: '/admin/admin.html', status: 200});
-
+                rolNum = 1;
+                ruta = '/admin/admin.html';
                 break;
             case 'Anfitrion':
-                req.session.rol = 2;
-                res.status(200).json({ ruta: '/anfitrion/anfitrion.html', status: 200});
-
+                rolNum = 2;
+                ruta = '/anfitrion/anfitrion.html';
                 break;
             case 'Seguridad':
-                req.session.rol = 3;
-                res.status(200).json({ ruta: '/seguridad/seguridad.html',   status: 200});
+                rolNum = 3;
+                ruta = '/seguridad/seguridad.html';
+                //req.session.rol = 3;
+                //res.status(200).json({ ruta: '/seguridad/seguridad.html',   status: 200});
                 break;
             default:
                 res.status(401).json({ error: 'Rol no encontrado', status: 401});
                 break;
         }
-        //console.log('rol de la bd: ' + rol);
-        //res.status(200).json({ message: 'Inicio de sesión exitoso' });
+        const token = generateAccessToken(email, usuario.id_usuario, rolNum);
+        console.log('token: ' + token);
+        req.session.jwt = token;
+        res.status(200).json({
+            ruta: ruta,
+            status: 200,
+            message: 'Inicio de sesión exitoso'
+        });
     } catch (error) {
         console.error('Error al iniciar sesión:', error);
         res.status(500).json({ error: 'Error interno del servidor', status: 500});

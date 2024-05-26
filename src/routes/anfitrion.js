@@ -8,6 +8,8 @@ const { getReunionesBD,
     getInvitadoByEmailBD, setNewInvitadoBD, setNewInvitacionBD
 
 } = require('../tools/peticiones');
+const jwt = require("jsonwebtoken");
+require('dotenv').config();
 
 
 async function logout(req, res) {
@@ -15,11 +17,35 @@ async function logout(req, res) {
     req.session.destroy();
     res.redirect('/');
 }
+function verifyTokenAndGetUserId(jsonToken) {
+    return new Promise((resolve, reject) => {
+        jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+            if (err) {
+                console.log(' <<<<<<< ºººººº |||||||    >>>>>>>>>><  error en el token');
+                reject(-1);
+            } else {
+                const userId = decoded.idUsuario;
+                console.log(' <<<<<<< ºººººº |||||||    >>>>>>>>>><  idUsuario: ', userId);
+                resolve(userId);
+            }
+        });
+    });
+}
+
 
 async function getReunionesAnfitrion(req, res) {
     console.log('mensaje --> getReunionesAll');
     //console.log(req.session);
-    const reuniones = await getReunionesConRepeticionByIdOfUserBD(req.session.userId);
+    const jsonToken = req.session.jwt;
+    let id_usuario = 0;
+    try {
+        id_usuario = await verifyTokenAndGetUserId(jsonToken);
+        console.log('id_usuarioo ---------: ', id_usuario);
+    } catch (error) {
+        console.log('Error al verificar el token: ', error);
+    }
+
+    const reuniones = await getReunionesConRepeticionByIdOfUserBD(id_usuario);
     if (reuniones !== null) {
         res.json((reuniones));
     } else {
@@ -30,7 +56,7 @@ async function getReunionesAnfitrion(req, res) {
 async function getSalasAnfitrion(req, res) {
     console.log('mensaje --> getSalasAnfitrion');
     //console.log(req.session);
-    const salas = await getSalasBD(req.session.userId);
+    const salas = await getSalasBD();
     if (salas !== null) {
         res.json((salas));
     } else {
@@ -39,12 +65,19 @@ async function getSalasAnfitrion(req, res) {
 }
 
 async function setNewReunion(req, res) {
+    const jsonToken = req.session.jwt;
+    let userId = 0;
+    try {
+        userId = await verifyTokenAndGetUserId(jsonToken);
+    } catch (error) {
+        console.log('Error al verificar el token: ', error);
+    }
     console.log('mensaje --> setNewReunion');
     const { titulo_reunion, descripcion_reunion, fecha_reunion, hora_inicio_reunion,
         hora_fin_reunion, isRepetible, nombreSala, fechasRepetir } = req.body;
     
    const crearReunion = await setNewReunionBD(titulo_reunion, descripcion_reunion, fecha_reunion, hora_inicio_reunion,
-    hora_fin_reunion, isRepetible, nombreSala, fechasRepetir, req.session.userId);
+    hora_fin_reunion, isRepetible, nombreSala, fechasRepetir, userId);
 
     res.json({ respuesta: crearReunion });
 

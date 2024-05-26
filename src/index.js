@@ -19,9 +19,11 @@ const anfitrion = require('./routes/anfitrion');
 const seguridad = require('./routes/seguridad');
 const externo = require('./routes/externo');
 
+require('dotenv').config();
 
 
 
+const jwt = require('jsonwebtoken');
 
 
 const app = express();
@@ -101,16 +103,30 @@ app.use('/home/recuperar2.html', express.static('./public/build2/views/Sesiones/
 app.get('/catalogo/reuniones', reuniones.getReuniones);
 
 
+function getRol(jsonToken){
+    let rol = 0;
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            rol = decoded.rol;
+        }
+    });
+    return rol;
 
-
+}
 
 
 app.use('/admin', (req, res, next) => {
-  if (req.session && req.session.rol === 1) {
-    next();
-  } else {
-      res.redirect('/home/login.html');
-  }
+    if(req.session) {
+        let rol = getRol(req.session.jwt);
+        if(rol !== 1) {
+            return res.status(401).json({error: 'Unauthorized', status: 401});
+        } else {
+            if(rol === 1) {
+                next();
+            }}
+    }
 });
 
 // admin
@@ -170,13 +186,19 @@ app.get('/admin/test', (req, res) => {
 // anfitrion
 
 app.use('/anfitrion', (req, res, next) => {
-  if (req.session && req.session.rol === 2) {
-    next();
-  } else {
-    res.status(401).send('Unauthorized');
-  }
-}
-);
+    if (req.session) {
+        let rol = getRol(req.session.jwt);
+        if (rol !== 2) {
+            return res.status(401).json({error: 'Unauthorized', status: 401});
+        }
+        if (rol === 2) {
+            next();
+        } else {
+            res.status(401).send('Unauthorized');
+        }
+    }else
+        return res.status(401).json({error: 'Unauthorized', status: 401});
+});
 
 app.use('/anfitrion/reuniones2.html', express.static('./public/build2/views/Anfitrion/reunionesAnf.html'));
 
@@ -205,11 +227,18 @@ app.get('/anfitrion/test', (req, res) => {
 
 // seguridad
 app.use('/seguridad', (req, res, next) => {
-  if (req.session && req.session.rol === 3) {
-    next();
-  } else {
-    res.status(401).send('Unauthorized');
-  }
+    if (req.session) {
+        let rol = getRol(req.session.jwt);
+        if (rol !== 3) {
+            return res.status(401).json({error: 'Unauthorized', status: 401});
+        }
+        if (rol === 3) {
+            next();
+        } else {
+            res.status(401).send('Unauthorized');
+        }
+    }else
+        return res.status(401).json({error: 'Unauthorized', status: 401});
 });
 app.use('/seguridad/seguridad.html', express.static('./public/seguridad.html'));
 app.get('/seguridad/logout', seguridad.logout);
