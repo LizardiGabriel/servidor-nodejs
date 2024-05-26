@@ -1,11 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ver datos Invitado</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 8px; /* Ajusta el espacio interior de las celdas */
+            text-align: left;
+            border-bottom: 1px solid #ddd; /* Añade un borde inferior a todas las celdas */
+        }
+
+        th {
+            background-color: #f2f2f2; /* Color de fondo para las celdas del encabezado */
+        }
+
+        /* Agrega espacio entre las columnas */
+        th:first-child, td:first-child {
+            padding-left: 20px;
+        }
+
+        th:last-child, td:last-child {
+            padding-right: 20px;
+        }
+
+        /* Agrega borde a todas las celdas */
+        th, td {
+            border: 1px solid #ddd;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Ver datos del invitado</h1>
+    <h1>CONSULTAR DATOS DEL INVITADO</h1>
+    <div>
+        <label>Nombre Invitado:</label>
+        <input type="text" id="nombreInvitado" disabled>
+    </div>
+    <div>
+        <label>Nombre anfitrión:</label>
+        <input type="text" id="nombreAnfitrion" disabled>
+    </div>
+    <div>
+        <label>Empresa / Organización:</label>
+        <input type="text" id="empresaOrganizacion" disabled>
+    </div>
+    <div>
+        <label>Tipo de Automovil:</label>
+        <input type="text" id="tipoVehiculo" disabled>
+        <label>Placas:</label>
+        <input type="text" id="placas" disabled>
+    </div>
+    <div>
+        <label>Identificación Personal a presentar:</label>
+        <input type="text" id="identificacion" disabled>
+    </div>
+    <div>
+        <h2>Dispositivos electrónicos</h2>
+        <label>Dispositivo:</label>
+        <input type="text" id="dispositivo" placeholder="Dispositivo" disabled>
+        <label>Numero de Serie:</label>
+        <input type="text" id="numeroSerie" placeholder="Numero de Serie" disabled>
+        <br>
+        <label>Celular:</label>
+        <input type="text" id="celular" disabled>
+    </div>
+    <div>
+        <label>Piso #:</label>
+        <input type="text" id="piso" disabled>
+        <label>Sala #:</label>
+        <input type="text" id="sala" disabled>
+    </div>
+    <br>
+    <br>
+    <div>
+        <button id="registrarAcceso">Registrar Acceso</button>
+        <button id="registrarSalida">Registrar Salida</button>
+    </div>
+    <div>
+        <h2>Control de Accesos</h2>
+        <table>
+            <tr>
+                <th>Hora de Entrada</th>
+                <th>Hora de Salida</th>
+            </tr>
+            <tbody id="tablaAccesos">
+                <!-- accesos del invitado -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Obtener el idInvitado desde URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const idInvitado = urlParams.get('idInvitado');
+
+        // Función para obtener los datos del invitado desde la base de datos
+        async function obtenerDatosInvitado() {
+            console.log('Obteniendo datos del invitado...');
+            try {
+                const response = await fetch(`/seguridad/getInvitadoById/${idInvitado}`);
+                if (response.ok) {
+                    const invitado = await response.json();
+                    console.log(invitado);
+                    actualizarCampos(invitado);
+
+                }
+            }
+            catch (error) {
+                console.error(error);
+            }
+        }
+
+
+        // Función para actualizar los campos con los datos del invitado
+        function actualizarCampos(invitado) {
+            //pruebas de impresion de datos
+            //console.log(invitado.empresa_invitado); 
+            //console.log(invitado.Invitacion[0].reunion.usuario.nombre_usuario);
+            console.log('Actualizando campos con los datos del invitado...');
+            document.getElementById('nombreInvitado').value = `${invitado.nombre_invitado} ${invitado.apellido_paterno_invitado} ${invitado.apellido_materno_invitado}`;
+            document.getElementById('nombreAnfitrion').value = `${invitado.Invitacion[0].reunion.usuario.nombre_usuario} ${invitado.Invitacion[0].reunion.usuario.apellido_paterno_usuario} ${invitado.Invitacion[0].reunion.usuario.apellido_materno_usuario}`;
+            document.getElementById('empresaOrganizacion').value = `${invitado.empresa_invitado}`;
+            document.getElementById('tipoVehiculo').value = `${invitado.Invitacion[0].Automovil[0].marca_automovil} ${invitado.Invitacion[0].Automovil[0].modelo_automovil} ${invitado.Invitacion[0].Automovil[0].color_automovil}`;
+            document.getElementById('placas').value = invitado.Invitacion[0].Automovil[0].matricula_automovil;
+            document.getElementById('identificacion').value = invitado.identificacion_invitado;
+            document.getElementById('dispositivo').value = `${invitado.Invitacion[0].dispositivo_electronico[0].marca_dispositivo_electronico} ${invitado.Invitacion[0].dispositivo_electronico[0].modelo_dispositivo_electronico}`;
+            document.getElementById('numeroSerie').value = invitado.Invitacion[0].dispositivo_electronico[0].no_serie_dispositivo_electronico;
+            document.getElementById('celular').value = invitado.telefono_invitado;
+            document.getElementById('piso').value = invitado.Invitacion[0].reunion.sala.piso_sala;
+            document.getElementById('sala').value = invitado.Invitacion[0].reunion.sala.numero_sala;
+
+            // Actualizar la tabla de control de accesos
+            const tablaAccesos = document.getElementById('tablaAccesos');
+            tablaAccesos.innerHTML = ''; // Limpiar la tabla antes de llenarla
+
+            const acceso = invitado.Invitacion[0].Acceso[0]; // Obtener el objeto de acceso
+
+            // Convertir las fechas a horas en la zona horaria local
+            const horaEntrada = new Date(acceso.hora_entrada_acceso).toLocaleTimeString();
+            const horaSalida = new Date(acceso.hora_salida_acceso).toLocaleTimeString();
+
+            // Crear una fila para mostrar los detalles de acceso con solo la hora
+            const fila = document.createElement('tr');
+            fila.innerHTML = `
+                <td>${horaEntrada}</td>
+                <td>${horaSalida}</td>
+            `;
+            tablaAccesos.appendChild(fila);
+        }
+        
+         // Función para registrar el acceso
+         function registrarAcceso() {
+            const horaActual = new Date().toLocaleTimeString();
+            const tablaAccesos = document.getElementById('tablaAccesos');
+            const nuevaFila = document.createElement('tr');
+            nuevaFila.innerHTML = `
+                <td>${horaActual}</td>
+                <td></td>
+            `;
+            tablaAccesos.appendChild(nuevaFila);
+        }
+
+        // Función para registrar la salida
+        function registrarSalida() {
+            const horaActual = new Date().toLocaleTimeString();
+            const tablaAccesos = document.getElementById('tablaAccesos');
+            const filas = tablaAccesos.getElementsByTagName('tr');
+            const ultimaFila = filas[filas.length - 1];
+            const celdas = ultimaFila.getElementsByTagName('td');
+            celdas[1].textContent = horaActual;
+        }
+
+        // Asignar eventos a los botones
+        document.getElementById('registrarAcceso').addEventListener('click', registrarAcceso);
+        document.getElementById('registrarSalida').addEventListener('click', registrarSalida);
+
+        
+        // Llamar a la función para obtener los datos del invitado cuando se cargue la página
+        obtenerDatosInvitado();
+    </script>
 </body>
+
 </html>

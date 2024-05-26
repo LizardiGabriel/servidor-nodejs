@@ -63,6 +63,8 @@ CREATE TABLE `Invitado` (
     `identificacion_invitado` VARCHAR(191) NOT NULL,
     `es_colado_invitado` INTEGER NOT NULL,
     `habilitado` INTEGER NOT NULL,
+    `newCount` INTEGER NULL,
+    `changeFirstPass` INTEGER NULL,
 
     UNIQUE INDEX `Invitado_email_invitado_key`(`email_invitado`),
     PRIMARY KEY (`id_invitado`)

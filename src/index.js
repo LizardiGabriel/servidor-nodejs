@@ -21,9 +21,11 @@ const externo = require('./routes/externo');
 const invitado= require('./routes/invitado');
 const { log } = require('console');
 
+require('dotenv').config();
 
 
 
+const jwt = require('jsonwebtoken');
 
 
 const app = express();
@@ -68,6 +70,8 @@ const rutas = [
     ['/js/gestionarSalas.js', '../public/build2/js/gestionarSalas.js'],
     ['/js/gestionarReuniones.js', '../public/build2/js/gestionarReuniones.js'],
     ['/js/gestionInvitaciones.js', '../public/build2/js/gestionInvitaciones.js'],
+    ['/js/index.global.min.js', '../public/build2/js/index.global.min.js'],
+
 
 
 
@@ -101,16 +105,55 @@ app.use('/home/recuperar2.html', express.static('./public/build2/views/Sesiones/
 app.get('/catalogo/reuniones', reuniones.getReuniones);
 
 
+function getRol(jsonToken){
+    let rol = 0;
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            rol = decoded.rol;
+        }
+    });
+    return rol;
 
+}
 
+function getnewCount(jsonToken) {
+        let newCount = 0;
+        jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+            if (err) {
+                return -1;
+            } else {
+                newCount = decoded.newCount;
+                console.log('newCount from the function: ' + newCount);
+            }
+        });
+        return newCount;
+}
+
+function getchangeFirstPass(jsonToken){
+    let changeFirstPass = 0;
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            changeFirstPass = decoded.changeFirstPass;
+        }
+    });
+    return changeFirstPass;
+}
 
 
 app.use('/admin', (req, res, next) => {
-  if (req.session && req.session.rol === 1) {
-    next();
-  } else {
-      res.redirect('/home/login.html');
-  }
+    if(req.session) {
+        let rol = getRol(req.session.jwt);
+        if(rol !== 1) {
+            return res.status(401).json({error: 'Unauthorized', status: 401});
+        } else {
+            if(rol === 1) {
+                next();
+            }}
+    }
 });
 
 // admin
@@ -170,13 +213,19 @@ app.get('/admin/test', (req, res) => {
 // anfitrion
 
 app.use('/anfitrion', (req, res, next) => {
-  if (req.session && req.session.rol === 2) {
-    next();
-  } else {
-    res.status(401).send('Unauthorized');
-  }
-}
-);
+    if (req.session) {
+        let rol = getRol(req.session.jwt);
+        if (rol !== 2) {
+            return res.status(401).json({error: 'Unauthorized', status: 401});
+        }
+        if (rol === 2) {
+            next();
+        } else {
+            res.status(401).send('Unauthorized');
+        }
+    }else
+        return res.status(401).json({error: 'Unauthorized', status: 401});
+});
 
 app.use('/anfitrion/reuniones2.html', express.static('./public/build2/views/Anfitrion/reunionesAnf.html'));
 
@@ -205,11 +254,18 @@ app.get('/anfitrion/test', (req, res) => {
 
 // seguridad
 app.use('/seguridad', (req, res, next) => {
-  if (req.session && req.session.rol === 3) {
-    next();
-  } else {
-    res.status(401).send('Unauthorized');
-  }
+    if (req.session) {
+        let rol = getRol(req.session.jwt);
+        if (rol !== 3) {
+            return res.status(401).json({error: 'Unauthorized', status: 401});
+        }
+        if (rol === 3) {
+            next();
+        } else {
+            res.status(401).send('Unauthorized');
+        }
+    }else
+        return res.status(401).json({error: 'Unauthorized', status: 401});
 });
 app.use('/seguridad/seguridad.html', express.static('./public/seguridad.html'));
 app.get('/seguridad/logout', seguridad.logout);
@@ -224,16 +280,48 @@ app.get('/seguridad/test', (req, res) => {
 });
 
 // externo
-app.use('/externo', (req, res, next) => {
-  if (req.session && req.session.rol === 4) {
-    next();
-  } else {
-    res.status(401).send('Unauthorized');
-  }
+app.use('/invitado', async (req, res, next) => {
+    if (req.session) {
+        let rol = getRol(req.session.jwt);
+        if (rol !== 4) {
+            return res.status(401).json({error: 'Unauthorized ppp: ' + rol, status: 401});
+        }
+        if (rol === 4) {
+            next();
+        } else {
+            res.status(401).send('Unauthorized pipipi');
+        }
+    } else
+        return res.status(401).json({error: 'Unauthorized cual', status: 401});
 });
-app.use('/externo/externo.html', express.static('./public/externo.html'));
-app.get('/externo/logout', externo.logout);
-app.get('/externo/test', (req, res) => {
+
+app.use('/invitado/home', async (req, res, next) => {
+    let newCount = 0;
+    newCount = await getnewCount(req.session.jwt);
+    console.log('newCount: ' + newCount);
+    if (newCount === 1) {
+        //return res.status(200).json({message: 'primero debe llenar el formulario de invitacion', status: 200});
+        return res.redirect('/invitado/invitacion.html');
+    }
+
+    let changeFirstPass = 0;
+    changeFirstPass = getchangeFirstPass(req.session.jwt);
+    console.log('changeFirstPass: ' + changeFirstPass);
+    if (changeFirstPass === 0) {
+        return res.status(200).json({message: 'tiene que cambiar la contraseña de su cuenta', status: 200});
+    }
+
+    next();
+
+});
+
+
+app.use('/invitado/home/invitado.html', express.static('./public/build2/views/Invitado/invitado.html'));
+app.use('/invitado/invitacion.html', express.static('./public/build2/views/Invitado/invitacion.html'));
+
+
+//app.get('/externo/logout', externo.logout);
+app.get('/invitado/test', (req, res) => {
   console.log('test');
   console.log(req.session);
   res.send('test');

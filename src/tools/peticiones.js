@@ -160,6 +160,20 @@ async function deleteSalaBD(id) {
 
 // invitados
 
+async function getInvitadoByIdEmailBD(email) {
+    console.log('peticion a la bd de getInvitadoByIdEmail');
+    try {
+        const invitado = await prisma.invitado.findFirst({
+            where: { email_invitado: email }
+        });
+        return invitado;
+    } catch (error) {
+        console.error('Error al obtener invitado:', error);
+        return null;
+    }
+
+}
+
 async function getInvitadosBD() {
     console.log('peticion a la bd de getInvitados');
     try {
@@ -292,6 +306,22 @@ async function getReunionByIdBD(id) {
     } catch (error) {
         console.error('Error al obtener la reunion:', error);
         return json({ error: 'Error al obtener la reunion' });
+    }
+}
+
+async function getDetallesReunionByIdBD(id) {
+    console.log('peticion a la bd de getReunionById');
+    try {
+        const reunion = await prisma.reunion.findUnique({
+            where: { id_reunion: Number(id) },
+            include: {
+                Repeticion: true,
+            }
+        });
+        return reunion;
+    } catch (error) {
+        console.error('Error al obtener la reunion:', error);
+        return { error: 'Error al obtener la reunion' };
     }
 }
 
@@ -443,9 +473,6 @@ async function getReunionesConRepeticionByIdOfUserBD(id_usuario) {
             reuniones[i].infoInvitados = infoInvitados;
 
         }
-        
-
-        console.log('=============================>>>>>>>>>>>> respuesta en json bd: ', reuniones);
 
         return reuniones;
 
@@ -524,7 +551,7 @@ async function getInvitadoByEmailBD(email) {
     }
 
 }
-async function setNewInvitadoBD(email) {
+async function setNewInvitadoBD(email, password) {
     console.log('peticion a la bd de setNewInvitado');
     try {
         const nuevoInvitado = await prisma.invitado.create({
@@ -533,13 +560,15 @@ async function setNewInvitadoBD(email) {
                 nombre_invitado: "",
                 apellido_paterno_invitado: "",
                 apellido_materno_invitado: "",
-                password_invitado: "",
+                password_invitado: password,
                 telefono_invitado: "",
                 empresa_invitado: "",
                 foto_invitado: "",
                 identificacion_invitado: "",
                 es_colado_invitado: 1,
-                habilitado: 1
+                habilitado: 1,
+                newCount: 1,
+                changeFirstPass: 0
 
             }
         });
@@ -727,5 +756,9 @@ module.exports = {
 
 
     getReunionesAdminBD,
-    getInvitacionesAdminBD
+    getInvitacionesAdminBD,
+
+    getDetallesReunionByIdBD,
+
+    getInvitadoByIdEmailBD
 };

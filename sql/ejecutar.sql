@@ -1,7 +1,5 @@
-
-
-DROP DATABASE IF EXISTS beemeet;
-CREATE DATABASE IF NOT EXISTS beemeet;
+drop database if exists beemeet; 
+create database beemeet;
 USE beemeet;
 
 -- CreateTable
@@ -69,6 +67,8 @@ CREATE TABLE `Invitado` (
     `identificacion_invitado` VARCHAR(191) NOT NULL,
     `es_colado_invitado` INTEGER NOT NULL,
     `habilitado` INTEGER NOT NULL,
+    `newCount` INTEGER NULL,
+    `changeFirstPass` INTEGER NULL,
 
     UNIQUE INDEX `Invitado_email_invitado_key`(`email_invitado`),
     PRIMARY KEY (`id_invitado`)
@@ -204,8 +204,6 @@ ALTER TABLE `acceso_dispositivo_electronico` ADD CONSTRAINT `acceso_dispositivo_
 
 -- AddForeignKey
 ALTER TABLE `acceso_dispositivo_electronico` ADD CONSTRAINT `acceso_dispositivo_electronico_id_dispositivo_electronico_fkey` FOREIGN KEY (`id_dispositivo_electronico`) REFERENCES `dispositivo_electronico`(`id_dispositivo_electronico`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
-
 
 use beemeet;
 show tables;
