@@ -5,10 +5,15 @@ const path = require('path');
 const { getReunionesBD,
     getReunionesConRepeticionByIdOfUserBD,
     getSalasBD, setNewReunionBD,
-    getInvitadoByEmailBD, setNewInvitadoBD, setNewInvitacionBD
+    getInvitadoByEmailBD, setNewInvitadoBD, setNewInvitacionBD,
+    getReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD, getDetallesReunionByIdBD
 
 } = require('../tools/peticiones');
 const jwt = require("jsonwebtoken");
+
+const mail = require('../tools/mail');
+
+const {beforeEach} = require("node:test");
 require('dotenv').config();
 
 
@@ -83,13 +88,18 @@ async function setNewReunion(req, res) {
 
 }
 
-async function crearInvitacion(req, res) {
-    // no usages
-    console.log('mensaje --> crearInvitacion dcervrvwcececwfr')
-    const idReunion = req.params;
-    console.log(idReunion);
 
-    res.sendFile(path.resolve('./public/crearInvitacion.html'));
+
+async function generatePassword() {
+    // generar un password de 8 digitos entre letras Mayus y numeros
+    let password = "";
+    let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let charactersLength = characters.length;
+    for (let i = 0; i < 8; i++) {
+        password += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return password;
+
 }
 
 async function setInvitacion(req, res) {
@@ -100,36 +110,55 @@ async function setInvitacion(req, res) {
     
     let invitado = await getInvitadoByEmailBD(correoInv);
     let wasRegistred = 1;
+    let password = ""
     if (invitado === null) {
         wasRegistred = 0;
-        const password = "ABCDEFGH";
+        password = await generatePassword();
         invitado = await setNewInvitadoBD(correoInv, password);
     }
 
     const id_invitado = invitado.id_invitado;
     
     const setInvitacion = await setNewInvitacionBD(idReunion, id_invitado, acompanantesInv);
+    const reunion = await getDetallesReunionByIdBD(idReunion);
+
+
+    const sala = await getSalaByIdBD(reunion.id_sala);
+    const titulo = reunion.titulo_reunion;
+    const descripcion = reunion.descripcion_reunion;
+    const anfitrion = await getUsuarioByIdBD(reunion.id_usuario);
+    const repeticiones = reunion.Repeticion;
+
+
+    console.log('reunion: ', JSON.stringify(reunion, null, 2));
+
 
     if(setInvitacion !== null){
 
         let emailText = "";
         if(wasRegistred){
             // si el cliente ya ha sido invitado a reuniones antes --> el email debe de decir que se le envio una nueva invitacion y revise su cuenta
-            emailText = "se te ha enviado una nueva invitacion, inicia sesion para registrarte";
+            emailText =  correoInv + "se te ha enviado una nueva invitacion, inicia sesion para confirmar tu asistencia"
+            + "a la reunion: "+ titulo + " en la sala: " + sala.nombre_sala + " con el anfitrion: " + anfitrion.nombre_usuario + " " + anfitrion.apellido_paterno_usuario +
+               " con la descripcion: " + descripcion + " en la(s) fecha(s): " +
+                repeticiones.map((rep) => { return rep.fecha_repeticion + " de " + rep.hora_inicio_repeticion + " a " + rep.hora_fin_repeticion }).join(", ") +
+                " entra a la plataforma beemeet.com para conocer los detalles ";
 
         }else{
-            emailText = "invitado@test.com, has sido invitado a una reunion (detalles)... entra a la plataforma beemeet.com para conocer los detalles "+ 
-            "tu usuario es: invitado@test y tu contrasena es **** ****";
+            emailText = "invitado@test.com, has sido invitado a una reunion " +
+                "en la sala: " + sala.nombre_sala + " con el anfitrion: " + anfitrion.nombre_usuario + " " + anfitrion.apellido_paterno_usuario +
+                " con la descripcion: " + descripcion + " en la(s) fecha(s): " +
+                repeticiones.map((rep) => { return rep.fecha_repeticion + " de " + rep.hora_inicio_repeticion + " a " + rep.hora_fin_repeticion }).join(", ") +
+                " entra a la plataforma beemeet.com para conocer los detalles " +
+            "tu usuario es: " + correoInv + " y tu contrasena temporal es: " + password;
         }
 
         // mandar el email, el email debe tener
-        // email y la contrasena temporal de la cuenta
-        // un mensaje como de 'esta es tu correo, es tu cuenta, entra para que aceptes la reunion a la que se te invito
-
-        //
-
-
+        console.log('emailText: ', emailText);
+        const envio = await mail(emailText, correoInv);
+        console.log('envio: ', envio);
         res.json({ message: 'succesful', status: 200});
+
     }
     else{
         res.json({ message: 'error', status: 400});
@@ -143,6 +172,5 @@ module.exports = {
     getReunionesAnfitrion,
     getSalasAnfitrion,
     setNewReunion,
-    crearInvitacion,
     setInvitacion
 };

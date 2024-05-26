@@ -253,16 +253,23 @@ app.get('/seguridad/test', (req, res) => {
 });
 
 // externo
-app.use('/externo', (req, res, next) => {
-  if (req.session && req.session.rol === 4) {
-    next();
-  } else {
-    res.status(401).send('Unauthorized');
-  }
+app.use('/invitado', (req, res, next) => {
+    if (req.session) {
+        let rol = getRol(req.session.jwt);
+        if (rol !== 4) {
+            return res.status(401).json({error: 'Unauthorized zzz: ' + rol, status: 401});
+        }
+        if (rol === 4) {
+            next();
+        } else {
+            res.status(401).send('Unauthorized pipipi');
+        }
+    }else
+        return res.status(401).json({error: 'Unauthorized cual', status: 401});
 });
-app.use('/externo/externo.html', express.static('./public/externo.html'));
-app.get('/externo/logout', externo.logout);
-app.get('/externo/test', (req, res) => {
+app.use('/invitado/invitado.html', express.static('./public/build2/views/Invitado/invitado.html'));
+//app.get('/externo/logout', externo.logout);
+app.get('/invitado/test', (req, res) => {
   console.log('test');
   console.log(req.session);
   res.send('test');

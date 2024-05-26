@@ -1,4 +1,4 @@
-const {getUsersByEmailBD, createUserBD, updateUserBD} = require('../tools/peticiones');
+const {getUsersByEmailBD, createUserBD, updateUserBD, getInvitadoByIdBD, getInvitadoByIdEmailBD} = require('../tools/peticiones');
 const { hashPassword, comparePassword } = require('../tools/cipher');
 const { json } = require('body-parser');
 const { stat } = require('fs');
@@ -20,8 +20,40 @@ async function login(req, res) {
         
         const usuario = await getUsersByEmailBD(email);
 
-        if (!usuario) {
-            return res.status(404).json({ error: 'Usuario no encontrado', status: 404});
+        if (usuario == null) {
+            const invitado = await getInvitadoByIdEmailBD(email);
+            if (invitado == null) {
+                return res.status(404).json({ error: 'Usuario no encontrado', status: 404});
+            }else{
+                let rutita = '';
+                let token = '';
+                // si el invitado existe
+                if(password === invitado.password_invitado){
+                    console.log('invitado password correcto');
+                    if(invitado.es_colado_invitado === 1){
+                        console.log('es invitado');
+                        rutita = '/invitado/invitado.html';
+                        token = generateAccessToken(email, invitado.id_invitado, 4);
+                    }else if(invitado.es_colado_invitado === 0){
+                        console.log('es colado');
+                        rutita = '/acompañante/acompañante.html';
+                        token = generateAccessToken(email, invitado.id_invitado, 5);
+
+                    }
+                    req.session.jwt = token;
+                    return res.status(200).json({
+                        ruta: rutita,
+                        status: 200,
+                        message: 'Inicio de sesión exitoso'
+                    });
+
+
+                }else{
+                    return res.status(401).json({ error: 'invitado contraseña incorrecta', status: 401});
+                }
+
+            }
+             return res.status(404).json({ error: 'Usuario no encontrado ooo', status: 404});
         }
 
         const isMatch = await comparePassword(password, usuario.password_usuario);
