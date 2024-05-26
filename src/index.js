@@ -116,6 +116,31 @@ function getRol(jsonToken){
 
 }
 
+function getnewCount(jsonToken) {
+        let newCount = 0;
+        jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+            if (err) {
+                return -1;
+            } else {
+                newCount = decoded.newCount;
+                console.log('newCount from the function: ' + newCount);
+            }
+        });
+        return newCount;
+}
+
+function getchangeFirstPass(jsonToken){
+    let changeFirstPass = 0;
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            changeFirstPass = decoded.changeFirstPass;
+        }
+    });
+    return changeFirstPass;
+}
+
 
 app.use('/admin', (req, res, next) => {
     if(req.session) {
@@ -253,21 +278,46 @@ app.get('/seguridad/test', (req, res) => {
 });
 
 // externo
-app.use('/invitado', (req, res, next) => {
+app.use('/invitado', async (req, res, next) => {
     if (req.session) {
         let rol = getRol(req.session.jwt);
         if (rol !== 4) {
-            return res.status(401).json({error: 'Unauthorized zzz: ' + rol, status: 401});
+            return res.status(401).json({error: 'Unauthorized ppp: ' + rol, status: 401});
         }
         if (rol === 4) {
             next();
         } else {
             res.status(401).send('Unauthorized pipipi');
         }
-    }else
+    } else
         return res.status(401).json({error: 'Unauthorized cual', status: 401});
 });
-app.use('/invitado/invitado.html', express.static('./public/build2/views/Invitado/invitado.html'));
+
+app.use('/invitado/home', async (req, res, next) => {
+    let newCount = 0;
+    newCount = await getnewCount(req.session.jwt);
+    console.log('newCount: ' + newCount);
+    if (newCount === 1) {
+        //return res.status(200).json({message: 'primero debe llenar el formulario de invitacion', status: 200});
+        return res.redirect('/invitado/invitacion.html');
+    }
+
+    let changeFirstPass = 0;
+    changeFirstPass = getchangeFirstPass(req.session.jwt);
+    console.log('changeFirstPass: ' + changeFirstPass);
+    if (changeFirstPass === 0) {
+        return res.status(200).json({message: 'tiene que cambiar la contraseña de su cuenta', status: 200});
+    }
+
+    next();
+
+});
+
+
+app.use('/invitado/home/invitado.html', express.static('./public/build2/views/Invitado/invitado.html'));
+app.use('/invitado/invitacion.html', express.static('./public/build2/views/Invitado/invitacion.html'));
+
+
 //app.get('/externo/logout', externo.logout);
 app.get('/invitado/test', (req, res) => {
   console.log('test');
