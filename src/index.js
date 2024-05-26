@@ -18,6 +18,8 @@ const admin = require('./routes/admin');
 const anfitrion = require('./routes/anfitrion');
 const seguridad = require('./routes/seguridad');
 const externo = require('./routes/externo');
+const invitado= require('./routes/invitado');
+const { log } = require('console');
 
 
 
@@ -236,6 +238,12 @@ app.get('/externo/test', (req, res) => {
   console.log(req.session);
   res.send('test');
 });
+
+//Invitado
+
+app.use('/invitado/invitado.html', express.static('./public/invitado.html'));
+app.use('/invitado/registrarinformacion.html', express.static('./public/build2/views/Invitado/RegistrarInformacion.html'));
+app.post('/invitado/registrarinformacion', invitado.setDataInvitado);
 
 
 app.use('/not-found', express.static('./public/notFound.html'));

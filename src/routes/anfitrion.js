@@ -40,6 +40,7 @@ async function getSalasAnfitrion(req, res) {
 
 async function setNewReunion(req, res) {
     console.log('mensaje --> setNewReunion');
+    console.log(req.body);
     const { titulo_reunion, descripcion_reunion, fecha_reunion, hora_inicio_reunion,
         hora_fin_reunion, isRepetible, nombreSala, fechasRepetir } = req.body;
     

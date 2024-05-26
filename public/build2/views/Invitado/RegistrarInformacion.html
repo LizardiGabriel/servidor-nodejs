@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="registrationForm">
+        <h2>REGISTRAR INFORMACIÓN PERSONAL</h2>
+        <div>
+            <label for="firstName">Nombre(s) *</label>
+            <input type="text" id="firstName" name="firstName" required>
+        </div>
+        <div>
+            <label for="lastName">Apellido Paterno *</label>
+            <input type="text" id="lastName" name="lastName" required>
+        </div>
+        <div>
+            <label for="motherLastName">Apellido Materno *</label>
+            <input type="text" id="motherLastName" name="motherLastName" required>
+        </div>
+        <div>
+            <label for="email">Correo electrónico *</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="phoneNumber">Número de teléfono *</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" required>
+        </div>
+        <div>
+            <label for="company">Empresa a la que pertenece *</label>
+            <input type="text" id="company" name="company" required>
+        </div>
+        <div>
+            <button type="submit">Enviar</button>
+        </div>
+    </form>
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', async function(event) {
+        event.preventDefault(); // Previene el envío del formulario para demostración
+         const formData = new FormData(this);
+         console.log(formData);
+            try {
+                const response = await fetch('/invitado/test', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status} ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                console.log('Respuesta del servidor:', data);
+                // Aquí puedes manejar la respuesta del servidor como desees
+            } catch (error) {
+                console.error('Error al enviar el formulario:', error);
+            }
+        });
+
+    </script>
+</body>
+</html>

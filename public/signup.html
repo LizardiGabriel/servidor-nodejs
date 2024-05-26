@@ -34,7 +34,7 @@
             event.preventDefault(); // Evitar el envío del formulario
 
             var formData = new FormData(this);
-
+            console.log(formData);
             fetch('/home/signup?' + new URLSearchParams(formData))
                 .then(response => response.json())
                 .then(data => {
