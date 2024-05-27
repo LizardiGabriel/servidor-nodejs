@@ -28,7 +28,7 @@
             </div>
         </div>
         <div id="sidebar__list" class="sidebar__menu">
-            <div id="" class="sidebar__menu-option option__active">
+            <div id="" class="sidebar__menu-option option__active" onclick="gestionarInvitaciones()">
                 <div class="icon st0" title="Invitaciones">
                     <svg fill="#F9D8C1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
                         <g transform="translate(0.000000,64.000000) scale(0.100000,-0.100000)">
@@ -49,7 +49,7 @@
                     <p class="option__text">Invitaciones</p>
                 </div>
             </div>
-            <div id="" class="sidebar__menu-option">
+            <div id="" class="sidebar__menu-option" onclick="gestionDeUsuarios()">
                 <div class="icon" title="Usuarios">
                     <svg fill="#F9D8C1"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
                             <path class="st0" d="M256,362.7c-47.1,0-85.3-38.2-85.3-85.3S208.9,192,256,192s85.3,38.2,85.3,85.3S303.1,362.7,256,362.7z
@@ -64,7 +64,7 @@
                     <p class="option__text">Usuarios</p>
                 </div>
             </div>
-            <div id="" class="sidebar__menu-option">
+            <div id="" class="sidebar__menu-option" onclick="gestionarSalas()">
                 <div class="icon" title="Salas">
                  
                     <svg class="" aria-hidden="true" fill="#F9D8C1" viewBox="0 0 20 20"  >
@@ -76,7 +76,7 @@
                     <p class="option__text">Salas</p>
                 </div>
             </div>
-            <div id="" class="sidebar__menu-option">
+            <div id="" class="sidebar__menu-option" onclick="gestionarReuniones()">
                 <div class="icon" title="Reuniones">
                     <svg fill="#F9D8C1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
                     viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
@@ -125,7 +125,7 @@
                         <button class="navbar__profile-container nav-link profile-button" onclick="toggleMenu()">
                             <div id="user-menu" style="display: none;">
                                 <a href="#">Mis datos</a>
-                                <a href="#">Cerrar sesión</a>
+                                <a onclick="logout()">Cerrar sesión</a>
                             </div>
                         </button>
                     </div>
@@ -230,6 +230,7 @@
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/sidebar.js"></script>
     <script src="/build/js/header.js"></script>
+    <script src="../../js/superAdmin.js"></script>
 
     <script>
         window.onload = function () {

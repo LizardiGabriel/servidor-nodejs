@@ -58,6 +58,10 @@ const rutas = [
     ['/build/img/BeeMeet2.png', '../public/build2/img/BeeMeet2.png'],
     ['/build/img/BeeMeet.png', '../public/build2/img/BeeMeet.png'],
     ['/img/icons/ico-view.svg', '../public/build2/img/icons/view.png'],
+    ['/img/bee.png', '../public/build2/img/bee.png'],
+    ['/img/EDIFICIO.png', '../public/build2/img/EDIFICIO.png'],
+    ['/js/superAdmin.js', '../public/build2/js/superAdmin.js'],
+    
 
 
     ['/js/validaciones.js', '../public/build2/js/validaciones.js'],
