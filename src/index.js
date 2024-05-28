@@ -61,6 +61,7 @@ const rutas = [
     ['/img/bee.png', '../public/build2/img/bee.png'],
     ['/img/EDIFICIO.png', '../public/build2/img/EDIFICIO.png'],
     ['/js/superAdmin.js', '../public/build2/js/superAdmin.js'],
+    ['/js/anfitrion.js', '../public/build2/js/anfitrion.js'],
     
 
 
