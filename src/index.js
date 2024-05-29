@@ -352,7 +352,8 @@ app.use('/invitado/home', async (req, res, next) => {
     console.log('newCount: ' + newCount);
     if (newCount === 1) {
         //return res.status(200).json({message: 'primero debe llenar el formulario de invitacion', status: 200});
-        return res.redirect('/invitado/invitacion.html');
+        //return res.redirect('/invitado/invitacion.html');
+        return res.redirect('/invitado/actualizardatos.html');
     }
 
     let changeFirstPass = 0;
@@ -365,6 +366,8 @@ app.use('/invitado/home', async (req, res, next) => {
     next();
 
 });
+
+app.use('/invitado/actualizardatos.html', express.static('./public/build2/views/Invitado/actualizardatos.html'));
 
 
 app.use('/invitado/home/invitado.html', express.static('./public/build2/views/Invitado/invitado.html'));
