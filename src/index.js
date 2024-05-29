@@ -322,7 +322,7 @@ app.use('/invitado/home', async (req, res, next) => {
 
 app.use('/invitado/home/invitado.html', express.static('./public/build2/views/Invitado/invitado.html'));
 app.use('/invitado/invitacion.html', express.static('./public/build2/views/Invitado/invitacion.html'));
-
+app.post('/invitado/registrarinformacion', invitado.setDataInvitado);
 
 //app.get('/externo/logout', externo.logout);
 app.get('/invitado/test', (req, res) => {
@@ -333,9 +333,7 @@ app.get('/invitado/test', (req, res) => {
 
 //Invitado
 
-app.use('/invitado/invitado.html', express.static('./public/invitado.html'));
-app.use('/invitado/registrarinformacion.html', express.static('./public/build2/views/Invitado/RegistrarInformacion.html'));
-app.post('/invitado/registrarinformacion', invitado.setDataInvitado);
+
 
 
 app.use('/not-found', express.static('./public/notFound.html'));
