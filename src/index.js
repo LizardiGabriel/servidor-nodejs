@@ -61,7 +61,6 @@ const rutas = [
     ['/img/bee.png', '../public/build2/img/bee.png'],
     ['/img/EDIFICIO.png', '../public/build2/img/EDIFICIO.png'],
     ['/js/superAdmin.js', '../public/build2/js/superAdmin.js'],
-    ['/js/anfitrion.js', '../public/build2/js/anfitrion.js'],
     
 
 
@@ -136,32 +135,6 @@ function getnewCount(jsonToken) {
         return newCount;
 }
 
-function getnombreUsuario(jsonToken){
-    let nombreUsuario = '';
-    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
-        if (err) {
-            return -1;
-        } else {
-            nombreUsuario = decoded.nombre;
-        }
-    }
-)
-    return nombreUsuario;
-};
-
-function getApellido(jsonToken){
-    let apellido = '';
-    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
-        if (err) {
-            return -1;
-        } else {
-            apellido = decoded.apellido;
-        }
-    }
-)
-    return apellido;
-};
-
 function getchangeFirstPass(jsonToken){
     let changeFirstPass = 0;
     jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
@@ -191,11 +164,8 @@ app.use('/admin', (req, res, next) => {
 
 app.use('/admin/admin.html', express.static('./public/build2/views/Admin/admin.html'));
 app.get('/admin/logout', admin.logout);
-//ruta para editar datos personales
-app.use('/admin/catalogo/EditarDatosPersonales.html', express.static('./public/build2/views/Admin/EditarDatosPersonales.html'));
 
 
-//salas
 app.use('/admin/catalogo/catalogo.html', express.static('./public/build2/views/Admin/catalogo.html'));
 app.get('/admin/catalogo/salas', admin.getSalas);
 app.post('/admin/catalogo/salas', admin.setNewSala);
@@ -218,42 +188,23 @@ app.get('/admin/catalogo/invitados/:id', admin.getInvitadoById);
 app.put('/admin/catalogo/invitados', admin.updateInvitado);
 
 
-//usuarios
-app.use('/admin/catalogo/gestionarusuarios.html', express.static('./public/build2/views/Admin/gestionarusuarios.html'));
-app.get('/admin/catalogo/gestionarusuarios', admin.getUsuarios);
-app.post('/admin/catalogo/gestionarusuarios', admin.setNewUsuario);
-app.get('/admin/catalogo/gestionarusuarios/:id', admin.getUsuarioById);
-app.put('/admin/catalogo/gestionarusuarios/:id', admin.updateUsuario);
-app.delete('/admin/catalogo/gestionarusuarios/:id', admin.deleteUsuario);
-
-//crear sala
-app.use('/admin/catalogo/crearSala.html', express.static('./public/build2/views/Admin/CrearSala.html'));
-//gestionar sala
-app.use('/admin/catalogo/GestionarSalas.html', express.static('./public/build2/views/Admin/GestionarSalas.html'));
-app.use('/admin/EditarSala.html', express.static('./public/build2/views/Admin/EditarSala.html'));
-
-
-//crear usuario y confirmar cuenta
 app.use('/admin/catalogo/crearCuenta.html', express.static('./public/build2/views/Admin/crearCuenta.html'));
 app.use('/admin/catalogo/confirmarCuenta.html', express.static('./public/build2/views/Admin/confirmarCrearCuenta.html'));
-//gestionar usuarios
-app.use('/admin/catalogo/GestionDeUsuarios.html', express.static('./public/build2/views/Admin/GestionDeUsuarios.html'));
-//EditarCuentaAnfitrionSeguridad
-app.use('/admin/EditarCuentaAnfitrionSeguridad.html', express.static('./public/build2/views/Admin/EditarCuentaAnfitrionSeguridad.html'));
 
+app.use('/admin/catalogo/crearSala.html', express.static('./public/build2/views/Admin/CrearSala.html'));
+app.use('/admin/catalogo/GestionDeUsuarios.html', express.static('./public/build2/views/Admin/GestionDeUsuarios.html'));
+app.use('/admin/catalogo/GestionarSalas.html', express.static('./public/build2/views/Admin/GestionarSalas.html'));
 app.use('/admin/editarPersonal.html', express.static('./public/build2/views/Admin/EditarCuentaAnfitrionSeguridad.html'));
 app.use('/admin/editarinvitados.html', express.static('./public/build2/views/Admin/EditarCuentaInvitado.html'));
 
 
 app.use('/admin/catalogo/GestionarReuniones.html', express.static('./public/build2/views/Admin/GestionarReuniones.html'));
-//ConsultarDatosReunion
-app.use('/admin/catalogo/ConsultarDatosReunion.html', express.static('./public/build2/views/Admin/ConsultarDatosReunion.html'));
 app.use('/admin/catalogo/GestionDeInvitaciones.html', express.static('./public/build2/views/Admin/GestionDeInvitaciones.html'));
 
 app.get('/admin/catalogo/reuniones', admin.getReuniones);
 app.get('/admin/catalogo/invitaciones', admin.getInvitaciones);
 
-
+app.use('/admin/EditarSala.html', express.static('./public/build2/views/Admin/EditarSala.html'));
 
 
 app.get('/admin/test', (req, res) => {
@@ -265,22 +216,11 @@ app.get('/admin/test', (req, res) => {
 
 // anfitrion
 
-app.get('/get-session', async (req, res) => {
-    let nombre = '';
-    let apellido = '';
-    nombre = await getnombreUsuario(req.session.jwt);
-    apellido = await getApellido(req.session.jwt);
-    console.log('nombre: ' + nombre);
-    console.log('apellido: ' + apellido);
-    res.status(200).json({nombre: nombre, apellido: apellido});
-    
-});
-
 app.use('/anfitrion', (req, res, next) => {
     if (req.session) {
         let rol = getRol(req.session.jwt);
         if (rol !== 2) {
-            return res.redirect('/home/login.html');
+            return res.status(401).json({error: 'Unauthorized', status: 401});
         }
         if (rol === 2) {
             next();
@@ -288,25 +228,16 @@ app.use('/anfitrion', (req, res, next) => {
             res.status(401).send('Unauthorized');
         }
     }else
-        return res.redirect('/home/login.html');
+        return res.status(401).json({error: 'Unauthorized', status: 401});
 });
 
+app.use('/anfitrion/reuniones2.html', express.static('./public/build2/views/Anfitrion/reunionesAnf.html'));
+
 app.use('/anfitrion/anfitrion.html', express.static('./public/build2/views/Anfitrion/anfitrion.html'));
-app.use('/anfitrion/salas.html', express.static('./public/build2/views/Anfitrion/CatalogoSalas.html'));
-app.use('/anfitrion/datosinvitado.html', express.static('./public/build2/views/Anfitrion/ConsultarDatosInvitado.html'));
-app.use('/anfitrion/reuniones.html', express.static('./public/build2/views/Anfitrion/consultarReuniones.html'));
-app.use('/anfitrion/nuevareunion.html', express.static('./public/build2/views/Anfitrion/CrearReunion.html'));
-
-app.use('/anfitrion/reunion/detalles.html', express.static('./public/build2/views/Anfitrion/detallesreunion.html'));
-
-app.use('/anfitrion/reu2.html', express.static('./public/build2/views/Anfitrion/reuniones2.html'));
-
-
-//app.use('/anfitrion/cuenta.html', express.static('./public/build2/views/Anfitrion/cuentaAnf.html'));
-
-app.get('/anfitrion/catalogo/salas', admin.getSalas);
-
 app.get('/anfitrion/logout', anfitrion.logout);
+app.use('/anfitrion/reuniones.html', express.static('./public/build2/views/Anfitrion/consultarReuniones.html'));
+app.use('/anfitrion/salas.html', express.static('./public/build2/views/Anfitrion/salasAnf.html'));
+app.use('/anfitrion/cuenta.html', express.static('./public/build2/views/Anfitrion/cuentaAnf.html'));
 
 app.get('/anfitrion/reuniones', anfitrion.getReunionesAnfitrion);
 app.get('/anfitrion/salas', anfitrion.getSalasAnfitrion);
@@ -374,27 +305,24 @@ app.use('/invitado/home', async (req, res, next) => {
     console.log('newCount: ' + newCount);
     if (newCount === 1) {
         //return res.status(200).json({message: 'primero debe llenar el formulario de invitacion', status: 200});
-        //return res.redirect('/invitado/invitacion.html');
-        return res.redirect('/invitado/actualizardatos.html');
+        return res.redirect('/invitado/invitacion.html');
     }
 
     let changeFirstPass = 0;
     changeFirstPass = getchangeFirstPass(req.session.jwt);
     console.log('changeFirstPass: ' + changeFirstPass);
     if (changeFirstPass === 0) {
-        return res.redirect('/invitado/actualizarcredenciales.html');
+        return res.status(200).json({message: 'tiene que cambiar la contraseña de su cuenta', status: 200});
     }
 
     next();
 
 });
 
-app.use('/invitado/actualizardatos.html', express.static('./public/build2/views/Invitado/RegistrarInformacionPersonal.html'));
-app.use('/invitado/actualizarcredenciales.html', express.static('./public/build2/views/Invitado/cambiarContrasena.html'));
 
 app.use('/invitado/home/invitado.html', express.static('./public/build2/views/Invitado/invitado.html'));
 app.use('/invitado/invitacion.html', express.static('./public/build2/views/Invitado/invitacion.html'));
-app.post('/invitado/registrarinformacion', invitado.setDataInvitado);
+app.post('/invitado/registrarinformacion', invitado.Pruebaguardar);
 
 //app.get('/externo/logout', externo.logout);
 app.get('/invitado/test', (req, res) => {

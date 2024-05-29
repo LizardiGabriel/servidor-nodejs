@@ -387,7 +387,7 @@ async function updateInvitadoBD(id, email, nombre, apellidoPaterno, apellidoMate
     }
 }
 
-async function updateInvitadoBDtoInvitacion(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono,empresa) {
+async function updateInvitadoBDtoInvitacion(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono,empresa,identifacion,foto) {
     console.log('peticion a la bd de updateInvitado');
     try {
         const invitadoActualizado = await prisma.invitado.update({
@@ -398,7 +398,9 @@ async function updateInvitadoBDtoInvitacion(id, email, nombre, apellidoPaterno, 
                 apellido_paterno_invitado: apellidoPaterno,
                 apellido_materno_invitado: apellidoMaterno,
                 telefono_invitado: telefono,
-                empresa_invitado: empresa
+                empresa_invitado: empresa,
+                identificacion_invitado:identifacion,
+                foto_invitado: foto
             }
         });
         if (invitadoActualizado != null) {

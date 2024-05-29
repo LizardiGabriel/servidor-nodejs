@@ -49,52 +49,52 @@
         <div class="registrarInforPersonal">
             <h1 class="title-example text-center">Registrar Información Personal</h1>
             
-                <form class="Formulario needs-validation paragraph-example" novalidate>
+                <form id="formInvitado" class="Formulario needs-validation paragraph-example" novalidate>
                     <div class="informacionPersonal">
                         <h2 class="personal__titulo">Información Personal</h2>
                         <div class="form-group col-md-4 has-validation">
                             <label>Nombre*:</label>
-                            <input type="text" class="form-control form-control-lg" placeholder="Nombre" required>
+                            <input type="text" class="form-control form-control-lg" placeholder="Nombre" id="nombre" name="nombre" required>
                             <div class="invalid-feedback">Ingrese su Nombre.</div>
                         </div>
                         <div class="form-group col-md-4 has-validation">
                             <label>Apellido Paterno*:</label>
-                            <input type="text" class="form-control form-control-lg" placeholder="Apellido Paterno" required>
+                            <input type="text" class="form-control form-control-lg" placeholder="Apellido Paterno" id="apellidoPaterno" name="apellidoPaterno" required>
                             <div class="invalid-feedback">Ingrese su Apellido Paterno.</div>
                         </div>
                         <div class="form-group col-md-4 has-validation">
                             <label>Apellido Materno*:</label>
-                            <input type="text" class="form-control form-control-lg" placeholder="Apellido Materno" required>
+                            <input type="text" class="form-control form-control-lg" placeholder="Apellido Materno" id="apellidoMaterno" name="apellidoMaterno" required>
                             <div class="invalid-feedback">Ingrese su Apellido Materno.</div>
                         </div>
                         <div class="form-group col-md-4 has-validation">
                             <label>Correo Electrónico*:</label>
-                            <input type="email" class="form-control form-control-lg" placeholder="email@example.com" required>
+                            <input type="email" class="form-control form-control-lg" placeholder="email@example.com" id="correo" name="correo" required>
                             <div class="invalid-feedback">Ingrese un correo válido.</div>
                         </div>
                         <div class="form-group col-md-4 has-validation">
                             <label>Número de teléfono*:</label>
-                            <input type="tel" class="form-control form-control-lg" placeholder="Ingrese su número telefónico" pattern="[0-9]{10}" required>
+                            <input type="tel" class="form-control form-control-lg" placeholder="Ingrese su número telefónico" pattern="[0-9]{10}" id="telefono" name="telefono" required>
                             <div class="invalid-feedback">Ingrese un número telefónico válido.</div>
                         </div>
                         <div class="form-group col-md-4 has-validation">
                             <label>Empresa a la que pertenece*:</label>
-                            <input type="text" class="form-control form-control-lg" placeholder="Ingrese su Empresa de procedencia" required>
+                            <input type="text" class="form-control form-control-lg" placeholder="Ingrese su Empresa de procedencia" id="empresa" name="empresa" required>
                             <div class="invalid-feedback">Ingrese su empresa de procedencia.</div>
                         </div>
-                        <div class="form-group col-md-4 has-validation">
+                        <div class="form-group col-md-4 has-validation"  >
                             <label>Identificación oficial a presentar*:</label>
-                            <select class="custom-select form-control-lg" required>
+                            <select class="custom-select form-control-lg" id="identificacion" name="identificacion" required>
                                 <option value="">Elija una opción...</option>
-                                <option value="1">INE</option>
-                                <option value="2">Pasaporte</option>
-                                <option value="3">Visa</option>
+                                <option value="INE">INE</option>
+                                <option value="Pasaporte">Pasaporte</option>
+                                <option value="Visa">Visa</option>
                             </select>
                             <div class="invalid-feedback">Debe elegir una de las opciones.</div>
                         </div>
                         <div class="form-group col-md-4 has-validation">
-                            <label for="formFile" class="form-label">Fotografía reciente</label>
-                            <input class="form-control form-control-lg" type="file" id="formFile" accept="image/*" required>
+                            <label for="foto" class="form-label">Fotografía reciente</label>
+                            <input class="form-control form-control-lg" type="file" accept="image/*" id="foto" name="foto" required>
                             <div class="invalid-feedback">Debe subir un archivo.</div>
                         </div>
                     </div>
@@ -214,10 +214,8 @@
                             </div>
                         </div>
                     </div>
-
-                    <button onclick="siguiente()" class="confirm__btn" type="button" value="Siguiente">
+                    <input class="confirm__btn" type="submit" value="Siguiente">
                 </form>
-            
         </div>
     </main>
 
@@ -256,9 +254,58 @@
     </footer>
 
     <script>
-        function siguiente() {
-            window.location.href = "/invitado/actualizarcredenciales.html";
+        const formInvitado = document.getElementById('formInvitado');
+        formInvitado.addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar el envío del formulario por defecto
+
+            const nombre = document.getElementById('nombre').value;
+            const apellidoPaterno = document.getElementById('apellidoPaterno').value;
+            const apellidoMaterno = document.getElementById('apellidoMaterno').value;
+            const correo = document.getElementById('correo').value;
+            const telefono = document.getElementById('telefono').value;
+            const empresa = document.getElementById('empresa').value;
+            const identificacion = document.getElementById("identificacion").value;
+            const foto = document.getElementById("foto").files[0];
+            
+            let data = {
+                nombre: nombre,
+                apellidoPat: apellidoPaterno,
+                apellidoMa: apellidoMaterno,
+                correo: correo,
+                tel: telefono,
+                empresa: empresa,
+                identificacion: identificacion
+            };
+
+            if (foto) {
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    data.foto = reader.result; // Añade la foto en formato Base64 al objeto data
+                    enviarData(data);
+                };
+                reader.readAsDataURL(foto);
+            } else {
+                enviarData(data); // Enviar sin foto si no se seleccionó ninguna
+            }
+        });
+
+        function enviarData(data) {
+            fetch('/invitado/registrarinformacion', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Respuesta del servidor:', data);
+                //window.location.href = 'consultarReunion.html';
+            })
+            .catch(error => console.error('Error al mandar datos:', error));
         }
+
+
     </script>
 
     
