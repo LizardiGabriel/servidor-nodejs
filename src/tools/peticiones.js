@@ -350,6 +350,7 @@ async function getInvitadoByIdBD(id) {
         return json({ error: 'Error al obtener el invitado' });
     }
 }
+
 async function getInvitadoByNameBD(nombre) {
     console.log('peticion a la bd de getInvitadonByNameBD');
     try {
@@ -362,7 +363,6 @@ async function getInvitadoByNameBD(nombre) {
         return json({ error: 'Error al obtener el invitado' });
     }
 }
-
 async function updateInvitadoBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono) {
     console.log('peticion a la bd de updateInvitado');
     try {
@@ -385,7 +385,31 @@ async function updateInvitadoBD(id, email, nombre, apellidoPaterno, apellidoMate
         console.error('Error al actualizar invitado:', error);
         return { message: 'Error al actualizar invitado', status: 500 };
     }
+}
 
+async function updateInvitadoBDtoInvitacion(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono,empresa) {
+    console.log('peticion a la bd de updateInvitado');
+    try {
+        const invitadoActualizado = await prisma.invitado.update({
+            where: { id_invitado: Number(id) },
+            data: {
+                email_invitado: email,
+                nombre_invitado: nombre,
+                apellido_paterno_invitado: apellidoPaterno,
+                apellido_materno_invitado: apellidoMaterno,
+                telefono_invitado: telefono,
+                empresa_invitado: empresa
+            }
+        });
+        if (invitadoActualizado != null) {
+            return { message: 'Invitado actualizado correctamente', status: 200};
+        }else{
+            return { message: 'Error al actualizar invitado', status: 500};
+        }
+    } catch (error) {
+        console.error('Error al actualizar invitado:', error);
+        return { message: 'Error al actualizar invitado', status: 500 };
+    }
 }
 
 async function getInvitacionesByIdInv(id) {
@@ -748,12 +772,11 @@ module.exports = {
 
     getInvitadoByEmailBD,
     setNewInvitadoBD,
-
     setNewInvitacionBD,
 
     getInvitadosBD,
     updateInvitadoBD,
-
+    updateInvitadoBDtoInvitacion,
 
     getReunionesAdminBD,
     getInvitacionesAdminBD,
