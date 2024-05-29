@@ -360,15 +360,15 @@ app.use('/invitado/home', async (req, res, next) => {
     changeFirstPass = getchangeFirstPass(req.session.jwt);
     console.log('changeFirstPass: ' + changeFirstPass);
     if (changeFirstPass === 0) {
-        return res.status(200).json({message: 'tiene que cambiar la contraseña de su cuenta', status: 200});
+        return res.redirect('/invitado/actualizarcredenciales.html');
     }
 
     next();
 
 });
 
-app.use('/invitado/actualizardatos.html', express.static('./public/build2/views/Invitado/actualizardatos.html'));
-
+app.use('/invitado/actualizardatos.html', express.static('./public/build2/views/Invitado/RegistrarInformacionPersonal.html'));
+app.use('/invitado/actualizarcredenciales.html', express.static('./public/build2/views/Invitado/cambiarContrasena.html'));
 
 app.use('/invitado/home/invitado.html', express.static('./public/build2/views/Invitado/invitado.html'));
 app.use('/invitado/invitacion.html', express.static('./public/build2/views/Invitado/invitacion.html'));
