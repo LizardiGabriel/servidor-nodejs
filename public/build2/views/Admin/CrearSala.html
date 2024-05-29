@@ -129,7 +129,7 @@
                     <div class="nav-item dropdown">
                         <button class="navbar__profile-container nav-link profile-button" onclick="toggleMenu()">
                             <div id="user-menu" style="display: none;">
-                                <a href="#">Mis datos</a>
+                                <a onclick="editarDatosPersonales()">Mis datos</a>
                                 <a onclick="logout()">Cerrar sesión</a>
                             </div>
                         </button>
@@ -188,9 +188,9 @@
                     </div>
                     <br>
                     <div class="cSalaHeroForm__button-Container">
-                    <input type="submit"  class="cSalaHeroForm__button-Container__button__Secundario" value="Cancelar" id="" >
+                        <input type="submit"  class="cSalaHeroForm__button-Container__button__Secundario" value="Cancelar" id="" onclick="window.location.href='/admin/catalogo/GestionarSalas.html'">
                         <div class="Boton">
-                            <input onclick="enviarForm()" type="submit" class="cSalaHeroForm__button-Container__button__Primario" value="Aceptar" id="">
+                            <input type="submit"  class="cSalaHeroForm__button-Container__button__Primario"   value="Aceptar"  id="" onclick="enviarForm()">
                             <script src="https://cdn.jsdelivr.net/npm/mdb-ui-kit@3.11.0/dist/js/mdb.min.js"></script>
                         </div>
                     </div>
@@ -234,9 +234,8 @@
 
     <script>
         function enviarForm() {
-
-
             event.preventDefault();
+
             const nombreSala = document.getElementById("nombreSala").value;
             const cupoMaximo = document.getElementById("cupoMax").value;
             const piso = document.getElementById("piso").value;
@@ -245,7 +244,11 @@
             const selectElement = document.getElementById("estadoSala");
             const estado = selectElement.options[selectElement.selectedIndex].value;
 
-            //alert("nombreSala: " + nombreSala + "\ncupoMaximo: " + cupoMaximo + "\npiso: " + piso + "\nnumerito: " + numerito + "\nselectedOption: " + selectedOption);
+            // Verifica si todos los campos están llenos
+            if (!nombreSala || !cupoMaximo || !piso || !numerito || !estado) {
+                alert('Por favor, rellene todos los campos.');
+                return;
+            }
 
             fetch('/admin/catalogo/salas', {
                 method: 'POST',
@@ -260,17 +263,15 @@
                     estado
                 })
             })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = '/admin/catalogo/GestionarSalas.html';
-                    } else {
-                        alert('Error al crear sala: ' + response.statusText);
-                        console.error('Error al crear sala:', response.statusText);
-                    }
-                })
-                .catch(error => console.error('Error al crear sala:', error));
-
-
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/admin/catalogo/GestionarSalas.html';
+                } else {
+                    alert('Error al crear sala: ' + response.statusText);
+                    console.error('Error al crear sala:', response.statusText);
+                }
+            })
+            .catch(error => console.error('Error al crear sala:', error));
         }
     </script>
 

@@ -43,7 +43,7 @@ async function loadTableData() {
                     <td class="horario">${item.horaInicio} - ${item.horaFin}</td>
                     <td class="sala">${item.sala}</td>
                     <td class="accion">
-                      <button class="btn btn-sm visualizar" data-id="${item.id}"><img src="../../img/icons/ico-view.svg"></button>
+                      <button class="btn btn-sm visualizar" data-id="${item.id}" onclick="consultarDatosReunion(${item.id})"><img src="../../img/icons/ico-view.svg"></button>
                     </td>`;
         tbody.appendChild(row);
     });

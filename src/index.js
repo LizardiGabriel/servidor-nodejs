@@ -165,8 +165,11 @@ app.use('/admin', (req, res, next) => {
 
 app.use('/admin/admin.html', express.static('./public/build2/views/Admin/admin.html'));
 app.get('/admin/logout', admin.logout);
+//ruta para editar datos personales
+app.use('/admin/catalogo/EditarDatosPersonales.html', express.static('./public/build2/views/Admin/EditarDatosPersonales.html'));
 
 
+//salas
 app.use('/admin/catalogo/catalogo.html', express.static('./public/build2/views/Admin/catalogo.html'));
 app.get('/admin/catalogo/salas', admin.getSalas);
 app.post('/admin/catalogo/salas', admin.setNewSala);
@@ -189,23 +192,42 @@ app.get('/admin/catalogo/invitados/:id', admin.getInvitadoById);
 app.put('/admin/catalogo/invitados', admin.updateInvitado);
 
 
+//usuarios
+app.use('/admin/catalogo/gestionarusuarios.html', express.static('./public/build2/views/Admin/gestionarusuarios.html'));
+app.get('/admin/catalogo/gestionarusuarios', admin.getUsuarios);
+app.post('/admin/catalogo/gestionarusuarios', admin.setNewUsuario);
+app.get('/admin/catalogo/gestionarusuarios/:id', admin.getUsuarioById);
+app.put('/admin/catalogo/gestionarusuarios/:id', admin.updateUsuario);
+app.delete('/admin/catalogo/gestionarusuarios/:id', admin.deleteUsuario);
+
+//crear sala
+app.use('/admin/catalogo/crearSala.html', express.static('./public/build2/views/Admin/CrearSala.html'));
+//gestionar sala
+app.use('/admin/catalogo/GestionarSalas.html', express.static('./public/build2/views/Admin/GestionarSalas.html'));
+app.use('/admin/EditarSala.html', express.static('./public/build2/views/Admin/EditarSala.html'));
+
+
+//crear usuario y confirmar cuenta
 app.use('/admin/catalogo/crearCuenta.html', express.static('./public/build2/views/Admin/crearCuenta.html'));
 app.use('/admin/catalogo/confirmarCuenta.html', express.static('./public/build2/views/Admin/confirmarCrearCuenta.html'));
-
-app.use('/admin/catalogo/crearSala.html', express.static('./public/build2/views/Admin/CrearSala.html'));
+//gestionar usuarios
 app.use('/admin/catalogo/GestionDeUsuarios.html', express.static('./public/build2/views/Admin/GestionDeUsuarios.html'));
-app.use('/admin/catalogo/GestionarSalas.html', express.static('./public/build2/views/Admin/GestionarSalas.html'));
+//EditarCuentaAnfitrionSeguridad
+app.use('/admin/EditarCuentaAnfitrionSeguridad.html', express.static('./public/build2/views/Admin/EditarCuentaAnfitrionSeguridad.html'));
+
 app.use('/admin/editarPersonal.html', express.static('./public/build2/views/Admin/EditarCuentaAnfitrionSeguridad.html'));
 app.use('/admin/editarinvitados.html', express.static('./public/build2/views/Admin/EditarCuentaInvitado.html'));
 
 
 app.use('/admin/catalogo/GestionarReuniones.html', express.static('./public/build2/views/Admin/GestionarReuniones.html'));
+//ConsultarDatosReunion
+app.use('/admin/catalogo/ConsultarDatosReunion.html', express.static('./public/build2/views/Admin/ConsultarDatosReunion.html'));
 app.use('/admin/catalogo/GestionDeInvitaciones.html', express.static('./public/build2/views/Admin/GestionDeInvitaciones.html'));
 
 app.get('/admin/catalogo/reuniones', admin.getReuniones);
 app.get('/admin/catalogo/invitaciones', admin.getInvitaciones);
 
-app.use('/admin/EditarSala.html', express.static('./public/build2/views/Admin/EditarSala.html'));
+
 
 
 app.get('/admin/test', (req, res) => {

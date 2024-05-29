@@ -41,30 +41,37 @@ async function loadTableData() {
         <td class="email">${item.email}</td>
         <td class="tipoU">${item.tipoU}</td>
         <td class="acciones">
-        <button class="btn btn-sm editar" onclick="editarPersonal(${item.id})" data-id="${item.id}">
-        <img src="../../img/icons/ico-editar.svg" alt="Editar">
-        </button>
-        <button class="btn btn-sm eliminar" onclick="eliminarPersonal(${item.id})" data-id="${item.id}">
-        <img src="../../img/icons/ico-trash.svg" alt="Eliminar">
-        </button>
+        <button class="btn btn-sm editar" data-id="${item.id}" onclick="editarUsuario(${item.id})"><img src="../../img/icons/ico-editar.svg" alt="Editar"></button>
+        <button class="btn btn-sm eliminar" data-id="${item.id}" onclick="eliminarUsuario(${item.id})"><img src="../../img/icons/ico-trash.svg" alt="Eliminar"></button>
         </td>
     `;
     tbody.appendChild(row);
   });
 }
 
+function editarUsuario(idUsuario) {
+  alert('editar usuario id: ' + idUsuario);
+  window.location.href = `/admin/EditarCuentaAnfitrionSeguridad.html?idSala=${idUsuario}`;
+
+}
+
+function eliminarUsuario(idUsuario) {
+  alert('eliminar usuario, id: ' + idUsuario);
+  fetch(`/admin/catalogo/usuarios/${idUsuario}`, {
+    method: 'DELETE'
+  })
+    .then(response => {
+      if (response.ok) {
+        loadTableData();
+      } else {
+        console.error('Error al eliminar usuario:', response.statusText);
+      }
+    })
+    .catch(error => console.error('Error al eliminar usuario:', error));
+}
 
 // Cargar datos en la tabla al iniciar la página
 loadTableData();
-
-function editarPersonal(id) {
-  console.log(`Editar usuario con id: ${id}`);
-  window.location.href = `/admin/editarPersonal.html?id=${id}`;
-}
-
-function eliminarPersonal(id) {
-  console.log(`Eliminar usuario con id: ${id}`);
-}
 
 //Activación de DataTables
 new DataTable('#Tabla', {

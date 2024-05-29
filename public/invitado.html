@@ -1,12 +1,195 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Formulario de Invitado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        
+        h1 {
+            margin-bottom: 10px;
+        }
+        
+        form {
+            margin-top: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Invitado</h1>
-    
+    <h1>Formulario de Invitado</h1>
+    <form id="formInvitado">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="apellidoPaterno">Apellido Paterno:</label>
+        <input type="text" id="apellidoPaterno" name="apellidoPaterno" required>
+
+        <label for="apellidoMaterno">Apellido Materno:</label>
+        <input type="text" id="apellidoMaterno" name="apellidoMaterno" required>
+
+        <label for="correo">Correo:</label>
+        <input type="text" id="correo" name="correo" required>
+
+        <label for="telefono">Teléfono:</label> 
+        <input type="text" id="telefono" name="telefono" required>
+
+        <label for="empresa">Empresa a la que pertenece:</label>
+        <input type="text" id="empresa" name="empresa" required>
+
+        <label for="identificacion">Identificación oficial a presentar:</label>  
+        <input type="text" id="identificacion" name="identificacion" required>
+        
+        <label for="foto">Fotografia reciente:</label>
+        <input type="file" id="foto" name="foto" required>
+        <br><br>
+
+        <label for="numAcompanantes">Número de acompañantes:</label>
+        <input type="number" id="numAcompanantes" name="numAcompanantes" min="0" required>
+        <label for="nombreAcompanante">Nombre de acompañante:</label>
+        <input type="text" id="nombreAcompanante" name="nombreAcompanante" required>    
+        <label for="apellidoPaternoAcompanante">Apellido Paterno de acompañante:</label>
+        <input type="text" id="apellidoPaternoAcompanante" name="apellidoPaternoAcompanante" required>
+        <label for="apellidoMaternoAcompanante">Apellido Materno de acompañante:</label>
+        <input type="text" id="apellidoMaternoAcompanante" name="apellidoMaternoAcompanante" required>
+        <label for="correoAcompanante">Correo de acompañante:</label>
+        <input type="email" id="correoAcompanante" name="correoAcompanante" required>
+        <br><br>
+
+        <label>¿Llegará con dispositivos a la reunión?</label>
+        <input type="radio" id="conDispositivosSi" name="conDispositivos" value="Si" required>
+        <label for="conDispositivosSi">Sí</label>
+        <input type="radio" id="conDispositivosNo" name="conDispositivos" value="No" required>
+        <label for="conDispositivosNo">No</label>
+        
+        <label for="numDispositivos">Número de dispositivos:</label>
+        <input type="number" id="numDispositivos" name="numDispositivos" min="0" required>
+        
+        <label for="numSerie">Número de serie:</label>
+        <input type="text" id="numSerie" name="numSerie" required>
+        
+        <label for="modelo">Modelo:</label>
+        <input type="text" id="modelo" name="modelo" required>
+        
+        <label for="marca">Marca:</label>
+        <input type="text" id="marca" name="marca" required>
+        
+        <label>¿Llegará con automóvil a la reunión?</label>
+        <input type="radio" id="conAutomovilSi" name="conAutomovil" value="Si" required>
+        <label for="conAutomovilSi">Sí</label>
+        <input type="radio" id="conAutomovilNo" name="conAutomovil" value="No" required>
+        <label for="conAutomovilNo">No</label>
+        
+        <label for="numPlaca">Número de placa:</label>
+        <input type="text" id="numPlaca" name="numPlaca" required>
+        
+        <label for="marcaAuto">Marca:</label>
+        <input type="text" id="marcaAuto" name="marcaAuto" required>
+        
+        <label for="modeloAuto">Modelo:</label>
+        <input type="text" id="modeloAuto" name="modeloAuto" required>
+        
+        <label for="colorAuto">Color:</label>
+        <input type="text" id="colorAuto" name="colorAuto" required>
+        
+        <input type="submit" value="Enviar">
+    </form>
+
+    <script>
+        const formInvitado = document.getElementById('formInvitado');
+        formInvitado.addEventListener('submit', function(event) {
+        event.preventDefault(); // Evitar el envío del formulario por defecto
+
+        const nombre = document.getElementById('nombre').value;
+        const apellidoPaterno = document.getElementById('apellidoPaterno').value;
+        const apellidoMaterno = document.getElementById('apellidoMaterno').value;
+        const correo = document.getElementById('correo').value;
+        const telefono = document.getElementById('telefono').value;
+        const empresa = document.getElementById('empresa').value;
+        const identificacion = document.getElementById('identificacion').value;
+        const foto = document.getElementById('foto').files[0];
+        const numAcompanantes = document.getElementById('numAcompanantes').value;
+        const nombreAcompanante = document.getElementById('nombreAcompanante').value;
+        const apellidoPaternoAcompanante = document.getElementById('apellidoPaternoAcompanante').value;
+        const apellidoMaternoAcompanante = document.getElementById('apellidoMaternoAcompanante').value;
+        const correoAcompanante = document.getElementById('correoAcompanante').value;
+        const conDispositivos = document.querySelector('input[name="conDispositivos"]:checked').value;
+        const numDispositivos = document.getElementById('numDispositivos').value;
+        const numSerie = document.getElementById('numSerie').value;
+        const modelo = document.getElementById('modelo').value;
+        const marca = document.getElementById('marca').value;
+        const conAutomovil = document.querySelector('input[name="conAutomovil"]:checked').value;
+        const numPlaca = document.getElementById('numPlaca').value;
+        const marcaAuto = document.getElementById('marcaAuto').value;
+        const modeloAuto = document.getElementById('modeloAuto').value;
+        const colorAuto = document.getElementById('colorAuto').value;
+
+        const formData = new FormData();
+        formData.append('nombre', nombre);
+        formData.append('apellidoPaterno', apellidoPaterno);
+        formData.append('apellidoMaterno', apellidoMaterno);
+        formData.append('correo', correo);
+        formData.append('telefono', telefono);
+        formData.append('empresa', empresa);
+        formData.append('identificacion', identificacion);
+        formData.append('foto', foto);
+        formData.append('numAcompanantes', numAcompanantes);
+        formData.append('nombreAcompanante', nombreAcompanante);
+        formData.append('apellidoPaternoAcompanante', apellidoPaternoAcompanante);
+        formData.append('apellidoMaternoAcompanante', apellidoMaternoAcompanante);
+        formData.append('correoAcompanante', correoAcompanante);
+        formData.append('conDispositivos', conDispositivos);
+        formData.append('numDispositivos', numDispositivos);
+        formData.append('numSerie', numSerie);
+        formData.append('modelo', modelo);
+        formData.append('marca', marca);
+        formData.append('conAutomovil', conAutomovil);
+        formData.append('numPlaca', numPlaca);
+        formData.append('marcaAuto', marcaAuto);
+        formData.append('modeloAuto', modeloAuto);
+        formData.append('colorAuto', colorAuto);
+
+        fetch('/enviarDatosInvitado', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Respuesta del servidor:', data);
+            window.location.href = 'consultarReunion.html';
+        })
+        .catch(error => console.error('Error al mandar datos:', error));
+    });
+    </script>
 </body>
 </html>

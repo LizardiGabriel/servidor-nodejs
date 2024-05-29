@@ -14,8 +14,21 @@
 </head>
 <script>
     function confirmacion() {
-        alert("Cuenta creada con exito")
-    }
+        //verifica si se ingresan datos al formulario, si no se ingresan muestra un mensaje de alerta diciendo que se deben ingresar los datos
+        var email = document.getElementById("loginEmail").value;
+        var nombre = document.getElementsByName("nombre")[0].value;
+        var apellidoPaterno = document.getElementsByName("apellidoPaterno")[0].value;
+        var apellidoMaterno = document.getElementsByName("apellidoMaterno")[0].value;
+        var rolSeguridad = document.getElementsByName("rolSeguridad")[0].checked;
+        var rolAnfitrion = document.getElementsByName("rolAnfitrion")[0].checked;
+        if (email == "" || nombre == "" || apellidoPaterno == "" || apellidoMaterno == "" || (rolSeguridad == false && rolAnfitrion == false)) {
+            alert("Por favor, llene todos los campos");
+            return false;
+        } else {
+            return true;
+        }
+
+}
 </script>
 
 <body>
@@ -92,8 +105,10 @@
                 </div>
 
                 <div class="button-container">
-                    <input type="submit" class="button-submit1" value="Crear Cuenta" onclick="return confirmacion()"> <!--onclick="return confirmacion()"-->
-                    <button class="button-submit2">Cancelar</button>
+                    <!--boton para cancelar-->
+                   <button type="button" class="button-submit2 " onclick="window.location.href='/admin/catalogo/GestionDeUsuarios.html'">Cancelar</button> 
+                    <!--boton para enviar-->
+                    <button type="submit" class="button-submit1" onclick="return confirmacion()">Crear Cuenta</button>
                 </div>
             </form>
         </div>

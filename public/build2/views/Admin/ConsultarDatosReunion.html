@@ -7,6 +7,36 @@
     <title>BeeMeet - Detalles Reunión</title>
     <link rel="stylesheet" href="../../css/app.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .btn-regresar {
+            background-color: #4ca0a3; /* Color de fondo del botón */
+            color: #000000;           /* Color del texto */
+            border: none;             /* Sin borde */
+            padding: 10px 20px;       /* Espaciado interno */
+            text-align: center;       /* Alineación del texto */
+            text-decoration: none;    /* Sin subrayado */
+            display: inline-block;    /* Mostrar en línea */
+            font-size: 16px;          /* Tamaño de la fuente */
+            border-radius: 10px;       /* Bordes redondeados */
+            cursor: pointer;          /* Cambia el cursor al pasar sobre el botón */
+            transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+        }
+
+        .btn-regresar:hover {
+            background-color: #4f7374; /* Color de fondo del botón al pasar el cursor */
+            color: #ffffff;             /* Color del texto al pasar el cursor */
+        }
+
+        .btn-regresar:focus {
+            outline: none;            /* Sin contorno al enfocar */
+            box-shadow: 0 0 0 3px rgba(135, 178, 164, 0.5); /* Sombra para indicar el foco */
+        }
+
+        .btn-regresar:active {
+            background-color: #4a8d8f; /* Color de fondo del botón al hacer clic */
+        }
+
+    </style>
 </head>
 
 <body>
@@ -124,7 +154,7 @@
                     <div class="nav-item dropdown">
                         <button class="navbar__profile-container nav-link profile-button" onclick="toggleMenu()">
                             <div id="user-menu" style="display: none;">
-                                <a href="#">Mis datos</a>
+                                <a onclick="editarDatosPersonales()">Mis datos</a>
                                 <a onclick="logout()">Cerrar sesión</a>
                             </div>
                         </button>
@@ -170,8 +200,9 @@
     
                         <!--Botón-->
                         <div>
-                            <button class="button">Regresar</button>
-                        </div>
+                            <button class="btn-regresar" type="button" onclick="window.location.href='/admin/catalogo/GestionarReuniones.html'">Regresar</button>
+                         </div>   
+                       
                     </form>
                 </div>
             </div>
