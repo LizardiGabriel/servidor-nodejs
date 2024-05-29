@@ -66,13 +66,14 @@
 
     <label for="empresa">Empresa a la que pertenece:</label>
     <input type="text" id="empresa" name="empresa" required>
-
-    <label for="identificacion">Identificación oficial a presentar:</label>
-    <input type="text" id="identificacion" name="identificacion" required>
-
+    
     <label for="foto">Fotografia reciente:</label>
     <input type="file" id="foto" name="foto" required>
     <br><br>
+
+    <!--
+    <label for="identificacion">Identificación oficial a presentar:</label>
+    <input type="text" id="identificacion" name="identificacion" required>
 
     <label for="numAcompanantes">Número de acompañantes:</label>
     <input type="number" id="numAcompanantes" name="numAcompanantes" min="0" required>
@@ -121,23 +122,48 @@
 
     <label for="colorAuto">Color:</label>
     <input type="text" id="colorAuto" name="colorAuto" required>
-
+-->
     <input type="submit" value="Enviar">
+    
 </form>
 
 <script>
     const formInvitado = document.getElementById('formInvitado');
     formInvitado.addEventListener('submit', function(event) {
         event.preventDefault(); // Evitar el envío del formulario por defecto
-
         const nombre = document.getElementById('nombre').value;
         const apellidoPaterno = document.getElementById('apellidoPaterno').value;
         const apellidoMaterno = document.getElementById('apellidoMaterno').value;
         const correo = document.getElementById('correo').value;
         const telefono = document.getElementById('telefono').value;
         const empresa = document.getElementById('empresa').value;
-        const identificacion = document.getElementById('identificacion').value;
         const foto = document.getElementById('foto').files[0];
+
+        let data={
+            nombre:nombre,
+            apellidoPat:apellidoPaterno,
+            apellidoMa:apellidoMaterno,
+            correo:correo,
+            tel:telefono,
+            empresa:empresa,
+            foto:base64String
+        }
+        console.log(data);
+        fetch('/invitado/registrarinformacion', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify()
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Respuesta del servidor:', data);
+                //window.location.href = 'consultarReunion.html';
+            })
+            .catch(error => console.error('Error al mandar datos:', error));
+
+                    /*
         const numAcompanantes = document.getElementById('numAcompanantes').value;
         const nombreAcompanante = document.getElementById('nombreAcompanante').value;
         const apellidoPaternoAcompanante = document.getElementById('apellidoPaternoAcompanante').value;
@@ -153,42 +179,8 @@
         const marcaAuto = document.getElementById('marcaAuto').value;
         const modeloAuto = document.getElementById('modeloAuto').value;
         const colorAuto = document.getElementById('colorAuto').value;
-
         const formData = new FormData();
-        formData.append('nombre', nombre);
-        formData.append('apellidoPaterno', apellidoPaterno);
-        formData.append('apellidoMaterno', apellidoMaterno);
-        formData.append('correo', correo);
-        formData.append('telefono', telefono);
-        formData.append('empresa', empresa);
-        formData.append('identificacion', identificacion);
-        formData.append('foto', foto);
-        formData.append('numAcompanantes', numAcompanantes);
-        formData.append('nombreAcompanante', nombreAcompanante);
-        formData.append('apellidoPaternoAcompanante', apellidoPaternoAcompanante);
-        formData.append('apellidoMaternoAcompanante', apellidoMaternoAcompanante);
-        formData.append('correoAcompanante', correoAcompanante);
-        formData.append('conDispositivos', conDispositivos);
-        formData.append('numDispositivos', numDispositivos);
-        formData.append('numSerie', numSerie);
-        formData.append('modelo', modelo);
-        formData.append('marca', marca);
-        formData.append('conAutomovil', conAutomovil);
-        formData.append('numPlaca', numPlaca);
-        formData.append('marcaAuto', marcaAuto);
-        formData.append('modeloAuto', modeloAuto);
-        formData.append('colorAuto', colorAuto);
-
-        fetch('/enviarDatosInvitado', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Respuesta del servidor:', data);
-                window.location.href = 'consultarReunion.html';
-            })
-            .catch(error => console.error('Error al mandar datos:', error));
+        */
     });
 </script>
 </body>
