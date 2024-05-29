@@ -23,7 +23,7 @@ function refCuenta() {
     window.location.href = "/anfitrion/cuenta.html";
 }
 function reuniones2() {
-    window.location.href = "/anfitrion/reuniones2.html";
+    window.location.href = "/anfitrion/nuevareunion.html";
 }
 
 
@@ -125,27 +125,8 @@ document.addEventListener('DOMContentLoaded', function() {
     //================> REUNIONES <================//
     window.onload = function () {
         obtenerReuniones();
-        obtenerSalas();
     }
 
-    function obtenerSalas() {
-        fetch('salas')
-            .then(response => response.json())
-            .then(salas => {
-                console.log('salas:', salas);
-                const selectSala = document.getElementById('nombreSala');
-                selectSala.innerHTML = '';
-                salas.forEach(sala => {
-                    const option = document.createElement('option');
-                    option.value = sala.id_sala;
-                    option.textContent = sala.nombre_sala;
-                    selectSala.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }
 
     function eliminarFila(boton) {
         const fila = boton.parentNode.parentNode;

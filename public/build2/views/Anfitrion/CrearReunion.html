@@ -9,15 +9,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link rel="stylesheet" href="../../css/app.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
     <!--Formulario-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
 </head>
 
 <body>
@@ -40,7 +37,7 @@
                 </svg>
             </div>
         </div>
-        <div id="sidebar__list" class="sidebar__menu">
+        <div id="sidebar__list" class="sidebar__menu" style="grid-template-columns:repeat(3, 6rem)">
             <div id="" class="sidebar__menu-option option__active">
                 <div class="icon" title="Usuarios">
                     <svg fill="#F9D8C1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -116,7 +113,7 @@
         <nav class="navbar navbar-expand navbar-dark">
             <div class="container-fluid">
                 <a id="navbar-img" class="navbar-brand" href="#">
-                    <img id="navbar-imgs" src="/build/img/BeeMeet2.png" alt="Logo">
+                    <img id="navbar-imgs" src="../../img/BeeMeet2.png" alt="Logo">
                 </a>
                 <div class="navbar-nav ms-auto">
                     <div class="nav-item dropdown">
@@ -133,114 +130,76 @@
     </header>
 
     <main class="contenidoPrincipal">
-        <div class="crearInvitacion">
-            <div class="crear">
-                <h1 class="title-example text-center">Crear Reunión</h1>
-                    <h2 class="crear__titulo">Información de la Reunión</h2>
-                    <div>
-                        <form class="Formulario needs-validation paragraph-example" novalidate>
-                            <div class="form-group col-md-4">
-                                <label class="crear__label">Asunto*</label>
-                                <input type="text" class="form-control form-control-lg" placeholder="Asunto de la reunión"
-                                    required>
-    
-                                <div class="invalid-feedback">
-                                    Ingrese el asunto de la reunión
-                                </div>
-                            </div>
-                            <!--Fecha y hora(Calendario desplegable)-->
-                            <div class="col-md-6">
-                                <label>Fecha*:</label>
-                                <input type="date" id="fecha" onclick="" class="form-control form-control-lg" required>
-                                
-                                <div class="invalid-feedback">
-                                    Ingrese una fecha.
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label>Hora de Inicio</label>
-                                <input type="text" class="form-control form-control-lg clockpicker" data-placement="top"
-                                    data-align="top" data-autoclose="false" data-format="HH:ii" max="22:30" min="10:00"
-                                    step="1" required>
-    
-                                <div class="invalid-feedback">
-                                    Ingrese un horario
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label>Hora de Fin</label>
-                                <input type="text" class="form-control form-control-lg clockpicker" data-placement="top"
-                                    data-align="top" data-autoclose="false" data-format="HH:ii" max="22:30" min="10:00"
-                                    step="1" required>
-    
-                                <div class="invalid-feedback">
-                                    Ingrese un horario
-                                </div>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="crear__label">Descripción de la reunión*</label>
-                                <textarea type="text" class="form-control form-control-lg"
-                                    placeholder="Ingrese una breve descripción" required rows="5"></textarea>
-    
-                                <div class="invalid-feedback">
-                                    Ingrese la descripción de la reunión
-                                </div>
-                            </div>
-                    <input class="confirm__btn" type="submit" value="Confirmar Información">
+        <div class="crearReunion">
+            <h1 class="crear__titulo">Gestionar reuniones</h1>
+            <button class="actualizarBoton" onclick="obtenerReuniones()">Actualizar Reuniones</button>
+        
+            <div class="div__reuniones" id="divReuniones" class="cardszzz"></div>
+        
+            <h1 class="crear__subtitulo">Crear Reunion</h1>
+            <form id="formCrearReunion">
+                <label class="crear__label" for="titulo_reunion">Titulo de la reunión:</label>
+                <input class="form-control form-control-lg" type="text" id="titulo_reunion" name="titulo_reunion" required>
+                <br>
+                <label class="crear__label" for="descripcion_reunion">Descripción de la reunión:</label>
+                <input class="form-control form-control-lg" type="text" id="descripcion_reunion" name="descripcion_reunion" required>
+                <br>
+                <div class="col-md-6">
+                    <label class="crear__label" for="fecha_reunion">Fecha de inicio de la reunión:</label>
+                    <input class="form-control form-control-lg" type="date" id="fecha_reunion" name="fecha_reunion" required>
                 </div>
-            </div>
-            <div class="enviar">
-                <h2 class="enviar__titulo">Invitados de la Reunión</h2>
-                <div class="enviar__flex">
-                    <form class="Formulario needs-validation paragraph-example" novalidate>
-                        <div class="containerFlex">
-                            <div class="form-group col-md-4">
-                                <label class="crear__label">Correo del Invitado</label>
-                                <input type="text" class="form-control form-control-lg" placeholder="Correo Electrónico"
-                                    required>
-    
-                                <div class="invalid-feedback">
-                                    Ingrese el correo del Invitado
-                                </div>
-                            </div>
-                            <div class="Selecccion form-group col-md-6 has-validation">
-                                <label>Núm Max Acompañantes*</label>
-                                <select class="__opciones custom-select form-control-lg" required>
-                                    <option value="">-->Elija una opción<--</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-            
-                                <div class="invalid-feedback">
-                                    Debe elegir una de las opciones.
-                                </div>
-                            </div>
-                        </div>
-                        <button class="aggInvitado__btn">Agregar</button>
-                        <div class="containerListaInvitados">
-                            <div class="campo">
-                                <p>Lista de Invitados</p>
-                                <p>Número de Acompañantes</p>
-                            </div>
-                            <div class="campo">
-                                <input type="text" disabled value="ani21342@correo.com">
-                                <input type="number" disabled value="5">
-                            </div>
-                            <div class="campo">
-                                <input type="text" disabled value="ani21342@correo.com">
-                                <input type="number" disabled value="5">
-                            </div>
-                            <div class="campo">
-                                <input type="text" disabled value="ani21342@correo.com">
-                                <input type="number" disabled value="5">
-                            </div>
-                        </div>
-                    </form>
+                <br>
+                <div class="col-md-6">
+                    <label>Hora de inicio de la reunion</label>
+                    <input type="text" class="form-control form-control-lg clockpicker" data-placement="top"
+                        data-align="top" data-autoclose="false" data-format="HH:ii" max="22:30" min="10:00" step="1"
+                        required>
+
+                    <div class="invalid-feedback">
+                        Ingrese un horario.
+                    </div>
                 </div>
-            </div>
+                <br>
+                <div class="col-md-6">
+                    <label>Hora de fin de la reunion</label>
+                    <input type="text" class="form-control form-control-lg clockpicker" data-placement="top"
+                        data-align="top" data-autoclose="false" data-format="HH:ii" max="22:30" min="10:00" step="1"
+                        required>
+
+                    <div class="invalid-feedback">
+                        Ingrese un horario.
+                    </div>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label class="crear__label" for="isRepetible">¿Es repetible?</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="isRepetible inlineCheckbox1" name="isRepetible" required>
+                        <label class="form-check-label" for="inlineCheckbox1">Sí</label>
+                      </div>
+                </div>
+                <br>
+                <table id="tablaFechasRepetir">
+                    <tr>
+                        <th>Fecha</th>
+                        <th>accion</th>
+                    </tr>
+                </table>
+                <button class="addFecha__boton" id="btnAgregarFecha" onclick="agregarFecha()">Agregar Fecha</button>
+                <br>
+        
+                <div class="form-row"></div>
+                    <label for="nombreSala">Nombre de la sala:</label>
+                    <select class="__opciones custom-select form-control-lg" id="nombreSala" name="nombreSala" required>
+                        <option value="1">Sala 1</option>
+                        <option value="2">Sala 2</option>
+                        <option value="3">Sala 3</option>
+                    </select>
+                <div class="button__container">
+                    <button class="button__submit" type="button" onclick="crearReunion()">Crear Reunión</button>
+                </div>
+        </div>
+            </form>
         </div>
     </main>
 
@@ -278,11 +237,235 @@
         <p class="copyright">Copyright. Todos los derechos reservados. BeeMeet © 2024</p>
     </footer>
 
-    <script src="/build/js/header.js"></script>
+    <script src="../../js/header.js"></script>
     <script src="../../js/sidebar.js"></script>
-
     <script src="../../js/clockpicker.js"></script>
     <script src="../../js/plantilla-formularios.js"></script>
+
+    <script>
+        window.onload = function () {
+            obtenerReuniones();
+            obtenerSalas();
+        }
+
+        function obtenerSalas() {
+            fetch('salas')
+                .then(response => response.json())
+                .then(salas => {
+                    console.log('salas:', salas);
+                    const selectSala = document.getElementById('nombreSala');
+                    selectSala.innerHTML = '';
+                    salas.forEach(sala => {
+                        const option = document.createElement('option');
+                        option.value = sala.id_sala;
+                        option.textContent = sala.nombre_sala;
+                        selectSala.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function eliminarFila(boton) {
+            const fila = boton.parentNode.parentNode;
+            fila.parentNode.removeChild(fila);
+        }
+
+        function agregarFecha() {
+            const tablaFechasRepetir = document.getElementById('tablaFechasRepetir');
+            const fila = document.createElement('tr');
+            fila.innerHTML = `
+                <td><input type="date" name="fechaRepetir" required></td>
+                <td><button onclick="eliminarFila(this)">Eliminar</button></td>
+            `;
+            tablaFechasRepetir.appendChild(fila);
+        }
+
+        function obtenerReuniones() {
+            fetch('reuniones')
+                .then(response => response.json())
+                .then(reuniones => {
+                    console.log('reuniones xd:', reuniones);
+
+                    const divReunion = document.getElementById('divReuniones');
+                    divReunion.innerHTML = '';
+
+                    reuniones.forEach(reunion => {
+                        const card = document.createElement('div');
+                        card.classList.add('card');
+
+                        const emailDiv = 'correoInv-' + reunion.id_reunion;
+                        const acompanantesDiv = 'acompanantesInv-' + reunion.id_reunion;
+
+                        card.innerHTML = `
+                        
+                            <h4><b>Reunion id: </b>${reunion.id_reunion}</h4>
+
+                            <div class="asunto">
+                            <h4><b>Asunto: </b></h4>
+                            <p>${reunion.titulo_reunion}</p>
+                            </div>
+
+
+                            <h4><b>Fechas: </b>${reunion.numRepeticion}</h4>
+                            <ul class="fechas">${reunion.fechasRepeticion.map(fecha =>
+                            `<li>${fecha.id_repeticion} , 
+                                ${fecha.fecha_repeticion}, ${fecha.hora_inicio_repeticion} - ${fecha.hora_fin_repeticion},
+                                ${fecha.estatus_repeticion}</li>
+                                    
+                            `).join('')}
+                            </ul>
+
+
+                            <h4><b>Descripción</b></h4>
+                            <br/>
+                            <p>${reunion.descripcion_reunion}</p>
+                            <br/>
+                            <h4><b>id Sala: </b>${reunion.id_sala}</h4>
+                            <br/>
+
+                            <h4><b>Lista de los correos de los invitados: - acompañantes disponibles</b></h4>
+                            
+                            <ul>${reunion.infoInvitados.map(info =>
+                            `<li>${info.correo_invitado} - ${info.numero_colados}</li>
+                            `).join('')}
+                            </ul>
+                            
+
+                            <button onclick="detallesReunion(${reunion.id_reunion})">Detalles</button>
+                            <button onclick="mostrarFormulario(${reunion.id_reunion})">Crear Invitación</button>
+                            <button onclick="eliminarReunion(${reunion.id_reunion})">Eliminar</button>
+
+                            <div class="form__inv" id="formulario-${reunion.id_reunion}" style="display:none">
+        <h4 class="text-center">Formulario de Invitación</h4>
+        <form id="form-${reunion.id_reunion}">
+            <div class="form-group has-validation">
+                <label for="correos">Correo de invitación:</label><br>
+                <input id="${emailDiv}" name="correos" rows="4" cols="50" type="text" class="form-control form-control-lg" placeholder="Ingrese su correo"
+                    required>
+
+                <div class="invalid-feedback">
+                    Ingrese su correo
+                </div>
+            </div>
+
+            <div class="form-group has-validation">
+                <label for="acompanantes">Número de acompañantes:</label><br>
+                <input id="${acompanantesDiv}" name="acompanantes" required name="correos" rows="4" cols="50" type="number" class="form-control form-control-lg" placeholder="Ingrese su correo"
+                    required>
+
+                <div class="invalid-feedback">
+                    Ingrese el número de acompanantes
+                </div>
+            </div>
+
+            <button class="boton__inv" type="button" onclick="enviarInvitacion(${reunion.id_reunion})">Añadir</button>
+        </form>
+    </div>
+
+                            `;
+                        divReuniones.appendChild(card);
+                    });
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function mostrarFormulario(idReunion) {
+            const formulario = document.getElementById(`formulario-${idReunion}`);
+            formulario.style.display = 'block';
+        }
+
+
+
+
+        function crearReunion() {
+
+
+            const titulo_reunion = document.getElementById('titulo_reunion').value;
+            const descripcion_reunion = document.getElementById('descripcion_reunion').value;
+            const fecha_reunion = document.getElementById('fecha_reunion').value;
+            const hora_inicio_reunion = document.getElementById('hora_inicio_reunion').value;
+            const hora_fin_reunion = document.getElementById('hora_fin_reunion').value;
+            const isRepetible = document.getElementById('isRepetible').checked;
+            const nombreSala = document.getElementById('nombreSala').value;
+
+            const fechasRepetir = [];
+            document.querySelectorAll('input[name="fechaRepetir"]').forEach(input => {
+                fechasRepetir.push(input.value);
+            });
+
+            const envJson = {
+                titulo_reunion,
+                descripcion_reunion,
+                fecha_reunion,
+                hora_inicio_reunion,
+                hora_fin_reunion,
+                isRepetible,
+                nombreSala,
+                fechasRepetir
+            };
+
+            fetch('reuniones', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(envJson)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('data:', data);
+                    obtenerReuniones();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+
+
+        }
+        function enviarInvitacion(idReunion) {
+            const emailDiv = 'correoInv-' + idReunion;
+            const correoInv = document.getElementById(emailDiv).value;
+            const acompanantesInv = document.getElementById(`acompanantesInv-`+idReunion).value;
+
+            const envJson = {
+                idReunion,
+                correoInv,
+                acompanantesInv
+                
+            };
+
+            fetch(`reuniones/invitacion`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(envJson)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('data:', data);
+                    obtenerReuniones();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function detallesReunion(idReunion) {
+            console.log('Detalles de la reunion:', idReunion);
+
+        }
+        function eliminarReunion(idReunion) {
+
+        }
+
+    </script>
 
 </body>
 
