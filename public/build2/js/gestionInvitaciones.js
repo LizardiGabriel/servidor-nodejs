@@ -55,9 +55,7 @@ async function loadTableData() {
 }
 
 // Cargar datos en la tabla al iniciar la página
-loadTableData().then(() => {
-    gestionarInvitaciones();
-});
+loadTableData();
 
 new DataTable('#Tabla', {
     pagingType: 'full_numbers', //Tipo de paginación
