@@ -51,7 +51,7 @@ async function loadTableData() {
 
 function editarUsuario(idUsuario) {
   alert('editar usuario id: ' + idUsuario);
-  window.location.href = `/admin/EditarCuentaAnfitrionSeguridad.html?idSala=${idUsuario}`;
+  window.location.href = `/admin/EditarCuentaAnfitrionSeguridad.html?idUsuarioa=${idUsuario}`;
 
 }
 
