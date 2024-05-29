@@ -61,6 +61,7 @@ const rutas = [
     ['/img/bee.png', '../public/build2/img/bee.png'],
     ['/img/EDIFICIO.png', '../public/build2/img/EDIFICIO.png'],
     ['/js/superAdmin.js', '../public/build2/js/superAdmin.js'],
+    ['/js/anfitrion.js', '../public/build2/js/anfitrion.js'],
     
 
 
@@ -134,6 +135,32 @@ function getnewCount(jsonToken) {
         });
         return newCount;
 }
+
+function getnombreUsuario(jsonToken){
+    let nombreUsuario = '';
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            nombreUsuario = decoded.nombre;
+        }
+    }
+)
+    return nombreUsuario;
+};
+
+function getApellido(jsonToken){
+    let apellido = '';
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            apellido = decoded.apellido;
+        }
+    }
+)
+    return apellido;
+};
 
 function getchangeFirstPass(jsonToken){
     let changeFirstPass = 0;
@@ -216,11 +243,22 @@ app.get('/admin/test', (req, res) => {
 
 // anfitrion
 
+app.get('/get-session', async (req, res) => {
+    let nombre = '';
+    let apellido = '';
+    nombre = await getnombreUsuario(req.session.jwt);
+    apellido = await getApellido(req.session.jwt);
+    console.log('nombre: ' + nombre);
+    console.log('apellido: ' + apellido);
+    res.status(200).json({nombre: nombre, apellido: apellido});
+    
+});
+
 app.use('/anfitrion', (req, res, next) => {
     if (req.session) {
         let rol = getRol(req.session.jwt);
         if (rol !== 2) {
-            return res.status(401).json({error: 'Unauthorized', status: 401});
+            return res.redirect('/home/login.html');
         }
         if (rol === 2) {
             next();
@@ -228,16 +266,25 @@ app.use('/anfitrion', (req, res, next) => {
             res.status(401).send('Unauthorized');
         }
     }else
-        return res.status(401).json({error: 'Unauthorized', status: 401});
+        return res.redirect('/home/login.html');
 });
 
-app.use('/anfitrion/reuniones2.html', express.static('./public/build2/views/Anfitrion/reunionesAnf.html'));
-
 app.use('/anfitrion/anfitrion.html', express.static('./public/build2/views/Anfitrion/anfitrion.html'));
-app.get('/anfitrion/logout', anfitrion.logout);
+app.use('/anfitrion/salas.html', express.static('./public/build2/views/Anfitrion/CatalogoSalas.html'));
+app.use('/anfitrion/datosinvitado.html', express.static('./public/build2/views/Anfitrion/ConsultarDatosInvitado.html'));
 app.use('/anfitrion/reuniones.html', express.static('./public/build2/views/Anfitrion/consultarReuniones.html'));
-app.use('/anfitrion/salas.html', express.static('./public/build2/views/Anfitrion/salasAnf.html'));
-app.use('/anfitrion/cuenta.html', express.static('./public/build2/views/Anfitrion/cuentaAnf.html'));
+app.use('/anfitrion/nuevareunion.html', express.static('./public/build2/views/Anfitrion/CrearReunion.html'));
+
+app.use('/anfitrion/reunion/detalles.html', express.static('./public/build2/views/Anfitrion/detallesreunion.html'));
+
+app.use('/anfitrion/reu2.html', express.static('./public/build2/views/Anfitrion/reuniones2.html'));
+
+
+//app.use('/anfitrion/cuenta.html', express.static('./public/build2/views/Anfitrion/cuentaAnf.html'));
+
+app.get('/anfitrion/catalogo/salas', admin.getSalas);
+
+app.get('/anfitrion/logout', anfitrion.logout);
 
 app.get('/anfitrion/reuniones', anfitrion.getReunionesAnfitrion);
 app.get('/anfitrion/salas', anfitrion.getSalasAnfitrion);
@@ -305,7 +352,8 @@ app.use('/invitado/home', async (req, res, next) => {
     console.log('newCount: ' + newCount);
     if (newCount === 1) {
         //return res.status(200).json({message: 'primero debe llenar el formulario de invitacion', status: 200});
-        return res.redirect('/invitado/invitacion.html');
+        //return res.redirect('/invitado/invitacion.html');
+        return res.redirect('/invitado/actualizardatos.html');
     }
 
     let changeFirstPass = 0;
@@ -318,6 +366,8 @@ app.use('/invitado/home', async (req, res, next) => {
     next();
 
 });
+
+app.use('/invitado/actualizardatos.html', express.static('./public/build2/views/Invitado/actualizardatos.html'));
 
 
 app.use('/invitado/home/invitado.html', express.static('./public/build2/views/Invitado/invitado.html'));

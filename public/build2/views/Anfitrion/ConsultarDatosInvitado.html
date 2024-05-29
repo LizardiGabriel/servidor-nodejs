@@ -35,7 +35,7 @@
             </div>
         </div>
         <div id="sidebar__list" class="sidebar__menu">
-            <div id="" class="sidebar__menu-option option__active" onclick="refReuniones()">
+            <div id="" class="sidebar__menu-option option__active">
                 <div class="icon" title="Usuarios">
                     <svg fill="#F9D8C1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;"
@@ -53,7 +53,7 @@
                     <p class="option__text">Consultar Reunión</p>
                 </div>
             </div>
-            <div id="" class="sidebar__menu-option" onclick="reuniones2()">
+            <div id="" class="sidebar__menu-option">
                 <div class="icon" title="Reuniones">
                     <svg fill="#F9D8C1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
@@ -86,7 +86,7 @@
                     <p class="option__text">Agendar Reunión</p>
                 </div>
             </div>
-            <div id="" class="sidebar__menu-option" onclick="refSalas()">
+            <div id="" class="sidebar__menu-option">
                 <div class="icon" title="Salas">
 
                     <svg class="" aria-hidden="true" fill="#F9D8C1" viewBox="0 0 20 20">
@@ -117,7 +117,7 @@
                         <button class="navbar__profile-container nav-link profile-button" onclick="toggleMenu()">
                             <div id="user-menu" style="display: none;">
                                 <a href="#">Mis datos</a>
-                                <a href="#" onclick="logout()">Cerrar sesión</a>
+                                <a href="#">Cerrar sesión</a>
                             </div>
                         </button>
                     </div>
@@ -126,21 +126,81 @@
         </nav>
     </header>
 
-    <main class="contenidoPrincipal default">
-        <div class="defaultInicioHero">
-            <div class="defaultInicioHero__Top">
-                <h1>Bienvenido, <span id="nameGet">Leo Yeudiel</span></h1>
-                <h2>Comienza a reunirte</h2>
-            </div>
-            <div class="defaultInicioHero__Bottom">
-              <div class="defaultInicioHero__Bottom__imgBox">
-                <img src="../../img/bee.png" class="defaultInicioHero__Bottom__imgBox__beeAnimation">
-              </div>
-              <div class="defaultInicioHero__Bottom__imgBox">
-                <img src="../../img/EDIFICIO.png">
-              </div>
-            </div>    
-        </div>
+    <main class="contenidoPrincipal">
+        <section class="consultarDatosInvitado">
+            <form>
+                <div class="campo">
+                    <label for="">Nombre del Invitado:</label>
+                    <input type="text" name="" id="" value="Maria del Rosario Gonzalez Borja" disabled>
+                </div>
+                <div class="campo">
+                    <label for="">Empresa u Organización:</label>
+                    <input type="text" name="" id="" value="Super Secret Intelligence" disabled>
+                </div>
+                <div class="campoFlex">
+                    <div class="campo">
+                        <label for="">Tipo de vehículo</label>
+                        <input type="text" name="" id="" value="Super Secret Intelligence" disabled>
+                    </div>
+                    <div class="campo">
+                        <label for="">Placas:</label>
+                        <input type="text" name="" id="" value="CSD-12" disabled>
+                    </div>
+                </div>
+                <div class="campo campoTabla">
+                    <p>Dispositivos Electrónicos</p>
+                    <table class="campo__tabla">
+                        <tbody>
+                            <tr>
+                                <th>Dispositivo</th>
+                                <th>Número de Serie</th>
+                            </tr>
+                            <tr>
+                                <td>Asus Rog</td>
+                                <td>ASDFS-21DFS-FSDFRE-123-RWEEW</td>
+                            </tr>
+                            <tr>
+                                <td>Iphone 15</td>
+                                <td>BDFG-FDGD2-EWRWE2-EWFW-21312</td>
+                            </tr>
+                            <tr>
+                                <td>Earpods Pro 2Gen</td>
+                                <td>FSDFDSF-DFSD-324-CSCF3-FS-212</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+            <form class="segundaParte">
+                <div class="invitadoIMG">
+                    <img src="../../img/usuario.webp" alt="Usuario">
+                </div>
+                <div class="campo campoTabla">
+                    <p>Lista de Acompañantes</p>
+                    <table class="campo__tabla">
+                        <tbody>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Correo Electrónico</th>
+                            </tr>
+                            <tr>
+                                <td>Luis Rodriguez Martinez</td>
+                                <td>luis8921_12@correo.com</td>
+                            </tr>
+                            <tr>
+                                <td>Sofia Nieves Nieves</td>
+                                <td>sofi21_292@correo.com</td>
+                            </tr>
+                            <tr>
+                                <td>Ximena Lopez Ramirez</td>
+                                <td>xime231_324@correo.com</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="botonReturn">Regresar</button>
+            </form>
+        </section>
     </main>
 
     <footer class="footer">
@@ -179,36 +239,5 @@
 
     <script src="/build/js/header.js"></script>
     <script src="../../js/sidebar.js"></script>
-    <script src="../../js/anfitrion.js"></script>
-
-    <script>
-        window.onload = function() {
-            obtenerDatos();
-        }
-            function obtenerDatos() {
-
-                console.log('obtenerDatos');
-                fetch('/get-session')
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Datos de la sesión:', data);
-                        let nombrehtml = document.getElementById('nameGet');
-                        nombrehtml.innerHTML = data.nombre + ' ' + data.apellido;
-        
-        
-                        // 
-                      })
-                    .catch(error => console.error('Error al obtener los datos de la sesión:', error));
-            }
-        
-    </script>
 </body>
 </html>
-
-    <!-- <h1>Bienvenido al Panel de anfitrion</h1>
-    <button onclick="refReuniones()" >Reuniones</button>
-    <button onclick="reuniones2()" >Reuniones2</button>
-    <button onclick="refSalas()" >Salas</button>
-    <button onclick="refCuenta()" >Mi cuenta</button>
-
-    <button onclick="logout()">Cerrar Sesión</button> -->

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BeeMeet - Consultar Datos Invitado</title>
+    <title>BeeMeet - Catálogo de Salas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -13,6 +14,12 @@
         rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!--DataTables-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.6/css/dataTables.dataTables.css" />
+    <script src="https://cdn.datatables.net/2.0.6/js/dataTables.js"></script>
+    <!--SiderBar-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
     <nav class="sidebar close">
@@ -35,7 +42,7 @@
             </div>
         </div>
         <div id="sidebar__list" class="sidebar__menu">
-            <div id="" class="sidebar__menu-option option__active" onclick="refReuniones()">
+            <div id="" class="sidebar__menu-option option__active">
                 <div class="icon" title="Usuarios">
                     <svg fill="#F9D8C1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;"
@@ -53,7 +60,7 @@
                     <p class="option__text">Consultar Reunión</p>
                 </div>
             </div>
-            <div id="" class="sidebar__menu-option" onclick="reuniones2()">
+            <div id="" class="sidebar__menu-option">
                 <div class="icon" title="Reuniones">
                     <svg fill="#F9D8C1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
@@ -86,7 +93,7 @@
                     <p class="option__text">Agendar Reunión</p>
                 </div>
             </div>
-            <div id="" class="sidebar__menu-option" onclick="refSalas()">
+            <div id="" class="sidebar__menu-option">
                 <div class="icon" title="Salas">
 
                     <svg class="" aria-hidden="true" fill="#F9D8C1" viewBox="0 0 20 20">
@@ -117,7 +124,7 @@
                         <button class="navbar__profile-container nav-link profile-button" onclick="toggleMenu()">
                             <div id="user-menu" style="display: none;">
                                 <a href="#">Mis datos</a>
-                                <a href="#" onclick="logout()">Cerrar sesión</a>
+                                <a href="#">Cerrar sesión</a>
                             </div>
                         </button>
                     </div>
@@ -126,20 +133,25 @@
         </nav>
     </header>
 
-    <main class="contenidoPrincipal default">
-        <div class="defaultInicioHero">
-            <div class="defaultInicioHero__Top">
-                <h1>Bienvenido, <span id="nameGet">Leo Yeudiel</span></h1>
-                <h2>Comienza a reunirte</h2>
+    <main class="contenidoPrincipal">
+        <div class="catalogoSalas">
+            <h1 class="title-example text-center">Catálogo de Salas</h1>
+            <div class="__Tabla table-responsive paragraph-example">
+                <table class="tabla table table-hover table-bordered table-sm" id="Tabla">
+                    <thead class="tabla__cabecera">
+                        <tr>
+                            <th scope="col" data-sort="id" class="cabecera">ID</th>
+                            <th scope="col" data-sort="nombreSala" class="cabecera">Nombre de la sala</th>
+                            <th scope="col" data-sort="estado" class="cabecera">Estado</th>
+                            <th scope="col" data-sort="cupoMax" class="cabecera" id="CupoMax">Cupo máximo</th>
+                            <th scope="col" data-sort="numeroS" class="cabecera">Número</th>
+                            <th scope="col" data-sort="pisoS" class="cabecera">Piso</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tabla__cuerpo" id="tablaSalas">
+                    </tbody>
+                </table>
             </div>
-            <div class="defaultInicioHero__Bottom">
-              <div class="defaultInicioHero__Bottom__imgBox">
-                <img src="../../img/bee.png" class="defaultInicioHero__Bottom__imgBox__beeAnimation">
-              </div>
-              <div class="defaultInicioHero__Bottom__imgBox">
-                <img src="../../img/EDIFICIO.png">
-              </div>
-            </div>    
         </div>
     </main>
 
@@ -179,36 +191,61 @@
 
     <script src="/build/js/header.js"></script>
     <script src="../../js/sidebar.js"></script>
-    <script src="../../js/anfitrion.js"></script>
+
 
     <script>
-        window.onload = function() {
-            obtenerDatos();
+        window.onload = function(){
+            loadTableData();
         }
-            function obtenerDatos() {
-
-                console.log('obtenerDatos');
-                fetch('/get-session')
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Datos de la sesión:', data);
-                        let nombrehtml = document.getElementById('nameGet');
-                        nombrehtml.innerHTML = data.nombre + ' ' + data.apellido;
-        
-        
-                        // 
-                      })
-                    .catch(error => console.error('Error al obtener los datos de la sesión:', error));
+        async function obtenerSalas() {
+            var info = [];
+            console.log('Cargando salas...');
+            try {
+              const response = await fetch('/anfitrion/catalogo/salas');
+              const salas = await response.json();
+          
+              // Limpiar el arreglo 'info'
+              info.length = 0;
+          
+              // Agregar cada sala al arreglo 'info'
+              salas.forEach(sala => {
+                info.push({
+                  id: sala.id_sala,
+                  nombreSala: sala.nombre_sala,
+                  estado: sala.estatus_sala,
+                  cupoMax: sala.capacidad_sala,
+                  numeroS: sala.numero_sala,
+                  pisoS: sala.piso_sala
+                });
+              });
+          
+              console.log('Salas cargadas:', info);
+              return info;
+            } catch (error) {
+              console.error('Error al obtener salas:', error);
+              return [];
             }
-        
+          }
+    
+          async function loadTableData() {
+            const data = await obtenerSalas(); // Esperar a que las salas se carguen
+            const tbody = document.getElementById('tablaSalas');
+          
+            // Limpiar la tabla antes de agregar nuevos datos
+            tbody.innerHTML = '';
+          
+            data.forEach(item => {
+              const row = document.createElement('tr');
+              row.innerHTML = `<td class="id">${item.id}</td>
+                                   <td class="nombreSala">${item.nombreSala}</td>
+                                   <td class="estado">${item.estado}</td>
+                                   <td class="cupoMax">${item.cupoMax}</td>
+                                   <td class="numeroS">${item.numeroS}</td>
+                                   <td class="pisoS">${item.pisoS}</td>
+                            `;
+              tbody.appendChild(row);
+            });
+          }
     </script>
+
 </body>
-</html>
-
-    <!-- <h1>Bienvenido al Panel de anfitrion</h1>
-    <button onclick="refReuniones()" >Reuniones</button>
-    <button onclick="reuniones2()" >Reuniones2</button>
-    <button onclick="refSalas()" >Salas</button>
-    <button onclick="refCuenta()" >Mi cuenta</button>
-
-    <button onclick="logout()">Cerrar Sesión</button> -->
