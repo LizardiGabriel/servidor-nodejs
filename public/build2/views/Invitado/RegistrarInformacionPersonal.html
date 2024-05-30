@@ -288,7 +288,6 @@
                 enviarData(data); // Enviar sin foto si no se seleccionó ninguna
             }
         });
-
         function enviarData(data) {
             fetch('/invitado/registrarinformacion', {
                 method: 'POST',
@@ -300,12 +299,10 @@
             .then(response => response.json())
             .then(data => {
                 console.log('Respuesta del servidor:', data);
-                //window.location.href = 'consultarReunion.html';
+                window.location.href = 'cambiarContraseña.html';
             })
             .catch(error => console.error('Error al mandar datos:', error));
         }
-
-
     </script>
 
     

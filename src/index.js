@@ -75,7 +75,7 @@ const rutas = [
     ['/js/gestionarReuniones.js', '../public/build2/js/gestionarReuniones.js'],
     ['/js/gestionInvitaciones.js', '../public/build2/js/gestionInvitaciones.js'],
     ['/js/index.global.min.js', '../public/build2/js/index.global.min.js'],
-
+    ['/js/anfitrion.js', '../public/build2/js/anfitrion.js'],
 
 
 
@@ -232,7 +232,6 @@ app.use('/anfitrion', (req, res, next) => {
 });
 
 app.use('/anfitrion/reuniones2.html', express.static('./public/build2/views/Anfitrion/reunionesAnf.html'));
-
 app.use('/anfitrion/anfitrion.html', express.static('./public/build2/views/Anfitrion/anfitrion.html'));
 app.get('/anfitrion/logout', anfitrion.logout);
 app.use('/anfitrion/reuniones.html', express.static('./public/build2/views/Anfitrion/consultarReuniones.html'));
@@ -321,8 +320,8 @@ app.use('/invitado/home', async (req, res, next) => {
 
 
 app.use('/invitado/home/invitado.html', express.static('./public/build2/views/Invitado/invitado.html'));
-app.use('/invitado/invitacion.html', express.static('./public/build2/views/Invitado/invitacion.html'));
-app.post('/invitado/registrarinformacion', invitado.Pruebaguardar);
+app.use('/invitado/invitacion.html', express.static('./public/build2/views/Invitado/RegistrarInformacionPersonal.html'));
+app.post('/invitado/registrarinformacion', invitado.setDataInvitado);
 
 //app.get('/externo/logout', externo.logout);
 app.get('/invitado/test', (req, res) => {
