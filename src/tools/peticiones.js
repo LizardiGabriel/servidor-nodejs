@@ -785,5 +785,6 @@ module.exports = {
 
     getDetallesReunionByIdBD,
 
-    getInvitadoByIdEmailBD
+    getInvitadoByIdEmailBD,
+
 };

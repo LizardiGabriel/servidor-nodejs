@@ -53,6 +53,8 @@ async function loadTableData() {
 // Cargar datos en la tabla al iniciar la página
 loadTableData();
 
+
+
 /*
 //Activación de DataTables
 new DataTable('#Tabla', {

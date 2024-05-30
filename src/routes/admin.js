@@ -2,6 +2,9 @@ const { getSalasBD, setNewSalaBD, getSalaByIdBD, updateSalaBD, deleteSalaBD } = 
 const { getUsuariosBD, setNewUsuarioBD, getUsuarioByIdBD, getUsuarioByEmailBD, updateUsuarioBD, deleteUsuarioBD } = require('../tools/peticiones');
 const { getInvitadosBD, getInvitadoByIdBD, updateInvitadoBD, getReunionesAdminBD, getInvitacionesAdminBD } = require('../tools/peticiones');
 
+
+const { getReunionAdminByIdBD } = require('../tools/petiAdmin');
+
 async function logout(req, res) {
     console.log('mensaje --> logout');
     req.session.destroy();
@@ -97,7 +100,7 @@ async function setNewUsuario(req, res) {
 }
 
 async function getUsuarioById(req, res) {
-    console.log('=========================Dqedewfqewfrfrfrgfrgetgt4g2qreg', req.params)
+    console.log('========================= get Usuario By id: ', req.params)
     const { id } = req.params;
     const usuario = await getUsuarioByIdBD(id);
     res.json(usuario);
@@ -105,8 +108,16 @@ async function getUsuarioById(req, res) {
 
 async function updateUsuario(req, res) {
     const { id } = req.params;
-    const { email, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario } = req.body;
-    const usuarioActualizado = await updateUsuarioBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario);
+    const { email, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, fotoUsuario } = req.body;
+
+    console.log('id: ', id, 'email: ', email, 'nombre: ', nombre, 'apellidoPaterno: ', apellidoPaterno);
+    console.log('apellidoMaterno: ', apellidoMaterno, 'telefono: ', telefono, 'idRol nuevo: ', idRol, 'foto_usuario: ', fotoUsuario);
+
+    const usuarioActualizado = await updateUsuarioBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, fotoUsuario);
+
+    console.log('usuarioActualizado: ', usuarioActualizado);
+
+
     res.json(usuarioActualizado);
 }
 
@@ -118,9 +129,17 @@ async function deleteUsuario(req, res) {
 
 async function getReuniones(req, res) {
     const reuniones = await getReunionesAdminBD();
-    console.log(' ===========> =======> ===> => reuniones en json: ', reuniones);
+    console.log(' ===========> =======> ===> => obtener reuniones admin.js');
     res.json(reuniones);
 
+}
+
+async function getReunionById(req, res) {
+    console.log('mensaje --> getReunionById');
+    const { id } = req.params;
+    console.log('id de la reunion a consultar: ', id);
+    const reunion = await getReunionAdminByIdBD(id);
+    res.json(reunion);
 }
 
 async function getInvitaciones(req, res) {
@@ -147,5 +166,7 @@ module.exports = {
     updateInvitado,
 
     getReuniones,
-    getInvitaciones
+    getInvitaciones,
+
+    getReunionById
 };
