@@ -22,7 +22,7 @@
             <h1 class="recuperarInfo__titulo">Recuperar Contraseña</h1>
             <p>Ingresa el correo electrónico  que registraste en el sistema. 
                 Te enviaremos un correo de verificación para restablecer tu contraseña.</p>
-            <form action="" class="form needs-validation" novalidate>
+            <form action="" id="myForm" class="form needs-validation" novalidate>
                 <div>
                     <label class="recuperarForm__email">Correo Electrónico*</label>
                     <div class="inputForm">
@@ -38,6 +38,23 @@
             </form>
         </div>
     </main>
+
+    <!-- Estilos para el Swal -->
+    <style>
+      .titleSize{
+        font-size: 4rem;
+      }
+      .contentSize{
+        font-size: 2rem !important;
+      }
+      .buttonSize{
+        font-size: 2rem !important;
+      }
+      .iconSize{
+        font-size: 1.5rem;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../js/plantilla-formularios.js"></script>
     <script src="../../js/validaciones.js"></script>
     <script src="../../js/sesiones/recuperarContrasena.js"></script>
