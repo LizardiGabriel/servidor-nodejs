@@ -79,7 +79,12 @@ const rutas = [
     ['/js/gestionarReuniones.js', '../public/build2/js/admin/gestionarReuniones.js'],
     ['/js/gestionInvitaciones.js', '../public/build2/js/admin/gestionInvitaciones.js'],
     ['/js/admin/headers.js', '../public/build2/js/admin/headers.js'],
+    
+    //Rutas de js para iniciar sesión
+    ['/js/sesiones/iniciarsesion.js', '../public/build2/js/sesiones/iniciarsesion.js'],
+    ['/js/sesiones/recuperarContrasena.js', '../public/build2/js/sesiones/recuperarContrasena.js'],
 
+    //Rutas de css de toda la interfaz
     ['/css/app.css', '../public/build2/css/app.css'],
     ['/css/app.css.map', '../public/build2/css/app.css.map'],
 
