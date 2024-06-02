@@ -1,9 +1,21 @@
 const { getSalasBD, setNewSalaBD, getSalaByIdBD, updateSalaBD, deleteSalaBD } = require('../tools/peticiones');
-const { getUsuariosBD, setNewUsuarioBD, getUsuarioByIdBD, getUsuarioByEmailBD, updateUsuarioBD, deleteUsuarioBD } = require('../tools/peticiones');
+const { getUsuariosBD, setNewUsuarioBD, getUsuarioByIdBD, getUsuarioByEmailBD, updateUsuarioBD, deleteUsuarioBD} = require('../tools/peticiones');
 const { getInvitadosBD, getInvitadoByIdBD, updateInvitadoBD, getReunionesAdminBD, getInvitacionesAdminBD } = require('../tools/peticiones');
-
-
 const { getReunionAdminByIdBD } = require('../tools/petiAdmin');
+const jwt = require('jsonwebtoken');
+
+
+function getemail(jsonToken){
+    let email = "";
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            email= decoded.email;
+        }
+    });
+    return email;
+}
 
 async function logout(req, res) {
     console.log('mensaje --> logout');
@@ -11,9 +23,7 @@ async function logout(req, res) {
     res.redirect('/');
 }
 
-
 // salas
-
 
 async function getSalas(req, res) {
 
@@ -21,6 +31,15 @@ async function getSalas(req, res) {
     res.json(salas);
 }
 
+async function getUserEmail(req,res){
+    console.log('=============================mensaje -->Se intento obtener del correo');
+    if(req.session){
+        res.json({ email: getemail(req.session.jwt) }); 
+    }
+    else {
+        res.status(403).send('No autorizado');
+    }
+}
 async function setNewSala(req, res) {
     const { nombreSala, cupoMaximo, piso, numerito, estado } = req.body;
     console.log('nombreSala: ', nombreSala, 'cupoMaximo: ', cupoMaximo, 'piso: ', piso, 'numerito:', numerito, 'estado: ', estado);
@@ -106,6 +125,13 @@ async function getUsuarioById(req, res) {
     res.json(usuario);
 }
 
+async function getUsuarioByEmail(req, res) {
+    console.log('========================= get Usuario By email: ', req.params)
+    const { email } = req.params;
+    const usuario = await getUsuarioByEmailBD(email.replace(/^:/, ''));
+    res.json(usuario);
+}
+
 async function updateUsuario(req, res) {
     const { id } = req.params;
     const { email, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, fotoUsuario } = req.body;
@@ -164,9 +190,11 @@ module.exports = {
     getInvitados,
     getInvitadoById,
     updateInvitado,
-
+    getUsuarioByEmail,
+    
     getReuniones,
     getInvitaciones,
+    getUserEmail,
 
     getReunionById
 };

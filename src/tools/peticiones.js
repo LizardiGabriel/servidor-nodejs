@@ -35,6 +35,21 @@ async function getUsersByIDBD(ID) {
     }
 }
 
+async function getUsersByEmailBD(correo) {
+    console.log('peticion a la bd de getUsersByCorreo');
+    try {
+        const usuario = await prisma.usuario.findFirst({
+            where: {
+                email_usuario: correo,
+            },
+        });
+        return usuario;
+    } catch (error) {
+        console.error('Error al obtener usuario por ID:', error);
+        return null;
+    }
+}
+
 async function createUserBD({ email, hashedPassword, nombre, apellido_paterno, apellido_materno, telefono, rol, foto_usuario }) {
     console.log('peticion a la bd de createUser');
 
@@ -240,8 +255,8 @@ async function getUsuarioByIdBD(id) {
 async function getUsuarioByEmailBD(email) {
     console.log('peticion a la bd de getUsuarioByEmail');
     try {
-        const usuario = await prisma.usuario.findFirst({
-            where: { email_usuario: email }
+        const usuario = await prisma.usuario.findUnique({
+            where: { email_usuario:email }
         });
         return usuario;
     } catch (error) {

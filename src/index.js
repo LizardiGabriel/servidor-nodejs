@@ -60,7 +60,7 @@ const rutas = [
     ['/img/icons/ico-view.svg', '../public/build2/img/icons/view.png'],
     ['/img/bee.png', '../public/build2/img/bee.png'],
     ['/img/EDIFICIO.png', '../public/build2/img/EDIFICIO.png'],
-    
+
     
     ['/js/buttonProfiles.js', '../public/build2/js/buttonProfiles.js'],
     ['/js/validaciones.js', '../public/build2/js/validaciones.js'],
@@ -71,7 +71,7 @@ const rutas = [
     ['/build/js/header.js', '../public/build2/js/header.js'],
     ['/js/index.global.min.js', '../public/build2/js/index.global.min.js'],
     ['/js/anfitrion.js', '../public/build2/js/anfitrion.js'],
-    
+    ['/js/registrarInformacionPersonal.js','../public/build2/js/registrarInformacionPersonal.js'],
     
     ['/js/superAdmin.js', '../public/build2/js/admin/superAdmin.js'],
     ['/js/gestionUsuarios.js', '../public/build2/js/admin/gestionUsuarios.js'],
@@ -120,8 +120,9 @@ function getRol(jsonToken){
         }
     });
     return rol;
-
 }
+
+
 
 function getnewCount(jsonToken) {
         let newCount = 0;
@@ -185,7 +186,7 @@ app.use('/admin/catalogo/EditarDatosPersonales.html', express.static('./public/b
 
 
 app.get('/admin/logout', admin.logout);
-
+app.get('/admin/getemail', admin.getUserEmail);
 app.get('/admin/catalogo/salas', admin.getSalas);
 app.get('/admin/catalogo/salas/:id', admin.getSalaById);
 app.post('/admin/catalogo/salas', admin.setNewSala);
@@ -195,6 +196,7 @@ app.delete('/admin/catalogo/salas/:id', admin.deleteSala);
 
 app.get('/admin/catalogo/usuarios', admin.getUsuarios);
 app.get('/admin/catalogo/usuarios/:id', admin.getUsuarioById);
+app.get('/admin/catalogo/usuarioEmail/:email', admin.getUsuarioByEmail);
 app.post('/admin/catalogo/usuarios', admin.setNewUsuario);
 app.put('/admin/catalogo/usuarios/:id', admin.updateUsuario);
 app.delete('/admin/catalogo/usuarios/:id', admin.deleteUsuario);
@@ -245,6 +247,7 @@ app.use('/anfitrion/salas.html', express.static('./public/build2/views/Anfitrion
 app.use('/anfitrion/cuenta.html', express.static('./public/build2/views/Anfitrion/cuentaAnf.html'));
 
 app.get('/anfitrion/reuniones', anfitrion.getReunionesAnfitrion);
+app.get('/anfitrion/getUserEmail', anfitrion.getReunionesAnfitrion);
 app.get('/anfitrion/salas', anfitrion.getSalasAnfitrion);
 app.post('/anfitrion/reuniones', anfitrion.setNewReunion);
 app.post('/anfitrion/reuniones/invitacion', anfitrion.setInvitacion);

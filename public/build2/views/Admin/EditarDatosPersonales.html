@@ -139,36 +139,37 @@
                 </div>
                 <div class="profileHeroSA__right">
                     <div class="profileHeroSA__right__inputProfile">
-                        <label class="profileHeroSA__right__inputProfile__label">Nombre(s)*</label>
+                        <label class="profileHeroSA__right__inputProfile__label">Nombre(s)</label>
                         <div class="profileHeroSA__right__inputProfile__content">
                             <input class="inputSA" type="text" placeholder="Juan " disabled id="inputNom">
                         </div>
                     </div>
                     <div class="profileHeroSA__right__inputProfile">
-                        <label class="profileHeroSA__right__inputProfile__label">Apellido Paterno*</label>
+                        <label class="profileHeroSA__right__inputProfile__label">Apellido Paterno</label>
                         <div class="profileHeroSA__right__inputProfile__content">
                             <input class="inputSA" type="text" placeholder="Perez" disabled id="inputApePat">
                         </div>
                     </div>
                     <div class="profileHeroSA__right__inputProfile">
-                        <label class="profileHeroSA__right__inputProfile__label">Apellido Materno*</label>
+                        <label class="profileHeroSA__right__inputProfile__label">Apellido Materno</label>
                         <div class="profileHeroSA__right__inputProfile__content">
                             <input class="inputSA" type="text" placeholder="Hernandez" disabled id="inputApeMat">
                         </div>
                     </div>
                     <div class="profileHeroSA__right__inputProfile">
-                        <label class="profileHeroSA__right__inputProfile__label">Correo Electrónico*</label>   
-                        <div class="profileHeroSA__right__inputProfile__content">
-                            <input class="inputSA" type="email" placeholder="example@email.com" disabled id="inputEmail">
-                        </div>
-                    </div>
-                    
-                    <div class="profileHeroSA__right__inputProfile">
-                        <label class="profileHeroSA__right__inputProfile__label">Número telefónico*</label>
+                        <label class="profileHeroSA__right__inputProfile__label">Número telefónico</label>
                         <div class="profileHeroSA__right__inputProfile__content">
                             <input class="inputSA" type="tel" min="0" placeholder="55 666 777 88" pattern="[0-9\s]{10,15}" disabled id="inputTel">
                         </div>
                     </div>
+                    <div class="profileHeroSA__right__inputProfile" id="SeccionFoto" style="display: none;">
+                        <label  class="profileHeroSA__right__inputProfile__label">Fotografia</label>
+                        <div class="profileHeroSA__right__inputProfile__content">
+                            <input " class="inputSA" type="file" accept="image/*"  id="inputFoto">
+                        </div>
+                    </div>
+
+
                     <div class="profileHeroSA__right__buttonContainer view" id="buttonsEdit">
                         <button class="profileHeroSA__right__buttonContainer__buttonEdit" id="editProfile">Editar</button>   
                         <div class="profileHeroSA__right__buttonContainer__button" style="display: none;" id="contenedorEdit">
@@ -213,7 +214,43 @@
         <hr>
         <p class="copyright">Copyright. Todos los derechos reservados. BeeMeet © 2024</p>
     </footer>
-    
+
+    <script>
+    document.addEventListener('DOMContentLoaded',async function() {
+        try {
+        const response = await fetch('/admin/getemail');
+        const data = await response.json();
+        var datosUsuario = await getData(data.email);  // Usar await aquí garantiza que esperamos el resultado
+        console.log(datosUsuario);
+        const nombre= document.getElementById("inputNom");
+        nombre.placeholder=datosUsuario.nombre_usuario;
+        const ApellidoPat= document.getElementById("inputApePat");
+        ApellidoPat.placeholder=datosUsuario.apellido_paterno_usuario;
+        const ApellidoMat= document.getElementById("inputApeMat");
+        ApellidoMat.placeholder=datosUsuario.apellido_materno_usuario;
+        const Tel= document.getElementById("inputTel");
+        Tel.placeholder=datosUsuario.telefono_usuario;
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+    });
+
+    async function getData(correo) {
+    try {
+        // Remover el ':' adicional del inicio de la URL si no es necesario
+        const response = await fetch('/admin/catalogo/usuarioEmail/:'+correo);
+        const data = await response.json();
+        return data;  // Asegura que data sea devuelta de la función
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;  // Devolver null o algún indicativo de error
+    }
+}
+
+
+
+    </script>
     <script src="../../js/buttonProfiles.js"></script>
     <script src="../../js/sidebar.js"></script>
     <script src="/build/js/header.js"></script>

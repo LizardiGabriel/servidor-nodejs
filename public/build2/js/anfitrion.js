@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             location: "Num sala "+reunion.id_sala,
                             url: "anfitrion/detallesreunion/${reunion.id_reunion}",
                             timeStart: fecha.hora_inicio_repeticion,
-                            timeEnd: fecha.hora_fin_repeticion
                         } 
                         reunionesmap.push(evento);                     
                     }

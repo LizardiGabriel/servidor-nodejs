@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function() {
     
     let activarBoton = document.getElementById('editProfile');
@@ -5,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let cancelar = document.getElementById('cancelarProfile');
     let guardar = document.getElementById('guardarProfile');
     let contenedorEdit = document.getElementById('contenedorEdit');
+    let foto = document.getElementById('SeccionFoto');
 
     //Variables de validación
     let patron_name = /^[áéíóúÁÉÍÓÚñäëïöüÄËÏÖÜ\w\d]{1,100}$/;
@@ -14,7 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
     activarBoton.addEventListener('click', function (event) {
         activarBoton.style.display = "none";
         contenedorEdit.style.display = '';
-
+        foto.style.display = 'block';
+        foto.style.textAlign = 'center';
         habilitarInputs();
     });
 
@@ -22,18 +25,45 @@ document.addEventListener('DOMContentLoaded', function() {
         contenedor.classList.add("view");
         contenedorEdit.style.display = "none";
         activarBoton.style.display = '';
-
-
-        
+        foto.style.display = 'none';
         deshabiltarInputs();
+        const nombre= document.getElementById("inputNom").value;
+        const ApellidoPat= document.getElementById("inputApePat").value;
+        const ApellidoMat= document.getElementById("inputApeMat").value;
+        const Tel= document.getElementById("inputTel").value;
+        const file_foto = document.getElementById("inputFoto").files[0];
+
+        let datatoSend={
+            nombre: nombre,
+            apellido_paterno_usuario:ApellidoPat,
+            apellido_materno_usuario:ApellidoMat,
+            telefono_usuario:Tel,
+            foto_usuario:file_foto
+        }
+
+        if (file_foto) {
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                datatoSend.foto_usuario = reader.result; // Añade la foto en formato Base64 al objeto data
+                //enviarData(data);
+                console.log(datatoSend);
+                console.log(datosUsuario);
+            };
+            reader.readAsDataURL(file_foto);
+        } else {
+            //enviarData(data); // Enviar sin foto si no se seleccionó ninguna
+            console.log("Hubo un error al cargar los datos");
+        }
+        
+
+
     });
 
     cancelar.addEventListener('click', function () {
         contenedor.classList.add("view");
         contenedorEdit.style.display = "none";
         activarBoton.style.display = '';
-
-        /*  */
+        foto.style.display = 'none';
         deshabiltarInputs();
     });
 
@@ -42,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('inputNom').disabled = true;
         document.getElementById('inputApePat').disabled = true;
         document.getElementById('inputApeMat').disabled = true;
-        document.getElementById('inputEmail').disabled = true;
         document.getElementById('inputTel').disabled = true;
     }
     
@@ -51,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('inputNom').disabled = false;
         document.getElementById('inputApePat').disabled = false;
         document.getElementById('inputApeMat').disabled = false;
-        document.getElementById('inputEmail').disabled = false;
         document.getElementById('inputTel').disabled = false;
     }
 
@@ -79,8 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         //Validación 
-
-
     }
+
 
 });
