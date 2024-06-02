@@ -84,7 +84,9 @@ const rutas = [
     ['/js/admin/headers.js', '../public/build2/js/admin/headers.js'],
 
     ['/js/anfitrion/headers.js', '../public/build2/js/anfitrion/headers.js'],
-    
+    ['/js/anfitrion/calendar.js', '../public/build2/js/anfitrion/calendar.js'],
+
+
     //Rutas de js para iniciar sesión
     ['/js/sesiones/iniciarsesion.js', '../public/build2/js/sesiones/iniciarsesion.js'],
     ['/js/sesiones/recuperarContrasena.js', '../public/build2/js/sesiones/recuperarContrasena.js'],
@@ -277,6 +279,8 @@ app.use('/anfitrion/datosInvitado.html', express.static('./public/build2/views/A
 
 app.use('/anfitrion/salas.html', express.static('./public/build2/views/Anfitrion/CatalogoSalas.html'));
 app.use('/anfitrion/cuenta.html', express.static('./public/build2/views/Anfitrion/cuentaAnf.html'));
+
+app.use('/anfitrion/EditarDatosPersonales.html', express.static('./public/build2/views/Anfitrion/EditarDatosPersonales.html'));
 
 
 
