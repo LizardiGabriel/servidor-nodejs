@@ -83,6 +83,7 @@ const rutas = [
     //Rutas de js para iniciar sesión
     ['/js/sesiones/iniciarsesion.js', '../public/build2/js/sesiones/iniciarsesion.js'],
     ['/js/sesiones/recuperarContrasena.js', '../public/build2/js/sesiones/recuperarContrasena.js'],
+    ['/js/sesiones/cambiarContrasena.js', '../public/build2/js/sesiones/cambiarContrasena.js'],
 
     //Rutas de css de toda la interfaz
     ['/css/app.css', '../public/build2/css/app.css'],
