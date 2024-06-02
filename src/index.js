@@ -99,6 +99,10 @@ const rutas = [
     ['/js/anfitrion/ConsultarDatosReunion.js', '../public/build2/js/anfitrion/ConsultarDatosReunion.js'],
     ['/js/anfitrion/ListaReuniones.js', '../public/build2/js/anfitrion/ListaReuniones.js'],
 
+    //Rutas de js para Invitado
+    ['/js/invitado/invitacion.js', '../public/build2/js/invitado/invitacion.js'],
+    ['/js/invitado/RegistrarInformacionPersonal.js', '../public/build2/js/invitado/RegistrarInformacionPersonal.js'],
+
     //Rutas de css de toda la interfaz
     ['/css/app.css', '../public/build2/css/app.css'],
     ['/css/app.css.map', '../public/build2/css/app.css.map'],
