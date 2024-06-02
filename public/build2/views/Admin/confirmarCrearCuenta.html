@@ -48,100 +48,24 @@
             </form>
         </div>
     </main class="confirmarCuenta">
-    <script>
 
-        var url = 'a';
-        var urlParams = 'a';
-        var rolSeguridad = 'a';
-        var rolAnfitrion = 'a';
-        var idRol = 'a';
-        var email = 'a';
-        var nombre = 'a';
-        var apellidoPaterno = 'a';
-        var apellidoMaterno = 'a';
-        var foto_usuario = 'a';
-        var telefono = 'a';
-
-        
-        window.onload = function () {
-            cargarInfoDelUrl();
-        }
-        async function cargarInfoDelUrl() {
-            url = window.location.href;
-             urlParams = new URLSearchParams(window.location.search);
-
-             rolSeguridad = urlParams.get('rolSeguridad');
-             rolAnfitrion = urlParams.get('rolAnfitrion');
-
-             idRol = 'a';
-
-            if (rolSeguridad == 'on') {
-                idRol = 'Seguridad';
-            } else {
-                idRol = 'Anfitrion';
-            }
-
-             email = urlParams.get('email');
-             nombre = urlParams.get('nombre');
-             apellidoPaterno = urlParams.get('apellidoPaterno');
-             apellidoMaterno = urlParams.get('apellidoMaterno');
-
-
-             foto_usuario = 'prueba.jpg';
-             telefono = '1234567890';
-
-            document.getElementById('puesto').value = idRol;
-            document.getElementById('email').value = email;
-            document.getElementById('name').value = nombre + ' ' + apellidoPaterno + ' ' + apellidoMaterno;
-            
-        }
-        async function enviarDatos() {
-            fetch('/admin/catalogo/usuarios', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email,
-                    nombre,
-                    apellidoPaterno,
-                    apellidoMaterno,
-                    telefono,
-                    idRol,
-                    foto_usuario
-                })
-            })
-            .then(response => {
-                console.log('Respuesta:');
-                console.log(response);
-                if (response.ok) {
-                    response.json().then(data => {
-                        console.log('Usuario creado con éxito:', data.message);
-                        if (data.message === 'true') {
-                            alert("Cuenta creada con exito")
-                            window.location.href = '/admin/admin.html';
-                        }else{
-                            alert("Error al crear cuenta")
-                        }
-                    });
-                } else {
-                    console.log('Error al crear usuario:', response.statusText);
-                }
-            })
-            .catch(error => console.error('Error al crear usuario:', error));
-        }
-
-
-
-
-    </script>
-    <!--Ventana emergente-->
-    <div id="cuenta-exito" class="ventanas__close Operacion">
-        <p class="Operacion__titulo">Cuenta creada con éxito</p>
-        <button class="Operacion__btn" id="okg">Ok</button>
-    </div>
-    
-    <script src="../../js/ventanas-modales.js"></script>
-
+    <!-- Estilos para el Swal -->
+    <style>
+      .titleSize{
+        font-size: 4rem;
+      }
+      .contentSize{
+        font-size: 2rem !important;
+      }
+      .buttonSize{
+        font-size: 2rem !important;
+      }
+      .iconSize{
+        font-size: 1.5rem;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../../js/superAdmin.js"></script>
+    <script src="../../js/admin/confirmarCrearCuenta.js"></script>
   </body>
 </html>

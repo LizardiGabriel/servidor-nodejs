@@ -6,8 +6,18 @@ const passwordFormR = document.getElementById("passwordFormR");
 const loginEmail = document.getElementById("loginEmail");
 const emailForm = document.getElementById("emailForm");
 
-const checkbox1 = document.getElementById("cbx-1");
-const checkbox2 = document.getElementById("cbx-2");
+const nombre = document.getElementById("nombre");
+const nombreForm = document.getElementById("nombreForm");
+
+const app = document.getElementById("app");
+const appForm = document.getElementById("appForm");
+
+const apm = document.getElementById("apm");
+const apmForm = document.getElementById("apmForm");
+
+const checkbox1 = document.getElementById("rolSeguridad");
+const checkbox2 = document.getElementById("rolAnfitrion");
+const rolForm = document.getElementById("rolForm");
 
 const eyeButton = document.getElementById("eyebutton");
 const eyeButtonR = document.getElementById("eyebuttonR");
@@ -32,6 +42,16 @@ const validatePassword = (password) => {
     else
         return "OK";
 };
+
+//Texto sin numeros y espacios 
+const validateTextWithSpacesWithoutNumber = (text) => {
+  return text.match(/^[áéíóúÁÉÍÓÚÑñäëïöüÄËÏÖÜa-zA-Z\s]{1,100}$/);
+}
+
+//Texto sin numeros y sin espacios
+const validateTextWithoutSpacesNumber = (text) => { 
+  return text.match(/^[áéíóúÁÉÍÓÚÑñäëïöüÄËÏÖÜa-zA-Z]{1,100}$/);
+}
 
 var msgErrorEmail = '<p class="msg-error-form">El correo electrónico no es valido</p>';
 
@@ -61,6 +81,8 @@ loginPassword.addEventListener('input', () => {
 });
 
 let valorPR;
+/* Validación mientras se detecta el teclado */
+/* Confirmación de la contraseña */
 if(loginPasswordR != null)
 loginPasswordR.addEventListener('input', () => {
     valorPR = loginPasswordR.value;
@@ -73,6 +95,7 @@ loginPasswordR.addEventListener('input', () => {
     }
 });
 
+/* Campo de login */
 if(loginEmail != null)
 loginEmail.addEventListener('input', () => {
     let valor = loginEmail.value;
@@ -83,20 +106,57 @@ loginEmail.addEventListener('input', () => {
         emailForm.innerHTML = '';
 });
 
+/* Campo de nombre */
+if (nombre != null) {
+  nombre.addEventListener('input', () => {
+    let valor = nombre.value;
+    //Valido Nombre
+    if (!validateTextWithSpacesWithoutNumber(valor))
+      nombreForm.innerHTML = `<p class="msg-error-form">El nombre no es valido</p>`
+    else
+      nombreForm.innerHTML = ``
+  })
+}
+
+/* Campo de apellido paterno */
+if (app != null) {
+  app.addEventListener('input', () => {
+    let valor = app.value;
+    //Valido Apellido paterno
+    if (!validateTextWithoutSpacesNumber(valor))
+      appForm.innerHTML = `<p class="msg-error-form">El apellido paterno no es valido</p>`
+    else
+      appForm.innerHTML = ``
+  })
+}
+
+/* Campo de apellido materno */
+if (apm != null) {
+  apm.addEventListener('input', () => { 
+    let valor = apm.value;
+    //Valido Apellido materno
+    if (!validateTextWithoutSpacesNumber(valor))
+      apmForm.innerHTML = `<p class="msg-error-form">El appelido materno no es valido</p>`
+    else
+      apmForm.innerHTML = ``
+  })
+}
 
 //CHECKBOX
 if(checkbox1 != null)
 checkbox1.addEventListener("change", function() {
-    if (this.checked) {
-        checkbox2.checked = false;
-    }
+  if (this.checked) {
+    checkbox2.checked = false;
+  }
+  rolForm.innerHTML = ``;
 });
 
 if(checkbox2 != null)
 checkbox2.addEventListener("change", function() {
-    if (this.checked) {
-        checkbox1.checked = false;
-    }
+  if (this.checked) {
+    checkbox1.checked = false;
+  }
+  rolForm.innerHTML = ``;
 });
 
 if(eyeButton != null){

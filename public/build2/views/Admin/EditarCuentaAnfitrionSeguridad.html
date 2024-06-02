@@ -39,190 +39,107 @@
 
     <main class="contenidoPrincipal">
         <h1 class="Titulo title-example text-center">Editar Cuenta</h1>
-        <form class="Formulario needs-validation paragraph-example" novalidate>
-            <!-- Puesto con radios -->
-            <div>
-                <div class="form-group mb-3 row">
-                    <label class="form-label col-sm-2">Puesto*</label>
-                    <div class="col-sm-10">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="puesto" id="seguridadEdificio"
-                                value="Seguridad">
-                            <label class="form-label" for="seguridadEdificio">Seguridad Edificio</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="puesto" id="anfitrion" value="Anfitrion">
-                            <label class="form-label" for="anfitrion">Anfitrión</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--Nombre-->
-            <div>
-                <div class="form-group has-validation mb-3 row">
-                    <label class="form-label col-sm-2">Nombre(s)*</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control form-control-lg" id="nombre" placeholder="Nombre"
-                            required>
-                        <div class="invalid-feedback">Ingrese su Nombre</div>
-                    </div>
-                </div>
-            </div>
-            <!--Apellido Pa-->
-            <div>
-                <div class="form-group has-validation mb-3 row">
-                    <label class="form-label col-sm-2">Apellido Paterno*</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="apellidoPaterno" placeholder="Apellido Paterno"
-                            required>
-                        <div class="invalid-feedback">Ingrese su Apellido Paterno</div>
-                    </div>
-                </div>
-            </div>
-            <!--Apellido Ma-->
-            <div>
-                <div class="form-group has-validation mb-3 row">
-                    <label class="form-label col-sm-2">Apellido Materno*</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="apellidoMaterno" placeholder="Apellido Materno"
-                            required>
-                        <div class="invalid-feedback"> Ingrese su Apellido Materno</div>
-                    </div>
-                </div>
-            </div>
-            <!--Correo-->
-            <div class="form-group has-validation mb-3 row">
-                <label class="form-label col-sm-2">Correo Electrónico*</label>
+        <!-- Puesto con radios -->
+        <div>
+            <div class="form-group mb-3 row">
+                <label class="form-label col-sm-2">Puesto*</label>
                 <div class="col-sm-10">
-                    <input type="email" class="form-control" id="email" placeholder="email@example.com" required>
-                    <div class="invalid-feedback">Ingrese un correo válido</div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="puesto" id="seguridadEdificio"
+                            value="Seguridad">
+                        <label class="form-label" for="seguridadEdificio">Seguridad Edificio</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="puesto" id="anfitrion" value="Anfitrion">
+                        <label class="form-label" for="anfitrion">Anfitrión</label>
+                    </div>
                 </div>
             </div>
-            <!--Número de Teléfono-->
+        </div>
+        <!--Nombre-->
+        <div>
             <div class="form-group has-validation mb-3 row">
-                <label class="form-label col-sm-2">Número de teléfono*</label>
+                <label class="form-label col-sm-2">Nombre(s)*</label>
                 <div class="col-sm-10">
-                    <input type="tel" class="form-control" id="telefono" placeholder="55 + 1234 5678" min="0"
-                        pattern="[0-9]{10}" required>
-                    <div class="invalid-feedback">Ingrese un número telefónico válido</div>
+                    <input type="text" class="form-control form-control-lg" id="nombre" placeholder="Nombre"
+                        required>
+                    <div class="invalid-feedback">Ingrese su Nombre</div>
                 </div>
             </div>
-            <div class="boton d-flex justify-content-around">
-
-                <div class="col-md-3">
-                    <input type="submit" value="Enviar" class="buttonForm" onclick="enviarForm()" id="">
+        </div>
+        <!--Apellido Pa-->
+        <div>
+            <div class="form-group has-validation mb-3 row">
+                <label class="form-label col-sm-2">Apellido Paterno*</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="apellidoPaterno" placeholder="Apellido Paterno"
+                        required>
+                    <div class="invalid-feedback">Ingrese su Apellido Paterno</div>
                 </div>
             </div>
-        </form>
+        </div>
+        <!--Apellido Ma-->
+        <div>
+            <div class="form-group has-validation mb-3 row">
+                <label class="form-label col-sm-2">Apellido Materno*</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="apellidoMaterno" placeholder="Apellido Materno"
+                        required>
+                    <div class="invalid-feedback"> Ingrese su Apellido Materno</div>
+                </div>
+            </div>
+        </div>
+        <!--Correo-->
+        <div class="form-group has-validation mb-3 row">
+            <label class="form-label col-sm-2">Correo Electrónico*</label>
+            <div class="col-sm-10">
+                <input type="email" class="form-control" id="email" placeholder="email@example.com" required>
+                <div class="invalid-feedback">Ingrese un correo válido</div>
+            </div>
+        </div>
+        <!--Número de Teléfono-->
+        <div class="form-group has-validation mb-3 row">
+            <label class="form-label col-sm-2">Número de teléfono*</label>
+            <div class="col-sm-10">
+                <input type="tel" class="form-control" id="telefono" placeholder="55 + 1234 5678" min="0"
+                    pattern="[0-9]{10}" required>
+                <div class="invalid-feedback">Ingrese un número telefónico válido</div>
+            </div>
+        </div>
+        <div class="boton d-flex justify-content-around">
 
-        <button type="button" onclick="cancelarForm()">Click Me!</button>
-
+            <div class="col-md-3">
+                <input type="submit" value="Enviar" class="buttonForm" onclick="enviarForm()" id="">
+            </div>
+        </div>
+      <button type="button" onclick="cancelarForm()">Click Me!</button>
     </main>
 
     <div id="footers"></div>
 
 
-    <script>
-        window.onload = function () {
-            cargarDatos();
-        }
-
-        function cargarDatos() {
-            console.log("Cargando datos");
-
-            let url = window.location.href;
-            let urlParams = new URLSearchParams(window.location.search);
-            const idUsuario = urlParams.get('idUsuario');
-            usuarito = idUsuario;
-            console.log('idUsuario:' + idUsuario);
-
-
-
-            fetch(`/admin/catalogo/usuarios/${idUsuario}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    // Rellenar los campos del formulario con los datos obtenidos
-                    document.getElementById('nombre').value = data.nombre_usuario;
-                    document.getElementById('apellidoPaterno').value = data.apellido_paterno_usuario;
-                    document.getElementById('apellidoMaterno').value = data.apellido_materno_usuario;
-                    document.getElementById('email').value = data.email_usuario;
-                    document.getElementById('telefono').value = data.telefono_usuario;
-
-                    // Seleccionar el radio button correspondiente
-                    if (data.rol_usuario === "Seguridad") {
-                        document.getElementById('seguridadEdificio').checked = true;
-                    } else if (data.rol_usuario === "Anfitrion") {
-                        document.getElementById('anfitrion').checked = true;
-                    }
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        }
-
-
-        function enviarForm() {
-            event.preventDefault();
-            const nombre = document.getElementById('nombre').value;
-            const apellidoPaterno = document.getElementById('apellidoPaterno').value;
-            const apellidoMaterno = document.getElementById('apellidoMaterno').value;
-            const email = document.getElementById('email').value;
-            const telefono = document.getElementById('telefono').value;
-            const rol = document.querySelector('input[name="puesto"]:checked').value;
-
-            alert('Se modificará el usuario con los siguientes datos:\n' +
-                'Nombre: ' + nombre + '\n' +
-                'Apellido Paterno: ' + apellidoPaterno + '\n' +
-                'Apellido Materno: ' + apellidoMaterno + '\n' +
-                'Email: ' + email + '\n' +
-                'Teléfono: ' + telefono + '\n' +
-                'Rol: ' + rol + '\n' +
-                '¿Desea continuar?');
-
-
-            fetch(`/admin/catalogo/usuarios/${usuarito}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    nombre,
-                    apellidoPaterno,
-                    apellidoMaterno,
-                    email,
-                    telefono,
-                    idRol: rol,
-                    fotoUsuario: 'prueba.ico'
-                })
-            })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Usuario modificado correctamente');
-                        window.location.href = '/admin/catalogo/GestionDeUsuarios.html';
-                    } else {
-                        alert('error al modificar el usuario:' + response.statusText);
-                        console.error('Error al modificar el usuario:', response.statusText);
-                    }
-                })
-                .catch(error => console.error('Error al modificar el usuario:', error));
-
-        }
-
-        function cancelarForm() {
-            alert('Se canceló la modificación del usuario');
-            window.location.href = '/admin/catalogo/GestionDeUsuarios.html';
-        }
-
-
-    </script>
-
-
+    <!-- Estilos para el Swal -->
+    <style>
+      .titleSize{
+        font-size: 4rem;
+      }
+      .contentSize{
+        font-size: 2rem !important;
+      }
+      .buttonSize{
+        font-size: 2rem !important;
+      }
+      .iconSize{
+        font-size: 1.5rem;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../js/admin/headers.js"></script>
     <script src="../../js/plantilla-formularios.js"></script>
     <script src="../../js/sidebar.js"></script>
     <script src="/build/js/header.js"></script>
     <script src="../../js/superAdmin.js"></script>
+    <script src="../../js/admin/editarCuentaAnfitrionSeguridad.js"></script>
 
 
     <!--Formulario-->

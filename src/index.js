@@ -74,7 +74,6 @@ const rutas = [
     
     
     ['/js/superAdmin.js', '../public/build2/js/admin/superAdmin.js'],
-    ['/js/gestionUsuarios.js', '../public/build2/js/admin/gestionUsuarios.js'],
     ['/js/gestionarSalas.js', '../public/build2/js/admin/gestionarSalas.js'],
     ['/js/gestionarReuniones.js', '../public/build2/js/admin/gestionarReuniones.js'],
     ['/js/gestionInvitaciones.js', '../public/build2/js/admin/gestionInvitaciones.js'],
@@ -84,6 +83,12 @@ const rutas = [
     ['/js/sesiones/iniciarsesion.js', '../public/build2/js/sesiones/iniciarsesion.js'],
     ['/js/sesiones/recuperarContrasena.js', '../public/build2/js/sesiones/recuperarContrasena.js'],
     ['/js/sesiones/cambiarContrasena.js', '../public/build2/js/sesiones/cambiarContrasena.js'],
+    
+    //Rutas para la gestión de usuarios (SuperAdmin)
+    ['/js/admin/gestionUsuarios.js', '../public/build2/js/admin/gestionUsuarios.js'],
+    ['/js/admin/crearUsuario.js', '../public/build2/js/admin/crearUsuario.js'],
+    ['/js/admin/confirmarCrearCuenta.js', '../public/build2/js/admin/confirmarCrearCuenta.js'],
+    ['/js/admin/editarCuentaAnfitrionSeguridad.js', '../public/build2/js/admin/editarCuentaAnfitrionSeguridad.js'],
 
     //Rutas de css de toda la interfaz
     ['/css/app.css', '../public/build2/css/app.css'],
