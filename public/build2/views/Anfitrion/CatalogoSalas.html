@@ -49,68 +49,11 @@
 
     <div id="footers"></div>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../js/anfitrion.js"></script>
     <script src="/build/js/header.js"></script>
     <script src="../../js/sidebar.js"></script>
     <script src="../../js/anfitrion/headers.js"></script>
-
-
-
-
-    <script>
-        window.onload = function(){
-            loadTableData();
-        }
-        async function obtenerSalas() {
-            var info = [];
-            console.log('Cargando salas...');
-            try {
-              const response = await fetch('/anfitrion/catalogo/salas');
-              const salas = await response.json();
-          
-              // Limpiar el arreglo 'info'
-              info.length = 0;
-          
-              // Agregar cada sala al arreglo 'info'
-              salas.forEach(sala => {
-                info.push({
-                  id: sala.id_sala,
-                  nombreSala: sala.nombre_sala,
-                  estado: sala.estatus_sala,
-                  cupoMax: sala.capacidad_sala,
-                  numeroS: sala.numero_sala,
-                  pisoS: sala.piso_sala
-                });
-              });
-          
-              console.log('Salas cargadas:', info);
-              return info;
-            } catch (error) {
-              console.error('Error al obtener salas:', error);
-              return [];
-            }
-          }
-    
-          async function loadTableData() {
-            const data = await obtenerSalas(); // Esperar a que las salas se carguen
-            const tbody = document.getElementById('tablaSalas');
-          
-            // Limpiar la tabla antes de agregar nuevos datos
-            tbody.innerHTML = '';
-          
-            data.forEach(item => {
-              const row = document.createElement('tr');
-              row.innerHTML = `<td class="id">${item.id}</td>
-                                   <td class="nombreSala">${item.nombreSala}</td>
-                                   <td class="estado">${item.estado}</td>
-                                   <td class="cupoMax">${item.cupoMax}</td>
-                                   <td class="numeroS">${item.numeroS}</td>
-                                   <td class="pisoS">${item.pisoS}</td>
-                            `;
-              tbody.appendChild(row);
-            });
-          }
-    </script>
+    <script src="../../js/anfitrion/CatalogoSalas.js"></script>
 
 </body>
