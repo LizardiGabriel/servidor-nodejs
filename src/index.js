@@ -92,6 +92,13 @@ const rutas = [
     ['/js/sesiones/recuperarContrasena.js', '../public/build2/js/sesiones/recuperarContrasena.js'],
     ['/js/sesiones/cambiarContrasena.js', '../public/build2/js/sesiones/cambiarContrasena.js'],
 
+    //Rutas de js para Anfitrion
+    ['/js/anfitrion/crearReunion.js', '../public/build2/js/anfitrion/crearReunion.js'],
+    ['/js/anfitrion/anfitrion.js', '../public/build2/js/anfitrion/anfitrion.js'],
+    ['/js/anfitrion/CatalogoSalas.js', '../public/build2/js/anfitrion/CatalogoSalas.js'],
+    ['/js/anfitrion/ConsultarDatosReunion.js', '../public/build2/js/anfitrion/ConsultarDatosReunion.js'],
+    ['/js/anfitrion/ListaReuniones.js', '../public/build2/js/anfitrion/ListaReuniones.js'],
+
     //Rutas de css de toda la interfaz
     ['/css/app.css', '../public/build2/css/app.css'],
     ['/css/app.css.map', '../public/build2/css/app.css.map'],
