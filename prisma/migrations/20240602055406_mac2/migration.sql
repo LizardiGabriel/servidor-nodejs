@@ -6,7 +6,7 @@ CREATE TABLE `Usuario` (
     `nombre_usuario` VARCHAR(191) NOT NULL,
     `apellido_paterno_usuario` VARCHAR(191) NOT NULL,
     `apellido_materno_usuario` VARCHAR(191) NOT NULL,
-    `telefono_usuario` INTEGER NOT NULL,
+    `telefono_usuario` VARCHAR(191) NOT NULL,
     `rol_usuario` ENUM('SuperAdmin', 'Anfitrion', 'Seguridad') NOT NULL,
     `foto_usuario` VARCHAR(191) NOT NULL,
 
