@@ -174,7 +174,7 @@
                         <button class="profileHeroSA__right__buttonContainer__buttonEdit" id="editProfile">Editar</button>   
                         <div class="profileHeroSA__right__buttonContainer__button" style="display: none;" id="contenedorEdit">
                             <button class="profileHeroSA__right__buttonContainer__button__secundario" id="cancelarProfile">Cancelar</button>
-                            <button class="profileHeroSA__right__buttonContainer__button__primario" id="guardarProfile">Guardar</button>
+                            <button class="profileHeroSA__right__buttonContainer__button__primario" id="guardarProfile" onclick="updateData()">Guardar</button>
                         </div>
                     </div>
                 </div>
@@ -221,7 +221,6 @@
         const response = await fetch('/admin/getemail');
         const data = await response.json();
         var datosUsuario = await getData(data.email);  // Usar await aquí garantiza que esperamos el resultado
-        console.log(datosUsuario);
         const nombre= document.getElementById("inputNom");
         nombre.placeholder=datosUsuario.nombre_usuario;
         const ApellidoPat= document.getElementById("inputApePat");
@@ -236,6 +235,44 @@
     }
     });
 
+    async function updateData(){
+        try {
+            const response = await fetch('/admin/getemail');
+            const data = await response.json();
+            var datosUsuario = await getData(data.email);
+            console.log(datosUsuario);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+        const nombre= document.getElementById("inputNom").value;
+        const ApellidoPat= document.getElementById("inputApePat").value;
+        const ApellidoMat= document.getElementById("inputApeMat").value;
+        const Tel= document.getElementById("inputTel").value;
+        const file_foto = document.getElementById("inputFoto").files[0];
+
+        let datatoSend={
+            email:datosUsuario.email_usuario,
+            nombre: nombre,
+            apellidoPaterno:ApellidoPat,
+            apellidoMaterno:ApellidoMat,
+            telefono:Tel,
+            idRol:datosUsuario.rol_usuario,
+        }
+
+        if (file_foto) {
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                datatoSend.fotoUsuario = reader.result; // Añade la foto en formato Base64 al objeto data
+                enviarData(datatoSend,datosUsuario.id_usuario);
+            };
+            reader.readAsDataURL(file_foto);
+        } else {
+            console.log("Hubo un error al cargar los datos");
+            enviarData(datatoSend,datosUsuario.id_usuario);
+        }
+
+    }
+
     async function getData(correo) {
     try {
         // Remover el ':' adicional del inicio de la URL si no es necesario
@@ -248,6 +285,20 @@
     }
 }
 
+    function enviarData(data,id_usuario) {
+            fetch('/admin/catalogo/usuarios/:'+id_usuario, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Respuesta del servidor:', data);
+            })
+            .catch(error => console.error('Error al mandar datos:', error));
+    }
 
 
     </script>

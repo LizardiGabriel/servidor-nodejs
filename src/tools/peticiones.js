@@ -266,7 +266,7 @@ async function getUsuarioByEmailBD(email) {
 }
 
 
-async function updateUsuarioBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono, rol, fotoUsuario) {
+async function updateUsuarioBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono,rol,fotoUsuario) {
     console.log('peticion a la bd de updateUsuario');
     try {
         const usuarioActualizado = await prisma.usuario.update({
@@ -277,7 +277,7 @@ async function updateUsuarioBD(id, email, nombre, apellidoPaterno, apellidoMater
                 apellido_paterno_usuario: apellidoPaterno,
                 apellido_materno_usuario: apellidoMaterno,
                 telefono_usuario: parseInt(telefono),
-                rol_usuario: rol,
+                rol_usuario:rol,
                 foto_usuario: fotoUsuario
             }
         });
