@@ -6,14 +6,18 @@ const modal = Swal.mixin({
   showConfirmButton: true,
   confirmButtonColor: "#89b6b1",
   cancelButtonColor: "#305272",
+  denyButtonColor: "#305272",
   width: "50%",
   customClass: {
     title: "titleSize",
     htmlContainer: "contentSize",
     confirmButton: "buttonSize",
+    cancelButton: "buttonSize",
+    denyButton: "buttonSize",
     icon: "iconSize",
   }
 })
+
 
 function logout() {
     fetch("/admin/logout", {

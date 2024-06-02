@@ -21,44 +21,52 @@ function addUser() {
 
 function validarAddUser(email, nombre, app, apm, rolSeguridad, rolAnfitrion) {
   //Validación del correo
-  let flag = false
+  let flag = true
   if (email) {
     if (!validateEmail(email)) {
+      flag = false;
     }
   } else {
+    flag = false;
     document.getElementById("emailForm").innerHTML = `<p class="msg-error-form">Favor de especificar un correo</p>`;
   }
   
   //Validación de nombre
   if (nombre) {
     if (!validateTextWithSpacesWithoutNumber(nombre)) {
+      flag = false;
     }
   } else {
+    flag = false;
     document.getElementById("nombreForm").innerHTML = `<p class="msg-error-form">Favor de especificar un nombre</p>`
   }
 
   //Validación de apellido paterno
   if (app) {
     if (!validateTextWithoutSpacesNumber(app)) {
+      flag = false;
     }
   } else {
+    flag = false;
     document.getElementById("appForm").innerHTML = `<p class="msg-error-form">Favor de especificar un apellido paterno</p>`
   }
 
   //Validación de apellido materno
   if (apm) {
     if (!validateTextWithoutSpacesNumber(apm)) {
+      flag = false;
     }
   } else {
+    flag = false;
     document.getElementById("apmForm").innerHTML = `<p class="msg-error-form">Favor de especificar un apellido materno</p>`
   }
 
   //Validación de selección de roles
   if (rolAnfitrion || rolSeguridad) {
-    flag = true
   } else {
+    flag = false;
     document.getElementById("rolForm").innerHTML = `<p class="msg-error-form">Favor de especificar un rol de usuario</p>`
   }
-
+  
   return flag
 }

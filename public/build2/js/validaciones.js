@@ -17,6 +17,9 @@ const appForm = document.getElementById("appForm");
 const apm = document.getElementById("apm");
 const apmForm = document.getElementById("apmForm");
 
+const telefono = document.getElementById("telefono");
+const telefonoForm = document.getElementById("telefonoForm");
+
 const checkbox1 = document.getElementById("rolSeguridad");
 const checkbox2 = document.getElementById("rolAnfitrion");
 const rolForm = document.getElementById("rolForm");
@@ -110,6 +113,11 @@ const validateTextWithSpacesWithoutNumber = (text) => {
 //Texto sin numeros y sin espacios
 const validateTextWithoutSpacesNumber = (text) => { 
   return text.match(/^[áéíóúÁÉÍÓÚÑñäëïöüÄËÏÖÜa-zA-Z]{1,100}$/);
+}
+
+//Número telefonico 
+const validatePhoneNumber = (tel) => {
+  return tel.match(/^([+]?\d{1,2}[-\s]?|)\d{3}[-\s]?\d{3}[-\s]?\d{4}$/)
 }
 
 var msgErrorEmail = '<p class="msg-error-form">El correo electrónico no es valido</p>';
@@ -216,9 +224,21 @@ if (apm != null) {
     let valor = apm.value;
     //Valido Apellido materno
     if (!validateTextWithoutSpacesNumber(valor))
-      apmForm.innerHTML = `<p class="msg-error-form">El appelido materno no es valido</p>`
+      apmForm.innerHTML = `<p class="msg-error-form">El apelido materno no es valido</p>`
     else
       apmForm.innerHTML = ``
+  })
+}
+
+/* Campo de telefono */
+if (telefono != null) { 
+  telefono.addEventListener('input', () => { 
+    let valor = telefono.value;
+    //Valido Apellido materno
+    if (!validatePhoneNumber(valor))
+      telefonoForm.innerHTML = `<p class="msg-error-form">El télefono no es valido</p>`
+    else
+      telefonoForm.innerHTML = ``
   })
 }
 

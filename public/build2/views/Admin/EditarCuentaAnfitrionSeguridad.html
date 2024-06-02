@@ -45,16 +45,17 @@
                 <label class="form-label col-sm-2">Puesto*</label>
                 <div class="col-sm-10">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="puesto" id="seguridadEdificio"
+                        <input class="form-check-input" type="radio" name="puesto" id="rolSeguridad"
                             value="Seguridad">
                         <label class="form-label" for="seguridadEdificio">Seguridad Edificio</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="puesto" id="anfitrion" value="Anfitrion">
+                        <input class="form-check-input" type="radio" name="puesto" id="rolAnfitrion" value="Anfitrion">
                         <label class="form-label" for="anfitrion">Anfitrión</label>
                     </div>
                 </div>
             </div>
+            <div id="rolForm"></div>
         </div>
         <!--Nombre-->
         <div>
@@ -63,39 +64,39 @@
                 <div class="col-sm-10">
                     <input type="text" class="form-control form-control-lg" id="nombre" placeholder="Nombre"
                         required>
-                    <div class="invalid-feedback">Ingrese su Nombre</div>
                 </div>
             </div>
-        </div>
+            <div id="nombreForm"></div>
+          </div>
         <!--Apellido Pa-->
         <div>
             <div class="form-group has-validation mb-3 row">
                 <label class="form-label col-sm-2">Apellido Paterno*</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="apellidoPaterno" placeholder="Apellido Paterno"
+                    <input type="text" class="form-control" id="app" placeholder="Apellido Paterno"
                         required>
-                    <div class="invalid-feedback">Ingrese su Apellido Paterno</div>
                 </div>
             </div>
+            <div id="appForm"></div>
         </div>
         <!--Apellido Ma-->
         <div>
             <div class="form-group has-validation mb-3 row">
                 <label class="form-label col-sm-2">Apellido Materno*</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="apellidoMaterno" placeholder="Apellido Materno"
+                    <input type="text" class="form-control" id="apm" placeholder="Apellido Materno"
                         required>
-                    <div class="invalid-feedback"> Ingrese su Apellido Materno</div>
                 </div>
             </div>
+            <div id="apmForm"></div>
         </div>
         <!--Correo-->
         <div class="form-group has-validation mb-3 row">
             <label class="form-label col-sm-2">Correo Electrónico*</label>
             <div class="col-sm-10">
-                <input type="email" class="form-control" id="email" placeholder="email@example.com" required>
-                <div class="invalid-feedback">Ingrese un correo válido</div>
+                <input type="email" class="form-control" id="loginEmail" placeholder="email@example.com" required>
             </div>
+            <div id="emailForm"></div>
         </div>
         <!--Número de Teléfono-->
         <div class="form-group has-validation mb-3 row">
@@ -103,13 +104,13 @@
             <div class="col-sm-10">
                 <input type="tel" class="form-control" id="telefono" placeholder="55 + 1234 5678" min="0"
                     pattern="[0-9]{10}" required>
-                <div class="invalid-feedback">Ingrese un número telefónico válido</div>
             </div>
+            <div id="telefonoForm"></div>
         </div>
         <div class="boton d-flex justify-content-around">
 
             <div class="col-md-3">
-                <input type="submit" value="Enviar" class="buttonForm" onclick="enviarForm()" id="">
+                <input type="button" value="Enviar" class="buttonForm" onclick="enviarForm()" id="">
             </div>
         </div>
       <button type="button" onclick="cancelarForm()">Click Me!</button>
@@ -140,6 +141,7 @@
     <script src="/build/js/header.js"></script>
     <script src="../../js/superAdmin.js"></script>
     <script src="../../js/admin/editarCuentaAnfitrionSeguridad.js"></script>
+    <script src="../../js/validaciones.js"></script>
 
 
     <!--Formulario-->
