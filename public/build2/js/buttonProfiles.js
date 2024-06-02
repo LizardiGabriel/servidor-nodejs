@@ -27,36 +27,6 @@ document.addEventListener('DOMContentLoaded', function() {
         activarBoton.style.display = '';
         foto.style.display = 'none';
         deshabiltarInputs();
-        const nombre= document.getElementById("inputNom").value;
-        const ApellidoPat= document.getElementById("inputApePat").value;
-        const ApellidoMat= document.getElementById("inputApeMat").value;
-        const Tel= document.getElementById("inputTel").value;
-        const file_foto = document.getElementById("inputFoto").files[0];
-
-        let datatoSend={
-            nombre: nombre,
-            apellido_paterno_usuario:ApellidoPat,
-            apellido_materno_usuario:ApellidoMat,
-            telefono_usuario:Tel,
-            foto_usuario:file_foto
-        }
-
-        if (file_foto) {
-            const reader = new FileReader();
-            reader.onloadend = function() {
-                datatoSend.foto_usuario = reader.result; // Añade la foto en formato Base64 al objeto data
-                //enviarData(data);
-                console.log(datatoSend);
-                console.log(datosUsuario);
-            };
-            reader.readAsDataURL(file_foto);
-        } else {
-            //enviarData(data); // Enviar sin foto si no se seleccionó ninguna
-            console.log("Hubo un error al cargar los datos");
-        }
-        
-
-
     });
 
     cancelar.addEventListener('click', function () {
