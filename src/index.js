@@ -77,7 +77,6 @@ const rutas = [
     ['/js/registrarInformacionPersonal.js','../public/build2/js/registrarInformacionPersonal.js'],
     
     ['/js/superAdmin.js', '../public/build2/js/admin/superAdmin.js'],
-    ['/js/gestionUsuarios.js', '../public/build2/js/admin/gestionUsuarios.js'],
     ['/js/gestionarSalas.js', '../public/build2/js/admin/gestionarSalas.js'],
     ['/js/gestionarReuniones.js', '../public/build2/js/admin/gestionarReuniones.js'],
     ['/js/gestionInvitaciones.js', '../public/build2/js/admin/gestionInvitaciones.js'],
@@ -91,6 +90,23 @@ const rutas = [
     ['/js/sesiones/iniciarsesion.js', '../public/build2/js/sesiones/iniciarsesion.js'],
     ['/js/sesiones/recuperarContrasena.js', '../public/build2/js/sesiones/recuperarContrasena.js'],
     ['/js/sesiones/cambiarContrasena.js', '../public/build2/js/sesiones/cambiarContrasena.js'],
+    
+    //Rutas para la gestión de usuarios (SuperAdmin)
+    ['/js/admin/gestionUsuarios.js', '../public/build2/js/admin/gestionUsuarios.js'],
+    ['/js/admin/crearUsuario.js', '../public/build2/js/admin/crearUsuario.js'],
+    ['/js/admin/confirmarCrearCuenta.js', '../public/build2/js/admin/confirmarCrearCuenta.js'],
+    ['/js/admin/editarCuentaAnfitrionSeguridad.js', '../public/build2/js/admin/editarCuentaAnfitrionSeguridad.js'],
+
+    //Rutas de js para Anfitrion
+    ['/js/anfitrion/crearReunion.js', '../public/build2/js/anfitrion/crearReunion.js'],
+    ['/js/anfitrion/anfitrion.js', '../public/build2/js/anfitrion/anfitrion.js'],
+    ['/js/anfitrion/CatalogoSalas.js', '../public/build2/js/anfitrion/CatalogoSalas.js'],
+    ['/js/anfitrion/ConsultarDatosReunion.js', '../public/build2/js/anfitrion/ConsultarDatosReunion.js'],
+    ['/js/anfitrion/ListaReuniones.js', '../public/build2/js/anfitrion/ListaReuniones.js'],
+
+    //Rutas de js para Invitado
+    ['/js/invitado/invitacion.js', '../public/build2/js/invitado/invitacion.js'],
+    ['/js/invitado/RegistrarInformacionPersonal.js', '../public/build2/js/invitado/RegistrarInformacionPersonal.js'],
 
     //Rutas de css de toda la interfaz
     ['/css/app.css', '../public/build2/css/app.css'],

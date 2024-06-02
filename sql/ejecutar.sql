@@ -10,7 +10,7 @@ CREATE TABLE `Usuario` (
     `nombre_usuario` VARCHAR(191) NOT NULL,
     `apellido_paterno_usuario` VARCHAR(191) NOT NULL,
     `apellido_materno_usuario` VARCHAR(191) NOT NULL,
-    `telefono_usuario` VARCHAR(191) NOT NULL,
+    `telefono_usuario` INTEGER NOT NULL,
     `rol_usuario` ENUM('SuperAdmin', 'Anfitrion', 'Seguridad') NOT NULL,
     `foto_usuario` VARCHAR(191) NOT NULL,
 
@@ -213,11 +213,11 @@ INSERT INTO Usuario ( email_usuario, password_usuario,
             telefono_usuario, rol_usuario, foto_usuario)  VALUES 
 
 ( 'admin@test.com', '$2b$11$tpeJKZANQoWqhevVHHTq0ODNibR0RUDcgmGVoNAiWzhjX5Iw1MR2q', 
-            'Admin', 'Admin', 'Admin', 1234567890, 'SuperAdmin', 'admin.jpg'),
+            'Admin', 'Admin', 'Admin', "5512345678", 'SuperAdmin', 'admin.jpg'),
  ( 'anfitrion@test.com', '$2b$11$tpeJKZANQoWqhevVHHTq0ODNibR0RUDcgmGVoNAiWzhjX5Iw1MR2q', 
-            'Anfitrion', 'Anfitrion', 'Anfitrion', 1234567890, 'Anfitrion', 'anfitrion.jpg'),
+            'Anfitrion', 'Anfitrion', 'Anfitrion', "5512345678", 'Anfitrion', 'anfitrion.jpg'),
 ( 'seguridad@test.com', '$2b$11$tpeJKZANQoWqhevVHHTq0ODNibR0RUDcgmGVoNAiWzhjX5Iw1MR2q', 
-            'Seguridad', 'Seguridad', 'Seguridad', 1234567890, 'Seguridad', 'seguridad.jpg');
+            'Seguridad', 'Seguridad', 'Seguridad', "5512345678", 'Seguridad', 'seguridad.jpg');
 
 
 INSERT INTO Sala ( nombre_sala, capacidad_sala, piso_sala, numero_sala, estatus_sala) VALUES 

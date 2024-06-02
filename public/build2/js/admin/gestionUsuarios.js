@@ -1,3 +1,7 @@
+function redirigeCrearUsu() {
+  window.location.href = "/admin/catalogo/crearCuenta.html";
+}
+
 async function cargarUsuarios() {
   var info = [];
   console.log('Cargando usuarios...');
@@ -50,24 +54,38 @@ async function loadTableData() {
 }
 
 function editarUsuario(idUsuario) {
-  alert('editar usuario id: ' + idUsuario);
   window.location.href = `/admin/editarPersonal.html?idUsuario=${idUsuario}`;
-
 }
 
 function eliminarUsuario(idUsuario) {
-  alert('eliminar usuario, id: ' + idUsuario);
   fetch(`/admin/catalogo/usuarios/${idUsuario}`, {
     method: 'DELETE'
   })
     .then(response => {
       if (response.ok) {
+        modal.fire({
+          title: "Success",
+          icon: "success",
+          text: "Cuenta de usuario eliminado con éxito",
+        });
         loadTableData();
       } else {
+        modal.fire({
+          title: "Error",
+          icon: "error",
+          text: "Error al eliminar cuenta de usuario: " + response.statusText,
+        });
         console.error('Error al eliminar usuario:', response.statusText);
       }
     })
-    .catch(error => console.error('Error al eliminar usuario:', error));
+    .catch(error => {
+      modal.fire({
+        title: "Error",
+        icon: "error",
+        text: "Error al eliminar cuenta de usuario:" + error,
+      });
+      console.error('Error al eliminar cuenta de usuario:', error);
+    })
 }
 
 // Cargar datos en la tabla al iniciar la página
