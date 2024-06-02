@@ -56,6 +56,12 @@ async function getReunionAdminByIdBD(id_reunion) {
         }
         reunion.infoInvitados = infoInvitados;
 
+        const salita = await prisma.sala.findUnique({
+            where: { id_sala: reunion.id_sala }
+        });
+
+        reunion.nombreSala = salita.nombre_sala;
+
         return reunion;
 
     } catch (error) {

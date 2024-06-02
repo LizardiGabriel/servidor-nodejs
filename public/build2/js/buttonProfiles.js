@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function() {
     
     let activarBoton = document.getElementById('editProfile');
@@ -5,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let cancelar = document.getElementById('cancelarProfile');
     let guardar = document.getElementById('guardarProfile');
     let contenedorEdit = document.getElementById('contenedorEdit');
+    let foto = document.getElementById('SeccionFoto');
 
     //Variables de validación
     let patron_name = /^[áéíóúÁÉÍÓÚñäëïöüÄËÏÖÜ\w\d]{1,100}$/;
@@ -14,7 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
     activarBoton.addEventListener('click', function (event) {
         activarBoton.style.display = "none";
         contenedorEdit.style.display = '';
-
+        foto.style.display = 'block';
+        foto.style.textAlign = 'center';
         habilitarInputs();
     });
 
@@ -22,9 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
         contenedor.classList.add("view");
         contenedorEdit.style.display = "none";
         activarBoton.style.display = '';
-
-
-        
+        foto.style.display = 'none';
         deshabiltarInputs();
     });
 
@@ -32,8 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
         contenedor.classList.add("view");
         contenedorEdit.style.display = "none";
         activarBoton.style.display = '';
-
-        /*  */
+        foto.style.display = 'none';
         deshabiltarInputs();
     });
 
@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('inputNom').disabled = true;
         document.getElementById('inputApePat').disabled = true;
         document.getElementById('inputApeMat').disabled = true;
-        document.getElementById('inputEmail').disabled = true;
         document.getElementById('inputTel').disabled = true;
     }
     
@@ -51,7 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('inputNom').disabled = false;
         document.getElementById('inputApePat').disabled = false;
         document.getElementById('inputApeMat').disabled = false;
-        document.getElementById('inputEmail').disabled = false;
         document.getElementById('inputTel').disabled = false;
     }
 
@@ -79,8 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         //Validación 
-
-
     }
+
 
 });

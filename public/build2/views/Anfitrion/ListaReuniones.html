@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <title>Reuniones</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>BeeMeet - Consultar Datos Invitado</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <link rel="stylesheet" href="../../css/app.css">
+        <link
+                href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+                rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        .centerThis {
+            margin: auto;
+            width: 89%;
+            padding: 10px;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        h4 {
+            padding: 0px;
+            margin: 0px;
+            font-weight: 400;
+
+            display: inline;
+        }
+
+        button {
+            padding: 8px 12px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .card{
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        .fechas li{
+            list-style: none;
+            
+        }
+
+        .cardszzz {
+
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .card p {
+            margin: 0;
+            white-space: nowrap;
+            display: inline-flex;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div id="headers"></div>
+    <div class="centerThis">
+        <h1>Gestionar reuniones</h1>
+        <div id="divReuniones" class="cardszzz"></div>
+
+        <hr>
+    </div>
+    <div id="footers"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../../js/anfitrion/headers.js"></script>
+    <script src="../../js/anfitrion/ListaReuniones.js"></script>
+</body>
+
+</html>

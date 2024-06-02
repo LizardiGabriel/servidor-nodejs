@@ -1,9 +1,24 @@
 const { getSalasBD, setNewSalaBD, getSalaByIdBD, updateSalaBD, deleteSalaBD } = require('../tools/peticiones');
-const { getUsuariosBD, setNewUsuarioBD, getUsuarioByIdBD, getUsuarioByEmailBD, updateUsuarioBD, deleteUsuarioBD } = require('../tools/peticiones');
+const { getUsuariosBD, setNewUsuarioBD, getUsuarioByIdBD, getUsuarioByEmailBD, updateUsuarioBD, deleteUsuarioBD} = require('../tools/peticiones');
 const { getInvitadosBD, getInvitadoByIdBD, updateInvitadoBD, getReunionesAdminBD, getInvitacionesAdminBD } = require('../tools/peticiones');
-
-
 const { getReunionAdminByIdBD } = require('../tools/petiAdmin');
+const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
+const { log } = require('console');
+
+
+function getemail(jsonToken){
+    let email = "";
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            email= decoded.email;
+        }
+    });
+    return email;
+}
 
 async function logout(req, res) {
     console.log('mensaje --> logout');
@@ -11,9 +26,46 @@ async function logout(req, res) {
     res.redirect('/');
 }
 
+async function guardarImagenDesdeBase64(base64Data, nombreArchivo) {
+    // Eliminar la cabecera de datos URL si existe (data:image/png;base64,)
+    const base64Image = base64Data.split(';base64,').pop();
+
+    // Especificar la ruta donde se guardará la imagen
+    const filePath = path.join('public/build2/uploads',nombreArchivo);
+    // Decodificar la imagen y guardarla
+    fs.writeFile(filePath, base64Image, {encoding: 'base64'}, (error) => {
+        if (error) {
+            console.error('Error al guardar la imagen:', error);
+        } else {
+            console.log('Imagen guardada correctamente:', filePath);
+        }
+    });
+    return filePath;
+    
+}
+
+async function obtenerExtensionDeBase64(cadenaBase64) {
+    // Usar una expresión regular para encontrar el tipo MIME en la cadena Base64
+    const resultado = cadenaBase64.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
+    if (resultado && resultado.length > 1) {
+        // Extraer el tipo MIME
+        const tipoMime = resultado[1];
+        // Convertir tipo MIME a una extensión de archivo
+        switch (tipoMime) {
+            case 'image/jpeg':
+                return 'jpg';
+            case 'image/png':
+                return 'png';
+            case 'image/gif':
+                return 'gif';
+            default:
+                return ''; // Devuelve una cadena vacía si el tipo MIME no es reconocido
+        }
+    }
+    return ''; // Devuelve una cadena vacía si no se encuentra el tipo MIME
+}
 
 // salas
-
 
 async function getSalas(req, res) {
 
@@ -21,6 +73,15 @@ async function getSalas(req, res) {
     res.json(salas);
 }
 
+async function getUserEmail(req,res){
+    console.log('=============================mensaje -->Se intento obtener del correo');
+    if(req.session){
+        res.json({ email: getemail(req.session.jwt) }); 
+    }
+    else {
+        res.status(403).send('No autorizado');
+    }
+}
 async function setNewSala(req, res) {
     const { nombreSala, cupoMaximo, piso, numerito, estado } = req.body;
     console.log('nombreSala: ', nombreSala, 'cupoMaximo: ', cupoMaximo, 'piso: ', piso, 'numerito:', numerito, 'estado: ', estado);
@@ -73,7 +134,7 @@ async function getInvitadoById(req, res) {
 }
 
 async function updateInvitado(req, res) {
-    const { id, email, nombre, apellidoPaterno, apellidoMaterno, telefono  } = req.body;
+    const { id, email, nombre, apellidoPaterno, apellidoMaterno, telefono } = req.body;
     const invitadoActualizado = await updateInvitadoBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono);
     res.json(invitadoActualizado);
 
@@ -106,19 +167,30 @@ async function getUsuarioById(req, res) {
     res.json(usuario);
 }
 
+async function getUsuarioByEmail(req, res) {
+    console.log('========================= get Usuario By email: ', req.params)
+    const { email } = req.params;
+    const usuario = await getUsuarioByEmailBD(email.replace(/^:/, ''));
+    res.json(usuario);
+}
+
 async function updateUsuario(req, res) {
     const { id } = req.params;
-    const { email, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, fotoUsuario } = req.body;
-
+    const { email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol,fotoUsuario } = req.body;
+    console.log(req.body);
     console.log('id: ', id, 'email: ', email, 'nombre: ', nombre, 'apellidoPaterno: ', apellidoPaterno);
-    console.log('apellidoMaterno: ', apellidoMaterno, 'telefono: ', telefono, 'idRol nuevo: ', idRol, 'foto_usuario: ', fotoUsuario);
-
-    const usuarioActualizado = await updateUsuarioBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, fotoUsuario);
+    //console.log('apellidoMaterno: ', apellidoMaterno, 'telefono: ', telefono, 'idRol nuevo: ', idRol, 'foto_usuario: ', fotoUsuario);
+    id_final=id.replace(/^:/, '');
+    const extensionfoto= await obtenerExtensionDeBase64(fotoUsuario);
+    const rutafoto=await  guardarImagenDesdeBase64(fotoUsuario, "fotografia_usuario"+id_final+"."+extensionfoto);
+    console.log(rutafoto);
+    const usuarioActualizado = await updateUsuarioBD(id_final, email, nombre, apellidoPaterno, apellidoMaterno, telefono,id_rol,rutafoto);
 
     console.log('usuarioActualizado: ', usuarioActualizado);
 
 
-    res.json(usuarioActualizado);
+    //res.json(usuarioActualizado);
+    res.status(200).json({ message: 'se actualizo' });
 }
 
 async function deleteUsuario(req, res) {
@@ -164,9 +236,11 @@ module.exports = {
     getInvitados,
     getInvitadoById,
     updateInvitado,
-
+    getUsuarioByEmail,
+    
     getReuniones,
     getInvitaciones,
+    getUserEmail,
 
     getReunionById
 };

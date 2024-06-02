@@ -8,58 +8,149 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
+
+
+
     <div id="headers"></div>
-    
     <main class="contenidoPrincipal">
         <div class="profileHeroSA">
-          <div class="profileHeroSA__left">
-              <h1 class="profileHeroSA__left__titulo">Tus datos personales</h1>
-          </div>
-          <div class="profileHeroSA__right">
-              <div class="profileHeroSA__right__inputProfile">
-                  <label class="profileHeroSA__right__inputProfile__label">Nombre(s)*</label>
-                  <div class="profileHeroSA__right__inputProfile__content">
-                      <input class="inputSA" type="text" placeholder="Juan " disabled id="inputNom">
-                  </div>
-              </div>
-              <div class="profileHeroSA__right__inputProfile">
-                  <label class="profileHeroSA__right__inputProfile__label">Apellido Paterno*</label>
-                  <div class="profileHeroSA__right__inputProfile__content">
-                      <input class="inputSA" type="text" placeholder="Perez" disabled id="inputApePat">
-                  </div>
-              </div>
-              <div class="profileHeroSA__right__inputProfile">
-                  <label class="profileHeroSA__right__inputProfile__label">Apellido Materno*</label>
-                  <div class="profileHeroSA__right__inputProfile__content">
-                      <input class="inputSA" type="text" placeholder="Hernandez" disabled id="inputApeMat">
-                  </div>
-              </div>
-              <div class="profileHeroSA__right__inputProfile">
-                  <label class="profileHeroSA__right__inputProfile__label">Correo Electrónico*</label>   
-                  <div class="profileHeroSA__right__inputProfile__content">
-                      <input class="inputSA" type="email" placeholder="example@email.com" disabled id="inputEmail">
-                  </div>
-              </div>
-              
-              <div class="profileHeroSA__right__inputProfile">
-                  <label class="profileHeroSA__right__inputProfile__label">Número telefónico*</label>
-                  <div class="profileHeroSA__right__inputProfile__content">
-                      <input class="inputSA" type="tel" min="0" placeholder="55 666 777 88" pattern="[0-9\s]{10,15}" disabled id="inputTel">
-                  </div>
-              </div>
-              <div class="profileHeroSA__right__buttonContainer view" id="buttonsEdit">
-                  <button class="profileHeroSA__right__buttonContainer__buttonEdit" id="editProfile">Editar</button>   
-                  <div class="profileHeroSA__right__buttonContainer__button" style="display: none;" id="contenedorEdit">
-                      <button class="profileHeroSA__right__buttonContainer__button__secundario" id="cancelarProfile">Cancelar</button>
-                      <button class="profileHeroSA__right__buttonContainer__button__primario" id="guardarProfile">Guardar</button>
-                  </div>
-              </div>
-          </div>
+                <div class="profileHeroSA__left">
+                    <h1 class="profileHeroSA__left__titulo">Tus datos personales</h1>
+                </div>
+                <div class="profileHeroSA__right">
+                    <div class="profileHeroSA__right__inputProfile">
+                        <label class="profileHeroSA__right__inputProfile__label">Nombre(s)</label>
+                        <div class="profileHeroSA__right__inputProfile__content">
+                            <input class="inputSA" type="text" placeholder="Juan " disabled id="inputNom">
+                        </div>
+                    </div>
+                    <div class="profileHeroSA__right__inputProfile">
+                        <label class="profileHeroSA__right__inputProfile__label">Apellido Paterno</label>
+                        <div class="profileHeroSA__right__inputProfile__content">
+                            <input class="inputSA" type="text" placeholder="Perez" disabled id="inputApePat">
+                        </div>
+                    </div>
+                    <div class="profileHeroSA__right__inputProfile">
+                        <label class="profileHeroSA__right__inputProfile__label">Apellido Materno</label>
+                        <div class="profileHeroSA__right__inputProfile__content">
+                            <input class="inputSA" type="text" placeholder="Hernandez" disabled id="inputApeMat">
+                        </div>
+                    </div>
+                    <div class="profileHeroSA__right__inputProfile">
+                        <label class="profileHeroSA__right__inputProfile__label">Número telefónico</label>
+                        <div class="profileHeroSA__right__inputProfile__content">
+                            <input class="inputSA" type="tel" min="0" placeholder="55 666 777 88" pattern="[0-9\s]{10,15}" disabled id="inputTel">
+                        </div>
+                    </div>
+                    <div class="profileHeroSA__right__inputProfile" id="SeccionFoto" style="display: none;">
+                        <label  class="profileHeroSA__right__inputProfile__label">Fotografia</label>
+                        <div class="profileHeroSA__right__inputProfile__content">
+                            <input " class="inputSA" type="file" accept="image/*"  id="inputFoto">
+                        </div>
+                    </div>
+
+
+                    <div class="profileHeroSA__right__buttonContainer view" id="buttonsEdit">
+                        <button class="profileHeroSA__right__buttonContainer__buttonEdit" id="editProfile">Editar</button>   
+                        <div class="profileHeroSA__right__buttonContainer__button" style="display: none;" id="contenedorEdit">
+                            <button class="profileHeroSA__right__buttonContainer__button__secundario" id="cancelarProfile">Cancelar</button>
+                            <button class="profileHeroSA__right__buttonContainer__button__primario" id="guardarProfile" onclick="updateData()">Guardar</button>
+                        </div>
+                    </div>
+                </div>
         </div>   
     </main>
 
     <div id="footers"></div>
-    
+    <script>
+    document.addEventListener('DOMContentLoaded',async function() {
+        try {
+        const response = await fetch('/admin/getemail');
+        const data = await response.json();
+        var datosUsuario = await getData(data.email);  // Usar await aquí garantiza que esperamos el resultado
+        const nombre= document.getElementById("inputNom");
+        nombre.placeholder=datosUsuario.nombre_usuario;
+        const ApellidoPat= document.getElementById("inputApePat");
+        ApellidoPat.placeholder=datosUsuario.apellido_paterno_usuario;
+        const ApellidoMat= document.getElementById("inputApeMat");
+        ApellidoMat.placeholder=datosUsuario.apellido_materno_usuario;
+        const Tel= document.getElementById("inputTel");
+        Tel.placeholder=datosUsuario.telefono_usuario;
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+    });
+
+    async function updateData(){
+        try {
+            const response = await fetch('/admin/getemail');
+            const data = await response.json();
+            var datosUsuario = await getData(data.email);
+            console.log(datosUsuario);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+        const nombre= document.getElementById("inputNom").value;
+        const ApellidoPat= document.getElementById("inputApePat").value;
+        const ApellidoMat= document.getElementById("inputApeMat").value;
+        const Tel= document.getElementById("inputTel").value;
+        const file_foto = document.getElementById("inputFoto").files[0];
+
+        let datatoSend={
+            email:datosUsuario.email_usuario,
+            nombre: nombre,
+            apellidoPaterno:ApellidoPat,
+            apellidoMaterno:ApellidoMat,
+            telefono:Tel,
+            idRol:datosUsuario.rol_usuario,
+        }
+
+        if (file_foto) {
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                datatoSend.fotoUsuario = reader.result; // Añade la foto en formato Base64 al objeto data
+                enviarData(datatoSend,datosUsuario.id_usuario);
+            };
+            reader.readAsDataURL(file_foto);
+        } else {
+            console.log("Hubo un error al cargar los datos");
+            enviarData(datatoSend,datosUsuario.id_usuario);
+        }
+
+    }
+
+    async function getData(correo) {
+    try {
+        // Remover el ':' adicional del inicio de la URL si no es necesario
+        const response = await fetch('/admin/catalogo/usuarioEmail/:'+correo);
+        const data = await response.json();
+        return data;  // Asegura que data sea devuelta de la función
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;  // Devolver null o algún indicativo de error
+    }
+}
+
+    function enviarData(data,id_usuario) {
+
+        console.log(data);
+            fetch('/admin/catalogo/usuarios/:'+id_usuario, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Respuesta del servidor:', data);
+            })
+            .catch(error => console.error('Error al mandar datos:', error));
+    }
+
+
+    </script>
     <script src="../../js/admin/headers.js"></script>
     <script src="../../js/buttonProfiles.js"></script>
     <script src="../../js/sidebar.js"></script>
