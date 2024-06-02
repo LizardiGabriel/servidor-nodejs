@@ -276,7 +276,7 @@ async function updateUsuarioBD(id, email, nombre, apellidoPaterno, apellidoMater
                 nombre_usuario: nombre,
                 apellido_paterno_usuario: apellidoPaterno,
                 apellido_materno_usuario: apellidoMaterno,
-                telefono_usuario: parseInt(telefono),
+                telefono_usuario: telefono,
                 rol_usuario:rol,
                 foto_usuario: fotoUsuario
             }

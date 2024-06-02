@@ -14,7 +14,7 @@ model Usuario {
   nombre_usuario           String
   apellido_paterno_usuario String
   apellido_materno_usuario String
-  telefono_usuario         Int
+  telefono_usuario         String
   rol_usuario              RolUsuario
   foto_usuario             String
   Reunion                  Reunion[]

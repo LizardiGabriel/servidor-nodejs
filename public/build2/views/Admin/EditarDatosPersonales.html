@@ -165,7 +165,7 @@
                     <div class="profileHeroSA__right__inputProfile" id="SeccionFoto" style="display: none;">
                         <label  class="profileHeroSA__right__inputProfile__label">Fotografia</label>
                         <div class="profileHeroSA__right__inputProfile__content">
-                            <input " class="inputSA" type="file" accept="image/*"  id="inputFoto">
+                            <input class="inputSA" type="file" accept="image/*"  id="inputFoto">
                         </div>
                     </div>
 
@@ -244,9 +244,10 @@
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-        const nombre= document.getElementById("inputNom").value;
+        const nombre= document.getElementById("inputNom").value; // Obtener el valor del input
         const ApellidoPat= document.getElementById("inputApePat").value;
         const ApellidoMat= document.getElementById("inputApeMat").value;
+        //obtener el valor del input para el telefono, es un entero por lo que se usa parseInt
         const Tel= document.getElementById("inputTel").value;
         const file_foto = document.getElementById("inputFoto").files[0];
 
