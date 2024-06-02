@@ -2,8 +2,25 @@
 <html>
 
 <head>
-    <title>Reuniones</title>
+        <title>Reuniones</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>BeeMeet - Consultar Datos Invitado</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <link rel="stylesheet" href="../../css/app.css">
+        <link
+                href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+                rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
+        .centerThis {
+            margin: auto;
+            width: 89%;
+            padding: 10px;
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -91,97 +108,24 @@
 </head>
 
 <body>
-    <button onclick="obtenerReuniones()">Actualizar Reuniones</button>
-    <h1>Gestionar reuniones</h1>
 
+    <div id="headers"></div>
+    <div class="centerThis">
+        <h1>Gestionar reuniones</h1>
+        <div id="divReuniones" class="cardszzz"></div>
 
+        <hr>
+    </div>
+    <div id="footers"></div>
 
+    <script src="../../js/anfitrion/headers.js"></script>
 
-    <div id="divReuniones" class="cardszzz"></div>
-
-    <hr>
-    <h1>Crear Reunion</h1>
-    <form id="formCrearReunion">
-        <label for="titulo_reunion">Titulo de la reunión:</label>
-        <input type="text" id="titulo_reunion" name="titulo_reunion" required>
-        <br>
-        <label for="descripcion_reunion">Descripción de la reunión:</label>
-        <input type="text" id="descripcion_reunion" name="descripcion_reunion" required>
-        <br>
-        <label for="fecha_reunion">Fecha de inicio de la reunión:</label>
-        <input type="date" id="fecha_reunion" name="fecha_reunion" required>
-        <br>
-        <label for="hora_inicio_reunion">Hora de inicio de la reunión:</label>
-        <input type="time" id="hora_inicio_reunion" name="hora_inicio_reunion" required>
-        <br>
-        <label for="hora_fin_reunion">Hora de fin de la reunión:</label>
-        <input type="time" id="hora_fin_reunion" name="hora_fin_reunion" required>
-        <br>
-        <label for="isRepetible">¿Es repetible?</label>
-        <input type="checkbox" id="isRepetible" name="isRepetible" required>
-        <br>
-        <table id="tablaFechasRepetir">
-            <tr>
-                <th>Fecha</th>
-                <th>accion</th>
-            </tr>
-        </table>
-        <button id="btnAgregarFecha" onclick="agregarFecha()">Agregar Fecha</button>
-        <br>
-
-
-        <label for="nombreSala">Nombre de la sala:</label>
-        <select id="nombreSala" name="nombreSala" required>
-            <option value="1">Sala 1</option>
-            <option value="2">Sala 2</option>
-            <option value="3">Sala 3</option>
-        </select>
-        <br>
-
-        <button type="button" onclick="crearReunion()">
-            Crear Reunión
-        </button>
-    </form>
 
     <script>
         window.onload = function () {
             obtenerReuniones();
-            obtenerSalas();
         }
 
-        function obtenerSalas() {
-            fetch('salas')
-                .then(response => response.json())
-                .then(salas => {
-                    console.log('salas:', salas);
-                    const selectSala = document.getElementById('nombreSala');
-                    selectSala.innerHTML = '';
-                    salas.forEach(sala => {
-                        const option = document.createElement('option');
-                        option.value = sala.id_sala;
-                        option.textContent = sala.nombre_sala;
-                        selectSala.appendChild(option);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-
-        function eliminarFila(boton) {
-            const fila = boton.parentNode.parentNode;
-            fila.parentNode.removeChild(fila);
-        }
-
-        function agregarFecha() {
-            const tablaFechasRepetir = document.getElementById('tablaFechasRepetir');
-            const fila = document.createElement('tr');
-            fila.innerHTML = `
-                <td><input type="date" name="fechaRepetir" required></td>
-                <td><button onclick="eliminarFila(this)">Eliminar</button></td>
-            `;
-            tablaFechasRepetir.appendChild(fila);
-        }
 
         function obtenerReuniones() {
             fetch('reuniones')
@@ -260,60 +204,9 @@
                     console.error('Error:', error);
                 });
         }
-
         function mostrarFormulario(idReunion) {
             const formulario = document.getElementById(`formulario-${idReunion}`);
             formulario.style.display = 'block';
-        }
-
-
-
-
-        function crearReunion() {
-
-
-            const titulo_reunion = document.getElementById('titulo_reunion').value;
-            const descripcion_reunion = document.getElementById('descripcion_reunion').value;
-            const fecha_reunion = document.getElementById('fecha_reunion').value;
-            const hora_inicio_reunion = document.getElementById('hora_inicio_reunion').value;
-            const hora_fin_reunion = document.getElementById('hora_fin_reunion').value;
-            const isRepetible = document.getElementById('isRepetible').checked;
-            const nombreSala = document.getElementById('nombreSala').value;
-
-            const fechasRepetir = [];
-            document.querySelectorAll('input[name="fechaRepetir"]').forEach(input => {
-                fechasRepetir.push(input.value);
-            });
-
-            const envJson = {
-                titulo_reunion,
-                descripcion_reunion,
-                fecha_reunion,
-                hora_inicio_reunion,
-                hora_fin_reunion,
-                isRepetible,
-                nombreSala,
-                fechasRepetir
-            };
-
-            fetch('reuniones', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(envJson)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('data:', data);
-                    obtenerReuniones();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-
-
-
         }
         function enviarInvitacion(idReunion) {
             const emailDiv = 'correoInv-' + idReunion;
@@ -343,13 +236,13 @@
                     console.error('Error:', error);
                 });
         }
-
         function detallesReunion(idReunion) {
             console.log('Detalles de la reunion:', idReunion);
+            window.location.href = `reuniones/ConsultarDatos.html?idReunion=${idReunion}`;
 
         }
         function eliminarReunion(idReunion) {
-
+            console.log('Eliminar reunion:', idReunion);
         }
 
     </script>

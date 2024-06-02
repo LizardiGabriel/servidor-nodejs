@@ -23,7 +23,7 @@ function refCuenta() {
     window.location.href = "/anfitrion/cuenta.html";
 }
 function reuniones2() {
-    window.location.href = "/anfitrion/nuevareunion.html";
+    window.location.href = '/anfitrion/crearReunion';
 }
 
 

@@ -9,6 +9,9 @@ const { getReunionesBD,
     getReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD, getDetallesReunionByIdBD
 
 } = require('../tools/peticiones');
+
+const { getReunionAdminByIdBD } = require('../tools/petiAdmin');
+
 const jwt = require("jsonwebtoken");
 
 const mail = require('../tools/mail');
@@ -168,10 +171,23 @@ async function setInvitacion(req, res) {
 }
 
 
+async function getReunionById(req, res) {
+    console.log('mensaje --> getReunionById');
+    const { idReunion } = req.params;
+    const reunion = await getReunionAdminByIdBD(idReunion);
+    if (reunion !== null) {
+        res.json(reunion);
+    } else {
+        res.json([]);
+    }
+}
+
+
 module.exports = {
     logout,
     getReunionesAnfitrion,
     getSalasAnfitrion,
     setNewReunion,
-    setInvitacion
+    setInvitacion,
+    getReunionById
 };
