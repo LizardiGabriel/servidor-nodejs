@@ -10,20 +10,18 @@ async function obtenerInvitaciones() {
 
         // Agregar cada sala al arreglo 'info'
         invitaciones.forEach(invitacion => {
-            info.push({
-                id_inv: invitacion.id_invitacion,
-                id_usu: invitacion.id_usuario,
-                nombre_usu: invitacion.nombre_usuario,
-                fecha_rep: invitacion.fecha_repeticion,
-                hora_ini: invitacion.hora_inicio_repeticion,
-                hora_fin: invitacion.hora_fin_repeticion,
-                nombre_sala: invitacion.nombre_sala,
-                num_inv: invitacion.numero_invitaciones,
-                cap_sala: invitacion.capacidad_sala,
-                correo_invitado: invitacion.correo_invitado
-
-
-            });
+          info.push({
+              id_inv: invitacion.id_invitacion,
+              id_usu: invitacion.id_usuario,
+              nombre_usu: invitacion.nombre_usuario,
+              fecha_rep: invitacion.fecha_repeticion,
+              hora_ini: invitacion.hora_inicio_repeticion,
+              hora_fin: invitacion.hora_fin_repeticion,
+              nombre_sala: invitacion.nombre_sala,
+              num_inv: invitacion.numero_invitaciones,
+              cap_sala: invitacion.capacidad_sala,
+              correo_invitado: invitacion.correo_invitado
+          });
         });
 
         console.log('reuniones cargadas:', info);

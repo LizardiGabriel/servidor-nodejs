@@ -18,8 +18,6 @@
     <!--DataTables-->
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.6/css/dataTables.dataTables.css" />
     <script src="https://cdn.datatables.net/2.0.6/js/dataTables.js"></script>
-    <!--SiderBar-->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
@@ -56,20 +54,28 @@
     <div id="footers"></div>
 
 
+    <!-- Estilos para el Swal -->
+    <style>
+      .titleSize{
+        font-size: 4rem;
+      }
+      .contentSize{
+        font-size: 2rem !important;
+      }
+      .buttonSize{
+        font-size: 2rem !important;
+      }
+      .iconSize{
+        font-size: 1.5rem;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../js/admin/headers.js"></script>
     <script src="../../js/sidebar.js"></script>
-
-    <script src="../../js/gestionUsuarios.js"></script>
-
+    <script src="../../js/admin/gestionUsuarios.js"></script>
     <script src="/build/js/header.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/superAdmin.js"></script>
-
-<script>
-    function redirigeCrearUsu() {
-        window.location.href = "/admin/catalogo/crearCuenta.html";
-    }
-</script>
 </body>
 
 </html>

@@ -8,28 +8,8 @@
     <link rel="stylesheet" href="../../css/app.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
-<script>
-    function confirmacion() {
-        //verifica si se ingresan datos al formulario, si no se ingresan muestra un mensaje de alerta diciendo que se deben ingresar los datos
-        var email = document.getElementById("loginEmail").value;
-        var nombre = document.getElementsByName("nombre")[0].value;
-        var apellidoPaterno = document.getElementsByName("apellidoPaterno")[0].value;
-        var apellidoMaterno = document.getElementsByName("apellidoMaterno")[0].value;
-        var rolSeguridad = document.getElementsByName("rolSeguridad")[0].checked;
-        var rolAnfitrion = document.getElementsByName("rolAnfitrion")[0].checked;
-        if (email == "" || nombre == "" || apellidoPaterno == "" || apellidoMaterno == "" || (rolSeguridad == false && rolAnfitrion == false)) {
-            alert("Por favor, llene todos los campos");
-            return false;
-        } else {
-            return true;
-        }
-
-}
-</script>
 
 <body>
     <main class="register">
@@ -41,12 +21,12 @@
         </div>
         <div class="registerForm">
             <h1 class="registerForm__titulo">Crear Cuenta</h1>
-            <form class="form" novalidate action="/admin/catalogo/confirmarCuenta.html">
+            <!-- <form class="form" novalidate action="/admin/catalogo/confirmarCuenta.html"> -->
                 <div class="form__cargo-container">
                     <label class="form__puesto">Cargo*</label>
                     <div class="checkbox-wrapper-1">
-                        <input type="checkbox" id="cbx-1" class="inp-cbx" name="rolSeguridad" required />
-                        <label for="cbx-1" class="cbx">
+                        <input type="checkbox" id="rolSeguridad" class="inp-cbx" name="rolSeguridad" required />
+                        <label for="rolSeguridad" class="cbx">
                             <span>
                                 <svg viewBox="0 0 12 10" height="10px" width="12px">
                                     <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
@@ -56,8 +36,8 @@
                         </label>
                     </div>
                     <div class="checkbox-wrapper-2">
-                        <input type="checkbox" id="cbx-2" class="inp-cbx" name="rolAnfitrion" required />
-                        <label for="cbx-2" class="cbx">
+                        <input type="checkbox" id="rolAnfitrion" class="inp-cbx" name="rolAnfitrion" required />
+                        <label for="rolAnfitrion" class="cbx">
                             <span>
                                 <svg viewBox="0 0 12 10" height="10px" width="12px">
                                     <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
@@ -67,38 +47,32 @@
                         </label>
                     </div>
                 </div>
+                <div id="rolForm"></div>
 
                 <label class="registerForm__email">Correo Electrónico*</label>
                 <div class="inputForm">
                     <input name="email" autocomplete="off" id="loginEmail" type="email" class="input"
                         placeholder="rafaelc_203@beecoders.com" required>
-                    <div class="invalid-feedback">
-                        Ingrese su correo electrónico.
-                    </div>
                 </div>
                 <div id="emailForm"></div>
 
                 <label class="registerForm__email">Nombre*</label>
                 <div class="inputForm">
-                    <input name="nombre" type="text" class="input" placeholder="Rafael" required>
-                    <div class="invalid-feedback">
-                        Ingrese su Nombre.
-                    </div>
+                    <input id="nombre" name="nombre" type="text" class="input" placeholder="Rafael" required>
                 </div>
+                <div id="nombreForm"></div>
+
                 <label class="registerForm__email">Apellido Paterno*</label>
                 <div class="inputForm">
-                    <input name="apellidoPaterno" type="text" class="input" placeholder="Cabañas" required>
-                    <div class="invalid-feedback">
-                        Ingrese su Apellido Paterno.
-                    </div>
+                    <input id="app" name="apellidoPaterno" type="text" class="input" placeholder="Cabañas" required>
                 </div>
+                <div id="appForm"></div>
+
                 <label class="registerForm__email">Apellido Materno*</label>
                 <div class="inputForm">
-                    <input name="apellidoMaterno" type="text" class="input" placeholder="Rocha" required>
-                    <div class="invalid-feedback">
-                        Ingrese su Apellido Materno.
-                    </div>
+                    <input id="apm" name="apellidoMaterno" type="text" class="input" placeholder="Rocha" required>
                 </div>
+                <div id="apmForm"></div>
 
                 <div class="nota-password">
                     <p>La contraseña se genera de manera automática despues de enviar este formulario</p>
@@ -108,12 +82,29 @@
                     <!--boton para cancelar-->
                    <button type="button" class="button-submit2 " onclick="window.location.href='/admin/catalogo/GestionDeUsuarios.html'">Cancelar</button> 
                     <!--boton para enviar-->
-                    <button type="submit" class="button-submit1" onclick="return confirmacion()">Crear Cuenta</button>
+                    <button class="button-submit1" onclick="addUser()">Crear Cuenta</button>
                 </div>
-            </form>
+            <!-- </form> -->
         </div>
     </main>
     
+    <!-- Estilos para el Swal -->
+    <style>
+      .titleSize{
+        font-size: 4rem;
+      }
+      .contentSize{
+        font-size: 2rem !important;
+      }
+      .buttonSize{
+        font-size: 2rem !important;
+      }
+      .iconSize{
+        font-size: 1.5rem;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../../js/admin/crearUsuario.js"></script>
     <script src="../../js/plantilla-formularios.js"></script>
     <script src="../../js/validaciones.js"></script>
 </body>

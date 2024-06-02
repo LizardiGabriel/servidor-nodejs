@@ -45,25 +45,29 @@ async function guardarImagenDesdeBase64(base64Data, nombreArchivo) {
 }
 
 async function obtenerExtensionDeBase64(cadenaBase64) {
-    // Usar una expresión regular para encontrar el tipo MIME en la cadena Base64
-    const resultado = cadenaBase64.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
-    if (resultado && resultado.length > 1) {
-        // Extraer el tipo MIME
-        const tipoMime = resultado[1];
-        // Convertir tipo MIME a una extensión de archivo
-        switch (tipoMime) {
-            case 'image/jpeg':
-                return 'jpg';
-            case 'image/png':
-                return 'png';
-            case 'image/gif':
-                return 'gif';
-            default:
-                return ''; // Devuelve una cadena vacía si el tipo MIME no es reconocido
-        }
+const resultado = cadenaBase64.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
+if (resultado && resultado.length > 1) {
+    const tipoMime = resultado[1];
+    switch (tipoMime) {
+        case 'image/jpeg':
+            return 'jpg';
+        case 'image/png':
+            return 'png';
+        case 'image/gif':
+            return 'gif';
+        default:
+            return ''; 
     }
-    return ''; // Devuelve una cadena vacía si no se encuentra el tipo MIME
 }
+return '';
+}
+
+function esCadenaBase64Valida(str) {
+    const base64Regex = /^data:image\/[a-zA-Z0-9]+;base64,[a-zA-Z0-9+/=]+$/;
+    return base64Regex.test(str);
+}
+
+
 
 // salas
 
@@ -176,21 +180,25 @@ async function getUsuarioByEmail(req, res) {
 
 async function updateUsuario(req, res) {
     const { id } = req.params;
-    const { email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol,fotoUsuario } = req.body;
+    const { email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, fotoUsuario } = req.body;
     console.log(req.body);
     console.log('id: ', id, 'email: ', email, 'nombre: ', nombre, 'apellidoPaterno: ', apellidoPaterno);
-    //console.log('apellidoMaterno: ', apellidoMaterno, 'telefono: ', telefono, 'idRol nuevo: ', idRol, 'foto_usuario: ', fotoUsuario);
-    id_final=id.replace(/^:/, '');
-    const extensionfoto= await obtenerExtensionDeBase64(fotoUsuario);
-    const rutafoto=await  guardarImagenDesdeBase64(fotoUsuario, "fotografia_usuario"+id_final+"."+extensionfoto);
-    console.log(rutafoto);
-    const usuarioActualizado = await updateUsuarioBD(id_final, email, nombre, apellidoPaterno, apellidoMaterno, telefono,id_rol,rutafoto);
+    const id_final = id.replace(/^:/, '');
 
-    console.log('usuarioActualizado: ', usuarioActualizado);
-
-
-    //res.json(usuarioActualizado);
-    res.status(200).json({ message: 'se actualizo' });
+    if (fotoUsuario && esCadenaBase64Valida(fotoUsuario)) {
+        const extensionfoto = await obtenerExtensionDeBase64(fotoUsuario);
+        const rutafoto = await guardarImagenDesdeBase64(fotoUsuario, "fotografia_usuario" + id_final + "." + extensionfoto);
+        console.log(rutafoto);
+        const usuarioActualizado = await updateUsuarioBD(id_final, email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, rutafoto);
+        console.log('usuarioActualizado: ', usuarioActualizado);
+        res.status(200).json({ message: 'Usuario actualizado correctamente' });
+    } else if (fotoUsuario) {
+        console.error('Cadena base64 inválida para fotoUsuario.');
+        res.status(400).json({ error: 'Cadena base64 inválida para fotoUsuario' });
+    } else {
+        console.error('fotoUsuario está undefined o es inválido.');
+        res.status(400).json({ error: 'fotoUsuario inválido o ausente' });
+    }
 }
 
 async function deleteUsuario(req, res) {
