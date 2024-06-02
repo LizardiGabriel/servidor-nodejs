@@ -68,6 +68,8 @@ loginPasswordR.addEventListener('input', () => {
     let msg = validatePassword(valorPR);
     if(msg != "OK" && valorPR != valorP){
         passwordFormR.innerHTML = '<p class="msg-error-form">La contraseña no coincide</p>';
+    } else {
+      passwordFormR.innerHTML = '';
     }
 });
 

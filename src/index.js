@@ -68,7 +68,10 @@ const rutas = [
     ['/js/plantilla-formularios.js', '../public/build2/js/plantilla-formularios.js'],
     ['/js/sidebar.js', '../public/build2/js/sidebar.js'],
     ['/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js', '../public/build2/js/bootstrap.bundle.min.js' ],
+
     ['/build/js/header.js', '../public/build2/js/header.js'],
+    ['/js/header.js', '../public/build2/js/header.js'],
+
     ['/js/index.global.min.js', '../public/build2/js/index.global.min.js'],
     ['/js/anfitrion.js', '../public/build2/js/anfitrion.js'],
     ['/js/registrarInformacionPersonal.js','../public/build2/js/registrarInformacionPersonal.js'],
@@ -80,6 +83,16 @@ const rutas = [
     ['/js/gestionInvitaciones.js', '../public/build2/js/admin/gestionInvitaciones.js'],
     ['/js/admin/headers.js', '../public/build2/js/admin/headers.js'],
 
+    ['/js/anfitrion/headers.js', '../public/build2/js/anfitrion/headers.js'],
+    ['/js/anfitrion/calendar.js', '../public/build2/js/anfitrion/calendar.js'],
+
+
+    //Rutas de js para iniciar sesión
+    ['/js/sesiones/iniciarsesion.js', '../public/build2/js/sesiones/iniciarsesion.js'],
+    ['/js/sesiones/recuperarContrasena.js', '../public/build2/js/sesiones/recuperarContrasena.js'],
+    ['/js/sesiones/cambiarContrasena.js', '../public/build2/js/sesiones/cambiarContrasena.js'],
+
+    //Rutas de css de toda la interfaz
     ['/css/app.css', '../public/build2/css/app.css'],
     ['/css/app.css.map', '../public/build2/css/app.css.map'],
 
@@ -148,6 +161,25 @@ function getchangeFirstPass(jsonToken){
     });
     return changeFirstPass;
 }
+
+function getNombre(jsonToken){
+    let nombre = '';
+    let apellido = '';
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            nombre = decoded.nombre;
+            apellido = decoded.apellido;
+        }
+    });
+    return nombre + ' ' + apellido;
+}
+
+app.get('/get-nombre', (req, res) => {
+    let nombre = getNombre(req.session.jwt);
+    res.status(200).json({nombre: nombre});
+});
 
 
 app.use('/admin', (req, res, next) => {
@@ -238,19 +270,33 @@ app.use('/anfitrion', (req, res, next) => {
     }else
         return res.status(401).json({error: 'Unauthorized', status: 401});
 });
-
-app.use('/anfitrion/reuniones2.html', express.static('./public/build2/views/Anfitrion/reuniones2.html'));
-app.use('/anfitrion/anfitrion.html', express.static('./public/build2/views/Anfitrion/anfitrion.html'));
 app.get('/anfitrion/logout', anfitrion.logout);
+
+app.use('/anfitrion/anfitrion.html', express.static('./public/build2/views/Anfitrion/anfitrion.html'));
 app.use('/anfitrion/reuniones.html', express.static('./public/build2/views/Anfitrion/consultarReuniones.html'));
-app.use('/anfitrion/salas.html', express.static('./public/build2/views/Anfitrion/salasAnf.html'));
+
+app.use('/anfitrion/crearReunion', express.static('./public/build2/views/Anfitrion/CrearReunion.html'));
+app.use('/anfitrion/reunionesLista', express.static('./public/build2/views/Anfitrion/ListaReuniones.html'));
+app.use('/anfitrion/datosInvitado.html', express.static('./public/build2/views/Anfitrion/ConsultarDatosInvitado.html'));
+
+app.use('/anfitrion/salas.html', express.static('./public/build2/views/Anfitrion/CatalogoSalas.html'));
 app.use('/anfitrion/cuenta.html', express.static('./public/build2/views/Anfitrion/cuentaAnf.html'));
+
+app.use('/anfitrion/EditarDatosPersonales.html', express.static('./public/build2/views/Anfitrion/EditarDatosPersonales.html'));
+
+
 
 app.get('/anfitrion/reuniones', anfitrion.getReunionesAnfitrion);
 app.get('/anfitrion/getUserEmail', anfitrion.getReunionesAnfitrion);
 app.get('/anfitrion/salas', anfitrion.getSalasAnfitrion);
+
+app.get('/anfitrion/catalogo/salas', anfitrion.getSalasAnfitrion);
+
 app.post('/anfitrion/reuniones', anfitrion.setNewReunion);
 app.post('/anfitrion/reuniones/invitacion', anfitrion.setInvitacion);
+
+app.use('/anfitrion/reuniones/ConsultarDatos.html', express.static('./public/build2/views/Anfitrion/ConsultarDatosReunion.html'));
+app.get('/anfitrion/reuniones/detalles/:idReunion', anfitrion.getReunionById);
 
 
 
