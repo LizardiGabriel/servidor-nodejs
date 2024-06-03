@@ -43,6 +43,7 @@ async function cargarInfoDelUrl() {
     document.getElementById('name').value = nombre + ' ' + apellidoPaterno + ' ' + apellidoMaterno;
     
 }
+
 async function enviarDatos() {
     fetch('/admin/catalogo/usuarios', {
         method: 'POST',

@@ -31,6 +31,7 @@ async function guardarImagenDesdeBase64(base64Data, nombreArchivo) {
     const base64Image = base64Data.split(';base64,').pop();
 
     // Especificar la ruta donde se guardará la imagen
+    const filePath2 = path.join('uploads',nombreArchivo);
     const filePath = path.join('public/build2/uploads',nombreArchivo);
     // Decodificar la imagen y guardarla
     fs.writeFile(filePath, base64Image, {encoding: 'base64'}, (error) => {
@@ -40,7 +41,7 @@ async function guardarImagenDesdeBase64(base64Data, nombreArchivo) {
             console.log('Imagen guardada correctamente:', filePath);
         }
     });
-    return filePath;
+    return filePath2;
     
 }
 
@@ -194,10 +195,13 @@ async function updateUsuario(req, res) {
         res.status(200).json({ message: 'Usuario actualizado correctamente' });
     } else if (fotoUsuario) {
         console.error('Cadena base64 inválida para fotoUsuario.');
-        res.status(400).json({ error: 'Cadena base64 inválida para fotoUsuario' });
+        const usuarioActualizadoNoFoto = await updateUsuarioBD(id_final, email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, '');
+        res.status(201).json({ message: 'Usuario actualizado pero fotoUsuario inválido o ausente' });
+
     } else {
         console.error('fotoUsuario está undefined o es inválido.');
-        res.status(400).json({ error: 'fotoUsuario inválido o ausente' });
+        const usuarioActualizadoNoFoto = await updateUsuarioBD(id_final, email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, '');
+        res.status(201).json({ message: 'Usuario actualizado pero fotoUsuario inválido o ausente' });
     }
 }
 

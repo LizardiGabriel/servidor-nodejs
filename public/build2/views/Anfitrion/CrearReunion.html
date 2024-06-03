@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BeeMeet - Crear Reunión</title>
-
+    <link rel="stylesheet" href="../../css/app.css">
 
     <style>
         .centerThis {
@@ -14,12 +14,11 @@
             align-items: center;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
-
-
+    
+    
     <div id="headers"></div>
     <div class="centerThis">
         <main class="contenidoPrincipal">
@@ -27,19 +26,23 @@
                 <h1>Crear Reunion</h1>
                 <form id="formCrearReunion">
                     <label for="titulo_reunion">Titulo de la reunión:</label>
-                    <input type="text" id="titulo_reunion" name="titulo_reunion" required>
+                    <input type="text" id="titleID" name="titulo_reunion" required>
+                    <div id="titleFormID"></div>
                     <br>
                     <label for="descripcion_reunion">Descripción de la reunión:</label>
-                    <input type="text" id="descripcion_reunion" name="descripcion_reunion" required>
+                    <input type="text" id="descID" name="descripcion_reunion" required>
+                    <div id="descFormID"></div>
                     <br>
                     <label for="fecha_reunion">Fecha de inicio de la reunión:</label>
-                    <input type="date" id="fecha_reunion" name="fecha_reunion" required>
+                    <input type="date" id="dateID" name="fecha_reunion" required>
+                    <div id="dateFormID"></div>
                     <br>
                     <label for="hora_inicio_reunion">Hora de inicio de la reunión:</label>
-                    <input type="time" id="hora_inicio_reunion" name="hora_inicio_reunion" required>
+                    <input type="time" id="time1ID" name="hora_inicio_reunion" required>
                     <br>
                     <label for="hora_fin_reunion">Hora de fin de la reunión:</label>
-                    <input type="time" id="hora_fin_reunion" name="hora_fin_reunion" required>
+                    <input type="time" id="time2ID" name="hora_fin_reunion" required>
+                    <div id="timeFormID"></div>
                     <br>
                     <label for="isRepetible">¿Es repetible?</label>
                     <input type="checkbox" id="isRepetible" name="isRepetible" required>
@@ -61,26 +64,28 @@
                         <option value="3">Sala 3</option>
                     </select>
                     <br>
-
+                    
                     <button type="button" onclick="crearReunion()">
                         Crear Reunión
                     </button>
                 </form>
-
+                
             </div>
         </main>
     </div>
-
+    
     <div id="footers"></div>
-
-
+    
+    
     <!--
-    <script src="../../js/anfitrion/headers.js"></script>
+        <script src="../../js/anfitrion/headers.js"></script>
     <script src="../../js/header.js"></script>
     <script src="../../js/sidebar.js"></script>
     <script src="../../js/anfitrion.js"></script>
     -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../js/anfitrion/crearReunion.js"></script>
+    <script src="../../js/validaciones.js"></script>
 
 </body>
 

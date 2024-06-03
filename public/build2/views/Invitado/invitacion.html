@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Formulario de Invitado</title>
+    <link rel="stylesheet" href="../../css/app.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -59,7 +60,8 @@
     <input type="text" id="apellidoMaterno" name="apellidoMaterno" required>
 
     <label for="correo">Correo:</label>
-    <input type="text" id="correo" name="correo" required>
+    <input type="text" id="correo loginEmail" name="correo" required>
+    <div id="emailForm"></div>
 
     <label for="telefono">Teléfono:</label>
     <input type="text" id="telefono" name="telefono" required>
@@ -129,5 +131,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="../../js/invitado/invitacion.js"></script>
+<script src="../../js/validaciones.js"></script>
 </body>
 </html>
