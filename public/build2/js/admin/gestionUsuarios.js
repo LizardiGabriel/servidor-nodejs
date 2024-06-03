@@ -1,9 +1,11 @@
+// Función para redirigir a la creación de usuarios
 function redirigeCrearUsu() {
   window.location.href = "/admin/catalogo/crearCuenta.html";
 }
 
+const info = [];
+
 async function cargarUsuarios() {
-  var info = [];
   console.log('Cargando usuarios...');
   try {
     const response = await fetch('/admin/catalogo/usuarios');
@@ -51,6 +53,25 @@ async function loadTableData() {
     `;
     tbody.appendChild(row);
   });
+
+  // Destruir y volver a inicializar DataTable
+  if ($.fn.DataTable.isDataTable('#Tabla')) {
+    $('#Tabla').DataTable().destroy();
+  }
+
+  $('#Tabla').DataTable({
+    pagingType: 'full_numbers', //Tipo de paginación
+    info: false, //Desactiva la información de los registros totales
+    language: {
+      lengthMenu: 'Mostrar _MENU_ registros', //Para cambiar el texto de los registros que se muestran
+      search: 'Buscar',
+      zeroRecords: 'No se encontró ninguna coincidencia ):'
+    },
+    columnDefs: [
+      { "orderable": false, "targets": -1 } // Desactiva el ordenamiento en la última columna (Acciones)
+    ],
+    autoWidth: true
+  });
 }
 
 function editarUsuario(idUsuario) {
@@ -63,14 +84,14 @@ function eliminarUsuario(idUsuario) {
   })
     .then(response => {
       if (response.ok) {
-        modal.fire({
+        Swal.fire({
           title: "Success",
           icon: "success",
-          text: "Cuenta de usuario eliminado con éxito",
+          text: "Cuenta de usuario eliminada con éxito",
         });
         loadTableData();
       } else {
-        modal.fire({
+        Swal.fire({
           title: "Error",
           icon: "error",
           text: "Error al eliminar cuenta de usuario: " + response.statusText,
@@ -79,7 +100,7 @@ function eliminarUsuario(idUsuario) {
       }
     })
     .catch(error => {
-      modal.fire({
+      Swal.fire({
         title: "Error",
         icon: "error",
         text: "Error al eliminar cuenta de usuario:" + error,
@@ -91,36 +112,18 @@ function eliminarUsuario(idUsuario) {
 // Cargar datos en la tabla al iniciar la página
 loadTableData();
 
-//Activación de DataTables
-new DataTable('#Tabla', {
-  pagingType: 'full_numbers', //Tipo de paginación
-  info: false, //Desactiva la información de los registros totales
-  language: {
-    lengthMenu: ' Mostrar  _MENU_  registros', //Para cambiar el texto de los registros que se muestran
-    search: 'Buscar',
-    zeroRecords: 'No se encontró ninguna coincidencia ):'
-  },
-  columnDefs: [
-    { "orderable": false, "targets": -1 } // Desactiva el ordenamiento en la última columna (Acciones)
-  ],
-  autoWidth: true
-});
-
 // Botón de editar
 document.querySelector('tbody').addEventListener('click', function (event) {
-  if (event.target.classList.contains('editar')) {
-    const id = event.target.dataset.id;
-    //Aqui va lo necesario para editar el registro
-    console.log(`Editar`);
+  if (event.target.closest('.editar')) {
+    const id = event.target.closest('.editar').dataset.id;
+    editarUsuario(id);
   }
 });
 
 // Botón de eliminar
 document.querySelector('tbody').addEventListener('click', function (event) {
-  if (event.target.classList.contains('eliminar')) {
-    const id = event.target.dataset.id;
-    //Aqui va lo necesario para eliminar el registro
-    console.log(`Eliminar`);
+  if (event.target.closest('.eliminar')) {
+    const id = event.target.closest('.eliminar').dataset.id;
+    eliminarUsuario(id);
   }
 });
-

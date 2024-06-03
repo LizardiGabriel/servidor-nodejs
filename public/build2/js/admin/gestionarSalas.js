@@ -54,6 +54,23 @@ async function loadTableData() {
                          </td>`;
     tbody.appendChild(row);
   });
+  // Destruir y volver a inicializar DataTable
+  if ($.fn.DataTable.isDataTable('#Tabla')) {
+    $('#Tabla').DataTable().destroy();
+  }
+  $('#Tabla').DataTable({
+    pagingType: 'full_numbers', //Tipo de paginación
+    info: false, //Desactiva la información de los registros totales
+    language: {
+      lengthMenu: 'Mostrar _MENU_ registros', //Para cambiar el texto de los registros que se muestran
+      search: 'Buscar',
+      zeroRecords: 'No se encontró ninguna coincidencia ):'
+    },
+    columnDefs: [
+      { "orderable": false, "targets": -1 } // Desactiva el ordenamiento en la última columna (Acciones)
+    ],
+    autoWidth: true
+  });
 }
 
 function editarSala(idSala) {
@@ -82,21 +99,6 @@ function eliminarSala(idSala) {
 
 // Cargar datos en la tabla al iniciar la página
 loadTableData();
-
-//Activación de DataTables
-new DataTable('#Tabla', {
-  pagingType: 'full_numbers', //Tipo de paginación 
-  info: false, //Desactiva la información de los registros totales
-  language: {
-    lengthMenu: ' Mostrar  _MENU_  registros', //Para cambiar el texto de los registros que se muestran
-    search: 'Buscar',
-    zeroRecords: 'No se encontró ninguna coincidencia ):'
-  },
-  columnDefs: [
-    { "orderable": false, "targets": -1 } // Desactiva el ordenamiento en la última columna (Acciones)
-  ],
-  autoWidth: true
-});
 
 // Botón de editar
 document.querySelector('tbody').addEventListener('click', function (event) {

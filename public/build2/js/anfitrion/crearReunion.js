@@ -36,11 +36,11 @@ function eliminarFila(boton) {
 function crearReunion() {
 
 
-    const titulo_reunion = document.getElementById('titulo_reunion').value;
-    const descripcion_reunion = document.getElementById('descripcion_reunion').value;
-    const fecha_reunion = document.getElementById('fecha_reunion').value;
-    const hora_inicio_reunion = document.getElementById('hora_inicio_reunion').value;
-    const hora_fin_reunion = document.getElementById('hora_fin_reunion').value;
+    const titulo_reunion = document.getElementById('titleID').value;
+    const descripcion_reunion = document.getElementById('descID').value;
+    const fecha_reunion = document.getElementById('dateID').value;
+    const hora_inicio_reunion = document.getElementById('time1ID').value;
+    const hora_fin_reunion = document.getElementById('time2ID').value;
     const isRepetible = document.getElementById('isRepetible').checked;
     const nombreSala = document.getElementById('nombreSala').value;
 
