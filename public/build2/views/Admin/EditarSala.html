@@ -19,149 +19,65 @@
     <div id="headers"></div>
 
     <main class="contenidoPrincipal cSala">
-            <section class="cSalaHero">
-                <h1 class="Titulo title-example text-center">Modificar Sala</h1>
-                <form action=""  class="cSalaHeroForm needs-validation" novalidate>
-                    <div class="form-group cSalaHeroForm__container">
-                        <label for="" class="cSalaHeroForm__container__label">Nombre de la sala*:</label>
-                        <input id="nombreSala" type="text" class="cSalaHeroForm__container__input" required>
-                        <div class="invalid-feedback">
-                            Ingrese el nombre de la sala.
-                        </div>
-                    </div>
-                    <br>
-                    <div class="form-group cSalaHeroForm__container">
-                        <label for="" class="cSalaHeroForm__container__label">Número*:</label>
-                        <input id="numero" type="number" class="cSalaHeroForm__container__input" min="0" required>
-                        <div class="invalid-feedback">
-                            No puede dejar este campo vacío.
-                        </div>
-                    </div>
-                    <br>
-                    <div  class="form-group cSalaHeroForm__container">
-                        <label for="" class="cSalaHeroForm__container__label">Piso*:</label>
-                        <input id="piso" type="number" class="cSalaHeroForm__container__input" min="0" required>
-                        <div class="invalid-feedback">
-                            Ingrese el piso en el que se encuentra la sala.
-                        </div>
-                    </div>
-                    <br>
-                    <div class="form-group cSalaHeroForm__container">
-                        <label for="" class="cSalaHeroForm__container__label">Cupo máximo*:</label>
-                        <input id="cupoMax" type="number" class="cSalaHeroForm__container__input" min="0" required>
-                        <div class="invalid-feedback">
-                            Ingrese el cupo máximo de la sala.
-                        </div>
-                    </div>
-                    <br>
-                    <div class="Seleccion form-group cSalaHeroForm__container">
-                        <label for="" class="cSalaHeroForm__container__label">Estado de la sala*:</label>
-                        <select name="" id="estadoSala" class="cSalaHeroForm__container__select" required>
-                            <option disabled selected value="" class="cSalaHeroForm__container__option"> Selecciona una opción</option>
-                            <option value="Disponible" class="cSalaHeroForm__container__option">Disponible</option>
-                            <option value="NoDisponible" class="cSalaHeroForm__container__option">No disponible</option>
-                        </select>
-                        <div class="invalid-feedback">
-                            Debe elegir una de las opciones.
-                        </div>
-                    </div>
-                    <br>
-                    <div class="cSalaHeroForm__button-Container">
-                    <input onclick="cancelar()" type="submit"  class="cSalaHeroForm__button-Container__button__Secundario" value="Cancelar" id="" >
-                        <div class="Boton">
-                            <input onclick="enviarForm()" type="submit" class="cSalaHeroForm__button-Container__button__Primario" value="Aceptar" id="">
-                            <script src="https://cdn.jsdelivr.net/npm/mdb-ui-kit@3.11.0/dist/js/mdb.min.js"></script>
-                        </div>
-                    </div>
-                </form>
-            </section>
+      <section class="cSalaHero">
+          <h1 class="Titulo title-example text-center">Modificar Sala</h1>
+          <div class="form-group cSalaHeroForm__container">
+              <label for="" class="cSalaHeroForm__container__label">Nombre de la sala*:</label>
+              <input id="nombreSala" type="text" class="cSalaHeroForm__container__input" required>
+              <div class="invalid-feedback">
+                  Ingrese el nombre de la sala.
+              </div>
+          </div>
+          <br>
+          <div class="form-group cSalaHeroForm__container">
+              <label for="" class="cSalaHeroForm__container__label">Número*:</label>
+              <input id="numero" type="number" class="cSalaHeroForm__container__input" min="0" required>
+              <div class="invalid-feedback">
+                  No puede dejar este campo vacío.
+              </div>
+          </div>
+          <br>
+          <div  class="form-group cSalaHeroForm__container">
+              <label for="" class="cSalaHeroForm__container__label">Piso*:</label>
+              <input id="piso" type="number" class="cSalaHeroForm__container__input" min="0" required>
+              <div class="invalid-feedback">
+                  Ingrese el piso en el que se encuentra la sala.
+              </div>
+          </div>
+          <br>
+          <div class="form-group cSalaHeroForm__container">
+              <label for="" class="cSalaHeroForm__container__label">Cupo máximo*:</label>
+              <input id="cupoMax" type="number" class="cSalaHeroForm__container__input" min="0" required>
+              <div class="invalid-feedback">
+                  Ingrese el cupo máximo de la sala.
+              </div>
+          </div>
+          <br>
+          <div class="Seleccion form-group cSalaHeroForm__container">
+              <label for="" class="cSalaHeroForm__container__label">Estado de la sala*:</label>
+              <select name="" id="estadoSala" class="cSalaHeroForm__container__select" required>
+                  <option disabled selected value="" class="cSalaHeroForm__container__option"> Selecciona una opción</option>
+                  <option value="Disponible" class="cSalaHeroForm__container__option">Disponible</option>
+                  <option value="NoDisponible" class="cSalaHeroForm__container__option">No disponible</option>
+              </select>
+              <div class="invalid-feedback">
+                  Debe elegir una de las opciones.
+              </div>
+          </div>
+          <br>
+          <div class="cSalaHeroForm__button-Container">
+          <input onclick="cancelar()" type="submit"  class="cSalaHeroForm__button-Container__button__Secundario" value="Cancelar" id="" >
+              <div class="Boton">
+                  <input onclick="enviarForm()" type="submit" class="cSalaHeroForm__button-Container__button__Primario" value="Aceptar" id="">
+                  <script src="https://cdn.jsdelivr.net/npm/mdb-ui-kit@3.11.0/dist/js/mdb.min.js"></script>
+              </div>
+          </div>
+      </section>
     </main>
 
     <div id="footers"></div>
 
-    <script>
-
-        var salita = 1;
-
-        window.onload = function () {
-            cargarDatos();
-        }
-
-        function cargarDatos() {
-            console.log("Cargando datos");
-
-            let url = window.location.href;
-            let urlParams = new URLSearchParams(window.location.search);
-            const idSala = urlParams.get('idSala');
-            salita = idSala;
-
-            console.log('idSala: ' + idSala);
-
-        
-
-            fetch(`/admin/catalogo/salas/${idSala}`)
-                .then(response => response.json())
-                .then(data => {
-                    
-                    document.getElementById('nombreSala').value = data.nombre_sala;
-                    document.getElementById('numero').value = data.numero_sala;
-                    document.getElementById('piso').value = data.piso_sala;
-                    document.getElementById('cupoMax').value = data.capacidad_sala;
-                    document.getElementById('estadoSala').value = data.estatus_sala ;
-
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        
-        }
-
-        function enviarForm() {
-
-
-            event.preventDefault();
-            const nombreSala = document.getElementById("nombreSala").value;
-            const cupoMaximo = document.getElementById("cupoMax").value;
-            const piso = document.getElementById("piso").value;
-            const numerito = document.getElementById("numero").value;
-
-            const selectElement = document.getElementById("estadoSala");
-            const estado = selectElement.options[selectElement.selectedIndex].value;
-
-            //alert("nombreSala: " + nombreSala + "\ncupoMaximo: " + cupoMaximo + "\npiso: " + piso + "\nnumerito: " + numerito + "\nselectedOption: " + selectedOption);
-
-            fetch(`/admin/catalogo/salas/${salita}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    nombreSala,
-                    cupoMaximo,
-                    piso,
-                    numerito,
-                    estado
-                })
-            })
-            .then(response => {
-                if (response.ok) {
-                    // redirigir a salas
-                    window.location.href = '/admin/catalogo/GestionarSalas.html';
-                } else {
-                    alert('Error al modificar sala: ' + response.statusText);
-                    console.error('Error al modificar sala:', response.statusText);
-                }
-            })
-            .catch(error => console.error('Error al modificar sala:', error));
-
-        }
-
-        function cancelar() {
-            event.preventDefault();
-            window.location.href = '/admin/catalogo/GestionarSalas.html';
-        }
-    </script>
-
+    <script src="../../js/admin/editarSala.js"></script>
     <script src="../../js/admin/headers.js"></script>
     <script src="../../js/sidebar.js"></script>
     <script src="../../js/plantilla-formularios.js"></script>

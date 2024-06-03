@@ -77,15 +77,14 @@ const rutas = [
     ['/js/registrarInformacionPersonal.js','../public/build2/js/registrarInformacionPersonal.js'],
     
     ['/js/superAdmin.js', '../public/build2/js/admin/superAdmin.js'],
-    ['/js/gestionarSalas.js', '../public/build2/js/admin/gestionarSalas.js'],
     ['/js/gestionarReuniones.js', '../public/build2/js/admin/gestionarReuniones.js'],
     ['/js/gestionInvitaciones.js', '../public/build2/js/admin/gestionInvitaciones.js'],
     ['/js/admin/headers.js', '../public/build2/js/admin/headers.js'],
-
+    
     ['/js/anfitrion/headers.js', '../public/build2/js/anfitrion/headers.js'],
     ['/js/anfitrion/calendar.js', '../public/build2/js/anfitrion/calendar.js'],
-
-
+    
+    
     //Rutas de js para iniciar sesión
     ['/js/sesiones/iniciarsesion.js', '../public/build2/js/sesiones/iniciarsesion.js'],
     ['/js/sesiones/recuperarContrasena.js', '../public/build2/js/sesiones/recuperarContrasena.js'],
@@ -96,6 +95,12 @@ const rutas = [
     ['/js/admin/crearUsuario.js', '../public/build2/js/admin/crearUsuario.js'],
     ['/js/admin/confirmarCrearCuenta.js', '../public/build2/js/admin/confirmarCrearCuenta.js'],
     ['/js/admin/editarCuentaAnfitrionSeguridad.js', '../public/build2/js/admin/editarCuentaAnfitrionSeguridad.js'],
+    
+    //Rutas para la gestión de salas (SuperAdmin)
+    ['/js/admin/gestionarSalas.js', '../public/build2/js/admin/gestionarSalas.js'],
+    ['/js/admin/crearSala.js', '../public/build2/js/admin/crearSala.js'],
+    ['/js/admin/editarSala.js', '../public/build2/js/admin/editarSala.js'],
+    
 
     //Rutas de js para Anfitrion
     ['/js/anfitrion/crearReunion.js', '../public/build2/js/anfitrion/crearReunion.js'],

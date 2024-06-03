@@ -18,113 +18,81 @@
     <div id="headers"></div>
 
     <main class="contenidoPrincipal cSala">
-            <section class="cSalaHero">
-                <h1 class="Titulo title-example text-center">Crear Sala</h1>
-                <form action=""  class="cSalaHeroForm needs-validation" novalidate>
-                    <div class="form-group cSalaHeroForm__container">
-                        <label for="" class="cSalaHeroForm__container__label">Nombre de la sala*:</label>
-                        <input id="nombreSala" type="text" class="cSalaHeroForm__container__input" required>
-                        <div class="invalid-feedback">
-                            Ingrese el nombre de la sala.
-                        </div>
-                    </div>
-                    <br>
-                    <div class="form-group cSalaHeroForm__container">
-                        <label for="" class="cSalaHeroForm__container__label">Número*:</label>
-                        <input id="numero" type="number" class="cSalaHeroForm__container__input" min="0" required>
-                        <div class="invalid-feedback">
-                            No puede dejar este campo vacío.
-                        </div>
-                    </div>
-                    <br>
-                    <div  class="form-group cSalaHeroForm__container">
-                        <label for="" class="cSalaHeroForm__container__label">Piso*:</label>
-                        <input id="piso" type="number" class="cSalaHeroForm__container__input" min="0" required>
-                        <div class="invalid-feedback">
-                            Ingrese el piso en el que se encuentra la sala.
-                        </div>
-                    </div>
-                    <br>
-                    <div class="form-group cSalaHeroForm__container">
-                        <label for="" class="cSalaHeroForm__container__label">Cupo máximo*:</label>
-                        <input id="cupoMax" type="number" class="cSalaHeroForm__container__input" min="0" required>
-                        <div class="invalid-feedback">
-                            Ingrese el cupo máximo de la sala.
-                        </div>
-                    </div>
-                    <br>
-                    <div class="Seleccion form-group cSalaHeroForm__container">
-                        <label for="" class="cSalaHeroForm__container__label">Estado de la sala*:</label>
-                        <select name="" id="estadoSala" class="cSalaHeroForm__container__select" required>
-                            <option disabled selected value="" class="cSalaHeroForm__container__option"> Selecciona una opción</option>
-                            <option value="Disponible" class="cSalaHeroForm__container__option">Disponible</option>
-                            <option value="NoDisponible" class="cSalaHeroForm__container__option">No disponible</option>
-                        </select>
-                        <div class="invalid-feedback">
-                            Debe elegir una de las opciones.
-                        </div>
-                    </div>
-                    <br>
-                    <div class="cSalaHeroForm__button-Container">
-                        <input type="submit"  class="cSalaHeroForm__button-Container__button__Secundario" value="Cancelar" id="" onclick="window.location.href='/admin/catalogo/GestionarSalas.html'">
-                        <div class="Boton">
-                            <input type="submit"  class="cSalaHeroForm__button-Container__button__Primario"   value="Aceptar"  id="" onclick="enviarForm()">
-                            <script src="https://cdn.jsdelivr.net/npm/mdb-ui-kit@3.11.0/dist/js/mdb.min.js"></script>
-                        </div>
-                    </div>
-                </form>
-            </section>
+      <section class="cSalaHero">
+        <h1 class="Titulo title-example text-center">Crear Sala</h1>
+        <div class="form-group cSalaHeroForm__container">
+            <label for="" class="cSalaHeroForm__container__label">Nombre de la sala*:</label>
+            <input id="nombreSala" type="text" class="cSalaHeroForm__container__input" required>
+        </div>
+        <div id="nombreSalaForm"></div>
+        
+        <br>
+        <div class="form-group cSalaHeroForm__container">
+          <label for="" class="cSalaHeroForm__container__label">Número*:</label>
+          <input id="numberSala" type="number" class="cSalaHeroForm__container__input" min="0" required>
+        </div>
+        <div id="numberSalaForm"></div>
+        
+        <br>
+        <div  class="form-group cSalaHeroForm__container">
+          <label for="" class="cSalaHeroForm__container__label">Piso*:</label>
+          <input id="pisoSala" type="number" class="cSalaHeroForm__container__input" min="0" required>
+        </div>
+        <div id="pisoSalaForm"></div>
+        
+        <br>
+        <div class="form-group cSalaHeroForm__container">
+          <label for="" class="cSalaHeroForm__container__label">Cupo máximo*:</label>
+          <input id="cupoMaxSala" type="number" class="cSalaHeroForm__container__input" min="0" required>
+        </div>
+        <div id="cupoMaxSalaForm"></div>
+        
+        <br>
+        <div class="Seleccion form-group cSalaHeroForm__container">
+          <label for="" class="cSalaHeroForm__container__label">Estado de la sala*:</label>
+          <select name="" id="estadoSala" class="cSalaHeroForm__container__select" required>
+            <option disabled selected value="" class="cSalaHeroForm__container__option"> Selecciona una opción</option>
+            <option value="Disponible" class="cSalaHeroForm__container__option">Disponible</option>
+            <option value="NoDisponible" class="cSalaHeroForm__container__option">No disponible</option>
+          </select>
+        </div>
+        <div id="estadoSalaForm"></div>
+
+        <br>
+        <div class="cSalaHeroForm__button-Container">
+            <input type="button"  class="cSalaHeroForm__button-Container__button__Secundario" value="Cancelar" id="" onclick="window.location.href='/admin/catalogo/GestionarSalas.html'">
+            <div class="Boton">
+                <input type="button"  class="cSalaHeroForm__button-Container__button__Primario"   value="Aceptar"  id="" onclick="enviarForm()">
+                <script src="https://cdn.jsdelivr.net/npm/mdb-ui-kit@3.11.0/dist/js/mdb.min.js"></script>
+            </div>
+        </div>
+      </section>
     </main>
 
     <div id="footers"></div>
 
-    <script>
-        function enviarForm() {
-            event.preventDefault();
-
-            const nombreSala = document.getElementById("nombreSala").value;
-            const cupoMaximo = document.getElementById("cupoMax").value;
-            const piso = document.getElementById("piso").value;
-            const numerito = document.getElementById("numero").value;
-
-            const selectElement = document.getElementById("estadoSala");
-            const estado = selectElement.options[selectElement.selectedIndex].value;
-
-            // Verifica si todos los campos están llenos
-            if (!nombreSala || !cupoMaximo || !piso || !numerito || !estado) {
-                alert('Por favor, rellene todos los campos.');
-                return;
-            }
-
-            fetch('/admin/catalogo/salas', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    nombreSala,
-                    cupoMaximo,
-                    piso,
-                    numerito,
-                    estado
-                })
-            })
-            .then(response => {
-                if (response.ok) {
-                    window.location.href = '/admin/catalogo/GestionarSalas.html';
-                } else {
-                    alert('Error al crear sala: ' + response.statusText);
-                    console.error('Error al crear sala:', response.statusText);
-                }
-            })
-            .catch(error => console.error('Error al crear sala:', error));
-        }
-    </script>
-
+    <!-- Estilos para el Swal -->
+    <style>
+      .titleSize{
+        font-size: 4rem;
+      }
+      .contentSize{
+        font-size: 2rem !important;
+      }
+      .buttonSize{
+        font-size: 2rem !important;
+      }
+      .iconSize{
+        font-size: 1.5rem;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../../js/admin/crearSala.js"></script>
     <script src="../../js/admin/headers.js"></script>
     <script src="../../js/sidebar.js"></script>
     <script src="../../js/plantilla-formularios.js"></script>
     <script src="../../js/superAdmin.js"></script>
+    <script src="../../js/validaciones.js"></script>
     <!--Formulario-->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

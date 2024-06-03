@@ -24,6 +24,18 @@ const checkbox1 = document.getElementById("rolSeguridad");
 const checkbox2 = document.getElementById("rolAnfitrion");
 const rolForm = document.getElementById("rolForm");
 
+const nombreSala = document.getElementById("nombreSala");
+const nombreSalaForm = document.getElementById("nombreSalaForm");
+
+const numberSala = document.getElementById("numberSala");
+const numberSalaForm = document.getElementById("numberSalaForm");
+
+const pisoSala = document.getElementById("pisoSala");
+const pisoSalaForm = document.getElementById("pisoSalaForm");
+
+const cupoMaxSala = document.getElementById("cupoMaxSala");
+const cupoMaxSalaForm = document.getElementById("cupoMaxSalaForm");
+
 const eyeButton = document.getElementById("eyebutton");
 const eyeButtonR = document.getElementById("eyebuttonR");
 
@@ -108,6 +120,16 @@ const validateTime = (time1, time2) => {
 //Texto sin numeros y espacios 
 const validateTextWithSpacesWithoutNumber = (text) => {
   return text.match(/^[áéíóúÁÉÍÓÚÑñäëïöüÄËÏÖÜa-zA-Z\s]{1,100}$/);
+}
+
+//Texto con todo permitido
+const validateTextWithSpacesNumber = (text) => {
+  return text.match(/^[áéíóúÁÉÍÓÚÑñäëïöüÄËÏÖÜa-zA-Z0-9\w\d\s]{1,100}$/);
+}
+
+//Texto con sólo números
+const validateNumber = (text) => {
+  return text.match(/^[\d\s]{1,100}$/);
 }
 
 //Texto sin numeros y sin espacios
@@ -234,13 +256,62 @@ if (apm != null) {
 if (telefono != null) { 
   telefono.addEventListener('input', () => { 
     let valor = telefono.value;
-    //Valido Apellido materno
+    //Valido telefono
     if (!validatePhoneNumber(valor))
       telefonoForm.innerHTML = `<p class="msg-error-form">El télefono no es valido</p>`
     else
       telefonoForm.innerHTML = ``
   })
 }
+
+/* Campo nombre de sala */
+if (nombreSala != null) {
+  nombreSala.addEventListener('input', () => { 
+    let valor = nombreSala.value;
+    //Valido nombre sala
+    if (!validateTextWithSpacesNumber(valor)) 
+      nombreSalaForm.innerHTML = `<p class="msg-error-form">El nombre de sala no es valido</p>`
+    else
+      nombreSalaForm.innerHTML = ``
+  })
+}
+
+/* Campo de número de sala */
+if (numberSala != null) {
+  numberSala.addEventListener('input', () => {
+    let valor = numberSala.value;
+    //Valido numero de sala
+    if (!validateNumber(valor)) 
+      numberSalaForm.innerHTML = `<p class="msg-error-form">El número de sala no es valido</p>`
+    else
+      numberSalaForm.innerHTML = ``
+  })
+}
+
+/* Campo de piso de sala */
+if (pisoSala != null) {
+  pisoSala.addEventListener('input', () => {
+    let valor = pisoSala.value;
+    //Valido el piso de sala
+    if (!validateNumber(valor))
+      pisoSalaForm.innerHTML = `<p class="msg-error-form">El piso de sala no es valido</p>`
+    else
+      pisoSalaForm.innerHTML = ``
+  })
+}
+
+/* Campo de cupo máximo */
+if (cupoMaxSala != null) {
+  cupoMaxSala.addEventListener('input', () => {
+    let valor = cupoMaxSala.value;
+    //Valido el piso de sala
+    if (!validateNumber(valor))
+      cupoMaxSalaForm.innerHTML = `<p class="msg-error-form">El cupo máximo de sala no es valido</p>`
+    else
+      cupoMaxSalaForm.innerHTML = ``
+  })
+}
+
 
 //CHECKBOX
 if (checkbox1 != null)
