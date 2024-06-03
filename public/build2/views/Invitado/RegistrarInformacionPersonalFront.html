@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeeMeet - Registro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../../css/app.css">
+    <!--Formulario-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!--SiderBar-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+    <nav class="sidebar close">
+        <div class="header">
+            <div class="sidebar__marca">
+                <div class="sidebar__imagen">
+                    <img src="../../img/BeeMeet2.png" alt="Logo">
+                </div>
+                <div class="sidebar__texto">
+                    <p class="sidebar__texto-marca">BeeMeet</p>
+                    <p class="sidebar__texto-slogan">Invitado</p>
+                </div>
+            </div>
+            <div class="sidebar__arrow toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill=#FFFFFF
+                    class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8" />
+                </svg>
+            </div>
+        </div>
+        <div id="sidebar__list" class="sidebar__menu" style="grid-template-columns:repeat(3, 6rem)">
+            <div id="" class="sidebar__menu-option option__active">
+                <div class="icon st0" title="RegistrarInfo">
+                    <svg fill="#F9D8C1" x="0px" y="0" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                        class="bi bi-clipboard2-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 2v-.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5z" />
+                        <path
+                            d="M3.5 1h.585A1.5 1.5 0 0 0 4 1.5V2a1.5 1.5 0 0 0 1.5 1.5h5A1.5 1.5 0 0 0 12 2v-.5q-.001-.264-.085-.5h.585A1.5 1.5 0 0 1 14 2.5v12a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-12A1.5 1.5 0 0 1 3.5 1" />
+                    </svg>
+
+                </div>
+                <div>
+                    <p class="option__text">Registrar Información</p>
+                </div>
+            </div>
+            <div id="" class="sidebar__menu-option">
+                <div class="icon" title="RecuperarQR">
+                    <svg fill="#F9D8C1" x="0" y="0" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                        class="bi bi-qr-code" viewBox="0 0 16 16">
+                        <path d="M2 2h2v2H2z" />
+                        <path d="M6 0v6H0V0zM5 1H1v4h4zM4 12H2v2h2z" />
+                        <path d="M6 10v6H0v-6zm-5 1v4h4v-4zm11-9h2v2h-2z" />
+                        <path
+                            d="M10 0v6h6V0zm5 1v4h-4V1zM8 1V0h1v2H8v2H7V1zm0 5V4h1v2zM6 8V7h1V6h1v2h1V7h5v1h-4v1H7V8zm0 0v1H2V8H1v1H0V7h3v1zm10 1h-1V7h1zm-1 0h-1v2h2v-1h-1zm-4 0h2v1h-1v1h-1zm2 3v-1h-1v1h-1v1H9v1h3v-2zm0 0h3v1h-2v1h-1zm-4-1v1h1v-2H7v1z" />
+                        <path d="M7 12h1v3h4v1H7zm9 2v2h-3v-1h2v-1z" />
+                    </svg>
+
+                </div>
+                <div>
+                    <p class="option__text">Recuperar QR</p>
+                </div>
+            </div>
+            <div id="" class="sidebar__menu-option">
+                <div class="icon" title="ConsultarReu">
+                    <svg fill="#F9D8C1" x="0" y="0" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 128 128"
+                        style="enable-background:new 0 0 128 128;" xml:space="preserve">
+                        <g>
+                            <ellipse class="st0" cx="23.2" cy="47.4" rx="7.8" ry="7.8" />
+                            <path class="st0" d="M37.4,97.5h-9.5c0,0-0.5,0-0.9,0c-4.3-0.4-8-3.5-9.1-7.8l-6.5-24.2c-0.4-1.4-1.8-2.1-3-1.8
+                   c-1.4,0.4-2.1,1.8-1.8,3L13,90.9c1.7,6.3,7,10.9,13.5,11.4c0.6,0.1,1.3,0.1,1.3,0.1h9.5c1.4,0,2.4-1.1,2.5-2.5
+                   C39.8,98.5,38.8,97.5,37.4,97.5z" />
+                            <path class="st0" d="M48.6,83.9h-13c-0.3-4.9-1.1-9.8-2.3-14.7c-0.1-0.4-0.4-1.4-0.4-1.5c-1.7-6.3-7.7-10.3-14-9.7
+                   c0,0-0.8,0.1-1,0.1c-2.3,0.6-3.7,3-3.1,5.4l6.7,24.9c0.7,2.8,3.1,4.9,6.1,5.1h0.6h15.5v17.8c0,2.7,2.1,4.9,4.9,4.9
+                   c2.7,0,4.9-2.1,4.9-4.9V88.8c0-1.3-0.5-2.5-1.5-3.4C51.1,84.4,49.8,83.9,48.6,83.9z" />
+                        </g>
+                        <g>
+                            <ellipse class="st0" cx="104.4" cy="47.5" rx="7.8" ry="7.8" />
+                            <path class="st0"
+                                d="M90.2,97.5h9.5c0,0,0.5,0,0.9,0c4.3-0.4,8-3.5,9.1-7.8l6.5-24.2c0.4-1.4,1.8-2.1,3-1.8c1.4,0.4,2.1,1.8,1.8,3
+                   l-6.4,24.2c-1.7,6.3-7,10.9-13.5,11.4c-0.6,0.1-1.3,0.1-1.3,0.1h-9.5c-1.4,0-2.4-1.1-2.5-2.5C87.8,98.5,88.9,97.5,90.2,97.5z" />
+                            <path class="st0" d="M79,83.9h13c0.3-4.9,1.1-9.8,2.3-14.7c0.1-0.4,0.4-1.4,0.4-1.5c1.7-6.3,7.7-10.3,14-9.7c0,0,0.8,0.1,1,0.1
+                   c2.3,0.6,3.7,3,3.1,5.4L106,88.4c-0.7,2.8-3.1,4.9-6.1,5.1h-0.6H83.9v17.8c0,2.7-2.1,4.9-4.9,4.9s-4.9-2.1-4.9-4.9V88.8
+                   c0-1.3,0.5-2.5,1.5-3.4C76.5,84.4,77.8,83.9,79,83.9z" />
+                        </g>
+                        <rect x="38.8" y="70.8" class="st0" width="50.6" height="6" />
+                        <circle class="st0" cx="64.1" cy="43.2" r="7.2" />
+                        <path class="st0" d="M52.5,67.9v-4.3h-0.1c0-0.5,0.4-0.9,0.9-0.9s0.9,0.4,0.9,0.9v4.3h19.9v-4.3H74c0-0.5,0.4-0.9,0.9-0.9
+               s0.9,0.4,0.9,0.9v4.3H82v-6.1c0-5-4-9-9-9H55c-5,0-9,4-9,9v6.1H52.5z" />
+                    </svg>
+
+                </div>
+                <div>
+                    <p class="option__text">Consultar Reunión</p>
+                </div>
+            </div>
+            <div class="option__indicator"></div>
+        </div>
+    </nav>
+
+    <div id="blur" class=""></div>
+
+    <header>
+        <nav class="navbar navbar-expand navbar-dark">
+            <div class="container-fluid">
+                <a id="navbar-img" class="navbar-brand" href="#">
+                    <img id="navbar-imgs" src="../../img/BeeMeet2.png" alt="Logo">
+                </a>
+                <div class="navbar-nav ms-auto">
+                    <div class="nav-item dropdown">
+                        <button class="navbar__profile-container nav-link profile-button" onclick="toggleMenu()">
+                            <div id="user-menu" style="display: none;">
+                                <a href="#">Mis datos</a>
+                                <a href="#">Cerrar sesión</a>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="contenidoPrincipal">
+        <div class="registrarInforPersonal">
+            <section class="cRegistro">
+                <h1 class="title-example text-center">Registro de información</h1>
+                <form class="Formulario needs-validation paragraph-example" novalidate>
+                    <div class="informacionPersonal">
+                        <h3 class="personal__titulo subtitle-example">Datos personales</h3>
+                        <div class="NombreCompleto">
+                            <div class="form-group has-validation">
+                                <label class="labelControl">Nombre:*</label>
+                                <input type="text" class="form-control form-control-lg inputControl"
+                                    placeholder="Nombre" required>
+                                <div class="invalid-feedback">Ingrese su Nombre.</div>
+                            </div>
+                            <div class="form-group  has-validation">
+                                <label class="labelControl">Apellido materno:*</label>
+                                <input type="text" class="form-control form-control-lg inputControl"
+                                    placeholder="Apellido materno" required>
+                                <div class="invalid-feedback">Ingrese su apellido materno.</div>
+                            </div>
+                            <div class="form-group  has-validation">
+                                <label class="labelControl">Apellido paterno:*</label>
+                                <input type="text" class="form-control form-control-lg inputControl"
+                                    placeholder="Apellido paterno" required>
+                                <div class="invalid-feedback">Ingrese su Apellido paterno.</div>
+                            </div>
+                        </div>
+                        <div class="contacto">
+                            <div class="form-group  has-validation">
+                                <label class="labelControl">Número de teléfono:*</label>
+                                <input type="tel" class="form-control form-control-lg inputControl"
+                                    placeholder="Ingrese su número telefónico" pattern="[0-9]{10}" required>
+                                <div class="invalid-feedback">Ingrese un número telefónico válido.</div>
+                            </div>
+                            <div class="form-group  has-validation">
+                                <label class="labelControl">Empresa a la que pertenece:*</label>
+                                <input type="text" class="form-control form-control-lg inputControl"
+                                    placeholder="Ingrese su Empresa de procedencia" required>
+                                <div class="invalid-feedback">Ingrese su empresa de procedencia.</div>
+                            </div>
+                        </div>
+                        <div class="identificacion">
+                            <div class="form-group  has-validation">
+                                <label class="labelControl">Identificación oficial a presentar:*</label>
+                                <select class="custom-select form-control-lg inputControl " required>
+                                    <option value="">Elija una opción...</option>
+                                    <option value="1">INE</option>
+                                    <option value="2">Pasaporte</option>
+                                    <option value="3">Visa</option>
+                                </select>
+                                <div class="invalid-feedback">Debe elegir una de las opciones.</div>
+                            </div>
+                            <div class="form-group  has-validation">
+                                <label for="formFile" class="form-label labelControl">Fotografía reciente</label>
+                                <input class="form-control form-control-lg inputControl" type="file" id="formFile"
+                                    accept="image/*" required>
+                                <div class="invalid-feedback">Debe subir un archivo.</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="informacionAcompañantes">
+                        <h3 class="personal__titulo subtitle-example">Información de Acompañantes</h3>
+                        <div class="form-group">
+                            <label class="labelControl">¿Llevará acompañantes a la reunión? *</label>
+                            <div class="col-md-6 has-validation">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="acompanantes"
+                                        id="radioAcompanantesSi" value="si" required>
+                                    <label class="form-check-label labelControl" for="radioSi">Sí</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="acompanantes"
+                                        id="radioAcompanantesNo" value="no" required>
+                                    <label class="form-check-label labelControl" for="radioNo">No</label>
+                                </div>
+                            </div>
+                            <div class="invalid-feedback">Marque una de las opciones.</div>
+                        </div>
+                        <div id="acompanantesHabilitada" class="hidden">
+                            <div class="form-group Correo has-validation">
+                                <label class="labelControl">Correo electrónico del acompañante*:</label>
+                                <input type="email" class="form-control form-control-lg inputControl"
+                                    placeholder="email@example.com" required>
+                                <div class="invalid-feedback">Ingrese un correo válido.</div>
+                            </div>
+                            <div id="BotonAgregar">
+                                <button type="button" id="agregarAcompañante" class="botonAcompañante">Agregar
+                                    Acompañante</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="informacionDispositivos">
+                        <h2 class="personal__titulo subtitle-example">Información de Dispositivos</h2>
+                        <div class="form-group">
+                            <label class="labelControl">¿Llegará con dispositivos a la reunión? *</label>
+                            <div class="has-validation">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="dispositivos"
+                                        id="radioDispositivosSi" value="si" required>
+                                    <label class="form-check-label labelControl" for="radioDispositivosSi">Sí</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="dispositivos"
+                                        id="radioDispositivosNo" value="no" required>
+                                    <label class="form-check-label labelControl" for="radioDispositivosNo">No</label>
+                                </div>
+                            </div>
+                            <div class="invalid-feedback">Marque una de las opciones.</div>
+                        </div>
+                        <div id="dispositivosHabilitada" class="hidden">
+                            <div class="DatosDispositivo">
+                                <div class="form-group ">
+                                    <label class="labelControl">Número de serie*:</label>
+                                    <input type="text" class="form-control form-control-lg inputControl"
+                                        placeholder="Tipo de Dispositivo" required>
+                                    <div class="invalid-feedback">Ingrese el tipo de dispositivo.</div>
+                                </div>
+                                <div class="form-group ">
+                                    <label class="labelControl">Modelo*:</label>
+                                    <input type="text" class="form-control form-control-lg inputControl"
+                                        placeholder="Modelo del Dispositivo" required>
+                                    <div class="invalid-feedback">Ingrese el modelo del dispositivo.</div>
+                                </div>
+                                <div class="form-group ">
+                                    <label class="labelControl">Marca*:</label>
+                                    <input type="text" class="form-control form-control-lg inputControl"
+                                        placeholder="Marca del Dispositivo" required>
+                                    <div class="invalid-feedback">Ingrese la marca del dispositivo.</div>
+                                </div>
+                            </div>
+                            <div id="BotonAgregar">
+                                <button type="button" id="agregarDispositivo" class="botonDispositivo">Agregar
+                                    Dispositivo</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="informacionAutomovil">
+                        <h2 class="personal__titulo subtitle-example">Información de Automóvil</h2>
+                        <div class="form-group">
+                            <label class="labelControl">¿Llegará con automóvil a la reunión? *</label>
+                            <div class="col-md-6">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="automovil" id="radioAutoSi"
+                                        value="si" required>
+                                    <label class="form-check-label labelControl" for="radioAutoSi">Sí</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="automovil" id="radioAutoNo"
+                                        value="no" required>
+                                    <label class="form-check-label labelControl" for="radioAutoNo">No</label>
+                                </div>
+                            </div>
+                            <div class="invalid-feedback">Marque una de las opciones.</div>
+                        </div>
+                        <div id="automovilHabilitada" class="hidden">
+                            <div class="form-group ">
+                                <label class="labelControl">Número de Placa*:</label>
+                                <input type="text" class="form-control form-control-lg inputControl"
+                                    placeholder="Número de Placa" required>
+                                <div class="invalid-feedback">Ingrese el número de placa.</div>
+                            </div>
+                            <div class="form-group ">
+                                <label class="labelControl">Marca*:</label>
+                                <input type="text" class="form-control form-control-lg inputControl" placeholder="Marca"
+                                    required>
+                                <div class="invalid-feedback">Ingrese la marca del automóvil.</div>
+                            </div>
+                            <div class="form-group ">
+                                <label class="labelControl">Modelo*:</label>
+                                <input type="text" class="form-control form-control-lg inputControl"
+                                    placeholder="Modelo" required>
+                                <div class="invalid-feedback">Ingrese el modelo del automóvil.</div>
+                            </div>
+                            <div class="form-group ">
+                                <label class="labelControl">Color*:</label>
+                                <input type="text" class="form-control form-control-lg inputControl" placeholder="Color"
+                                    required>
+                                <div class="invalid-feedback">Ingrese el color del automóvil.</div>
+                            </div>
+                            <div id="BotonAgregar">
+                                <button type="button" id="agregarDispositivo" class="botonAutomovil">Agregar
+                                    Dispositivo</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input class="confirm__btn" type="submit" value="Enviar">
+                </form>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="contenedor">
+            <div class="beemeet">
+                <div class="beemeet__logo">
+                    <img src="../../img/BeeMeet2.png" alt="Logo Beemeet">
+                </div>
+                <h3 class="beemeet__titulo">BeeMeet</h3>
+            </div>
+            <div class="usernames">
+                <p>Equipo de BeeCoders:</p>
+                <div class="usernames__container">
+                    <div class="usernames1">
+                        <p>@RafaElJefe</p>
+                        <p>@DianaLaConsejera</p>
+                        <p>@CesarLaLechugaFresca</p>
+                        <p>@LizardiElGranProgramador</p>
+                        <p>@DaniBoyElFrontProgramador</p>
+                        <p>@DiegoElCPC</p>
+                    </div>
+                    <div class="usernames2">
+                        <p>@RorroElMusculoso</p>
+                        <p>@LeoElCuadrado</p>
+                        <p>@ToñitoElChispas</p>
+                        <p>@AdoElBienPortado</p>
+                        <p>@VallejoLaCreativa</p>
+                        <p>@SaulElChambeador</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <p class="copyright">Copyright. Todos los derechos reservados. BeeMeet © 2024</p>
+    </footer>
+
+    <script src="../../js/header.js"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="../../js/registrarInformacionPersonal.js"></script>
+    <script src="../../js/plantilla-formularios.js"></script>
+
+</body>
+
+</html>
