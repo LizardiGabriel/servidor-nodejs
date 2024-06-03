@@ -225,9 +225,11 @@ async function setNewUsuarioBD(email, passwordHashed, nombre, apellidoPaterno, a
                 nombre_usuario: nombre,
                 apellido_paterno_usuario: apellidoPaterno,
                 apellido_materno_usuario: apellidoMaterno,
-                telefono_usuario: parseInt(telefono),
+                telefono_usuario: telefono,
                 rol_usuario: rol,
-                foto_usuario: fotoUsuario
+                foto_usuario: 'uploads/fotografia_usuario1.jpg'
+
+                // uploads/fotografia_usuario1.jpg
 
             }
         });
