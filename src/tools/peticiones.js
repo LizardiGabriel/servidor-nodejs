@@ -266,27 +266,42 @@ async function getUsuarioByEmailBD(email) {
 }
 
 
-async function updateUsuarioBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono,rol,fotoUsuario) {
+async function updateUsuarioBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono, rol, fotoUsuario) {
     console.log('peticion a la bd de updateUsuario');
+
     try {
+        // Obtener el usuario actual
+        const usuarioActual = await prisma.usuario.findUnique({
+            where: { id_usuario: Number(id) }
+        });
+
+        if (!usuarioActual) {
+            throw new Error('Usuario no encontrado');
+        }
+
+        // Usar los valores actuales si los nuevos valores están vacíos
+        const updatedData = {
+            email_usuario: email || usuarioActual.email_usuario,
+            nombre_usuario: nombre || usuarioActual.nombre_usuario,
+            apellido_paterno_usuario: apellidoPaterno || usuarioActual.apellido_paterno_usuario,
+            apellido_materno_usuario: apellidoMaterno || usuarioActual.apellido_materno_usuario,
+            telefono_usuario: telefono || usuarioActual.telefono_usuario,
+            rol_usuario: rol || usuarioActual.rol_usuario,
+            foto_usuario: fotoUsuario || '../uploads/usuario.webp'
+        };
+
         const usuarioActualizado = await prisma.usuario.update({
             where: { id_usuario: Number(id) },
-            data: {
-                email_usuario: email,
-                nombre_usuario: nombre,
-                apellido_paterno_usuario: apellidoPaterno,
-                apellido_materno_usuario: apellidoMaterno,
-                telefono_usuario: telefono,
-                rol_usuario:rol,
-                foto_usuario: fotoUsuario
-            }
+            data: updatedData
         });
+
         return usuarioActualizado;
     } catch (error) {
         console.error('Error al actualizar usuario:', error);
-        return json({ error: 'Error al actualizar usuario' });
+        return { error: 'Error al actualizar usuario' };
     }
 }
+
 
 async function deleteUsuarioBD(id) {
     console.log('peticion a la bd de deleteUsuario');

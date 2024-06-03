@@ -5,8 +5,8 @@ const { stat } = require('fs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-function generateAccessToken(email, idUsuario, rolNum, nombre, apellido) {
-    return jwt.sign({ email: email, idUsuario: idUsuario, rol: rolNum, nombre: nombre, apellido: apellido }, process.env.SECRET_KEY, { expiresIn: '20m' });
+function generateAccessToken(email, idUsuario, rolNum, nombre, apellido, foto) {
+    return jwt.sign({ email: email, idUsuario: idUsuario, rol: rolNum, nombre: nombre, apellido: apellido, foto: foto }, process.env.SECRET_KEY, { expiresIn: '20m' });
 }
 
 function generateTokenInvitado(email, idInvitado, rolNum, newCount, changeFirstPass) {
@@ -89,7 +89,7 @@ async function login(req, res) {
                 res.status(401).json({ error: 'Rol no encontrado', status: 401});
                 break;
         }
-        const token = generateAccessToken(email, usuario.id_usuario, rolNum, usuario.nombre_usuario, usuario.apellido_paterno_usuario);
+        const token = generateAccessToken(email, usuario.id_usuario, rolNum, usuario.nombre_usuario, usuario.apellido_paterno_usuario, usuario.foto_usuario);
         console.log('token: ' + token);
         req.session.jwt = token;
         res.status(200).json({

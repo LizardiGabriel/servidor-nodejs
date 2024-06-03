@@ -192,10 +192,23 @@ function getNombre(jsonToken){
     return nombre + ' ' + apellido;
 }
 
+function getFoto(jsonToken){
+    let foto = '';
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            foto = decoded.foto;
+        }
+    });
+    return foto;
+}
+
 app.get('/get-nombre', (req, res) => {
     let nombre = getNombre(req.session.jwt);
     res.status(200).json({nombre: nombre});
 });
+
 
 
 app.use('/admin', (req, res, next) => {
@@ -211,6 +224,13 @@ app.use('/admin', (req, res, next) => {
 });
 
 // admin
+
+app.get('/admin/getFotoPerfil', (req, res) => {
+    let foto = getFoto(req.session.jwt);
+    res.status(200).json({foto: foto});
+});
+
+
 app.use('/admin/admin.html', express.static('./public/build2/views/Admin/admin.html'));
 
 app.use('/admin/catalogo/GestionDeInvitaciones.html', express.static('./public/build2/views/Admin/GestionDeInvitaciones.html'));
@@ -261,6 +281,18 @@ app.get('/admin/catalogo/reuniones/:id', admin.getReunionById);
 
 app.get('/admin/catalogo/invitaciones', admin.getInvitaciones);
 
+
+app.use('/admin/uploads', (req, res) => {
+    // obtener la peticion actual
+    const rutaArchivo = '../public/build2/uploads' + req.path;
+    res.status(200).sendFile(path.join(__dirname, rutaArchivo));
+});
+
+app.use('/admin/catalogo/uploads', (req, res) => {
+    // obtener la peticion actual
+    const rutaArchivo = '../public/build2/uploads' + req.path;
+    res.status(200).sendFile(path.join(__dirname, rutaArchivo));
+});
 
 
 app.get('/admin/test', (req, res) => {
