@@ -195,7 +195,9 @@ async function updateUsuario(req, res) {
         res.status(200).json({ message: 'Usuario actualizado correctamente' });
     } else if (fotoUsuario) {
         console.error('Cadena base64 inválida para fotoUsuario.');
-        res.status(400).json({ error: 'Cadena base64 inválida para fotoUsuario' });
+        const usuarioActualizadoNoFoto = await updateUsuarioBD(id_final, email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, '');
+        res.status(201).json({ message: 'Usuario actualizado pero fotoUsuario inválido o ausente' });
+
     } else {
         console.error('fotoUsuario está undefined o es inválido.');
         const usuarioActualizadoNoFoto = await updateUsuarioBD(id_final, email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, '');
