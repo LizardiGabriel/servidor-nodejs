@@ -445,6 +445,8 @@ app.post('/invitado/cambiar', invitado.cambiarContrasena);
 app.use('/invitado/home/pendientes.html', express.static('./public/build2/views/Invitado/NotificacionesInvitado.html'));
 app.use('/invitado/home/agendadas.html', express.static('./public/build2/views/Invitado/agendadas.html'));
 
+app.get('/invitado/home/reunionesNuevas', invitado.reunionesNuevas);
+
 
 
 app.get('/invitado/test', (req, res) => {
