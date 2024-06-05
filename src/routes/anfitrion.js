@@ -6,7 +6,7 @@ const { getReunionesBD,
     getReunionesConRepeticionByIdOfUserBD,
     getSalasBD, setNewReunionBD,
     getInvitadoByEmailBD, setNewInvitadoBD, setNewInvitacionBD,
-    getReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD, getDetallesReunionByIdBD
+    getReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD, getDetallesReunionByIdBD,getUsuarioByEmailBD
 
 } = require('../tools/peticiones');
 
@@ -25,6 +25,7 @@ async function logout(req, res) {
     req.session.destroy();
     res.redirect('/');
 }
+
 function verifyTokenAndGetUserId(jsonToken) {
     return new Promise((resolve, reject) => {
         jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
@@ -40,6 +41,27 @@ function verifyTokenAndGetUserId(jsonToken) {
     });
 }
 
+function getemail(jsonToken){
+    let email = "";
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            email= decoded.email;
+        }
+    });
+    return email;
+}
+
+async function getUserEmail(req,res){
+    console.log('=============================mensaje -->Se intento obtener del correo');
+    if(req.session){
+        res.json({ email: getemail(req.session.jwt) }); 
+    }
+    else {
+        res.status(403).send('No autorizado');
+    }
+}
 
 async function getReunionesAnfitrion(req, res) {
     console.log('mensaje --> getReunionesAll');
@@ -193,6 +215,13 @@ async function getInvitadoByEmail(req,res){
     }
 }
 
+async function getUsuarioByEmail(req, res) {
+    console.log('========================= get Usuario By email: ', req.params)
+    const { email } = req.params;
+    const usuario = await getUsuarioByEmailBD(email.replace(/^:/, ''));
+    res.json(usuario);
+}
+
 
 module.exports = {
     logout,
@@ -201,5 +230,7 @@ module.exports = {
     setNewReunion,
     setInvitacion,
     getReunionById,
-    getInvitadoByEmail
+    getInvitadoByEmail,
+    getUserEmail,
+    getUsuarioByEmail
 };

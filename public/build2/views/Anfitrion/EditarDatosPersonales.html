@@ -37,7 +37,7 @@
                     <div class="profileHeroSA__right__inputProfile">
                         <label class="profileHeroSA__right__inputProfile__label">Correo Electrónico*</label>   
                         <div class="profileHeroSA__right__inputProfile__content">
-                            <input class="inputSA" type="email" placeholder="example@email.com" disabled id="inputEmail loginEmail">
+                            <input class="inputSA" type="email" placeholder="example@email.com" disabled id="inputEmail">
                         </div>
                     </div>
                     
@@ -47,6 +47,12 @@
                             <input class="inputSA" type="tel" min="0" placeholder="55 666 777 88" pattern="[0-9\s]{10,15}" disabled id="inputTel">
                         </div>
                     </div>
+                    <div class="profileHeroSA__right__inputProfile" id="SeccionFoto" style="display: none;">
+                        <label  class="profileHeroSA__right__inputProfile__label">Fotografia</label>
+                        <div class="profileHeroSA__right__inputProfile__content">
+                            <input class="inputSA" type="file" accept="image/*"  id="inputFoto">
+                        </div>
+                    </div>
                     <div class="profileHeroSA__right__buttonContainer view" id="buttonsEdit">
                         <button class="profileHeroSA__right__buttonContainer__buttonEdit" id="editProfile">Editar</button>   
                         <div class="profileHeroSA__right__buttonContainer__button" style="display: none;" id="contenedorEdit">
@@ -54,11 +60,47 @@
                             <button class="profileHeroSA__right__buttonContainer__button__primario" id="guardarProfile">Guardar</button>
                         </div>
                     </div>
+                    
                 </div>
         </div>   
     </main>
 
     <div id="footers"></div>
+
+    <script>
+            document.addEventListener('DOMContentLoaded',async function() {
+        try {
+        const response = await fetch('/anfitrion/getemail');
+        const data = await response.json();
+        var datosUsuario = await getData(data.email);  // Usar await aquí garantiza que esperamos el resultado
+        const nombre= document.getElementById("inputNom");
+        nombre.placeholder=datosUsuario.nombre_usuario;
+        const ApellidoPat= document.getElementById("inputApePat");
+        ApellidoPat.placeholder=datosUsuario.apellido_paterno_usuario;
+        const ApellidoMat= document.getElementById("inputApeMat");
+        ApellidoMat.placeholder=datosUsuario.apellido_materno_usuario;
+        const email= document.getElementById("inputEmail");
+        email.placeholder=data.email;
+        const Tel= document.getElementById("inputTel");
+        Tel.placeholder=datosUsuario.telefono_usuario;
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+    });
+
+    async function getData(correo) {
+        try {
+            const response = await fetch('/anfitrion/catalogo/usuarioEmail/:'+correo);
+            const data = await response.json();
+            return data;  // Asegura que data sea devuelta de la función
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            return null;  // Devolver null o algún indicativo de error
+        }
+    }
+
+    </script>
 
     <script src="../../js/anfitrion/headers.js"></script>
     <script src="../../js/buttonProfiles.js"></script>

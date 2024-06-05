@@ -345,9 +345,11 @@ app.use('/anfitrion/EditarDatosPersonales.html', express.static('./public/build2
 
 app.get('/anfitrion/reuniones', anfitrion.getReunionesAnfitrion);
 app.get('/anfitrion/getUserEmail', anfitrion.getReunionesAnfitrion);
+app.get('/anfitrion/getemail', anfitrion.getUserEmail);
 app.get('/anfitrion/salas', anfitrion.getSalasAnfitrion);
 app.get('/anfitrion/obtenerInfoInvitado', anfitrion.getInvitadoByEmail)
 app.get('/anfitrion/catalogo/salas', anfitrion.getSalasAnfitrion);
+app.get('/anfitrion/catalogo/usuarioEmail/:email', admin.getUsuarioByEmail);
 
 app.post('/anfitrion/reuniones', anfitrion.setNewReunion);
 app.post('/anfitrion/reuniones/invitacion', anfitrion.setInvitacion);
