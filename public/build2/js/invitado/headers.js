@@ -24,6 +24,9 @@ function returnHTML() {
         </div>
     </div>
     <div id="sidebar__list" class="sidebar__menu" style="grid-template-columns:repeat(3, 6rem)">
+    
+        
+        <a href="/invitado/home/pendientes.html" >
         <div id="" class="sidebar__menu-option option__active">
             <div class="icon st0" title="RegistrarInfo">
                 <svg fill="#F9D8C1" x="0px" y="0" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -36,9 +39,12 @@ function returnHTML() {
 
             </div>
             <div>
-                <p class="option__text">Registrar Información</p>
+                <p class="option__text">Reuniones Pendientes</p>
             </div>
         </div>
+        </a>
+        
+        <a href="/invitado/home/agendadas.html" >
         <div id="" class="sidebar__menu-option">
             <div class="icon" title="RecuperarQR">
                 <svg fill="#F9D8C1" x="0" y="0" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -53,9 +59,13 @@ function returnHTML() {
 
             </div>
             <div>
-                <p class="option__text">Recuperar QR</p>
+                <p class="option__text">Reuniones Agendadas</p>
             </div>
         </div>
+        </a>
+        
+        <!--
+        <a href="/" >
         <div id="" class="sidebar__menu-option">
             <div class="icon" title="ConsultarReu">
                 <svg fill="#F9D8C1" x="0" y="0" xmlns="http://www.w3.org/2000/svg"
@@ -90,6 +100,10 @@ function returnHTML() {
                 <p class="option__text">Consultar Reunión</p>
             </div>
         </div>
+        </a>
+        -->
+        
+        
         <div class="option__indicator"></div>
     </div>
 </nav>
@@ -107,7 +121,7 @@ function returnHTML() {
                     <button class="navbar__profile-container nav-link profile-button" onclick="toggleMenu()">
                         <div id="user-menu" style="display: none;">
                             <a href="#">Mis datos</a>
-                            <a href="#">Cerrar sesión</a>
+                            <a href="log-out">Cerrar sesión</a>
                         </div>
                     </button>
                 </div>
