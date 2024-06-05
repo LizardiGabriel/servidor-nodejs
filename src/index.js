@@ -29,6 +29,7 @@ const jwt = require('jsonwebtoken');
 
 
 const app = express();
+app.use(express.json({ limit: '50mb' }));
 app.locals.appTitle = 'beemeetings';
 
 app.use(logger('dev'));
