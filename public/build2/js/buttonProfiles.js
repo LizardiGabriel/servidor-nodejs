@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let cancelar = document.getElementById('cancelarProfile');
     let guardar = document.getElementById('guardarProfile');
     let contenedorEdit = document.getElementById('contenedorEdit');
-    let foto = document.getElementById('SeccionFoto');
+    // let foto = document.getElementById('SeccionFoto'); NO ESTA IMPLEMENTADA EN HTML
 
     //Variables de validación
     let patron_name = /^[áéíóúÁÉÍÓÚñäëïöüÄËÏÖÜ\w\d]{1,100}$/;
@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
     activarBoton.addEventListener('click', function (event) {
         activarBoton.style.display = "none";
         contenedorEdit.style.display = '';
-        foto.style.display = 'block';
-        foto.style.textAlign = 'center';
+        // foto.style.display = 'block'; NO ESTA IMPLEMENTADA EN HTML
+        // foto.style.textAlign = 'center'; NO ESTA IMPLEMENTADA EN HTML
         habilitarInputs();
     });
 
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
         contenedor.classList.add("view");
         contenedorEdit.style.display = "none";
         activarBoton.style.display = '';
-        foto.style.display = 'none';
+        // foto.style.display = 'none'; NO ESTA IMPLEMENTADA EN HTML
         deshabiltarInputs();
     });
 
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
         contenedor.classList.add("view");
         contenedorEdit.style.display = "none";
         activarBoton.style.display = '';
-        foto.style.display = 'none';
+        // foto.style.display = 'none'; NO ESTA IMPLEMENTADA EN HTML
         deshabiltarInputs();
     });
 

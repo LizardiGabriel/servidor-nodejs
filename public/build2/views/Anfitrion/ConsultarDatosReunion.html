@@ -58,57 +58,67 @@
     <div id="headers"> </div>
 
     <main class="contenidoPrincipal">
-        <div class="contento">
-            <div class="container-shadow">
-                <div class="consultaForm">
-                    <h1 class="consultaForm__titulo">Detalles de la reunión</h1>
-                    <form class="form" method="">
-                        <!--ID-->
-                        <label for="" class="consultaForm__label">ID:</label>
-                        <input class="form-control consultaForm__input" type="number" value="00"
-                            aria-label="Disabled input example" disabled readonly>
-                        <!--Nombre de la reunión-->
-                        <label for="" class="consultaForm__label">Nombre de la reunión:</label>
-                        <input class="form-control consultaForm__input" type="text" value="Nombre de la reunión"
-                            aria-label="Disabled input example" disabled readonly>
-                        <!--Fecha-->
-                        <label for="" class="consultaForm__label">Fecha de inicio:</label>
-                        <input class="form-control consultaForm__input" type="date" value=" "
-                            aria-label="Disabled input example" disabled readonly>
-                        <!--Hora-->
-                        <label for="" class="consultaForm__label">Hora de inicio</label>
-                        <input class="form-control consultaForm__input" type="time" value=" "
-                            aria-label="Disabled input example" disabled readonly>
-                        <!--Sala-->
-                        <label for="" class="consultaForm__label">Sala:</label>
-                        <input class="form-control consultaForm__input" type="text" value="Sala"
-                            aria-label="Disabled input example" disabled readonly>
-                        <!--Numero-->
-                        <label for="" class="consultaForm__label">Número:</label>
-                        <input class="form-control consultaForm__input" type="number" value="00"
-                            aria-label="Disabled input example" disabled readonly>
-                        <!--Piso-->
-                        <label for="" class="consultaForm__label">Piso:</label>
-                        <input class="form-control consultaForm__input" type="number" value="00"
-                            aria-label="Disabled input example" disabled readonly>
-                        <!--Descripción-->
-                        <label for="" class="consultaForm__label">Descripción:</label>
-                        <input class="form-control consultaForm__input" type="text" value="Descripción"
-                            aria-label="Disabled input example" disabled readonly>
-                        <!--Invitado-->
-                        <label for="" class="consultaForm__label">Invitados:</label>
-                        <input class="form-control consultaForm__input" type="text" value="Invitados"
-                            aria-label="Disabled input example" disabled readonly>
+        <div class="consultarDetallesReunion">
+            <h1 class="consultar_titulo title-example text-center">Consultar Detalles de Reunión</h1>
+            <div class="botones">
+                <button class="reagendar_btn">Reagendar reunión</button>
+                <button class="reagendar30m_btn">+30 minutos</button>
+                <button class="reagendar1h_btn">+1 hora</button>
+                <button class="cancelar_btn">Cancelar reunión</button>
+                <button class="regresar_btn">Regresar</button>
+            </div>
+            <div class="Detalle paragraph-example">
+                <!--DETALLES DE REUNIÓN-->
+                <form class="DetalleReunion">
+                    <div class="_idReu">
+                        <label for="reunionId">Reunión:</label>
+                        <input type="text" id="reunionId" value="ID_Reu" readonly disabled>
+                    </div>
+                    <div class="_tituloReu">
+                        <label for="reunionTitulo">Título:</label>
+                        <input type="text" id="reunionTitulo" value="Negociación con Cliente"
+                            readonly disabled>
+                    </div>
+                    <div class="_fecha">
+                        <label for="reunionFecha">Fecha:</label>
+                        <input type="text" id="reunionFecha" value="20-02-2024" readonly disabled>
+                    </div>
+                    <div class="_horario">
+                        <label for="horario">Horario:</label>
+                        <input type="text" id="horarioInicio" value="10:30 AM" readonly disabled>
+                        <label class="guion">-</label>
+                        <input type="text" id="horarioFin" value="12:00 PM" readonly disabled>
 
-                        <!--Botón-->
-                        <div>
-                            <button class="btn-regresar" type="button"
-                                onclick="window.location.href='/anfitrion/anfitrion.html'">Regresar</button>
-                        </div>
-
-                    </form>
+                    </div>
+                    <div class="_nombreSala">
+                        <label for="salaL">Sala:</label>
+                        <input type="text" id="sala" value="Sala de juntas" readonly disabled>
+                    </div>
+                    <div class="_numeroSala">
+                        <label for="salaNumero">Número:</label>
+                        <input type="text" id="salaNumero" value="42" readonly disabled>
+                    </div>
+                    <div class="_pisoSala">
+                        <label for="salaPiso">Piso:</label>
+                        <input type="text" id="salaPiso" value="2" readonly disabled>
+                    </div>
+                </form>
+                <!--DETALLES INVITADOS-->
+                <div class="__Tabla table-responsive paragraph-example">
+                    <table class="tabla table table-hover table-bordered table-sm" id="Tabla">
+                        <thead class="tabla__cabecera">
+                            <tr>
+                                <th scope="col" data-sort="nombreInvi" class="cabecera">Nombre del invitado</th>
+                                <th scope="col" data-sort="correo" class="cabecera">Correo Electrónico</th>
+                                <th scope="col" data-sort="acciones" class="cabecera">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tabla__cuerpo">
+                        </tbody>
+                    </table>
                 </div>
             </div>
+
         </div>
     </main>
 

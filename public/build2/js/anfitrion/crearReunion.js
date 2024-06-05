@@ -98,3 +98,9 @@ function obtenerSalas() {
             console.error('Error:', error);
         });
 }
+
+const botonAddFecha = document.getElementById("btnAgregarFecha");
+
+botonAddFecha.addEventListener("click", (evt)=>{
+        evt.preventDefault();
+})
