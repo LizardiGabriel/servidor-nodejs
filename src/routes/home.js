@@ -10,7 +10,7 @@ function generateAccessToken(email, idUsuario, rolNum, nombre, apellido, foto) {
 }
 
 function generateTokenInvitado(email, idInvitado, rolNum, newCount, changeFirstPass) {
-    return jwt.sign({ email: email, idInvitado: idInvitado, rol: rolNum, newCount: newCount, changeFirstPass: changeFirstPass }, process.env.SECRET_KEY, { expiresIn: '5m' });
+    return jwt.sign({ email: email, idInvitado: idInvitado, rol: rolNum, newCount: newCount, changeFirstPass: changeFirstPass }, process.env.SECRET_KEY, { expiresIn: '60m' });
 }
 
 async function login(req, res) {

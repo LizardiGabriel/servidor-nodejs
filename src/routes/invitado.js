@@ -1,14 +1,39 @@
 const { log } = require('console');
-const {getInvitadoByEmailBD,updateInvitadoBDtoInvitacion} = require('../tools/peticiones');
+
 const { Prisma } = require('@prisma/client');
 const fs = require('fs');
 const path = require('path');
+const jwt = require("jsonwebtoken");
+require('dotenv').config();
+
+
+const { hashPassword, comparePassword } = require('../tools/cipher');
+const { getInvitadoByIdBD, getInvitadoByIdEmailBD} = require('../tools/peticiones');
+const {getInvitadoByEmailBD,updateInvitadoBDtoInvitacion, updatePassInvitadoBD} = require('../tools/peticiones');
 
 async function logout(req, res) {
     console.log('mensaje --> logout');
     req.session.destroy();
     res.redirect('/');
 }
+
+function getIdInvitado(jsonToken){
+    let idInvitado = '';
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            idInvitado = decoded.idInvitado;
+        }
+    });
+    return idInvitado;
+}
+
+function generateTokenInvitado(email, idInvitado, rolNum, newCount, changeFirstPass) {
+    return jwt.sign({ email: email, idInvitado: idInvitado, rol: rolNum, newCount: newCount, changeFirstPass: changeFirstPass }, process.env.SECRET_KEY, { expiresIn: '60m' });
+}
+
+
 
 async function guardarImagenDesdeBase64(base64Data, nombreArchivo) {
     // Eliminar la cabecera de datos URL si existe (data:image/png;base64,)
@@ -69,18 +94,69 @@ async function Pruebaguardar( req, res)  {
 
 async function setDataInvitado(req, res) {
     console.log('mensaje --> setNDataInvitado');
-    const {nombre,apellidoPat,apellidoMa,correo,tel,empresa,identificacion,foto}=req.body;
-    const pre_invitado = await getInvitadoByEmailBD(correo);
+    const idInvitado = getIdInvitado(req.session.jwt);
+    console.log('idInvitado:', idInvitado);
+
+
+    const { nombre, apellidoPat, apellidoMa, tel, empresa, identificacion, foto} = req.body;
     const extensionfoto= await obtenerExtensionDeBase64(foto);
     console.log(extensionfoto);
-    const rutafoto= await guardarImagenDesdeBase64(foto,"fotografia_invitado"+pre_invitado.id_invitado+"."+extensionfoto);
-    const invitado= await updateInvitadoBDtoInvitacion(pre_invitado.id_invitado, correo, nombre, apellidoPat, apellidoMa, tel,empresa,identificacion,rutafoto);
-    return res.json({ message: req.body, status: 200});
+
+    const rutafoto= await guardarImagenDesdeBase64(foto,"fotografia_invitado"+idInvitado+"."+extensionfoto);
+    const invitado= await updateInvitadoBDtoInvitacion(idInvitado, nombre, apellidoPat, apellidoMa, tel,empresa,identificacion,rutafoto);
+
+    // if todo bien -> 200
+    //return res.redirect('/invitado/cambiarContrasena.html');
+    const rutita = '/invitado/cambiarContrasena.html';
+    let mensaje = '';
+    if(invitado === 200){
+        mensaje = 'Información del invitado registrada exitosamente';
+    }else if(invitado === 500){
+        mensaje = 'error al actualizar la información del invitado';
+    }
+    return res.json({ message: mensaje, status: invitado, ruta: rutita});
+
+}
+
+
+async function cambiarContrasena(req, res) {
+    console.log('mensaje --> cambiarContrasena');
+    const idInvitado = getIdInvitado(req.session.jwt);
+    console.log('idInvitado:', idInvitado);
+
+    const { password } = req.body;
+    console.log('contrasena que el usuario va a cambiar:', password);
+    const hashedPassword = await hashPassword(password);
+    const invitado = await updatePassInvitadoBD(idInvitado, hashedPassword);
+    // if todo bien -> 200
+    //return res.redirect('/invitado/cambiarContrasena.html');
+    const rutita = '/invitado/home/invitado.html';
+    let mensaje = '';
+    if(invitado === 200){
+        mensaje = 'password actualizada correctamente';
+    }else if(invitado === 500){
+        mensaje = 'error al actualizar la contraseña';
+    }
+
+
+    const invitadoNuevo = await getInvitadoByIdBD(idInvitado);
+    const token1 = generateTokenInvitado(invitado.email_invitado, invitado.id_invitado, 4, invitado.newCount, invitado.changeFirstPass);
+    req.session.jwt = token1;
+    
+    return res.status(200).json({
+        ruta: rutita,
+        status: invitado,
+        message: mensaje
+    });
+
+
+
 }
 module.exports = {
     logout,
     setDataInvitado,
-    Pruebaguardar
+    Pruebaguardar,
+    cambiarContrasena
 };
 
 

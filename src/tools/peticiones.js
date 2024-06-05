@@ -419,31 +419,54 @@ async function updateInvitadoBD(id, email, nombre, apellidoPaterno, apellidoMate
     }
 }
 
-async function updateInvitadoBDtoInvitacion(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono,empresa,identifacion,foto) {
+async function updateInvitadoBDtoInvitacion(id, nombre, apellidoPaterno, apellidoMaterno, telefono,empresa,identifacion,foto) {
     console.log('peticion a la bd de updateInvitado');
     try {
         const invitadoActualizado = await prisma.invitado.update({
             where: { id_invitado: Number(id) },
             data: {
-                email_invitado: email,
                 nombre_invitado: nombre,
                 apellido_paterno_invitado: apellidoPaterno,
                 apellido_materno_invitado: apellidoMaterno,
                 telefono_invitado: telefono,
                 empresa_invitado: empresa,
                 identificacion_invitado:identifacion,
-                foto_invitado: foto
+                foto_invitado: foto,
+                newCount: 0
             }
         });
         if (invitadoActualizado != null) {
-            return { message: 'Invitado actualizado correctamente', status: 200};
+            return  200;
         }else{
-            return { message: 'Error al actualizar invitado', status: 500};
+            return 500;
         }
     } catch (error) {
         console.error('Error al actualizar invitado:', error);
-        return { message: 'Error al actualizar invitado', status: 500 };
+        return 500;
     }
+}
+
+async function updatePassInvitadoBD(idInvitado, hashedPassword) {
+    console.log('peticion a la bd de updatePassInvitado');
+    try {
+        const invitadoActualizado = await prisma.invitado.update({
+            where: { id_invitado: Number(idInvitado) },
+            data: {
+                password_invitado: hashedPassword,
+                changeFirstPass: 1
+            }
+        });
+        if (invitadoActualizado != null) {
+            return  200;
+        }else{
+            return 500;
+        }
+
+    } catch (error) {
+        console.error('Error al actualizar invitado:', error);
+        return 500;
+    }
+
 }
 
 async function getInvitacionesByIdInv(id) {
@@ -818,5 +841,7 @@ module.exports = {
     getDetallesReunionByIdBD,
 
     getInvitadoByIdEmailBD,
+
+    updatePassInvitadoBD
 
 };

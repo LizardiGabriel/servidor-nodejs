@@ -113,6 +113,8 @@ const rutas = [
     //Rutas de js para Invitado
     ['/js/invitado/invitacion.js', '../public/build2/js/invitado/invitacion.js'],
     ['/js/invitado/RegistrarInformacionPersonal.js', '../public/build2/js/invitado/RegistrarInformacionPersonal.js'],
+    ['/js/invitado/headers.js', '../public/build2/js/invitado/headers.js'],
+
 
     //Rutas de css de toda la interfaz
     ['/css/app.css', '../public/build2/css/app.css'],
@@ -394,6 +396,7 @@ app.get('/seguridad/test', (req, res) => {
 // externo
 app.use('/invitado', async (req, res, next) => {
     if (req.session) {
+        console.log('jwt: ' + req.session.jwt);
         let rol = getRol(req.session.jwt);
         if (rol !== 4) {
             return res.status(401).json({error: 'Unauthorized ppp: ' + rol, status: 401});
@@ -427,12 +430,18 @@ app.use('/invitado/home', async (req, res, next) => {
 
 });
 
+//app.get('/externo/logout', externo.logout);
 
 app.use('/invitado/home/invitado.html', express.static('./public/build2/views/Invitado/invitado.html'));
 app.use('/invitado/invitacion.html', express.static('./public/build2/views/Invitado/RegistrarInformacionPersonal.html'));
 app.post('/invitado/registrarinformacion', invitado.setDataInvitado);
 
-//app.get('/externo/logout', externo.logout);
+app.use('/invitado/cambiarContrasena.html', express.static('./public/build2/views/Invitado/cambiarContrasena.html'));
+app.post('/invitado/cambiar', invitado.cambiarContrasena);
+
+
+
+
 app.get('/invitado/test', (req, res) => {
   console.log('test');
   console.log(req.session);
