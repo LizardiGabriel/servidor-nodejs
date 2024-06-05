@@ -433,6 +433,7 @@ app.use('/invitado/home', async (req, res, next) => {
 
 //app.get('/externo/logout', externo.logout);
 
+app.get('/invitado/home/log-out', invitado.logout);
 app.use('/invitado/home/invitado.html', express.static('./public/build2/views/Invitado/invitado.html'));
 app.use('/invitado/invitacion.html', express.static('./public/build2/views/Invitado/RegistrarInformacionPersonal.html'));
 app.post('/invitado/registrarinformacion', invitado.setDataInvitado);
@@ -441,6 +442,11 @@ app.get('/invitado/obtenerInfoInvitado', invitado.getInvitadoByEmail);
 app.use('/invitado/cambiarContrasena.html', express.static('./public/build2/views/Invitado/cambiarContrasena.html'));
 app.post('/invitado/cambiar', invitado.cambiarContrasena);
 
+
+app.use('/invitado/home/pendientes.html', express.static('./public/build2/views/Invitado/NotificacionesInvitado.html'));
+app.use('/invitado/home/agendadas.html', express.static('./public/build2/views/Invitado/agendadas.html'));
+
+app.get('/invitado/home/reunionesNuevas', invitado.reunionesNuevas);
 
 
 

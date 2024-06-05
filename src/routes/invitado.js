@@ -9,7 +9,7 @@ require('dotenv').config();
 
 const { hashPassword, comparePassword } = require('../tools/cipher');
 const { getInvitadoByIdBD, getInvitadoByIdEmailBD} = require('../tools/peticiones');
-const {getInvitadoByEmailBD,updateInvitadoBDtoInvitacion, updatePassInvitadoBD} = require('../tools/peticiones');
+const {getInvitadoByEmailBD,updateInvitadoBDtoInvitacion, updatePassInvitadoBD, getReunionesConRepeticionByIdOfInvitadoBD, getReunionesNuebasBD} = require('../tools/peticiones');
 
 async function logout(req, res) {
     console.log('mensaje --> logout');
@@ -162,14 +162,40 @@ async function cambiarContrasena(req, res) {
         message: mensaje
     });
 
-
-
 }
+
+async function reunionesNuevas(req, res){
+    console.log('mensaje --> reunionesPendientes');
+    const idInvitado = getIdInvitado(req.session.jwt);
+    console.log('idInvitado:', idInvitado);
+    const reuniones = await getReunionesNuebasBD(idInvitado);
+    if (reuniones !== null) {
+        res.json((reuniones));
+    } else {
+        res.json([]);
+    }
+}
+
+async function reunionesPendientes(req, res){
+    console.log('mensaje --> reunionesPendientes');
+    const idInvitado = getIdInvitado(req.session.jwt);
+    console.log('idInvitado:', idInvitado);
+    const reuniones = await getReunionesConRepeticionByIdOfInvitadoBD(idInvitado);
+    if (reuniones !== null) {
+        res.json((reuniones));
+    } else {
+        res.json([]);
+    }
+}
+
+
 module.exports = {
     logout,
     setDataInvitado,
     Pruebaguardar,
     cambiarContrasena,
+    reunionesNuevas,
+    reunionesPendientes,
     getInvitadoByEmail
 };
 
