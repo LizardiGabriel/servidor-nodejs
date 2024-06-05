@@ -120,7 +120,7 @@ function returnHTML() {
                 <div class="nav-item dropdown">
                     <button class="navbar__profile-container nav-link profile-button" onclick="toggleMenu()">
                         <div id="user-menu" style="display: none;">
-                            <a href="#">Mis datos</a>
+                            <a href="mis-datos.html">Mis datos</a>
                             <a href="log-out">Cerrar sesión</a>
                         </div>
                     </button>

@@ -434,6 +434,8 @@ app.use('/invitado/home', async (req, res, next) => {
 //app.get('/externo/logout', externo.logout);
 
 app.get('/invitado/home/log-out', invitado.logout);
+app.use('/invitado/home/mis-datos.html', express.static('./public/build2/views/Invitado/misDatos.html'));
+
 app.use('/invitado/home/invitado.html', express.static('./public/build2/views/Invitado/invitado.html'));
 app.use('/invitado/invitacion.html', express.static('./public/build2/views/Invitado/RegistrarInformacionPersonal.html'));
 app.post('/invitado/registrarinformacion', invitado.setDataInvitado);
