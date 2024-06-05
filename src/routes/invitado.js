@@ -9,7 +9,7 @@ require('dotenv').config();
 
 const { hashPassword, comparePassword } = require('../tools/cipher');
 const { getInvitadoByIdBD, getInvitadoByIdEmailBD} = require('../tools/peticiones');
-const {getInvitadoByEmailBD,updateInvitadoBDtoInvitacion, updatePassInvitadoBD} = require('../tools/peticiones');
+const {getInvitadoByEmailBD,updateInvitadoBDtoInvitacion, updatePassInvitadoBD, getReunionesConRepeticionByIdOfInvitadoBD, getReunionesNuebasBD} = require('../tools/peticiones');
 
 async function logout(req, res) {
     console.log('mensaje --> logout');
@@ -28,6 +28,7 @@ function getIdInvitado(jsonToken){
     });
     return idInvitado;
 }
+
 
 function generateTokenInvitado(email, idInvitado, rolNum, newCount, changeFirstPass) {
     return jwt.sign({ email: email, idInvitado: idInvitado, rol: rolNum, newCount: newCount, changeFirstPass: changeFirstPass }, process.env.SECRET_KEY, { expiresIn: '60m' });
@@ -52,6 +53,18 @@ async function guardarImagenDesdeBase64(base64Data, nombreArchivo) {
     return filePath;
     
 }
+
+async function getInvitadoByEmail(req,res){
+    const email = req.query.email;
+    console.log('mensaje --> getInvitadoByemail');
+    const invitado = await (getInvitadoByEmail(email));
+    if (invitado !== null) {
+        res.json((invitado));
+    } else {
+        res.json([]);
+    }
+}
+
 
 async function obtenerExtensionDeBase64(cadenaBase64) {
     // Usar una expresión regular para encontrar el tipo MIME en la cadena Base64
@@ -149,14 +162,41 @@ async function cambiarContrasena(req, res) {
         message: mensaje
     });
 
-
-
 }
+
+async function reunionesNuevas(req, res){
+    console.log('mensaje --> reunionesPendientes');
+    const idInvitado = getIdInvitado(req.session.jwt);
+    console.log('idInvitado:', idInvitado);
+    const reuniones = await getReunionesNuebasBD(idInvitado);
+    if (reuniones !== null) {
+        res.json((reuniones));
+    } else {
+        res.json([]);
+    }
+}
+
+async function reunionesPendientes(req, res){
+    console.log('mensaje --> reunionesPendientes');
+    const idInvitado = getIdInvitado(req.session.jwt);
+    console.log('idInvitado:', idInvitado);
+    const reuniones = await getReunionesConRepeticionByIdOfInvitadoBD(idInvitado);
+    if (reuniones !== null) {
+        res.json((reuniones));
+    } else {
+        res.json([]);
+    }
+}
+
+
 module.exports = {
     logout,
     setDataInvitado,
     Pruebaguardar,
-    cambiarContrasena
+    cambiarContrasena,
+    reunionesNuevas,
+    reunionesPendientes,
+    getInvitadoByEmail
 };
 
 
