@@ -82,7 +82,6 @@ function cargarFiltros() {
 }
 
 function editarSala(idSala) {
-  alert('editar sala id: ' + idSala);
   window.location.href = `/admin/EditarSala.html?idSala=${idSala}`;
 }
 

@@ -6,7 +6,6 @@ function enviarForm() {
   const selectElement = document.getElementById("estadoSala");
   const estado = selectElement.options[selectElement.selectedIndex].value;
 
-  console.log(estado);
   //Si esta bien la validación hacemos la pregunta de confirmación
   if (validarAddSala(nombreSala, cupoMaximo, piso, numerito, estado)) {
     modal.fire({
@@ -75,7 +74,7 @@ function sleep(ms) {
 }
 
 async function finishRedirect() {
-  await sleep(3000); 
+  await sleep(1000); 
   window.location.href = '/admin/catalogo/GestionarSalas.html';
 }
 
