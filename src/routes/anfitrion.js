@@ -182,6 +182,17 @@ async function getReunionById(req, res) {
     }
 }
 
+async function getInvitadoByEmail(req,res){
+    const email = req.query.email;
+    console.log('mensaje --> getInvitadoByemail');
+    const invitado = await (getInvitadoByEmailBD(email));
+    if (invitado !== null) {
+        res.json((invitado));
+    } else {
+        res.json([]);
+    }
+}
+
 
 module.exports = {
     logout,
@@ -189,5 +200,6 @@ module.exports = {
     getSalasAnfitrion,
     setNewReunion,
     setInvitacion,
-    getReunionById
+    getReunionById,
+    getInvitadoByEmail
 };

@@ -17,7 +17,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 start: new Date(formatearFecha(fecha.fecha_repeticion)),
                                 end: new Date(formatearFecha(fecha.fecha_repeticion)),
                                 location: "Num sala "+reunion.id_sala,
-                                url: "anfitrion/detallesreunion/${reunion.id_reunion}",
+                                url: "/anfitrion/reuniones/ConsultarDatos.html?idReunion="+reunion.id_reunion+"&"+"fecha_i="+fecha.fecha_repeticion+
+                                "&"+"fecha_f="+fecha.fecha_repeticion+"&"+"hora_i="+fecha.hora_inicio_repeticion+"&"+"hora_f="+fecha.hora_fin_repeticion,
                                 timeStart: fecha.hora_inicio_repeticion,
                                 timeEnd: fecha.hora_fin_repeticion
                             }
@@ -37,14 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
             <div style="overflow: hidden; font-size: 12px; positon: relative;  cursor: pointer; font-family: 'Inter', sans-serif;">
                 <div><strong>${info.event.title}</strong></div>
                 <div>Location: ${info.event.extendedProps.location}</div>
-                <div>Date: ${info.event.start.toLocaleDateString(
-                    "es-US",
-                    {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                    }
-                )}</div>
                 <div>Time: ${info.event.extendedProps.timeStart} - ${info.event.extendedProps.timeEnd}</div>
             </div>
             `

@@ -346,7 +346,7 @@ app.use('/anfitrion/EditarDatosPersonales.html', express.static('./public/build2
 app.get('/anfitrion/reuniones', anfitrion.getReunionesAnfitrion);
 app.get('/anfitrion/getUserEmail', anfitrion.getReunionesAnfitrion);
 app.get('/anfitrion/salas', anfitrion.getSalasAnfitrion);
-
+app.get('/anfitrion/obtenerInfoInvitado', anfitrion.getInvitadoByEmail)
 app.get('/anfitrion/catalogo/salas', anfitrion.getSalasAnfitrion);
 
 app.post('/anfitrion/reuniones', anfitrion.setNewReunion);
@@ -436,6 +436,7 @@ app.use('/invitado/home', async (req, res, next) => {
 app.use('/invitado/home/invitado.html', express.static('./public/build2/views/Invitado/invitado.html'));
 app.use('/invitado/invitacion.html', express.static('./public/build2/views/Invitado/RegistrarInformacionPersonal.html'));
 app.post('/invitado/registrarinformacion', invitado.setDataInvitado);
+app.get('/invitado/obtenerInfoInvitado', invitado.getInvitadoByEmail);
 
 app.use('/invitado/cambiarContrasena.html', express.static('./public/build2/views/Invitado/cambiarContrasena.html'));
 app.post('/invitado/cambiar', invitado.cambiarContrasena);
