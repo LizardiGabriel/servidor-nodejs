@@ -29,6 +29,7 @@ function getIdInvitado(jsonToken){
     return idInvitado;
 }
 
+
 function generateTokenInvitado(email, idInvitado, rolNum, newCount, changeFirstPass) {
     return jwt.sign({ email: email, idInvitado: idInvitado, rol: rolNum, newCount: newCount, changeFirstPass: changeFirstPass }, process.env.SECRET_KEY, { expiresIn: '60m' });
 }
@@ -52,6 +53,18 @@ async function guardarImagenDesdeBase64(base64Data, nombreArchivo) {
     return filePath;
     
 }
+
+async function getInvitadoByEmail(req,res){
+    const email = req.query.email;
+    console.log('mensaje --> getInvitadoByemail');
+    const invitado = await (getInvitadoByEmail(email));
+    if (invitado !== null) {
+        res.json((invitado));
+    } else {
+        res.json([]);
+    }
+}
+
 
 async function obtenerExtensionDeBase64(cadenaBase64) {
     // Usar una expresión regular para encontrar el tipo MIME en la cadena Base64
@@ -182,7 +195,8 @@ module.exports = {
     Pruebaguardar,
     cambiarContrasena,
     reunionesNuevas,
-    reunionesPendientes
+    reunionesPendientes,
+    getInvitadoByEmail
 };
 
 
