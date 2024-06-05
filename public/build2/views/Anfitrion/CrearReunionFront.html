@@ -132,94 +132,72 @@
     </header>
 
     <main class="contenidoPrincipal">
-        <div class="crearReunion">
-            <h1 class="title-example text-center">Gestionar reuniones</h1>
-            <button class="actualizarBoton" onclick="obtenerReuniones()">Actualizar Reuniones</button>
+      <div class="crearReunion">
+        <h1 class="title-example text-center">Gestionar reuniones</h1>
+        <button class="actualizarBoton" onclick="obtenerReuniones()">Actualizar Reuniones</button>
 
-            <div class="div__reuniones" id="divReuniones" class="cardszzz"></div>
+        <div class="div__reuniones" id="divReuniones" class="cardszzz"></div>
 
-            <h1 class="subtitle-example text-center" id="AgendarReunion">Agendar Reunión</h1>
-            <form class="paragraph-example Formulario" id="formCrearReunion" novalidate>
-                <div class="col-md-9 has-validation">
-                    <label class="" for="titulo_reunion">Titulo de la reunión:</label>
-                    <input class="form-control form-control-lg" type="text" id="titulo_reunion" name="titulo_reunion"
-                        required>
-
-                    <div class="invalid-feedback">
-                        Ingrese un título para la reunión.
-                    </div>
-                </div>
-                <div class="col-md-9 has-validation">
-                    <label for="descripcion_reunion">Descripción de la reunión:</label>
-                    <input class="form-control form-control-lg" type="text" id="descripcion_reunion"
-                        name="descripcion_reunion" required>
-
-                    <div class="invalid-feedback">
-                        Ingrese una descripción para la reunión.
-                    </div>
-                </div>
-                <div class="col-md-9 has-validation">
-                    <label for="fecha_reunion">Fecha de inicio de la reunión:</label>
-                    <input class="form-control form-control-lg" type="date" id="fecha_reunion" name="fecha_reunion"
-                        required>
-
-                    <div class="invalid-feedback">
-                        Ingrese una fecha para la reunión.
-                    </div>
-                </div>
-                <div class="col-md-9 has-validation">
-                    <label>Hora de inicio de la reunion</label>
-                    <input type="text" class="form-control form-control-lg clockpicker" data-placement="top"
-                        data-align="top" data-autoclose="false" data-format="HH:ii" max="22:30" min="10:00" step="1"
-                        required>
-
-                    <div class="invalid-feedback">
-                        Ingrese un horario de inicio.
-                    </div>
-                </div>
-                <div class="col-md-9 has-validation">
-                    <label>Hora de fin de la reunion</label>
-                    <input type="text" class="form-control form-control-lg clockpicker" data-placement="top"
-                        data-align="top" data-autoclose="false" data-format="HH:ii" max="22:30" min="10:00" step="1"
-                        required>
-
-                    <div class="invalid-feedback">
-                        Ingrese un horario de fin.
-                    </div>
-                </div>
-                <div class="col-md-9 has-validation">
-                    <label class="" for="isRepetible">¿Es repetible?</label>
-                    <div class="form-check opCheck">
-                        <input class="form-check-input" type="checkbox" id="isRepetible inlineCheckbox1" name="isRepetible" required>
-                        <label class="form-check-label" for="inlineCheckbox1">Sí</label>
-                    </div>
-                </div>
-
-                <table class="Tabla" id="tablaFechasRepetir">
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Acción</th>
-                    </tr>
-                </table>
-
-                <button class="addFecha__boton" id="btnAgregarFecha" onclick="agregarFecha()">Agregar Fecha</button>
-
-                <div class="Selecccion form-group col-md-9 has-validation">
-                    <label for="nombreSala">Nombre de la sala:</label>
-                    <select class="__opciones custom-select form-control-lg" id="nombreSala" name="nombreSala" required>
-                        <option value="1">Sala 1</option>
-                        <option value="2">Sala 2</option>
-                        <option value="3">Sala 3</option>
-                    </select>
-
-                    <div class="invalid-feedback">
-                        Debe elegir una de las opciones.
-                    </div>
-                </div>
-                    <button class="button__submit" type="submit" onclick="crearReunion()">Crear Reunión</button>
-
-            </form>
+        <h1 class="subtitle-example text-center" id="AgendarReunion">Agendar Reunión</h1>
+        <div class="col-md-9 has-validation">
+          <label class="" for="titulo_reunion">Titulo de la reunión:</label>
+          <input class="form-control form-control-lg" type="text" id="titleID" name="titulo_reunion"
+              required>
         </div>
+        <div id="titleFormID"></div>
+
+        <div class="col-md-9 has-validation">
+          <label for="descripcion_reunion">Descripción de la reunión:</label>
+          <input class="form-control form-control-lg" type="text" id="descID"
+              name="descripcion_reunion" required>
+        </div>
+        <div id="descFormID"></div>
+
+        <div class="col-md-9 has-validation">
+            <label for="fecha_reunion">Fecha de inicio de la reunión:</label>
+            <input class="form-control form-control-lg" type="date" id="dateID" name="fecha_reunion"
+                required>
+        </div>
+        <div id="dateFormID"></div>
+
+        <div class="col-md-9 has-validation">
+            <label>Hora de inicio de la reunion</label>
+            <input type="time" class="form-control form-control-lg clockpicker" id="time1ID" required>
+        </div>
+        <div class="col-md-9 has-validation">
+          <label>Hora de fin de la reunion</label>
+          <input type="time" class="form-control form-control-lg clockpicker" id="time2ID" required>
+        </div>
+        <div id="timeFormID"></div>
+
+        <div class="col-md-9 has-validation">
+            <label class="" for="isRepetible">¿Es repetible?</label>
+            <div class="form-check opCheck">
+                <input class="form-check-input" type="checkbox" id="isRepetible inlineCheckbox1" name="isRepetible" required>
+                <label class="form-check-label" for="inlineCheckbox1">Sí</label>
+            </div>
+        </div>
+
+        <table class="Tabla" id="tablaFechasRepetir">
+            <tr>
+                <th>Fecha</th>
+                <th>Acción</th>
+            </tr>
+        </table>
+
+        <button class="addFecha__boton" id="btnAgregarFecha" onclick="agregarFecha()">Agregar Fecha</button>
+
+        <div class="Selecccion form-group col-md-9 has-validation">
+            <label for="nombreSala">Nombre de la sala:</label>
+            <select class="__opciones custom-select form-control-lg" id="nombreSala" name="nombreSala" required>
+                <option value="1">Sala 1</option>
+                <option value="2">Sala 2</option>
+                <option value="3">Sala 3</option>
+            </select>
+        </div>
+
+        <button class="button__submit" type="submit" onclick="crearReunion()">Crear Reunión</button>
+      </div>
     </main>
 
     <footer class="footer">
@@ -260,231 +238,6 @@
     <script src="../../js/sidebar.js"></script>
     <script src="../../js/clockpicker.js"></script>
     <script src="../../js/plantilla-formularios.js"></script>
-
-    <script>
-        window.onload = function () {
-            obtenerReuniones();
-            obtenerSalas();
-        }
-
-        function obtenerSalas() {
-            fetch('salas')
-                .then(response => response.json())
-                .then(salas => {
-                    console.log('salas:', salas);
-                    const selectSala = document.getElementById('nombreSala');
-                    selectSala.innerHTML = '';
-                    salas.forEach(sala => {
-                        const option = document.createElement('option');
-                        option.value = sala.id_sala;
-                        option.textContent = sala.nombre_sala;
-                        selectSala.appendChild(option);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-
-        function eliminarFila(boton) {
-            const fila = boton.parentNode.parentNode;
-            fila.parentNode.removeChild(fila);
-        }
-
-        function agregarFecha() {
-            const tablaFechasRepetir = document.getElementById('tablaFechasRepetir');
-            const fila = document.createElement('tr');
-            fila.innerHTML = `
-                <td><input type="date" name="fechaRepetir" required></td>
-                <td><button onclick="eliminarFila(this)">Eliminar</button></td>
-            `;
-            tablaFechasRepetir.appendChild(fila);
-        }
-
-        function obtenerReuniones() {
-            fetch('reuniones')
-                .then(response => response.json())
-                .then(reuniones => {
-                    console.log('reuniones xd:', reuniones);
-
-                    const divReunion = document.getElementById('divReuniones');
-                    divReunion.innerHTML = '';
-
-                    reuniones.forEach(reunion => {
-                        const card = document.createElement('div');
-                        card.classList.add('card');
-
-                        const emailDiv = 'correoInv-' + reunion.id_reunion;
-                        const acompanantesDiv = 'acompanantesInv-' + reunion.id_reunion;
-
-                        card.innerHTML = `
-                        
-                            <h4><b>Reunion id: </b>${reunion.id_reunion}</h4>
-
-                            <div class="asunto">
-                            <h4><b>Asunto: </b></h4>
-                            <p>${reunion.titulo_reunion}</p>
-                            </div>
-
-
-                            <h4><b>Fechas: </b>${reunion.numRepeticion}</h4>
-                            <ul class="fechas">${reunion.fechasRepeticion.map(fecha =>
-                            `<li>${fecha.id_repeticion} , 
-                                ${fecha.fecha_repeticion}, ${fecha.hora_inicio_repeticion} - ${fecha.hora_fin_repeticion},
-                                ${fecha.estatus_repeticion}</li>
-                                    
-                            `).join('')}
-                            </ul>
-
-
-                            <h4><b>Descripción</b></h4>
-                            <br/>
-                            <p>${reunion.descripcion_reunion}</p>
-                            <br/>
-                            <h4><b>id Sala: </b>${reunion.id_sala}</h4>
-                            <br/>
-
-                            <h4><b>Lista de los correos de los invitados: - acompañantes disponibles</b></h4>
-                            
-                            <ul>${reunion.infoInvitados.map(info =>
-                            `<li>${info.correo_invitado} - ${info.numero_colados}</li>
-                            `).join('')}
-                            </ul>
-                            
-
-                            <button onclick="detallesReunion(${reunion.id_reunion})">Detalles</button>
-                            <button onclick="mostrarFormulario(${reunion.id_reunion})">Crear Invitación</button>
-                            <button onclick="eliminarReunion(${reunion.id_reunion})">Eliminar</button>
-
-                            <div class="form__inv" id="formulario-${reunion.id_reunion}" style="display:none">
-        <h4 class="text-center">Formulario de Invitación</h4>
-        <form id="form-${reunion.id_reunion}">
-            <div class="form-group has-validation">
-                <label for="correos">Correo de invitación:</label><br>
-                <input id="${emailDiv}" name="correos" rows="4" cols="50" type="text" class="form-control form-control-lg" placeholder="Ingrese su correo"
-                    required>
-
-                <div class="invalid-feedback">
-                    Ingrese su correo
-                </div>
-            </div>
-
-            <div class="form-group has-validation">
-                <label for="acompanantes">Número de acompañantes:</label><br>
-                <input id="${acompanantesDiv}" name="acompanantes" required name="correos" rows="4" cols="50" type="number" class="form-control form-control-lg" placeholder="Ingrese su correo"
-                    required>
-
-                <div class="invalid-feedback">
-                    Ingrese el número de acompanantes
-                </div>
-            </div>
-
-            <button class="boton__inv" type="button" onclick="enviarInvitacion(${reunion.id_reunion})">Añadir</button>
-        </form>
-    </div>
-
-                            `;
-                        divReuniones.appendChild(card);
-                    });
-
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-
-        function mostrarFormulario(idReunion) {
-            const formulario = document.getElementById(`formulario-${idReunion}`);
-            formulario.style.display = 'block';
-        }
-
-
-
-
-        function crearReunion() {
-
-
-            const titulo_reunion = document.getElementById('titulo_reunion').value;
-            const descripcion_reunion = document.getElementById('descripcion_reunion').value;
-            const fecha_reunion = document.getElementById('fecha_reunion').value;
-            const hora_inicio_reunion = document.getElementById('hora_inicio_reunion').value;
-            const hora_fin_reunion = document.getElementById('hora_fin_reunion').value;
-            const isRepetible = document.getElementById('isRepetible').checked;
-            const nombreSala = document.getElementById('nombreSala').value;
-
-            const fechasRepetir = [];
-            document.querySelectorAll('input[name="fechaRepetir"]').forEach(input => {
-                fechasRepetir.push(input.value);
-            });
-
-            const envJson = {
-                titulo_reunion,
-                descripcion_reunion,
-                fecha_reunion,
-                hora_inicio_reunion,
-                hora_fin_reunion,
-                isRepetible,
-                nombreSala,
-                fechasRepetir
-            };
-
-            fetch('reuniones', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(envJson)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('data:', data);
-                    obtenerReuniones();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-
-
-
-        }
-        function enviarInvitacion(idReunion) {
-            const emailDiv = 'correoInv-' + idReunion;
-            const correoInv = document.getElementById(emailDiv).value;
-            const acompanantesInv = document.getElementById(`acompanantesInv-`+idReunion).value;
-
-            const envJson = {
-                idReunion,
-                correoInv,
-                acompanantesInv
-                
-            };
-
-            fetch(`reuniones/invitacion`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(envJson)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('data:', data);
-                    obtenerReuniones();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-
-        function detallesReunion(idReunion) {
-            console.log('Detalles de la reunion:', idReunion);
-
-        }
-        function eliminarReunion(idReunion) {
-
-        }
-
-    </script>
 
 </body>
 

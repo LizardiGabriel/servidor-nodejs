@@ -6,21 +6,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BeeMeet - Crear Reunión</title>
     <link rel="stylesheet" href="../../css/app.css">
-
-    <style>
-        .centerThis {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-    </style>
 </head>
 
 <body>
-    
-    
     <div id="headers"></div>
-    <div class="centerThis">
+
+    
+    <main class="contenidoPrincipal">
+      <div class="crearReunion">
+          <!-- <h1 class="title-example text-center">Gestionar reuniones</h1>
+          <button class="actualizarBoton" onclick="obtenerReuniones()">Actualizar Reuniones</button>
+
+          <div class="div__reuniones" id="divReuniones" class="cardszzz"></div> -->
+
+        <h1 class="subtitle-example text-center" id="AgendarReunion">Agendar Reunión</h1> 
+        <div class="col-md-9 has-validation">
+            <label class="" for="titulo_reunion">Titulo de la reunión:</label>
+            <input class="form-control form-control-lg" type="text" id="titleID" name="titulo_reunion" required>
+        </div>
+        <div id="titleFormID"></div>
+
+        <div class="col-md-9 has-validation">
+            <label for="descripcion_reunion">Descripción de la reunión:</label>
+            <input class="form-control form-control-lg" type="text" id="descID" name="descripcion_reunion" required>
+        </div>
+        <div id="descFormID"></div>
+
+        <div class="col-md-9 has-validation" >
+            <label for="fecha_reunion">Fecha de inicio de la reunión:</label>
+            <input class="form-control form-control-lg" type="date" id="dateID" name="fecha_reunion" style="position: relative; ">
+        </div>
+        <div id="dateFormID"></div>
+
+        <div class="col-md-9 has-validation">
+            <label>Hora de inicio de la reunion</label>
+            <input type="time" id="time1ID" class="form-control form-control-lg clockpicker" required>
+        </div>
+        <div class="col-md-9 has-validation">
+            <label>Hora de fin de la reunion</label>
+            <input type="time" id="time2ID" class="form-control form-control-lg clockpicker" required>
+        </div>
+        <div id="timeFormID"></div>
+
+        <div class="col-md-9 has-validation">
+            <label class="" for="isRepetible">¿Es repetible?</label>
+            <div class="form-check opCheck">
+                <input class="form-check-input" type="checkbox" id="isRepetible" name="isRepetible" required>
+                <label class="form-check-label" for="inlineCheckbox1">Sí</label>
+            </div>
+        </div>
+
+        <table class="Tabla" id="tablaFechasRepetir">
+            <tr>
+                <th>Fecha</th>
+                <th>Acción</th>
+            </tr>
+        </table>
+
+        <button class="addFecha__boton" id="btnAgregarFecha" onclick="agregarFecha()">Agregar Fecha</button>
+
+        <div class="Selecccion form-group col-md-9 has-validation">
+            <label for="nombreSala">Nombre de la sala:</label>
+            <select class="__opciones custom-select form-control-lg" id="nombreSala" name="nombreSala" required>
+                <option value="1">Sala 1</option>
+                <option value="2">Sala 2</option>
+                <option value="3">Sala 3</option>
+            </select>
+        </div>
+        <button class="button__submit" type="submit" onclick="crearReunion()">Crear Reunión</button>
+      </div>
+  </main>
+<!--     <div class="centerThis">
         <main class="contenidoPrincipal">
             <div class="crearReunion">
                 <h1>Crear Reunion</h1>
@@ -72,20 +128,20 @@
                 
             </div>
         </main>
-    </div>
+    </div> -->
     
     <div id="footers"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     
-    
-    <!--
-        <script src="../../js/anfitrion/headers.js"></script>
+    <script src="../../js/clockpicker.js"></script>
+    <script src="../../js/anfitrion/headers.js"></script>
     <script src="../../js/header.js"></script>
     <script src="../../js/sidebar.js"></script>
     <script src="../../js/anfitrion.js"></script>
-    -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../js/anfitrion/crearReunion.js"></script>
     <script src="../../js/validaciones.js"></script>
+
 
 </body>
 

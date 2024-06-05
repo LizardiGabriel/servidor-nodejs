@@ -1,5 +1,3 @@
-const { title } = require("process");
-
 /* Función para los modales */
 const modal = Swal.mixin({
     timer: 3000,
@@ -24,8 +22,9 @@ function agregarFecha() {
     const tablaFechasRepetir = document.getElementById('tablaFechasRepetir');
     const fila = document.createElement('tr');
     fila.innerHTML = `
-        <td><input type="date" name="fechaRepetir" required></td>
-        <td><button onclick="eliminarFila(this)">Eliminar</button></td>
+        <td><input type="date" class="form-control form-control-lg clockpicker" name="fechaRepetir" style="position: relative;" required></td>
+
+        <td><button class="addFecha__boton" onclick="eliminarFila(this)">Eliminar</button></td>
     `;
     tablaFechasRepetir.appendChild(fila);
 }
@@ -33,9 +32,9 @@ function eliminarFila(boton) {
     const fila = boton.parentNode.parentNode;
     fila.parentNode.removeChild(fila);
 }
+
+
 function crearReunion() {
-
-
     const titulo_reunion = document.getElementById('titleID').value;
     const descripcion_reunion = document.getElementById('descID').value;
     const fecha_reunion = document.getElementById('dateID').value;
@@ -79,10 +78,8 @@ function crearReunion() {
                 text: data.error,
             });
         });
-
-
-
 }
+
 function obtenerSalas() {
     fetch('salas')
         .then(response => response.json())

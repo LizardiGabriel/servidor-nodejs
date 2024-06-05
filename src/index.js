@@ -83,6 +83,7 @@ const rutas = [
     
     ['/js/anfitrion/headers.js', '../public/build2/js/anfitrion/headers.js'],
     ['/js/anfitrion/calendar.js', '../public/build2/js/anfitrion/calendar.js'],
+    ['/js/clockpicker.js', '../public/build2/js/clockpicker.js'],
     
     
     //Rutas de js para iniciar sesión
