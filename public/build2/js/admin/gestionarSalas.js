@@ -1,3 +1,5 @@
+let dataTable;
+
 async function obtenerSalas() {
   var info = [];
   console.log('Cargando salas...');
@@ -76,53 +78,86 @@ async function loadTableData() {
                             <button class="btn btn-sm editar" data-id="${item.id}" onclick="editarSala(${item.id})">
                                 <img src="../../img/icons/ico-editar.svg" alt="Editar">
                             </button>
-                            <button class="btn btn-sm eliminar" data-id="${item.id}" onclick="eliminarSala(${item.id})">
+                            <button class="btn btn-sm eliminar" data-id="${item.id}" onclick="eliminarSala(${item.id}, this)">
                                 <img src="../../img/icons/ico-trash.svg" alt="Eliminar">
                             </button>
                          </td>`;
     tbody.appendChild(row);
   });
+  cargarFiltros();
+}
+
+function cargarFiltros() {
   // Destruir y volver a inicializar DataTable
-  if ($.fn.DataTable.isDataTable('#Tabla')) {
-    $('#Tabla').DataTable().destroy();
+  if (!$.fn.DataTable.isDataTable('#Tabla')) {
+    //$('#Tabla').DataTable().destroy();
+    dataTable = $('#Tabla').DataTable({
+      pagingType: 'full_numbers', //Tipo de paginación
+      info: false, //Desactiva la información de los registros totales
+      language: {
+        lengthMenu: 'Mostrar _MENU_ registros', //Para cambiar el texto de los registros que se muestran
+        search: 'Buscar',
+        zeroRecords: 'No se encontró ninguna coincidencia ):'
+      },
+      columnDefs: [
+        { "orderable": false, "targets": -1 } // Desactiva el ordenamiento en la última columna (Acciones)
+      ],
+      autoWidth: true
+    });
+  } else {
+    dataTable.draw()
   }
-  $('#Tabla').DataTable({
-    pagingType: 'full_numbers', //Tipo de paginación
-    info: false, //Desactiva la información de los registros totales
-    language: {
-      lengthMenu: 'Mostrar _MENU_ registros', //Para cambiar el texto de los registros que se muestran
-      search: 'Buscar',
-      zeroRecords: 'No se encontró ninguna coincidencia ):'
-    },
-    columnDefs: [
-      { "orderable": false, "targets": -1 } // Desactiva el ordenamiento en la última columna (Acciones)
-    ],
-    autoWidth: true
-  });
 }
 
 function editarSala(idSala) {
-  alert('editar sala id: ' + idSala);
   window.location.href = `/admin/EditarSala.html?idSala=${idSala}`;
-
 }
 
-function eliminarSala(idSala) {
-  alert('eliminar sala, id: ' + idSala);
-
-
-  fetch(`/admin/catalogo/salas/${idSala}`, {
-    method: 'DELETE'
-  })
-    .then(response => {
-      if (response.ok) {
-        loadTableData();
-      } else {
-        console.error('Error al eliminar sala:', response.statusText);
-      }
-    })
-    .catch(error => console.error('Error al eliminar sala:', error));
-
+function eliminarSala(idSala, btn) { 
+  const row = btn.closest('tr')
+  
+  modal.fire({
+    timer: undefined,
+    icon: 'question',
+    title: "¿Desea continuar?",
+    html: `Se eliminará la sala con Id ${idSala}`,
+    showDenyButton: true,
+    confirmButtonText: "Eliminar Sala",
+    denyButtonText: `Cancelar`
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch(`/admin/catalogo/salas/${idSala}`, {
+        method: 'DELETE'
+      })
+      .then(response => {
+        if (response.ok) {
+          modal.fire({
+            title: "Success",
+            icon: "success",
+            text: "Sala eliminada correctamente",
+          });
+          dataTable.row(row).remove().draw();
+        } else {
+          modal.fire({
+            title: "Error",
+            icon: "error",
+            text: "Error al eliminar la sala:" + response.statusText,
+          });
+          console.error('Error al eliminar sala:', response.statusText);
+        }
+      })
+      .catch(error => {
+          modal.fire({
+            title: "Error",
+            icon: "error",
+            text: "Error al eliminar la sala:" + error,
+          });
+          console.error('Error al eliminar la sala:', error);
+        });
+    } else if (result.isDenied) {
+      
+    }
+  });
 }
 
 // Cargar datos en la tabla al iniciar la página

@@ -28,7 +28,7 @@ function checkCredenciales() {
     body: JSON.stringify({
       email: email,
       password: password,
-      Recuerdame: true
+      Recuerdame: Recuerdame
     })
   })
   .then(response => response.json())

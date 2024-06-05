@@ -4,6 +4,7 @@ function redirigeCrearUsu() {
 }
 
 const info = [];
+let dataTable;
 
 async function cargarUsuarios() {
   console.log('Cargando usuarios...');
@@ -77,65 +78,85 @@ async function loadTableData() {
         <td class="tipoU">${item.tipoU}</td>
         <td class="acciones">
         <button class="btn btn-sm editar" data-id="${item.id}" onclick="editarUsuario(${item.id})"><img src="../../img/icons/ico-editar.svg" alt="Editar"></button>
-        <button class="btn btn-sm eliminar" data-id="${item.id}" onclick="eliminarUsuario(${item.id})"><img src="../../img/icons/ico-trash.svg" alt="Eliminar"></button>
+        <button class="btn btn-sm eliminar" data-id="${item.id}" onclick="eliminarUsuario(${item.id}, this)"><img src="../../img/icons/ico-trash.svg" alt="Eliminar"></button>
         </td>
     `;
     tbody.appendChild(row);
   });
 
-  // Destruir y volver a inicializar DataTable
-  if ($.fn.DataTable.isDataTable('#Tabla')) {
-    $('#Tabla').DataTable().destroy();
-  }
+  cargarFiltros();
+}
 
-  $('#Tabla').DataTable({
-    pagingType: 'full_numbers', //Tipo de paginación
-    info: false, //Desactiva la información de los registros totales
-    language: {
-      lengthMenu: 'Mostrar _MENU_ registros', //Para cambiar el texto de los registros que se muestran
-      search: 'Buscar',
-      zeroRecords: 'No se encontró ninguna coincidencia ):'
-    },
-    columnDefs: [
-      { "orderable": false, "targets": -1 } // Desactiva el ordenamiento en la última columna (Acciones)
-    ],
-    autoWidth: true
-  });
+function cargarFiltros() {
+  // Destruir y volver a inicializar DataTable
+  if (!$.fn.DataTable.isDataTable('#Tabla')) {
+    dataTable = $('#Tabla').DataTable({
+      pagingType: 'full_numbers', //Tipo de paginación
+      info: false, //Desactiva la información de los registros totales
+      language: {
+        lengthMenu: 'Mostrar _MENU_ registros', //Para cambiar el texto de los registros que se muestran
+        search: 'Buscar',
+        zeroRecords: 'No se encontró ninguna coincidencia ):'
+      },
+      columnDefs: [
+        { "orderable": false, "targets": -1 } // Desactiva el ordenamiento en la última columna (Acciones)
+      ],
+      autoWidth: true
+    });
+  } else {
+    dataTable.draw()
+  }
 }
 
 function editarUsuario(idUsuario) {
   window.location.href = `/admin/editarPersonal.html?idUsuario=${idUsuario}`;
 }
 
-function eliminarUsuario(idUsuario) {
-  fetch(`/admin/catalogo/usuarios/${idUsuario}`, {
-    method: 'DELETE'
-  })
-    .then(response => {
-      if (response.ok) {
-        Swal.fire({
-          title: "Success",
-          icon: "success",
-          text: "Cuenta de usuario eliminada con éxito",
-        });
-        loadTableData();
-      } else {
-        Swal.fire({
+function eliminarUsuario(idUsuario, btn) {
+  const row = btn.closest('tr')
+  
+  modal.fire({
+    timer: undefined,
+    icon: 'question',
+    title: "¿Desea continuar?",
+    html: `Se eliminará la cuenta de usuario con ID ${idUsuario}`,
+    showDenyButton: true,
+    confirmButtonText: "Eliminar cuenta de usuario",
+    denyButtonText: `Cancelar`
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch(`/admin/catalogo/usuarios/${idUsuario}`, {
+        method: 'DELETE'
+      })
+      .then(response => {
+        if (response.ok) {
+          modal.fire({
+            title: "Success",
+            icon: "success",
+            text: "Cuenta de usuario eliminada con éxito",
+          });
+          dataTable.row(row).remove().draw();
+        } else {
+          modal.fire({
+            title: "Error",
+            icon: "error",
+            text: "Error al eliminar cuenta de usuario: " + response.statusText,
+          });
+          console.error('Error al eliminar usuario:', response.statusText);
+        }
+      })
+      .catch(error => {
+        modal.fire({
           title: "Error",
           icon: "error",
-          text: "Error al eliminar cuenta de usuario: " + response.statusText,
+          text: "Error al eliminar cuenta de usuario:" + error,
         });
-        console.error('Error al eliminar usuario:', response.statusText);
-      }
-    })
-    .catch(error => {
-      Swal.fire({
-        title: "Error",
-        icon: "error",
-        text: "Error al eliminar cuenta de usuario:" + error,
-      });
-      console.error('Error al eliminar cuenta de usuario:', error);
-    })
+        console.error('Error al eliminar cuenta de usuario:', error);
+      })
+    } else if (result.isDenied) {
+      
+    }
+  });
 }
 
 // Cargar datos en la tabla al iniciar la página
