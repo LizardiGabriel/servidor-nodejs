@@ -1,31 +1,59 @@
 async function obtenerSalas() {
     var info = [];
     console.log('Cargando salas...');
-    try {
+
+     try {
         const response = await fetch('/admin/catalogo/reuniones');
         const reuniones = await response.json();
 
-        // Limpiar el arreglo 'info'
-        info.length = 0;
+        switch (response.status) {
+              case 200:
+                // Limpiar el arreglo 'info'
+                info.length = 0;
 
-        // Agregar cada sala al arreglo 'info'
-        reuniones.forEach(reunion => {
-            info.push({
-                id: reunion.id_reunion,
-                titulo: reunion.titulo_reunion,
-                anfitrion: reunion.nombre_anfitrion,
-                fecha: reunion.fecha_repeticion,
-                horaInicio: reunion.hora_inicio_repeticion,
-                horaFin: reunion.hora_fin_repeticion,
-                sala: reunion.nombre_sala
+                // Agregar cada sala al arreglo 'info'
+                reuniones.forEach(reunion => {
+                  info.push({
+                  id: reunion.id_reunion,
+                  titulo: reunion.titulo_reunion,
+                  anfitrion: reunion.nombre_anfitrion,
+                  fecha: reunion.fecha_repeticion,
+                  horaInicio: reunion.hora_inicio_repeticion,
+                  horaFin: reunion.hora_fin_repeticion,
+                  sala: reunion.nombre_sala
+                  });
+                });
 
-            });
-        });
+                console.log('reuniones cargadas:', info);
+                break;
+              case 401:
+                modal.fire({
+                  icon: "error",
+                  text: data.error,
+                });
+                break;
+              case 404:
+                modal.fire({
+                  title: "Error",
+                  icon: "error",
+                  text: data.error,
+                });
+                break;
+              case 500:
+                modal.fire({
+                  title: "Error",
+                  icon: "error",
+                  text: "A ocurrido un error, favor de intentar más tarde",
+                });
+                break;
+              default:
+                  break;
+        }
 
-        console.log('reuniones cargadas:', info);
-        return info;
+        return (response.status == 200 ? info : []);
+
     } catch (error) {
-        console.error('Error al obtener salas:', error);
+        console.error('Error al obtener las reuniones: ', error);
         return [];
     }
 }

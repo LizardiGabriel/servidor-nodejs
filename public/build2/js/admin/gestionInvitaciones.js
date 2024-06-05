@@ -5,6 +5,8 @@ async function obtenerInvitaciones() {
         const response = await fetch('/admin/catalogo/invitaciones');
         const invitaciones = await response.json();
 
+        switch (response.status) {
+            case 200:
         // Limpiar el arreglo 'info'
         info.length = 0;
 
@@ -24,10 +26,35 @@ async function obtenerInvitaciones() {
           });
         });
 
-        console.log('reuniones cargadas:', info);
-        return info;
+        console.log('Invitaciones cargadas:', info);
+              break;
+            case 401:
+              modal.fire({
+                icon: "error",
+                text: data.error,
+              });
+              break;
+            case 404:
+              modal.fire({
+                title: "Error",
+                icon: "error",
+                text: data.error,
+              });
+              break;
+            case 500:
+              modal.fire({
+                title: "Error",
+                icon: "error",
+                text: "A ocurrido un error, favor de intentar más tarde",
+              });
+              break;
+            default:
+                break;
+      }
+      
+      return (response.status == 200 ? info : []);
     } catch (error) {
-        console.error('Error al obtener salas:', error);
+        console.error('Error al obtener las invitaciones:', error);
         return [];
     }
 }
