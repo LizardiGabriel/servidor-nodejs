@@ -19,55 +19,54 @@
     <div id="headers"></div>
 
     <main class="contenidoPrincipal cSala">
-      <section class="cSalaHero">
-        <h1 class="Titulo title-example text-center">Modificar Sala</h1>
-        <div class="form-group cSalaHeroForm__container">
-            <label for="" class="cSalaHeroForm__container__label">Nombre de la sala*:</label>
-            <input id="nombreSala" type="text" class="cSalaHeroForm__container__input" required>
-        </div>
-        <div id="nombreSalaForm"></div>
-
-        <br>
-        <div class="form-group cSalaHeroForm__container">
-            <label for="" class="cSalaHeroForm__container__label">Número*:</label>
-            <input id="numberSala" type="number" class="cSalaHeroForm__container__input" min="0" required>
-        </div>
-        <div id="numberSalaForm"></div>
-
-        <br>
-        <div  class="form-group cSalaHeroForm__container">
-            <label for="" class="cSalaHeroForm__container__label">Piso*:</label>
-            <input id="pisoSala" type="number" class="cSalaHeroForm__container__input" min="0" required>
-        </div>
-        <div id="pisoSalaForm"></div>
-
-        <br>
-        <div class="form-group cSalaHeroForm__container">
-            <label for="" class="cSalaHeroForm__container__label">Cupo máximo*:</label>
-            <input id="cupoMaxSala" type="number" class="cSalaHeroForm__container__input" min="0" required>
-        </div>
-        <div id="cupoMaxSalaForm"></div>
-
-        <br>
-        <div class="Seleccion form-group cSalaHeroForm__container">
-            <label for="" class="cSalaHeroForm__container__label">Estado de la sala*:</label>
-            <select name="" id="estadoSala" class="cSalaHeroForm__container__select" required>
-                <option disabled selected value="" class="cSalaHeroForm__container__option"> Selecciona una opción</option>
-                <option value="Disponible" class="cSalaHeroForm__container__option">Disponible</option>
-                <option value="NoDisponible" class="cSalaHeroForm__container__option">No disponible</option>
-            </select>
-        </div>
-        <div id="estadoSalaForm"></div>
-        
-        <br>
-        <div class="cSalaHeroForm__button-Container">
-        <input onclick="cancelar()" type="submit"  class="cSalaHeroForm__button-Container__button__Secundario" value="Cancelar" id="" >
-            <div class="Boton">
-                <input onclick="enviarForm()" type="submit" class="cSalaHeroForm__button-Container__button__Primario" value="Aceptar" id="">
-                <script src="https://cdn.jsdelivr.net/npm/mdb-ui-kit@3.11.0/dist/js/mdb.min.js"></script>
+      <div class="cSala">
+        <section class="cSalaHero">
+          <h1 class="Titulo title-example text-center">Modificar Sala</h1>
+          <div class="cSalaHeroForm needs-validation">
+            <div class="form-group cSalaHeroForm__container">
+                <label for="" class="cSalaHeroForm__container__label">Nombre de la sala*:</label>
+                <input id="nombreSala" type="text" class="cSalaHeroForm__container__input" required>
             </div>
-        </div>
-      </section>
+            <div id="nombreSalaForm"></div>
+            
+            <div class="form-group cSalaHeroForm__container">
+                <label for="" class="cSalaHeroForm__container__label">Número*:</label>
+                <input id="numberSala" type="number" class="cSalaHeroForm__container__input" min="0" required>
+            </div>
+            <div id="numberSalaForm"></div>
+            
+            <div  class="form-group cSalaHeroForm__container">
+                <label for="" class="cSalaHeroForm__container__label">Piso*:</label>
+                <input id="pisoSala" type="number" class="cSalaHeroForm__container__input" min="0" required>
+            </div>
+            <div id="pisoSalaForm"></div>
+            
+            <div class="form-group cSalaHeroForm__container">
+                <label for="" class="cSalaHeroForm__container__label">Cupo máximo*:</label>
+                <input id="cupoMaxSala" type="number" class="cSalaHeroForm__container__input" min="0" required>
+            </div>
+            <div id="cupoMaxSalaForm"></div>
+            
+            <div class="Seleccion form-group cSalaHeroForm__container">
+                <label for="" class="cSalaHeroForm__container__label">Estado de la sala*:</label>
+                <select name="" id="estadoSala" class="cSalaHeroForm__container__select" required>
+                    <option disabled selected value="" class="cSalaHeroForm__container__option"> Selecciona una opción</option>
+                    <option value="Disponible" class="cSalaHeroForm__container__option">Disponible</option>
+                    <option value="NoDisponible" class="cSalaHeroForm__container__option">No disponible</option>
+                </select>
+            </div>
+            <div id="estadoSalaForm"></div>
+
+            <div class="cSalaHeroForm__button-Container">
+              <div class="Boton">
+                <input onclick="enviarForm()" type="submit" class="cSalaHeroForm__button-Container__button__Primario w-100" value="Aceptar" id="">
+                <script src="https://cdn.jsdelivr.net/npm/mdb-ui-kit@3.11.0/dist/js/mdb.min.js"></script>
+              </div>
+              <input onclick="cancelar()" type="submit"  class="cSalaHeroForm__button-Container__button__Secundario" value="Cancelar" id="" >
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
 
     <div id="footers"></div>
