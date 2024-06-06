@@ -212,6 +212,7 @@
 
     function aceptar(id_reunion) {
         console.log('aceptar', id_reunion);
+        window.location.href = 'aceptarReunion?id_reunion=' + id_reunion;
         /*
         fetch('aceptarReunion', {
             method: 'POST',

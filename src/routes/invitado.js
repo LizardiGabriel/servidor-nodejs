@@ -189,6 +189,16 @@ async function reunionesPendientes(req, res){
 }
 
 
+async function aceptarReunion(req, res){
+    console.log('mensaje --> aceptarReunion');
+    const idInvitado = getIdInvitado(req.session.jwt);
+    console.log('idInvitado:', idInvitado);
+
+    res.json({ message: 'Reunion aceptada exitosamente'});
+}
+
+
+
 module.exports = {
     logout,
     setDataInvitado,
@@ -196,7 +206,8 @@ module.exports = {
     cambiarContrasena,
     reunionesNuevas,
     reunionesPendientes,
-    getInvitadoByEmail
+    getInvitadoByEmail,
+    aceptarReunion
 };
 
 

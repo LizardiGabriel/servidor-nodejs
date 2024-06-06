@@ -672,7 +672,8 @@ async function setNewInvitacionBD(idReunion, id_invitado, acompanantesInv) {
                 id_invitado: id_invitado,
                 habilitado: "No",
                 qr_acceso: "",
-                numero_colados: Number(acompanantesInv)
+                numero_colados: Number(acompanantesInv),
+                isConfirmed: 0
             }
         });
         return nuevaInvitacion;

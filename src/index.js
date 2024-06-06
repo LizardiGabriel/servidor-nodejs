@@ -453,6 +453,10 @@ app.use('/invitado/home/agendadas.html', express.static('./public/build2/views/I
 app.get('/invitado/home/reunionesNuevas', invitado.reunionesNuevas);
 
 
+app.use('/invitado/home/aceptarReunion', express.static('./public/build2/views/Invitado/AceptarReunion.html'));
+
+
+
 
 app.get('/invitado/test', (req, res) => {
   console.log('test');
