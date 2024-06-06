@@ -57,7 +57,7 @@
                         <button class="profileHeroSA__right__buttonContainer__buttonEdit" id="editProfile">Editar</button>   
                         <div class="profileHeroSA__right__buttonContainer__button" style="display: none;" id="contenedorEdit">
                             <button class="profileHeroSA__right__buttonContainer__button__secundario" id="cancelarProfile">Cancelar</button>
-                            <button class="profileHeroSA__right__buttonContainer__button__primario" id="guardarProfile">Guardar</button>
+                            <button class="profileHeroSA__right__buttonContainer__button__primario" id="guardarProfile" onclick="updateData()">Guardar</button>
                         </div>
                     </div>
                     
@@ -68,7 +68,7 @@
     <div id="footers"></div>
 
     <script>
-            document.addEventListener('DOMContentLoaded',async function() {
+    document.addEventListener('DOMContentLoaded',async function() {
         try {
         const response = await fetch('/anfitrion/getemail');
         const data = await response.json();
@@ -100,12 +100,67 @@
         }
     }
 
+    async function updateData(){
+        try {
+            const response = await fetch('/anfitrion/getemail');
+            const data = await response.json();
+            var datosUsuario = await getData(data.email);
+            console.log(datosUsuario);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+        const nombre= document.getElementById("inputNom").value; // Obtener el valor del input
+        const ApellidoPat= document.getElementById("inputApePat").value;
+        const ApellidoMat= document.getElementById("inputApeMat").value;
+        //obtener el valor del input para el telefono, es un entero por lo que se usa parseInt
+        const Tel= document.getElementById("inputTel").value;
+        const file_foto = document.getElementById("inputFoto").files[0];
+
+        let datatoSend={
+            email:datosUsuario.email_usuario,
+            nombre: nombre,
+            apellidoPaterno:ApellidoPat,
+            apellidoMaterno:ApellidoMat,
+            telefono:Tel,
+            idRol:datosUsuario.rol_usuario,
+        }
+
+        if (file_foto) {
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                datatoSend.fotoUsuario = reader.result; // Añade la foto en formato Base64 al objeto data
+                enviarData(datatoSend,datosUsuario.id_usuario);
+            };
+            reader.readAsDataURL(file_foto);
+        } else {
+            console.log("Hubo un error al cargar los datos");
+            enviarData(datatoSend,datosUsuario.id_usuario);
+        }
+    }
+
+    function enviarData(data,id_usuario) {
+        console.log(data);
+            fetch('/anfitrion/catalogo/usuarios/:'+id_usuario, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Respuesta del servidor:', data);
+            })
+            .catch(error => console.error('Error al mandar datos:', error));
+    }
+
     </script>
 
     <script src="../../js/anfitrion/headers.js"></script>
     <script src="../../js/buttonProfiles.js"></script>
-    <script src="../../js/sidebar.js"></script>
     <script src="/build/js/header.js"></script>
+    <script src="../../js/sidebar.js"></script>
     <script src="../../js/anfitrion.js"></script>
+    
 </body>
 </html>

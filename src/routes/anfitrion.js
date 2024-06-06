@@ -222,6 +222,31 @@ async function getUsuarioByEmail(req, res) {
     res.json(usuario);
 }
 
+async function updateUsuario(req, res) {
+    const { id } = req.params;
+    const { email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, fotoUsuario } = req.body;
+    console.log(req.body);
+    console.log('id: ', id, 'email: ', email, 'nombre: ', nombre, 'apellidoPaterno: ', apellidoPaterno);
+    const id_final = id.replace(/^:/, '');
+
+    if (fotoUsuario && esCadenaBase64Valida(fotoUsuario)) {
+        const extensionfoto = await obtenerExtensionDeBase64(fotoUsuario);
+        const rutafoto = await guardarImagenDesdeBase64(fotoUsuario, "fotografia_usuario" + id_final + "." + extensionfoto);
+        console.log(rutafoto);
+        const usuarioActualizado = await updateUsuarioBD(id_final, email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, rutafoto);
+        console.log('usuarioActualizado: ', usuarioActualizado);
+        res.status(200).json({ message: 'Usuario actualizado correctamente' });
+    } else if (fotoUsuario) {
+        console.error('Cadena base64 inválida para fotoUsuario.');
+        const usuarioActualizadoNoFoto = await updateUsuarioBD(id_final, email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, '');
+        res.status(201).json({ message: 'Usuario actualizado pero fotoUsuario inválido o ausente' });
+
+    } else {
+        console.error('fotoUsuario está undefined o es inválido.');
+        const usuarioActualizadoNoFoto = await updateUsuarioBD(id_final, email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, '');
+        res.status(201).json({ message: 'Usuario actualizado pero fotoUsuario inválido o ausente' });
+    }
+}
 
 module.exports = {
     logout,
@@ -232,5 +257,6 @@ module.exports = {
     getReunionById,
     getInvitadoByEmail,
     getUserEmail,
-    getUsuarioByEmail
+    getUsuarioByEmail,
+    updateUsuario
 };

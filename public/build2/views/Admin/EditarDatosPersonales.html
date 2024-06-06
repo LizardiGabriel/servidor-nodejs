@@ -118,7 +118,6 @@
             console.log("Hubo un error al cargar los datos");
             enviarData(datatoSend,datosUsuario.id_usuario);
         }
-
     }
 
     async function getData(correo) {
@@ -134,7 +133,6 @@
     }
 
     function enviarData(data,id_usuario) {
-
         console.log(data);
             fetch('/admin/catalogo/usuarios/:'+id_usuario, {
                 method: 'PUT',
