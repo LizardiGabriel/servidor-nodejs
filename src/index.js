@@ -234,10 +234,7 @@ app.use('/admin', (req, res, next) => {
 
 // admin
 
-app.get('/admin/getFotoPerfil', (req, res) => {
-    let foto = getFoto(req.session.jwt);
-    res.status(200).json({foto: foto});
-});
+app.get('/admin/getFotoPerfil', admin.getFotoAdmin);
 
 
 app.use('/admin/admin.html', express.static('./public/build2/views/Admin/admin.html'));

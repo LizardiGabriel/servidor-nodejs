@@ -1,8 +1,10 @@
 const { getSalasBD, setNewSalaBD, getSalaByIdBD, updateSalaBD, deleteSalaBD } = require('../tools/peticiones');
 const { getUsuariosBD, setNewUsuarioBD, getUsuarioByIdBD, getUsuarioByEmailBD, updateUsuarioBD, deleteUsuarioBD} = require('../tools/peticiones');
-const { getInvitadosBD, getInvitadoByIdBD, updateInvitadoBD, getReunionesAdminBD, getInvitacionesAdminBD } = require('../tools/peticiones');
+const { getInvitadosBD, getInvitadoByIdBD, updateInvitadoBD, getReunionesAdminBD, getInvitacionesAdminBD, getFotoFromUsuarioBD } = require('../tools/peticiones');
 const { getReunionAdminByIdBD } = require('../tools/petiAdmin');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
 const fs = require('fs');
 const path = require('path');
 const { log } = require('console');
@@ -19,6 +21,19 @@ function getemail(jsonToken){
     });
     return email;
 }
+
+function getIdUser(jsonToken){
+    let idUser = "";
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            idUser= decoded.idUsuario;
+        }
+    });
+    return idUser;
+}
+
 
 async function logout(req, res) {
     console.log('mensaje --> logout');
@@ -231,6 +246,13 @@ async function getInvitaciones(req, res) {
     res.json(invitaciones);
 }
 
+async function getFotoAdmin(req, res){
+    const idUsuario = getIdUser(req.session.jwt);
+    console.log('idUser: ', idUsuario)
+    const fotito = await getFotoFromUsuarioBD(idUsuario);
+    res.status(200).json({foto: fotito});
+}
+
 module.exports = {
     logout,
     getSalas,
@@ -254,5 +276,8 @@ module.exports = {
     getInvitaciones,
     getUserEmail,
 
-    getReunionById
+    getReunionById,
+
+    getFotoAdmin
+
 };

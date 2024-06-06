@@ -258,7 +258,7 @@ async function getUsuarioByEmailBD(email) {
     console.log('peticion a la bd de getUsuarioByEmail');
     try {
         const usuario = await prisma.usuario.findUnique({
-            where: { email_usuario:email }
+            where: { email_usuario: email }
         });
         return usuario;
     } catch (error) {
@@ -409,9 +409,9 @@ async function updateInvitadoBD(id, email, nombre, apellidoPaterno, apellidoMate
             }
         });
         if (invitadoActualizado != null) {
-            return { message: 'Invitado actualizado correctamente', status: 200};
-        }else{
-            return { message: 'Error al actualizar invitado', status: 500};
+            return { message: 'Invitado actualizado correctamente', status: 200 };
+        } else {
+            return { message: 'Error al actualizar invitado', status: 500 };
         }
     } catch (error) {
         console.error('Error al actualizar invitado:', error);
@@ -419,7 +419,7 @@ async function updateInvitadoBD(id, email, nombre, apellidoPaterno, apellidoMate
     }
 }
 
-async function updateInvitadoBDtoInvitacion(id, nombre, apellidoPaterno, apellidoMaterno, telefono,empresa,identifacion,foto) {
+async function updateInvitadoBDtoInvitacion(id, nombre, apellidoPaterno, apellidoMaterno, telefono, empresa, identifacion, foto) {
     console.log('peticion a la bd de updateInvitado');
     try {
         const invitadoActualizado = await prisma.invitado.update({
@@ -430,14 +430,14 @@ async function updateInvitadoBDtoInvitacion(id, nombre, apellidoPaterno, apellid
                 apellido_materno_invitado: apellidoMaterno,
                 telefono_invitado: telefono,
                 empresa_invitado: empresa,
-                identificacion_invitado:identifacion,
+                identificacion_invitado: identifacion,
                 foto_invitado: foto,
                 newCount: 0
             }
         });
         if (invitadoActualizado != null) {
-            return  200;
-        }else{
+            return 200;
+        } else {
             return 500;
         }
     } catch (error) {
@@ -457,8 +457,8 @@ async function updatePassInvitadoBD(idInvitado, hashedPassword) {
             }
         });
         if (invitadoActualizado != null) {
-            return  200;
-        }else{
+            return 200;
+        } else {
             return 500;
         }
 
@@ -534,13 +534,13 @@ async function getReunionesConRepeticionByIdOfUserBD(id_usuario) {
         }
 
 
-        for(let i = 0; i < reuniones.length; i++){
+        for (let i = 0; i < reuniones.length; i++) {
             const invitacionesReunion = await prisma.invitacion.findMany({
                 where: { id_reunion: reuniones[i].id_reunion }
             });
-            
+
             var infoInvitados = [];
-            for(let j = 0; j < invitacionesReunion.length; j++){
+            for (let j = 0; j < invitacionesReunion.length; j++) {
 
                 const invitadito = await getInvitadoByIdBD(invitacionesReunion[j].id_invitado);
                 console.log('invitado email: ', invitadito.email_invitado)
@@ -950,6 +950,24 @@ async function getReunionesConRepeticionByIdOfInvitadoBD(id_invitado) {
 }
 
 
+async function getFotoFromUsuarioBD(idUsuario) {
+    console.log('peticion a la bd de getFotoFromUsuarioBD, idUsuario: ', idUsuario);
+    try {
+        const user = await prisma.usuario.findUnique({
+            where: { id_usuario: idUsuario },
+            select: { foto_usuario: true },
+        });
+
+        return user.foto_usuario;
+
+    } catch (error) {
+        console.error('Error al actualizar invitado:', error);
+        return 500;
+    }
+
+}
+
+
 
 
 module.exports = {
@@ -1002,6 +1020,8 @@ module.exports = {
     updatePassInvitadoBD,
 
     getReunionesConRepeticionByIdOfInvitadoBD,
-    getReunionesNuebasBD
+    getReunionesNuebasBD,
+
+    getFotoFromUsuarioBD
 
 };
