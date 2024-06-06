@@ -162,3 +162,17 @@ function returnHTML2() {
     `;
 }
 
+var element = document.querySelector('.navbar__profile-container');
+
+fetch(`/anfitrion/getFotoPerfil`)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        element.style.backgroundImage = `url('${data.foto}')`;
+        console.log(element.style.backgroundImage);
+    }
+    )
+    .catch(error => {
+        element.style.backgroundImage = "url('../img/usuario.webp')";
+        console.log(error);
+    });

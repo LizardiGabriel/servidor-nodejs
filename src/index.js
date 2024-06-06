@@ -303,6 +303,17 @@ app.use('/admin/catalogo/uploads', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, rutaArchivo));
 });
 
+app.use('/anfitrion/uploads', (req, res) => {
+    // obtener la peticion actual
+    const rutaArchivo = '../public/build2/uploads' + req.path;
+    res.status(200).sendFile(path.join(__dirname, rutaArchivo));
+});
+
+app.use('/anfitrion/catalogo/uploads', (req, res) => {
+    // obtener la peticion actual
+    const rutaArchivo = '../public/build2/uploads' + req.path;
+    res.status(200).sendFile(path.join(__dirname, rutaArchivo));
+});
 
 app.get('/admin/test', (req, res) => {
   console.log('test');
@@ -326,6 +337,10 @@ app.use('/anfitrion', (req, res, next) => {
         }
     }else
         return res.status(401).json({error: 'Unauthorized', status: 401});
+});
+app.get('/anfitrion/getFotoPerfil', (req, res) => {
+    let foto = getFoto(req.session.jwt);
+    res.status(200).json({foto: foto});
 });
 app.get('/anfitrion/logout', anfitrion.logout);
 
@@ -351,9 +366,10 @@ app.get('/anfitrion/obtenerInfoInvitado', anfitrion.getInvitadoByEmail)
 app.get('/anfitrion/catalogo/salas', anfitrion.getSalasAnfitrion);
 app.get('/anfitrion/catalogo/usuarioEmail/:email', admin.getUsuarioByEmail);
 
+
 app.post('/anfitrion/reuniones', anfitrion.setNewReunion);
 app.post('/anfitrion/reuniones/invitacion', anfitrion.setInvitacion);
-
+app.put('/anfitrion/catalogo/usuarios/:id', admin.updateUsuario);
 app.use('/anfitrion/reuniones/ConsultarDatos.html', express.static('./public/build2/views/Anfitrion/ConsultarDatosReunion.html'));
 app.get('/anfitrion/reuniones/detalles/:idReunion', anfitrion.getReunionById);
 
