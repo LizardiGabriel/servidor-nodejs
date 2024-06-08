@@ -79,7 +79,6 @@ const rutas = [
     ['/js/registrarInformacionPersonal.js','../public/build2/js/registrarInformacionPersonal.js'],
     
     ['/js/superAdmin.js', '../public/build2/js/admin/superAdmin.js'],
-    ['/js/gestionarReuniones.js', '../public/build2/js/admin/gestionarReuniones.js'],
     ['/js/gestionInvitaciones.js', '../public/build2/js/admin/gestionInvitaciones.js'],
     ['/js/admin/headers.js', '../public/build2/js/admin/headers.js'],
     
@@ -107,6 +106,9 @@ const rutas = [
     ['/js/admin/crearSala.js', '../public/build2/js/admin/crearSala.js'],
     ['/js/admin/editarSala.js', '../public/build2/js/admin/editarSala.js'],
     
+    //Rutas para la gestión de reuniones (SuperAdmin)
+    ['/js/gestionarReuniones.js', '../public/build2/js/admin/gestionarReuniones.js'],
+    ['/js/admin/consultarDatosReunion.js', '../public/build2/js/admin/consultarDatosReunion.js'],
 
     //Rutas de js para Anfitrion
     ['/js/anfitrion/crearReunion.js', '../public/build2/js/anfitrion/crearReunion.js'],

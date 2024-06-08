@@ -19,7 +19,7 @@ function returnHTML() {
     optionUsuarios = `<div id="" class="sidebar__menu-option option__active" onclick="gestionDeUsuarios()">`
   } else if (window.location.pathname == "/admin/catalogo/GestionarSalas.html" || window.location.pathname == "/admin/EditarSala.html" || window.location.pathname == "/admin/catalogo/CrearSala.html") {
     optionSalas = `<div id="" class="sidebar__menu-option option__active" onclick="gestionarSalas()">`
-  } else if (window.location.pathname == "/admin/catalogo/GestionarReuniones.html") {
+  } else if (window.location.pathname == "/admin/catalogo/GestionarReuniones.html" || window.location.pathname == "/admin/ConsultarReunion.html") {
     optionReuniones = `<div id="" class="sidebar__menu-option option__active" onclick="gestionarReuniones()">`
   }
 

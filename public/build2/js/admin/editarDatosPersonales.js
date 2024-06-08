@@ -17,6 +17,11 @@ document.addEventListener('DOMContentLoaded',async function() {
     foto.src = datosUsuario.foto_usuario;
 
   } catch (error) {
+    modal.fire({
+      title: "Error",
+      icon: "error",
+      text: "Error al fetching data:" + error,
+    });
     console.error('Error fetching data:', error);
   }
 });
@@ -46,16 +51,32 @@ async function updateData(){
       idRol:datosUsuario.rol_usuario,
   }
 
-  if (file_foto) {
-      const reader = new FileReader();
-      reader.onloadend = function() {
-          datatoSend.fotoUsuario = reader.result; // Añade la foto en formato Base64 al objeto data
-          enviarData(datatoSend,datosUsuario.id_usuario);
-      };
-      reader.readAsDataURL(file_foto);
-  } else {
-      console.log("Hubo un error al cargar los datos");
-      enviarData(datatoSend,datosUsuario.id_usuario);
+  if (validaEditData(nombre, ApellidoPat, ApellidoMat, Tel)) {
+    modal.fire({
+      timer: undefined,
+      icon: 'question',
+      title: "¿Desea continuar?",
+      html: `Se modificará sus datos de la cuenta.`,
+      showDenyButton: true,
+      confirmButtonText: "Editar perfil",
+      denyButtonText: `Cancelar`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (file_foto) {
+          const reader = new FileReader();
+          reader.onloadend = function() {
+              datatoSend.fotoUsuario = reader.result; // Añade la foto en formato Base64 al objeto data
+              enviarData(datatoSend,datosUsuario.id_usuario);
+          };
+          reader.readAsDataURL(file_foto);
+        } else {
+            console.log("Hubo un error al cargar los datos");
+            enviarData(datatoSend,datosUsuario.id_usuario);
+        }
+      } else if (result.isDenied) {
+        
+      }
+    });
   }
 }
 
@@ -66,6 +87,11 @@ async function getData(correo) {
       const data = await response.json();
       return data;  // Asegura que data sea devuelta de la función
   } catch (error) {
+    modal.fire({
+      title: "Error",
+      icon: "error",
+      text: "Error fetching data:" + error,
+    });
       console.error('Error fetching data:', error);
       return null;  // Devolver null o algún indicativo de error
   }
@@ -82,10 +108,21 @@ function enviarData(data,id_usuario) {
       })
       .then(response => response.json())
         .then(data => {
-        
+          modal.fire({
+            title: "Operación Exitosa",
+            icon: "success",
+            text: "Sus datos han sido modificados correctamente"
+          })
           console.log('Respuesta del servidor:', data);
       })
-      .catch(error => console.error('Error al mandar datos:', error));
+      .catch(error => {
+        modal.fire({
+          title: "Error",
+          icon: "error",
+          text: "Error al mandar los datos:" + error,
+        });
+        console.error('Error al mandar los datos:', error);
+      });
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -125,3 +162,48 @@ document.addEventListener("DOMContentLoaded", function() {
       }
   });
 });
+
+function validaEditData(nombre, app, apm, telefono) {
+  let flag = true;
+  //Validación de nombre
+  if (nombre) {
+    if (!validateTextWithSpacesWithoutNumber(nombre)) {
+      flag = false;
+    }
+  } else {
+    flag = false;
+    document.getElementById("nombreForm").innerHTML = `<p class="msg-error-form">Favor de especificar un nombre</p>`
+  }
+
+  //Validación de apellido paterno
+  if (app) {
+    if (!validateTextWithoutSpacesNumber(app)) {
+      flag = false;
+    }
+  } else {
+    flag = false;
+    document.getElementById("appForm").innerHTML = `<p class="msg-error-form">Favor de especificar un apellido paterno</p>`
+  }
+
+  //Validación de apellido materno
+  if (apm) {
+    if (!validateTextWithoutSpacesNumber(apm)) {
+      flag = false;
+    }
+  } else {
+    flag = false;
+    document.getElementById("apmForm").innerHTML = `<p class="msg-error-form">Favor de especificar un apellido materno</p>`
+  }
+
+  //Validación de telefono
+  if (telefono) {
+    if (!validatePhoneNumber(telefono)) { 
+      flag = false;
+    }
+  } else {
+    flag = false;
+    document.getElementById("telefonoForm").innerHTML = `<p class="msg-error-form">Favor de especificar un número teléfonico</p>`
+  }
+
+  return flag;
+}
