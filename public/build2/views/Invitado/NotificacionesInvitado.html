@@ -116,6 +116,27 @@
 <div id="headers"></div>
 
 <main class="contenidoPrincipal">
+
+    <div id="contenedor_main">
+        <div class="registrarInforPersonal">
+            <section class="cRegistro">
+                <h1 class="title-example text-center">Reuniones Pendientes</h1>
+
+                <div id="divReuniones" class="cardszzz"></div>
+
+                <hr>
+
+
+
+
+
+
+            </section>
+        </div>
+    </div>
+
+
+    <!--
     <div class="recuperarQR">
         <h1 class="title-example text-center">Reuniones Pendientes</h1>
         <div class="__Tabla table-responsive paragraph-example">
@@ -135,6 +156,7 @@
             </table>
         </div>
     </div>
+    -->
 </main>
 
 <div id="footers"></div>
@@ -213,9 +235,9 @@
 
     function aceptar(id_reunion) {
         console.log('aceptar', id_reunion);
-        window.location.href = 'aceptarReunion?id_reunion=' + id_reunion;
-        /*
-        fetch('aceptarReunion', {
+
+
+        fetch('aceptarReunionId', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -225,12 +247,12 @@
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
-                obtenerReuniones();
+                window.location.href = data.ruta;
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
-            */
+
     }
 
     function declinar(id_reunion) {

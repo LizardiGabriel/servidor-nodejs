@@ -9,8 +9,8 @@ function generateAccessToken(email, idUsuario, rolNum, nombre, apellido, foto) {
     return jwt.sign({ email: email, idUsuario: idUsuario, rol: rolNum, nombre: nombre, apellido: apellido, foto: foto }, process.env.SECRET_KEY, { expiresIn: '20m' });
 }
 
-function generateTokenInvitado(email, idInvitado, rolNum, newCount, changeFirstPass) {
-    return jwt.sign({ email: email, idInvitado: idInvitado, rol: rolNum, newCount: newCount, changeFirstPass: changeFirstPass }, process.env.SECRET_KEY, { expiresIn: '60m' });
+function generateTokenInvitado(email, idInvitado, rolNum, newCount, changeFirstPass, idSeleccionado) {
+    return jwt.sign({ email: email, idInvitado: idInvitado, rol: rolNum, newCount: newCount, changeFirstPass: changeFirstPass, idSeleccionado: -1 }, process.env.SECRET_KEY, { expiresIn: '60m' });
 }
 
 async function login(req, res) {

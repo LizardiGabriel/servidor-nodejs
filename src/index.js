@@ -21,11 +21,13 @@ const externo = require('./routes/externo');
 const invitado= require('./routes/invitado');
 const { log } = require('console');
 
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+const jwtFunctions = require('./tools/jwtFunctions');
 
 
-const jwt = require('jsonwebtoken');
+
 
 
 const app = express();
@@ -472,7 +474,42 @@ app.use('/invitado/home/agendadas.html', express.static('./public/build2/views/I
 app.get('/invitado/home/reunionesNuevas', invitado.reunionesNuevas);
 
 
-app.use('/invitado/home/aceptarReunion', express.static('./public/build2/views/Invitado/AceptarReunion.html'));
+
+
+
+
+app.post('/invitado/home/aceptarReunionId', (req, res) => {
+    const jsonToken = req.session.jwt;
+    const idReunion = req.body.id_reunion;
+    console.log('aceptarReunionId: ---> ', idReunion);
+
+    let newToken = jwtFunctions.modifyJwtField(jsonToken, 'idSeleccionado', idReunion);
+    req.session.jwt = newToken;
+    console.log('newToken: ', newToken);
+    res.status(200).json({ruta: 'aceptarReunion', status: 200});
+
+});
+
+
+//app.use('/invitado/home/aceptarReunion', express.static('./public/build2/views/Invitado/AceptarReunion.html'));
+// validar que antes de entrar a /invitado/home/aceptarReunion exista un idSeleccionado en el jwt
+app.use('/invitado/home/aceptarReunion', async (req, res) => {
+    let idSeleccionado = 0;
+    jwt.verify(req.session.jwt, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({error: 'Unauthorized', status: 401});
+        } else {
+            idSeleccionado = decoded.idSeleccionado;
+        }
+    });
+
+    if (idSeleccionado === -1) {
+        return res.status(401).json({error: 'Unauthorized', status: 401});
+    } else {
+        // express.static('./public/build2/views/Invitado/AceptarReunion.html')
+        res.sendFile(path.join(__dirname, '../public/build2/views/Invitado/AceptarReunion.html'));
+    }
+});
 
 
 
