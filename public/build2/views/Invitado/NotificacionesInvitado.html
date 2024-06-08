@@ -116,22 +116,23 @@
 <div id="headers"></div>
 
 <main class="contenidoPrincipal">
-    <div id="contenedor_main">
-        <div class="registrarInforPersonal">
-            <section class="cRegistro">
-                <h1 class="title-example text-center">Reuniones Pendientes</h1>
-
-                <div id="divReuniones" class="cardszzz"></div>
-
-                <hr>
-
-
-
-
-
-
-            </section>
-
+    <div class="recuperarQR">
+        <h1 class="title-example text-center">Reuniones Pendientes</h1>
+        <div class="__Tabla table-responsive paragraph-example">
+            <table class="tabla table table-hover table-bordered table-sm" id="Tabla">
+                <thead class="tabla__cabecera">
+                    <tr>
+                        <th scope="col" data-sort="id" class="cabecera">ID</th>
+                        <th scope="col" data-sort="reunion" class="cabecera">Reunión</th>
+                        <th scope="col" data-sort="fecha" class="cabecera" id="fecha">Fecha</th>
+                        <th scope="col" data-sort="hora" class="cabecera">Hora</th>
+                        <th scope="col" data-sort="nombreAnfi" class="cabecera">Nombre Anfitrión</th>
+                        <th scope="col" data-sort="acciones" class="cabecera">Ver Detalles</th>
+                    </tr>
+                </thead>
+                <tbody class="tabla__cuerpo">
+                </tbody>
+            </table>
         </div>
     </div>
 </main>
