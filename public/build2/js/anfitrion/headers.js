@@ -2,6 +2,23 @@ var ejemplo = document.getElementById('headers');
 ejemplo.insertAdjacentHTML('beforeend', returnHTML());
 
 function returnHTML() {
+  console.log(window.location.pathname);
+  //Consultar Reunion
+  let optionReuniones = `<div id="" class="sidebar__menu-option" onclick="refReuniones()">`
+  //Agendar reunion
+  let optionAgendar = `<div id="" class="sidebar__menu-option" onclick="reuniones2()">`
+  //Salas
+  let optionSalas = `<div id="" class="sidebar__menu-option" onclick="refSalas()">`
+
+  //Ponemos activo la opción en la que se encuentra
+  if (window.location.pathname == "/anfitrion/reuniones.html" || window.location.pathname == "/anfitrion/reuniones/ConsultarDatos.html") {
+    optionReuniones = `<div id="" class="sidebar__menu-option option__active" onclick="refReuniones()">`
+  } else if (window.location.pathname == "/anfitrion/crearReunion.html" || window.location.pathname == "/anfitrion/crearReunion") {
+    optionAgendar = `<div id="" class="sidebar__menu-option option__active" onclick="reuniones2()">`
+  } else if (window.location.pathname == "/anfitrion/salas.html") {
+    optionSalas = `<div id="" class="sidebar__menu-option option__active" onclick="refSalas()">`
+  }
+
     return `
         <nav class="sidebar close">
         <div class="header">
@@ -22,8 +39,8 @@ function returnHTML() {
                 </svg>
             </div>
         </div>
-        <div id="sidebar__list" class="sidebar__menu">
-            <div id="" class="sidebar__menu-option option__active" onclick="refReuniones()">
+        <div id="sidebar__list" class="sidebar__menu" style="grid-template-columns:repeat(3, 6rem)">
+            ${optionReuniones}
                 <div class="icon" title="Usuarios">
                     <svg fill="#F9D8C1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;"
@@ -41,7 +58,7 @@ function returnHTML() {
                     <p class="option__text">Consultar Reunión</p>
                 </div>
             </div>
-            <div id="" class="sidebar__menu-option" onclick="reuniones2()">
+            ${optionAgendar}
                 <div class="icon" title="Reuniones">
                     <svg fill="#F9D8C1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
@@ -74,7 +91,7 @@ function returnHTML() {
                     <p class="option__text">Agendar Reunión</p>
                 </div>
             </div>
-            <div id="" class="sidebar__menu-option" onclick="refSalas()">
+            ${optionSalas}
                 <div class="icon" title="Salas">
 
                     <svg class="" aria-hidden="true" fill="#F9D8C1" viewBox="0 0 20 20">

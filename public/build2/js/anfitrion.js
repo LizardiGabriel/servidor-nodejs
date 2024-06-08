@@ -4,7 +4,7 @@ function logout() {
     })
         .then(response => {
             if (response.ok) {
-                window.location.href = "/";
+                window.location.href = "/home/login.html";
             } else {
                 console.error("Error al cerrar sesión:", response.statusText);
             }
