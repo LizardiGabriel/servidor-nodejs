@@ -55,6 +55,7 @@ const rutas = [
     ['/img/BeeMeet.png', '../public/build2/img/BeeMeet.png'],
     ['/img/icons/ico-editar.svg', '../public/build2/img/icons/ico-editar.svg'],
     ['/img/icons/ico-trash.svg', '../public/build2/img/icons/ico-trash.svg'],
+    ['/img/icons/ico-camara.png', '../public/build2/img/icons/ico-camara.png'],
     ['/img/usuario.webp', '../public/build2/img/usuario.webp'],
     ['/build/img/BeeMeet2.png', '../public/build2/img/BeeMeet2.png'],
     ['/build/img/BeeMeet.png', '../public/build2/img/BeeMeet.png'],
@@ -91,6 +92,9 @@ const rutas = [
     ['/js/sesiones/iniciarsesion.js', '../public/build2/js/sesiones/iniciarsesion.js'],
     ['/js/sesiones/recuperarContrasena.js', '../public/build2/js/sesiones/recuperarContrasena.js'],
     ['/js/sesiones/cambiarContrasena.js', '../public/build2/js/sesiones/cambiarContrasena.js'],
+    
+    //Rutas para la edición de cuentas personales
+    ['/js/admin/editarDatosPersonales.js', '../public/build2/js/admin/editarDatosPersonales.js'],
     
     //Rutas para la gestión de usuarios (SuperAdmin)
     ['/js/admin/gestionUsuarios.js', '../public/build2/js/admin/gestionUsuarios.js'],

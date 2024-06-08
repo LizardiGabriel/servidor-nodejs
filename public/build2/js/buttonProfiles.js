@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let cancelar = document.getElementById('cancelarProfile');
     let guardar = document.getElementById('guardarProfile');
     let contenedorEdit = document.getElementById('contenedorEdit');
-    let foto = document.getElementById('SeccionFoto');  //NO ESTA IMPLEMENTADA EN HTML
+    let foto = document.getElementById('foto-input');  //NO ESTA IMPLEMENTADA EN HTML
 
     //Variables de validación
     let patron_name = /^[áéíóúÁÉÍÓÚñäëïöüÄËÏÖÜ\w\d]{1,100}$/;
@@ -14,18 +14,18 @@ document.addEventListener('DOMContentLoaded', function() {
     let patron_phoneNumber =/(^\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})$/;
     
     activarBoton.addEventListener('click', function (event) {
-        activarBoton.style.display = "none";
-        contenedorEdit.style.display = '';
-       foto.style.display = 'block';  // NO ESTA IMPLEMENTADA EN HTML
-       foto.style.textAlign = 'center';  // NO ESTA IMPLEMENTADA EN HTML
-        habilitarInputs();
+      activarBoton.style.display = "none";
+      contenedorEdit.style.display = '';
+      /* foto.style.display = 'block';  // NO ESTA IMPLEMENTADA EN HTML
+      foto.style.textAlign = 'center';  // NO ESTA IMPLEMENTADA EN HTML */
+      habilitarInputs();
     });
 
     guardar.addEventListener('click', function () {
         contenedor.classList.add("view");
         contenedorEdit.style.display = "none";
         activarBoton.style.display = '';
-        foto.style.display = 'none';  //NO ESTA IMPLEMENTADA EN HTML
+        /* foto.style.display = 'none';  //NO ESTA IMPLEMENTADA EN HTML */
         deshabiltarInputs();
     });
 
@@ -33,51 +33,23 @@ document.addEventListener('DOMContentLoaded', function() {
         contenedor.classList.add("view");
         contenedorEdit.style.display = "none";
         activarBoton.style.display = '';
-        foto.style.display = 'none'; // NO ESTA IMPLEMENTADA EN HTML
+        /* foto.style.display = 'none'; // NO ESTA IMPLEMENTADA EN HTML */
         deshabiltarInputs();
     });
 
     /* Función  para deshabilitar los inputs */
     function deshabiltarInputs() {
-        document.getElementById('inputNom').disabled = true;
-        document.getElementById('inputApePat').disabled = true;
-        document.getElementById('inputApeMat').disabled = true;
-        document.getElementById('inputTel').disabled = true;
+        document.getElementById('nombre').disabled = true;
+        document.getElementById('app').disabled = true;
+        document.getElementById('apm').disabled = true;
+        document.getElementById('telefono').disabled = true;
     }
     
     /* Función para habilitar los inputs */
     function habilitarInputs() {
-        document.getElementById('inputNom').disabled = false;
-        document.getElementById('inputApePat').disabled = false;
-        document.getElementById('inputApeMat').disabled = false;
-        document.getElementById('inputTel').disabled = false;
+        document.getElementById('nombre').disabled = false;
+        document.getElementById('app').disabled = false;
+        document.getElementById('apm').disabled = false;
+        document.getElementById('telefono').disabled = false;
     }
-
-    //Función que va a validar los inputs
-    function validarInputs() {
-        //Validación del nombre
-        if (patron_name.test(document.getElementById('inputNom').value)) {
-            console.log("Nombre correcto");
-        } else {
-            console.log("Nombre incorrecto");
-        }
-
-        //Validación del apellido paterno
-        if (patron_name.test(document.getElementById('inputApePat').value)) {
-            console.log("ApePat correcto");
-        } else {
-            console.log("ApePat incorrecto");
-        }
-
-        //Validación del apellido materno
-        if (patron_name.test(document.getElementById('inputApetMat').value)) {
-            console.log("ApePat correcto");
-        } else {
-            console.log("ApePat incorrecto");
-        }
-
-        //Validación 
-    }
-
-
 });

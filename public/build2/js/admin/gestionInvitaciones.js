@@ -1,3 +1,5 @@
+let dataTable;
+
 async function obtenerInvitaciones() {
     var info = [];
     console.log('Cargando invitaciones...');
@@ -34,8 +36,12 @@ async function obtenerInvitaciones() {
 
 // Función para llenar la tabla con datos iniciales
 async function loadTableData() {
-    const data = await obtenerInvitaciones();
-    const tbody = document.querySelector('tbody');
+  const data = await obtenerInvitaciones();
+  const tbody = document.querySelector('tbody');
+  
+  //Limpiar la tabla antes de agregar nuevos datos
+  tbody.innerHTML = '';
+
     data.forEach(item => {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -50,26 +56,34 @@ async function loadTableData() {
         `;
         tbody.appendChild(row);
     });
+  cargarFiltros();
+}
+
+function cargarFiltros() {
+  // Destruir y volver a inicializar DataTable
+  if (!$.fn.DataTable.isDataTable('#Tabla')) {
+    //$('#Tabla').DataTable().destroy();
+    dataTable = $('#Tabla').DataTable({
+      pagingType: 'full_numbers', //Tipo de paginación
+      info: false, //Desactiva la información de los registros totales
+      language: {
+        lengthMenu: 'Mostrar _MENU_ registros', //Para cambiar el texto de los registros que se muestran
+        search: 'Buscar',
+        zeroRecords: 'No se encontró ninguna coincidencia ):'
+      },
+      columnDefs: [
+        { "orderable": false, "targets": -1 } // Desactiva el ordenamiento en la última columna (Acciones)
+      ],
+      autoWidth: true
+    });
+  } else {
+    dataTable.draw()
+  }
 }
 
 // Cargar datos en la tabla al iniciar la página
 loadTableData();
 
-new DataTable('#Tabla', {
-    pagingType: 'full_numbers', //Tipo de paginación
-    info: false, //Desactiva la información de los registros totales
-    language: {
-        lengthMenu: ' Mostrar  _MENU_  registros', //Para cambiar el texto de los registros que se muestran
-        search: 'Buscar',
-        zeroRecords: 'No se encontró ninguna coincidencia ):' //Mensaje que se muestra cuando no se encuentran registros
-    },
-    columnDefs: [
-        { type: 'date', targets: [2] }, // Indica la columna que contiene la fecha
-        { type: 'time', targets: [3] }, // Indica la columna que contiene la hora 
-        { type: 'time', targets: [4] } // Indica la columna que contiene la hora
-    ],
-    autoWidth: true
-});
 /*
 // Activación de DataTables
 $(document).ready(function () {
