@@ -1,3 +1,23 @@
+/* Función para los modales */
+const modal = Swal.mixin({
+  timer: 3000,
+  timerProgressBar: true,
+  background: "#fbfff1",
+  showConfirmButton: true,
+  confirmButtonColor: "#89b6b1",
+  cancelButtonColor: "#305272",
+  denyButtonColor: "#305272",
+  width: "50%",
+  customClass: {
+    title: "titleSize",
+    htmlContainer: "contentSize",
+    confirmButton: "buttonSize",
+    cancelButton: "buttonSize",
+    denyButton: "buttonSize",
+    icon: "iconSize",
+  }
+})
+
 function logout() {
     fetch("/anfitrion/logout", {
         method: "GET"
@@ -26,5 +46,18 @@ function reuniones2() {
     window.location.href = '/anfitrion/crearReunion';
 }
 
+// Selecciona el primer elemento con la clase 'navbar__profile-container'
+var element = document.querySelector('.navbar__profile-container');
 
+fetch(`/anfitrion/getFotoPerfil`)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        element.style.backgroundImage = `url('${data.foto}')`;
+    }
+    )
+    .catch(error => {
+        element.style.backgroundImage = "url('../img/usuario.webp')";
+        console.log(error);
+    });
 

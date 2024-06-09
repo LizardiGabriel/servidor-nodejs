@@ -96,6 +96,7 @@ const rutas = [
     
     //Rutas para la edición de cuentas personales
     ['/js/admin/editarDatosPersonales.js', '../public/build2/js/admin/editarDatosPersonales.js'],
+    ['/js/anfitrion/editarDatosPersonales.js', '../public/build2/js/anfitrion/editarDatosPersonales.js'],
     
     //Rutas para la gestión de usuarios (SuperAdmin)
     ['/js/admin/gestionUsuarios.js', '../public/build2/js/admin/gestionUsuarios.js'],
