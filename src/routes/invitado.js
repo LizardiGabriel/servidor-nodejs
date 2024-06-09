@@ -8,8 +8,18 @@ require('dotenv').config();
 
 
 const { hashPassword, comparePassword } = require('../tools/cipher');
-const { getInvitadoByIdBD, getInvitadoByIdEmailBD} = require('../tools/peticiones');
+const { getInvitadoByIdBD, getInvitadoByIdEmailBD, setNewInvitadoBD, setNewColadoBD, getInvitacionByIdBD,
+    setNewInvitacionBD,
+    getDetallesReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD
+} = require('../tools/peticiones');
 const {getInvitadoByEmailBD,updateInvitadoBDtoInvitacion, updatePassInvitadoBD, getReunionesConRepeticionByIdOfInvitadoBD, getReunionesNuebasBD} = require('../tools/peticiones');
+
+const { getInvitacionBy_IdInvitado_IdReunionBD } = require('../tools/peticiones');
+
+const { generatePassword } = require('../tools/tools');
+
+const{putInfoInvitadoToReunionBD, createColadoBD} = require('../tools/peticiones');
+const mail = require("../tools/mail");
 
 async function logout(req, res) {
     console.log('mensaje --> logout');
@@ -28,6 +38,19 @@ function getIdInvitado(jsonToken){
     });
     return idInvitado;
 }
+
+function getidSeleccionado(jsonToken){
+    let idSeleccionado = '';
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            idSeleccionado = decoded.idSeleccionado;
+        }
+    });
+    return idSeleccionado;
+}
+
 
 
 function generateTokenInvitado(email, idInvitado, rolNum, newCount, changeFirstPass) {
@@ -192,9 +215,85 @@ async function reunionesPendientes(req, res){
 async function aceptarReunion(req, res){
     console.log('mensaje --> aceptarReunion');
     const idInvitado = getIdInvitado(req.session.jwt);
-    console.log('idInvitado:', idInvitado);
+    const idReunion = getidSeleccionado(req.session.jwt);
 
-    res.json({ message: 'Reunion aceptada exitosamente'});
+    const invitacion = await getInvitacionBy_IdInvitado_IdReunionBD(idInvitado, idReunion);
+    const idInvitacion = invitacion.id_invitacion;
+
+    const colados = req.body.colados;
+    const dispositivos = req.body.dispositivos;
+    const automoviles = req.body.automoviles;
+
+
+    // añadirlo en un for
+    for(const colado of colados){
+        console.log('===---___>>>procesando el colado: ', colado);
+        let invitado = await getInvitadoByEmailBD(colado);
+        let wasRegistred = 1;
+        let password = ""
+        if (invitado === null) {
+            wasRegistred = 0;
+            password = await generatePassword();
+            console.log('password generated successfully:', password);
+            invitado = await setNewColadoBD(colado, password);
+        }
+
+        const id_invitado = invitado.id_invitado;
+        const setInvitacion = await setNewInvitacionBD(idReunion, id_invitado, 0);
+        const reunion = await getDetallesReunionByIdBD(idReunion);
+
+        const sala = await getSalaByIdBD(reunion.id_sala);
+        const titulo = reunion.titulo_reunion;
+        const descripcion = reunion.descripcion_reunion;
+        const anfitrion = await getUsuarioByIdBD(reunion.id_usuario);
+        const repeticiones = reunion.Repeticion;
+
+        if(setInvitacion !== null){
+            let emailText = "";
+            if(wasRegistred){
+                // si el cliente ya ha sido invitado a reuniones antes --> el email debe de decir que se le envio una nueva invitacion y revise su cuenta
+                emailText =  colado + "se te ha enviado una nueva invitacion, inicia sesion para confirmar tu asistencia"
+                    + "a la reunion: "+ titulo + " en la sala: " + sala.nombre_sala + " con el anfitrion: " + anfitrion.nombre_usuario + " " + anfitrion.apellido_paterno_usuario +
+                    " con la descripcion: " + descripcion + " en la(s) fecha(s): " +
+                    repeticiones.map((rep) => { return rep.fecha_repeticion + " de " + rep.hora_inicio_repeticion + " a " + rep.hora_fin_repeticion }).join(", ") +
+                    " entra a la plataforma beemeet.com para conocer los detalles ";
+            }else{
+                emailText = "invitado@test.com, has sido invitado a una reunion " +
+                    "en la sala: " + sala.nombre_sala + " con el anfitrion: " + anfitrion.nombre_usuario + " " + anfitrion.apellido_paterno_usuario +
+                    " con la descripcion: " + descripcion + " en la(s) fecha(s): " +
+                    repeticiones.map((rep) => { return rep.fecha_repeticion + " de " + rep.hora_inicio_repeticion + " a " + rep.hora_fin_repeticion }).join(", ") +
+                    " entra a la plataforma beemeet.com para conocer los detalles " +
+                    "tu usuario es: " + colado + " y tu contrasena temporal es: " + password;
+            }
+
+            // mandar el email, el email debe tener
+            console.log('emailText: ', emailText);
+            const envio = await mail(emailText, colado);
+            console.log('envio: ', envio);
+
+            // tabla de colados
+
+            const coladito = await createColadoBD(id_invitado, idInvitacion);
+            console.log('coladito: ', coladito);
+
+        }else{
+            res.json({ message: 'error', status: 400});
+        }
+
+    }
+
+
+
+
+    const actualizarInvitacionReunionBD = await putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automoviles);
+    console.log('actualizarInvitacionReunionBD: ', actualizarInvitacionReunionBD);
+
+
+
+    res.status(200).json({ message: 'succesful', status: 200});
+
+
+
 }
 
 

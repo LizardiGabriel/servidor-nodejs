@@ -644,7 +644,7 @@ async function setNewInvitadoBD(email, password) {
                 password_invitado: password,
                 telefono_invitado: "",
                 empresa_invitado: "",
-                foto_invitado: "",
+                foto_invitado: "uploads/usuario.webp",
                 identificacion_invitado: "",
                 es_colado_invitado: 1,
                 habilitado: 1,
@@ -659,6 +659,35 @@ async function setNewInvitadoBD(email, password) {
         return null;
     }
 
+
+}
+
+async function setNewColadoBD(email, password) {
+    console.log('peticion a la bd de setNewColado');
+    try {
+        const nuevoColado = await prisma.invitado.create({
+            data: {
+                email_invitado: email,
+                nombre_invitado: "",
+                apellido_paterno_invitado: "",
+                apellido_materno_invitado: "",
+                password_invitado: password,
+                telefono_invitado: "",
+                empresa_invitado: "",
+                foto_invitado: "uploads/usuario.webp",
+                identificacion_invitado: "",
+                es_colado_invitado: 0,
+                habilitado: 1,
+                newCount: 1,
+                changeFirstPass: 0
+
+            }
+        });
+        return nuevoColado;
+    } catch (error) {
+        console.error('Error al crear colado:', error);
+        return null;
+    }
 
 }
 
@@ -796,6 +825,9 @@ async function getInvitacionesAdminBD() {
 }
 
 async function getReunionesNuebasBD(id_invitado) {
+
+
+    // importante, cambiar esto, pq se deberian de enviar las invitaciones, no todas las reuniones
     console.log('Petición a la BD para obtener reuniones de un invitado con detalles');
     try {
         // Obtener todas las invitaciones del invitado específico
@@ -967,6 +999,102 @@ async function getFotoFromUsuarioBD(idUsuario) {
 
 }
 
+async function getInvitacionBy_IdInvitado_IdReunionBD(idInvitado, idReunion) {
+    console.log('peticion a la bd de getInvitacionBy_IdInvitado_IdReunionBD, idInvitado: ', idInvitado, 'idReunion: ', idReunion);
+    try {
+        const invitacion = await prisma.invitacion.findFirst({
+            where: {
+                id_invitado: idInvitado,
+                id_reunion: idReunion
+            }
+        });
+
+        return invitacion;
+
+    } catch (error) {
+        console.error('Error al actualizar invitado:', error);
+        return 500;
+    }
+
+
+}
+
+// insertar en la tabla colados:
+
+async function createColadoBD(id_invitado, idInvitacion){
+    console.log('peticion a la bd de createColadoBD, id_invitado: ', id_invitado, 'idInvitacion: ', idInvitacion);
+    try {
+        const colado = await prisma.colado.create({
+            data: {
+                id_invitado: id_invitado,
+                id_invitacion: idInvitacion,
+                isConfirmed: 0
+            }
+        });
+
+        return colado;
+
+    } catch (error) {
+        console.error('Error al actualizar invitado:', error);
+        return 500;
+    }
+
+}
+
+// funcion para que el invitado guarde los dispositivos y automoviles en la invitacion que se le asigno
+async function putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automoviles){
+
+    console.log('peticion a la bd de putInfoInvitadoToReunionBD, idInvitacion: ', idInvitacion, 'dispositivos: ', dispositivos, 'automoviles: ', automoviles);
+
+    try {
+
+
+        // 1. Crear los dispositivos electrónicos
+        for (const dispositivo of dispositivos) {
+            await prisma.dispositivo_electronico.create({
+                data: {
+                    id_invitacion: Number(idInvitacion),
+                    no_serie_dispositivo_electronico: dispositivo.numeroSerie,
+                    modelo_dispositivo_electronico: dispositivo.tipo,
+                    marca_dispositivo_electronico: dispositivo.marca,
+                }
+            });
+        }
+
+        // 2. Crear los automóviles
+        for (const automovil of automoviles) {
+            await prisma.automovil.create({
+                data: {
+                    id_invitacion: Number(idInvitacion),
+                    color_automovil: automovil.color,
+                    matricula_automovil: automovil.placa,
+                    marca_automovil: automovil.marca,
+                    modelo_automovil: automovil.modelo,
+                }
+            });
+        }
+
+        // acualizar el estatus de la invitacion y poner el url del qr de la invitacion
+
+        await prisma.invitacion.update({
+            where: { id_invitacion: Number(idInvitacion) },
+            data: {
+                isConfirmed: 1,
+                qr_acceso: "uploads/qr_acceso.jpg",
+                habilitado: "Si"
+            }
+        });
+
+        return "true";
+    }
+    catch (error) {
+        console.error('Error al putInfoInvitadoToReunionBD:', error);
+        return 500;
+    }
+
+
+}
+
 
 
 
@@ -1022,6 +1150,13 @@ module.exports = {
     getReunionesConRepeticionByIdOfInvitadoBD,
     getReunionesNuebasBD,
 
-    getFotoFromUsuarioBD
+    getFotoFromUsuarioBD,
+
+    putInfoInvitadoToReunionBD,
+
+    setNewColadoBD,
+    getInvitacionBy_IdInvitado_IdReunionBD,
+
+    createColadoBD
 
 };

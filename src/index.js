@@ -512,6 +512,9 @@ app.use('/invitado/home/aceptarReunion', async (req, res) => {
 });
 
 
+app.post('/invitado/home/aceptarReunionData', invitado.aceptarReunion);
+
+
 
 
 app.get('/invitado/test', (req, res) => {
