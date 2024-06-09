@@ -54,6 +54,8 @@ async function obtenerSalas() {
   }
 
   async function loadTableData() {
+
+    console.log('>>>>>>> Cargando datos...');
     const data = await obtenerSalas(); // Esperar a que las salas se carguen
     const tbody = document.getElementById('tablaSalas');
   

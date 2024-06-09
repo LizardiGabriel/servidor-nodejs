@@ -26,17 +26,9 @@ function checkCredenciales() {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-<<<<<<< HEAD
-      // email: email,
-      // password: password,
-      email: "anfitrion@test.com",
-      password: "password",
-=======
+
       email: email,
       password: password,
-      /* email: "danygamer17@hotmail.com",
-      password: "fPiq6QFg", */
->>>>>>> 990d217562d89404d1aa95da6224e421ae7c8a52
       Recuerdame: Recuerdame
     })
   })

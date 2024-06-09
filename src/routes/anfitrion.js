@@ -84,7 +84,7 @@ async function getReunionesAnfitrion(req, res) {
 }
 
 async function getSalasAnfitrion(req, res) {
-    console.log('mensaje --> getSalasAnfitrion');
+    console.log('>>>>>>>>>>>>>>>>>>>>> d bsuvbhuwd   mensaje --> getSalasAnfitrion');
     //console.log(req.session);
     const salas = await getSalasBD();
     if (salas !== null) {
