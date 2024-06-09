@@ -21,6 +21,9 @@ const { generatePassword } = require('../tools/tools');
 const{putInfoInvitadoToReunionBD, createColadoBD} = require('../tools/peticiones');
 const mail = require("../tools/mail");
 
+
+const jwtFunctions = require('../tools/jwtFunctions');
+
 async function logout(req, res) {
     console.log('mensaje --> logout');
     req.session.destroy();
@@ -176,8 +179,11 @@ async function cambiarContrasena(req, res) {
 
 
     const invitadoNuevo = await getInvitadoByIdBD(idInvitado);
-    const token1 = generateTokenInvitado(invitado.email_invitado, invitado.id_invitado, 4, invitado.newCount, invitado.changeFirstPass);
-    req.session.jwt = token1;
+    let newToken = jwtFunctions.modifyJwtField(req.session.jwt, 'newCount', invitadoNuevo.newCount);
+    newToken = jwtFunctions.modifyJwtField(newToken, 'changeFirstPass', invitadoNuevo.changeFirstPass);
+    req.session.jwt = newToken;
+    console.log('newToken: ', newToken);
+
     
     return res.status(200).json({
         ruta: rutita,

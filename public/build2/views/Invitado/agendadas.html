@@ -47,6 +47,21 @@
 
 <div id="footers"></div>
 
+<script>
+    window.onload = function () {
+        obtenerReuniones();
+    }
+
+
+    function obtenerReuniones() {
+        fetch('reunionesConfirmadas')
+            .then(response => response.json())
+            .then(reuniones => {
+                console.log('reuniones xd:', reuniones);
+            });
+    }
+</script>
+
 
 <script src="../../js/invitado/headers.js"></script>
 <script src="../../js/header.js"></script>

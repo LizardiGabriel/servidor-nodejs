@@ -832,7 +832,10 @@ async function getReunionesNuebasBD(id_invitado) {
     try {
         // Obtener todas las invitaciones del invitado específico
         const invitaciones = await prisma.invitacion.findMany({
-            where: { id_invitado: Number(id_invitado) },
+            where: {
+                id_invitado: Number(id_invitado),
+                isConfirmed: 0
+            },
             include: {
                 reunion: {
                     include: {
@@ -872,11 +875,6 @@ async function getReunionesNuebasBD(id_invitado) {
             const numColados = invitacion.numero_colados;
             invitacion.numColados = numColados;
 
-            // Añadir la información de los invitados y sus colados
-            const invitacionesReunion = await prisma.invitacion.findMany({
-                where: { id_reunion: reunion.id_reunion }
-            });
-
             // Añadir la sala y el nombre del usuario a la reunión
             reunion.nombreSala = reunion.sala.nombre_sala;
             reunion.nombreUsuario = `${reunion.usuario.nombre_usuario} ${reunion.usuario.apellido_paterno_usuario} ${reunion.usuario.apellido_materno_usuario}`;
@@ -906,9 +904,17 @@ async function getReunionesConRepeticionByIdOfInvitadoBD(id_invitado) {
     try {
         // Obtener todas las invitaciones del invitado específico
         const invitaciones = await prisma.invitacion.findMany({
-            where: { id_invitado: Number(id_invitado) },
+            where: {
+                id_invitado: Number(id_invitado),
+                isConfirmed: 1
+            },
             include: {
-                reunion: true
+                reunion: {
+                    include: {
+                        sala: true,  // Incluye la sala asociada a la reunión
+                        usuario: true // Incluye el usuario asociado a la reunión
+                    }
+                }
             }
         });
 
@@ -937,43 +943,53 @@ async function getReunionesConRepeticionByIdOfInvitadoBD(id_invitado) {
             }));
             reunion.fechasRepeticion = fechasRep;
 
-            // Añadir la información de los invitados y sus colados
-            const invitacionesReunion = await prisma.invitacion.findMany({
-                where: { id_reunion: reunion.id_reunion }
+
+
+
+            const colados = await prisma.colado.findMany({
+                where: { id_invitacion: invitacion.id_invitacion },
+                include: {
+                    invitado: true
+                }
             });
-            const infoInvitados = [];
-            for (let j = 0; j < invitacionesReunion.length; j++) {
-                const inv = invitacionesReunion[j];
-                const invitado = await prisma.invitado.findUnique({
-                    where: { id_invitado: inv.id_invitado }
-                });
+            const infoColados = colados.map(colado => ({
+                isConfirmed: colado.isConfirmed,
+                apellido_ma: colado.invitado.apellido_materno_invitado,
+                apellido_pa: colado.invitado.apellido_paterno_invitado,
+                nombre: colado.invitado.nombre_invitado,
+                email: colado.invitado.email_invitado,
+                foto: colado.invitado.foto_invitado,
+                id_invitado: colado.invitado.id_invitado,
+                habilitado: colado.invitado.habilitado,
 
-                // Obtener información de colados
-                const colados = await prisma.colado_invitado.findMany({
-                    where: { id_invitado: inv.id_invitado },
-                    include: {
-                        colado: true
-                    }
-                });
+            }));
+            reunion.colados = infoColados;
 
-                const coladosInfo = colados.map(colado => ({
-                    id_colado: colado.colado.id_colado,
-                    id_invitado: colado.invitado.id_invitado,
-                    nombre_invitado: colado.invitado.nombre_invitado,
-                    email_invitado: colado.invitado.email_invitado
-                }));
 
-                infoInvitados.push({
-                    numero_colados: inv.numero_colados,
-                    correo_invitado: invitado.email_invitado,
-                    colados: coladosInfo
-                });
+            // Añadir el número de colados de la invitación
+            const numColados = invitacion.numero_colados;
+            invitacion.numColados = numColados;
+
+            // Añadir la sala y el nombre del usuario a la reunión
+            reunion.nombreSala = reunion.sala.nombre_sala;
+            reunion.nombreUsuario = `${reunion.usuario.nombre_usuario} ${reunion.usuario.apellido_paterno_usuario} ${reunion.usuario.apellido_materno_usuario}`;
+
+            // Incluir la información de la invitación en la reunión
+            if (!reunion.invitaciones) {
+                reunion.invitaciones = [];
             }
-            reunion.infoInvitados = infoInvitados;
+            reunion.invitaciones.push({
+                id_invitacion: invitacion.id_invitacion,
+                numColados: numColados,
+                qr_acceso: invitacion.qr_acceso
+            });
+
+
 
             reuniones.push(reunion);
         }
 
+        console.log('reuniones: ', reuniones);
         return reuniones;
     } catch (error) {
         console.error('Error al obtener las reuniones del invitado:', error);

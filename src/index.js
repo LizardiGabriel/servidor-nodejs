@@ -472,6 +472,8 @@ app.use('/invitado/home/pendientes.html', express.static('./public/build2/views/
 app.use('/invitado/home/agendadas.html', express.static('./public/build2/views/Invitado/agendadas.html'));
 
 app.get('/invitado/home/reunionesNuevas', invitado.reunionesNuevas);
+app.get('/invitado/home/reunionesConfirmadas', invitado.reunionesPendientes);
+
 
 
 
