@@ -34,16 +34,10 @@ async function login(req, res) {
                 // si el invitado existe
                 if(password === invitado.password_invitado){
                     console.log('invitado password correcto');
-                    if(invitado.es_colado_invitado === 1){
-                        console.log('es invitado');
-                        rutita = '/invitado/home/invitado.html';
-                        token = generateTokenInvitado(email, invitado.id_invitado, 4, invitado.newCount, invitado.changeFirstPass);
-                    }else if(invitado.es_colado_invitado === 0){
-                        console.log('es colado');
-                        rutita = '/acompañante/acompañante.html';
-                        token = generateAccessToken(email, invitado.id_invitado, 5);
+                    console.log('es invitado');
+                    rutita = '/invitado/home/invitado.html';
+                    token = generateTokenInvitado(email, invitado.id_invitado, 4, invitado.newCount, invitado.changeFirstPass);
 
-                    }
                     req.session.jwt = token;
                     return res.status(200).json({
                         ruta: rutita,

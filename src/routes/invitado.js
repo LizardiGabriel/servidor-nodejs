@@ -243,7 +243,7 @@ async function aceptarReunion(req, res){
         }
 
         const id_invitado = invitado.id_invitado;
-        const setInvitacion = await setNewInvitacionBD(idReunion, id_invitado, 0);
+        const setInvitacion = await setNewInvitacionBD(idReunion, id_invitado, 0, 0);
         const reunion = await getDetallesReunionByIdBD(idReunion);
 
         const sala = await getSalaByIdBD(reunion.id_sala);

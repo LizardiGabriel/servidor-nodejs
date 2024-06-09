@@ -145,7 +145,7 @@ async function setInvitacion(req, res) {
 
     const id_invitado = invitado.id_invitado;
     
-    const setInvitacion = await setNewInvitacionBD(idReunion, id_invitado, acompanantesInv);
+    const setInvitacion = await setNewInvitacionBD(idReunion, id_invitado, acompanantesInv, 1);
     const reunion = await getDetallesReunionByIdBD(idReunion);
 
 
