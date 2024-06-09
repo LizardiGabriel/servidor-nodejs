@@ -1,5 +1,5 @@
 /* Función para los modales */
-const modal = Swal.mixin({
+/*const modal = Swal.mixin({
     timer: 3000,
     timerProgressBar: true,
     background: "#fbfff1",
@@ -14,6 +14,8 @@ const modal = Swal.mixin({
         icon: "iconSize",
     }
 })
+
+ */
 
 window.onload = function(){
     loadTableData();
