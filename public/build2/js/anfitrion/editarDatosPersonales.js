@@ -6,13 +6,13 @@ document.addEventListener('DOMContentLoaded',async function() {
   const nombre= document.getElementById("nombre");
   nombre.value=datosUsuario.nombre_usuario;
   const ApellidoPat= document.getElementById("app");
-  ApellidoPat.placeholder=datosUsuario.apellido_paterno_usuario;
+  ApellidoPat.value=datosUsuario.apellido_paterno_usuario;
   const ApellidoMat= document.getElementById("apm");
-  ApellidoMat.placeholder=datosUsuario.apellido_materno_usuario;
+  ApellidoMat.value=datosUsuario.apellido_materno_usuario;
   /* const email= document.getElementById("inputEmail");
   email.placeholder=data.email; */
   const Tel= document.getElementById("telefono");
-  Tel.placeholder = datosUsuario.telefono_usuario;
+  Tel.value = datosUsuario.telefono_usuario;
   const foto = document.getElementById("profile-image");
   foto.src = datosUsuario.foto_usuario;  
 
