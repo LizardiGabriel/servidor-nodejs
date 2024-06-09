@@ -30,6 +30,8 @@
             <section class="cRegistro">
                 <h1 class="title-example text-center">Registro de acceso a la reunion</h1>
 
+                <div id="DetallesReunion"></div>
+
 
                 <form novalidate>
                     <!-- Información de Acompañantes -->
@@ -111,6 +113,38 @@
 </main>
 
 <div id="footers"></div>
+
+<script>
+    window.onload = function() {
+        obtenerDetallesReunion();
+    };
+
+    function obtenerDetallesReunion() {
+        fetch('obtenerDetallesReunion')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Detalles de la Reunion:', data);
+                const div = document.getElementById('DetallesReunion');
+                div.innerHTML = `
+                    <p>titulo: ${data[0].titulo_reunion}</p>
+                    <p>Descripcion: ${data[0].descripcion_reunion}</p>
+                    <p>Anfitrion: ${data[0].nombreUsuario}</p>
+                    <p>Horarrio: ${data[0].fechasRepeticion[0].hora_inicio_repeticion} - ${data[0].fechasRepeticion[0].hora_fin_repeticion}</p>
+                    <p>Fecha(s): ${data[0].numRepeticion}</p>
+                    <ul>
+                        ${data[0].fechasRepeticion.map(fecha => `<li>${fecha.fecha_repeticion}</li>`).join('')}
+                    </ul>
+                    <p>Colados permitidos: ${data[0].invitaciones[0].numColados}</p>
+
+                    <p>Sala: ${data[0].nombreSala}</p>
+
+                `;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

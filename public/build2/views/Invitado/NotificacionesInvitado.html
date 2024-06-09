@@ -19,96 +19,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-    <style>
-        .centerThis {
-            margin: auto;
-            width: 89%;
-            padding: 10px;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        h1 {
-            margin-bottom: 10px;
-        }
-
-        h4 {
-            padding: 0px;
-            margin: 0px;
-            font-weight: 400;
-
-            display: inline;
-        }
-
-        button {
-            padding: 8px 12px;
-            margin-right: 10px;
-            cursor: pointer;
-        }
-
-
-        form {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input[type="text"],
-        input[type="date"],
-        input[type="number"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin-top: 10px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        .card{
-            border: 1px solid #ccc;
-            border-radius: 2px;
-            padding: 5px;
-            margin-bottom: 10px;
-        }
-
-        .fechas li{
-            list-style: none;
-
-        }
-
-        .cardszzz {
-
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .card p {
-            margin: 0;
-            white-space: nowrap;
-            display: inline-flex;
-        }
-
-    </style>
 
 </head>
 
@@ -119,128 +29,11 @@
 
     <div id="contenedor_main">
         <h1 class="reuniones__titulo">Reuniones Pendientes</h1>
-        <div class="misReunionesGRID">
-            <div class="misReunionesGRID__card">
-                <div class="circleContainer">
-                    <p class="numReunion">1</p>
-                </div>
-                <div class="headerReunion">
-                    <h3 class="tituloReunion">Proyecto TICS</h3>
-                    <p class="fechaReunion">24-02-2024</p>
-                </div>
-                <div class="datosReunion">
-                    <p class="horarioReunion">10:00 AM - 1:30 PM</p>
-                    <p class="anfitrionReunion">Andres Martínez</p>
-                </div>
-                <div class="buttonReunion__Container">
-                    <button class="buttonReunion">Ver Detalles</button>
-                </div>
-            </div>
-            <div class="misReunionesGRID__card">
-                <div class="circleContainer">
-                    <p class="numReunion">1</p>
-                </div>
-                <div class="headerReunion">
-                    <h3 class="tituloReunion">Proyecto TICS</h3>
-                    <p class="fechaReunion">24-02-2024</p>
-                </div>
-                <div class="datosReunion">
-                    <p class="horarioReunion">10:00 AM - 1:30 PM</p>
-                    <p class="anfitrionReunion">Andres Martínez</p>
-                </div>
-                <div class="buttonReunion__Container">
-                    <button class="buttonReunion">Ver Detalles</button>
-                </div>
-            </div>
-            <div class="misReunionesGRID__card">
-                <div class="circleContainer">
-                    <p class="numReunion">1</p>
-                </div>
-                <div class="headerReunion">
-                    <h3 class="tituloReunion">Proyecto TICS</h3>
-                    <p class="fechaReunion">24-02-2024</p>
-                </div>
-                <div class="datosReunion">
-                    <p class="horarioReunion">10:00 AM - 1:30 PM</p>
-                    <p class="anfitrionReunion">Andres Martínez</p>
-                </div>
-                <div class="buttonReunion__Container">
-                    <button class="buttonReunion">Ver Detalles</button>
-                </div>
-            </div>
-            <div class="misReunionesGRID__card">
-                <div class="circleContainer">
-                    <p class="numReunion">1</p>
-                </div>
-                <div class="headerReunion">
-                    <h3 class="tituloReunion">Proyecto TICS</h3>
-                    <p class="fechaReunion">24-02-2024</p>
-                </div>
-                <div class="datosReunion">
-                    <p class="horarioReunion">10:00 AM - 1:30 PM</p>
-                    <p class="anfitrionReunion">Andres Martínez</p>
-                </div>
-                <div class="buttonReunion__Container">
-                    <button class="buttonReunion">Ver Detalles</button>
-                </div>
-            </div>
-            <div class="misReunionesGRID__card">
-                <div class="circleContainer">
-                    <p class="numReunion">1</p>
-                </div>
-                <div class="headerReunion">
-                    <h3 class="tituloReunion">Proyecto TICS</h3>
-                    <p class="fechaReunion">24-02-2024</p>
-                </div>
-                <div class="datosReunion">
-                    <p class="horarioReunion">10:00 AM - 1:30 PM</p>
-                    <p class="anfitrionReunion">Andres Martínez</p>
-                </div>
-                <div class="buttonReunion__Container">
-                    <button class="buttonReunion">Ver Detalles</button>
-                </div>
-            </div>
-            <div class="misReunionesGRID__card">
-                <div class="circleContainer">
-                    <p class="numReunion">1</p>
-                </div>
-                <div class="headerReunion">
-                    <h3 class="tituloReunion">Proyecto TICS</h3>
-                    <p class="fechaReunion">24-02-2024</p>
-                </div>
-                <div class="datosReunion">
-                    <p class="horarioReunion">10:00 AM - 1:30 PM</p>
-                    <p class="anfitrionReunion">Andres Martínez</p>
-                </div>
-                <div class="buttonReunion__Container">
-                    <button class="buttonReunion">Ver Detalles</button>
-                </div>
-            </div>
-        </div>
+        <div class="misReunionesGRID" id="divReuniones"></div>
     </div>
 
 
-    <!--
-    <div class="recuperarQR">
-        <h1 class="title-example text-center">Reuniones Pendientes</h1>
-        <div class="__Tabla table-responsive paragraph-example">
-            <table class="tabla table table-hover table-bordered table-sm" id="Tabla">
-                <thead class="tabla__cabecera">
-                    <tr>
-                        <th scope="col" data-sort="id" class="cabecera">ID</th>
-                        <th scope="col" data-sort="reunion" class="cabecera">Reunión</th>
-                        <th scope="col" data-sort="fecha" class="cabecera" id="fecha">Fecha</th>
-                        <th scope="col" data-sort="hora" class="cabecera">Hora</th>
-                        <th scope="col" data-sort="nombreAnfi" class="cabecera">Nombre Anfitrión</th>
-                        <th scope="col" data-sort="acciones" class="cabecera">Ver Detalles</th>
-                    </tr>
-                </thead>
-                <tbody class="tabla__cuerpo">
-                </tbody>
-            </table>
-        </div>
-    </div>
-    -->
+
 </main>
 
 <div id="footers"></div>
@@ -261,46 +54,66 @@
                 divReunion.innerHTML = '';
 
                 reuniones.forEach(reunion => {
+
+                    /*
+                    <div class="misReunionesGRID__card">
+                        <div class="circleContainer">
+                            <p class="numReunion">1</p>
+                        </div>
+                        <div class="headerReunion">
+                            <h3 class="tituloReunion">Proyecto TICS</h3>
+                            <p class="fechaReunion">24-02-2024</p>
+                        </div>
+                        <div class="datosReunion">
+                            <p class="horarioReunion">10:00 AM - 1:30 PM</p>
+                            <p class="anfitrionReunion">Andres Martínez</p>
+                        </div>
+                        <div class="buttonReunion__Container">
+                            <button class="buttonReunion">Ver Detalles</button>
+                        </div>
+                    </div>
+                    * */
                     const card = document.createElement('div');
-                    card.classList.add('card');
+                    card.classList.add('misReunionesGRID__card');
 
                     const emailDiv = 'correoInv-' + reunion.id_reunion;
                     const acompanantesDiv = 'acompanantesInv-' + reunion.id_reunion;
 
+                    const primerHorario = reunion.fechasRepeticion[0].hora_inicio_repeticion;
+                    const ultimoHorario = reunion.fechasRepeticion[0].hora_fin_repeticion;
+
                     card.innerHTML = `
 
-                    <h4><b>Reunion id: </b>${reunion.id_reunion}</h4>
-
-                    <div class="asunto">
-                    <h4><b>Asunto: </b></h4>
-                    <p>${reunion.titulo_reunion}</p>
+                    <div class="circleContainer">
+                        <p class="numReunion">${reunion.id_reunion}</p>
                     </div>
+                    <div class="headerReunion">
+                        <h3 class="tituloReunion">${reunion.titulo_reunion}</h3>
+                        <!-- <p class="fechaReunion">Anfitrion: ${reunion.nombreUsuario} </p> -->
+                    </div>
+                    <div class="datosReunion">
+                        <p class="anfitrionReunion">Anfitrion:</p>
+                        <p class="anfitrionReunion">${reunion.nombreUsuario}</p>
+                        <p class="horarioReunion">fechas: ${reunion.numRepeticion}</p>
+
+                            ${reunion.fechasRepeticion.map(fecha =>
+                            `
+                                <p class="horarioReunion">${fecha.fecha_repeticion} </p>
+                            `).join('')
+                            }
 
 
-                    <h4><b>Fechas: </b>${reunion.numRepeticion}</h4>
-                    <ul class="fechas">${reunion.fechasRepeticion.map(fecha =>
-                        `<li>${fecha.id_repeticion} ,
-                        ${fecha.fecha_repeticion}, ${fecha.hora_inicio_repeticion} - ${fecha.hora_fin_repeticion},
-                        ${fecha.estatus_repeticion}</li>
+                        <!-- agregar el primer horario de la primera reunion.fecha repeticion -->
+                        <p class="anfitrionReunion">Horario:</p>
+                        <p class="horarioReunion">${primerHorario} - ${ultimoHorario}</p>
+                        <p class="anfitrionReunion">Sala: ${reunion.nombreSala}</p>
+                        <!-- <p class="anfitrionReunion">Descripcion: ${reunion.descripcion_reunion}</p> -->
 
-                    `).join('')}
-                    </ul>
-
-
-                    <h4><b>Descripción</b></h4>
-                    <br/>
-                    <p>${reunion.descripcion_reunion}</p>
-                    <br/>
-                    <h4><b>Sala: </b>${reunion.nombreSala}</h4>
-                    <br/>
-
-                    <h4><b>Anfitrion: </b>${reunion.nombreUsuario} </h4>
-
-
-
-                    <button onclick="aceptar(${reunion.id_reunion})">Aceptar</button>
-                    <button onclick="declinar(${reunion.id_reunion})">Eliminar</button>
-
+                    </div>
+                    <div class="buttonReunion__Container">
+                        <button class="buttonReunion" onclick="aceptar(${reunion.id_reunion})" >Aceptar</button>
+                        <button class="buttonReunion" onclick="declinar(${reunion.id_reunion})" >Eliminar</button>
+                    </div>
 
 
                     `;

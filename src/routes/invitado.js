@@ -8,21 +8,19 @@ require('dotenv').config();
 
 
 const { hashPassword, comparePassword } = require('../tools/cipher');
-const { getInvitadoByIdBD, getInvitadoByIdEmailBD, setNewInvitadoBD, setNewColadoBD, getInvitacionByIdBD,
-    setNewInvitacionBD,
-    getDetallesReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD
-} = require('../tools/peticiones');
-const {getInvitadoByEmailBD,updateInvitadoBDtoInvitacion, updatePassInvitadoBD, getReunionesConRepeticionByIdOfInvitadoBD, getReunionesNuebasBD} = require('../tools/peticiones');
-
-const { getInvitacionBy_IdInvitado_IdReunionBD } = require('../tools/peticiones');
-
 const { generatePassword } = require('../tools/tools');
-
-const{putInfoInvitadoToReunionBD, createColadoBD} = require('../tools/peticiones');
 const mail = require("../tools/mail");
-
-
 const jwtFunctions = require('../tools/jwtFunctions');
+
+const { getInvitadoByIdBD, getInvitadoByIdEmailBD, setNewInvitadoBD, setNewColadoBD, getInvitacionByIdBD } = require('../tools/peticiones');
+const { setNewInvitacionBD, getDetallesReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD, getReunionesNuebasByIdBD } = require('../tools/peticiones');
+const {getInvitadoByEmailBD,updateInvitadoBDtoInvitacion, updatePassInvitadoBD, getReunionesConRepeticionByIdOfInvitadoBD, getReunionesNuebasBD} = require('../tools/peticiones');
+const { getInvitacionBy_IdInvitado_IdReunionBD } = require('../tools/peticiones');
+const{putInfoInvitadoToReunionBD, createColadoBD} = require('../tools/peticiones');
+
+
+
+
 
 async function logout(req, res) {
     console.log('mensaje --> logout');
@@ -302,6 +300,33 @@ async function aceptarReunion(req, res){
 
 }
 
+async function obtenerDetallesReunion(req, res){
+    console.log('mensaje --> aceptarReunion');
+    const idInvitado = getIdInvitado(req.session.jwt);
+    const idReunion = getidSeleccionado(req.session.jwt);
+
+    console.log('idInvitado:', idInvitado);
+    console.log('idReunion:', idReunion);
+
+    const reunion = await getReunionesNuebasByIdBD(idInvitado, idReunion);
+    if (reunion !== null) {
+        res.json((reunion));
+    } else {
+        res.json([]);
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
 
 
 module.exports = {
@@ -312,7 +337,8 @@ module.exports = {
     reunionesNuevas,
     reunionesPendientes,
     getInvitadoByEmail,
-    aceptarReunion
+    aceptarReunion,
+    obtenerDetallesReunion
 };
 
 
