@@ -96,6 +96,7 @@ const rutas = [
     
     //Rutas para la edición de cuentas personales
     ['/js/admin/editarDatosPersonales.js', '../public/build2/js/admin/editarDatosPersonales.js'],
+    ['/js/anfitrion/editarDatosPersonales.js', '../public/build2/js/anfitrion/editarDatosPersonales.js'],
     
     //Rutas para la gestión de usuarios (SuperAdmin)
     ['/js/admin/gestionUsuarios.js', '../public/build2/js/admin/gestionUsuarios.js'],
@@ -343,10 +344,7 @@ app.use('/anfitrion', (req, res, next) => {
     }else
         return res.status(401).json({error: 'Unauthorized', status: 401});
 });
-app.get('/anfitrion/getFotoPerfil', (req, res) => {
-    let foto = getFoto(req.session.jwt);
-    res.status(200).json({foto: foto});
-});
+app.get('/anfitrion/getFotoPerfil', admin.getFotoAdmin);
 app.get('/anfitrion/logout', anfitrion.logout);
 
 app.use('/anfitrion/anfitrion.html', express.static('./public/build2/views/Anfitrion/anfitrion.html'));

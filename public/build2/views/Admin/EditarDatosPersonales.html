@@ -6,6 +6,21 @@
     <title>Beecoders - Editar datos personales</title>
     <link rel="stylesheet" href="../../css/app.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+      .msg-error-form{
+        max-width: 100%;
+        margin-top: 1rem;
+        font-size: 1.6rem;
+      }
+
+      .contenedorUser{
+        padding: 2rem;
+      }
+
+      .w-80{
+        width: 80%;
+      }
+    </style>
 </head>
 <body>
 
@@ -34,21 +49,21 @@
                     <div class="profileHeroSA__right__inputProfile__content">
                         <input class="inputSA" type="text" value="Juan " disabled id="nombre">
                     </div>
-                    <div id="nombreForm"></div>
+                    <div id="nombreForm" class="w-80"></div>
                 </div>
                 <div class="profileHeroSA__right__inputProfile">
                     <label class="profileHeroSA__right__inputProfile__label">Apellido paterno*</label>
                     <div class="profileHeroSA__right__inputProfile__content">
                         <input class="inputSA" type="text" value="Perez" disabled id="app">
                     </div>
-                    <div id="appForm"></div>
+                    <div id="appForm" class="w-80"></div>
                 </div>
                 <div class="profileHeroSA__right__inputProfile">
                     <label class="profileHeroSA__right__inputProfile__label">Apellido materno*</label>
                     <div class="profileHeroSA__right__inputProfile__content">
                         <input class="inputSA" type="text" value="Hernandez" disabled id="apm">
                     </div>
-                    <div id="apmForm"></div>
+                    <div id="apmForm" class="w-80"></div>
                 </div>
                 <!-- <div class="profileHeroSA__right__inputProfile">
                     <label class="profileHeroSA__right__inputProfile__label">Correo electrónico*</label>   
@@ -63,7 +78,7 @@
                     <div class="profileHeroSA__right__inputProfile__content">
                         <input class="inputSA" type="tel" min="0" value="55 666 777 88" pattern="[0-9\s]{10,15}" disabled id="telefono">
                     </div>
-                    <div id="telefonoForm"></div>
+                    <div id="telefonoForm" class="w-80"></div>
                 </div>
                 <div class="profileHeroSA__right__buttonContainer view" id="buttonsEdit">
                     <button class="profileHeroSA__right__buttonContainer__buttonEdit" id="editProfile">Editar</button>   
