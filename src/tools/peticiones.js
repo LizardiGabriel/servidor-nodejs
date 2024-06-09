@@ -646,7 +646,7 @@ async function setNewInvitadoBD(email, password) {
                 empresa_invitado: "",
                 foto_invitado: "uploads/usuario.webp",
                 identificacion_invitado: "",
-                es_colado_invitado: 1,
+
                 habilitado: 1,
                 newCount: 1,
                 changeFirstPass: 0
@@ -676,7 +676,7 @@ async function setNewColadoBD(email, password) {
                 empresa_invitado: "",
                 foto_invitado: "uploads/usuario.webp",
                 identificacion_invitado: "",
-                es_colado_invitado: 0,
+
                 habilitado: 1,
                 newCount: 1,
                 changeFirstPass: 0
@@ -691,7 +691,7 @@ async function setNewColadoBD(email, password) {
 
 }
 
-async function setNewInvitacionBD(idReunion, id_invitado, acompanantesInv) {
+async function setNewInvitacionBD(idReunion, id_invitado, acompanantesInv, es_colado_invitado) {
     console.log('peticion a la bd de setNewInvitacion');
     console.log('idReunion: ', idReunion, 'id_invitado: ', id_invitado);
     try {
@@ -702,7 +702,8 @@ async function setNewInvitacionBD(idReunion, id_invitado, acompanantesInv) {
                 habilitado: "No",
                 qr_acceso: "",
                 numero_colados: Number(acompanantesInv),
-                isConfirmed: 0
+                isConfirmed: 0,
+                es_colado_invitado: Number(es_colado_invitado)
             }
         });
         return nuevaInvitacion;
