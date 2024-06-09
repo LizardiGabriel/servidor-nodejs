@@ -193,10 +193,27 @@ async function aceptarReunion(req, res){
     console.log('mensaje --> aceptarReunion');
     const idInvitado = getIdInvitado(req.session.jwt);
     console.log('idInvitado:', idInvitado);
+    const {idReunion} = req.body;
+    console.log('idReunion:', idReunion);
+    const reunion = await updateInvitadoBDtoInvitacion(idInvitado, idReunion);
+    if(reunion === 500){
+        return res.status(500).json({ message: 'Error al aceptar la reunion'});
+    }
+    return res.status(200).json({ message: 'Reunion aceptada correctamente'});
 
-    res.json({ message: 'Reunion aceptada exitosamente'});
 }
-
+async function getReunionByIdBD(idReunion){
+    const reunion = await prisma.reunion.findUnique({
+        where: {
+            id_reunion: idReunion
+        }
+    });
+    return reunion;
+}   
+async function getReunionById(idReunion){
+    const reunion = await getReunionByIdBD(idReunion);
+    return reunion;
+}
 
 
 module.exports = {
@@ -207,7 +224,9 @@ module.exports = {
     reunionesNuevas,
     reunionesPendientes,
     getInvitadoByEmail,
-    aceptarReunion
+    aceptarReunion,
+    getReunionById,
+    getReunionByIdBD
 };
 
 

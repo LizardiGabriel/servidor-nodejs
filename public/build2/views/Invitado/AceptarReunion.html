@@ -8,12 +8,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-            href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-            rel="stylesheet">
+        href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../../css/app.css">
     <!--Formulario-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!--No muestra agregar acompañantes, vehiculo y dispositivo si no hay internet-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!--SiderBar-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -22,262 +23,436 @@
         .hidden {
             display: none;
         }
-
     </style>
-    
+
 
 </head>
 
 <body>
-<div id="headers"></div>
+    <div id="headers"></div>
 
-<main class="contenidoPrincipal">
-    <div id="contenedor_main">
-        <div class="registrarInforPersonal">
-            <section class="cRegistro">
-                <h1 class="title-example text-center">Registro de información personal</h1>
+    <main class="contenidoPrincipal">
+        <div id="contenedor_main">
+            <div class="registrarInforPersonal">
+                <section class="cRegistro">
+                    <h1 class="title-example text-center">Registro de información personal</h1>
 
 
-                <form class="Formulario needs-validation paragraph-example" novalidate>
-                    <!-- Información de Acompañantes -->
-                    <div class="informacionAcompañantes">
-                        <h3 class="personal__titulo subtitle-example">Información de Acompañantes</h3>
-                        <div class="form-group">
-                            <label class="labelControl">¿Llevará acompañantes a la reunión? *</label>
-                            <div class="col-md-6 has-validation">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="acompanantes" id="radioAcompanantesSi" value="si" required>
-                                    <label class="form-check-label labelControl" for="radioAcompanantesSi">Sí</label>
+                    <form class="Formulario needs-validation paragraph-example" novalidate>
+                        <!-- Información de Acompañantes -->
+                        <div class="informacionAcompañantes">
+                            <h3 class="personal__titulo subtitle-example">Información de Acompañantes</h3>
+                            <div class="form-group">
+                                <label class="labelControl">¿Llevará acompañantes a la reunión? *</label>
+                                <div class="col-md-6 has-validation">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="acompanantes"
+                                            id="radioAcompanantesSi" value="si" required>
+                                        <label class="form-check-label labelControl"
+                                            for="radioAcompanantesSi">Sí</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="acompanantes"
+                                            id="radioAcompanantesNo" value="no" required>
+                                        <label class="form-check-label labelControl"
+                                            for="radioAcompanantesNo">No</label>
+                                    </div>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="acompanantes" id="radioAcompanantesNo" value="no" required>
-                                    <label class="form-check-label labelControl" for="radioAcompanantesNo">No</label>
+                                <div class="invalid-feedback">Marque una de las opciones.</div>
+                            </div>
+                            <div id="acompanantesHabilitada" class="hidden">
+                                <div class="form-group Correo has-validation">
+                                    <label class="labelControl">Correo electrónico del acompañante*:</label>
+                                    <input type="email" class="form-control form-control-lg inputControl"
+                                        placeholder="email@example.com" required>
+                                    <div class="invalid-feedback">Ingrese un correo válido.</div>
+                                </div>
+                                <div id="BotonAgregarAcompanante">
+                                    <button type="button" id="agregarAcompanante" class="botonAcompanante">Agregar
+                                        Acompañante</button>
                                 </div>
                             </div>
-                            <div class="invalid-feedback">Marque una de las opciones.</div>
                         </div>
-                        <div id="acompanantesHabilitada" class="hidden">
-                            <div class="form-group Correo has-validation">
-                                <label class="labelControl">Correo electrónico del acompañante*:</label>
-                                <input type="email" class="form-control form-control-lg inputControl" placeholder="email@example.com" required>
-                                <div class="invalid-feedback">Ingrese un correo válido.</div>
-                            </div>
-                            <div id="BotonAgregarAcompanante">
-                                <button type="button" id="agregarAcompanante" class="botonAcompanante">Agregar Acompañante</button>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Información de Dispositivos -->
-                    <div class="informacionDispositivos">
-                        <h2 class="personal__titulo subtitle-example">Información de Dispositivos</h2>
-                        <div class="form-group">
-                            <label class="labelControl">¿Llegará con dispositivos a la reunión? *</label>
-                            <div class="has-validation">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="dispositivos" id="radioDispositivosSi" value="si" required>
-                                    <label class="form-check-label labelControl" for="radioDispositivosSi">Sí</label>
+                        <!-- Información de Dispositivos -->
+                        <div class="informacionDispositivos">
+                            <h2 class="personal__titulo subtitle-example">Información de Dispositivos</h2>
+                            <div class="form-group">
+                                <label class="labelControl">¿Llegará con dispositivos a la reunión? *</label>
+                                <div class="has-validation">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="dispositivos"
+                                            id="radioDispositivosSi" value="si" required>
+                                        <label class="form-check-label labelControl"
+                                            for="radioDispositivosSi">Sí</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="dispositivos"
+                                            id="radioDispositivosNo" value="no" required>
+                                        <label class="form-check-label labelControl"
+                                            for="radioDispositivosNo">No</label>
+                                    </div>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="dispositivos" id="radioDispositivosNo" value="no" required>
-                                    <label class="form-check-label labelControl" for="radioDispositivosNo">No</label>
+                                <div class="invalid-feedback">Marque una de las opciones.</div>
+                            </div>
+                            <div id="dispositivosHabilitada" class="hidden">
+                                <div class="DatosDispositivo">
+                                    <div class="form-group ">
+                                        <label class="labelControl">Número de serie*:</label>
+                                        <input type="text" class="form-control form-control-lg inputControl"
+                                            placeholder="Tipo de Dispositivo" required>
+                                        <div class="invalid-feedback">Ingrese el tipo de dispositivo.</div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="labelControl">Modelo*:</label>
+                                        <input type="text" class="form-control form-control-lg inputControl"
+                                            placeholder="Modelo del Dispositivo" required>
+                                        <div class="invalid-feedback">Ingrese el modelo del dispositivo.</div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="labelControl">Marca*:</label>
+                                        <input type="text" class="form-control form-control-lg inputControl"
+                                            placeholder="Marca del Dispositivo" required>
+                                        <div class="invalid-feedback">Ingrese la marca del dispositivo.</div>
+                                    </div>
+                                </div>
+                                <div id="BotonAgregarDispositivo">
+                                    <button type="button" id="agregarDispositivo" class="botonDispositivo">Agregar
+                                        Dispositivo</button>
                                 </div>
                             </div>
-                            <div class="invalid-feedback">Marque una de las opciones.</div>
                         </div>
-                        <div id="dispositivosHabilitada" class="hidden">
-                            <div class="DatosDispositivo">
+
+                        <!-- Información de Automóvil -->
+                        <div class="informacionAutomovil">
+                            <h2 class="personal__titulo subtitle-example">Información de Automóvil</h2>
+                            <div class="form-group">
+                                <label class="labelControl">¿Llegará con automóvil a la reunión? *</label>
+                                <div class="col-md-6">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="automovil" id="radioAutoSi"
+                                            value="si" required>
+                                        <label class="form-check-label labelControl" for="radioAutoSi">Sí</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="automovil" id="radioAutoNo"
+                                            value="no" required>
+                                        <label class="form-check-label labelControl" for="radioAutoNo">No</label>
+                                    </div>
+                                </div>
+                                <div class="invalid-feedback">Marque una de las opciones.</div>
+                            </div>
+                            <div id="automovilHabilitada" class="hidden">
                                 <div class="form-group ">
-                                    <label class="labelControl">Número de serie*:</label>
-                                    <input type="text" class="form-control form-control-lg inputControl" placeholder="Tipo de Dispositivo" required>
-                                    <div class="invalid-feedback">Ingrese el tipo de dispositivo.</div>
-                                </div>
-                                <div class="form-group ">
-                                    <label class="labelControl">Modelo*:</label>
-                                    <input type="text" class="form-control form-control-lg inputControl" placeholder="Modelo del Dispositivo" required>
-                                    <div class="invalid-feedback">Ingrese el modelo del dispositivo.</div>
+                                    <label class="labelControl">Número de Placa*:</label>
+                                    <input type="text" class="form-control form-control-lg inputControl"
+                                        placeholder="Número de Placa" required>
+                                    <div class="invalid-feedback">Ingrese el número de placa.</div>
                                 </div>
                                 <div class="form-group ">
                                     <label class="labelControl">Marca*:</label>
-                                    <input type="text" class="form-control form-control-lg inputControl" placeholder="Marca del Dispositivo" required>
-                                    <div class="invalid-feedback">Ingrese la marca del dispositivo.</div>
+                                    <input type="text" class="form-control form-control-lg inputControl"
+                                        placeholder="Marca" required>
+                                    <div class="invalid-feedback">Ingrese la marca del automóvil.</div>
+                                </div>
+                                <div class="form-group ">
+                                    <label class="labelControl">Modelo*:</label>
+                                    <input type="text" class="form-control form-control-lg inputControl"
+                                        placeholder="Modelo" required>
+                                    <div class="invalid-feedback">Ingrese el modelo del automóvil.</div>
+                                </div>
+                                <div class="form-group ">
+                                    <label class="labelControl">Color*:</label>
+                                    <input type="text" class="form-control form-control-lg inputControl"
+                                        placeholder="Color" required>
+                                    <div class="invalid-feedback">Ingrese el color del automóvil.</div>
+                                </div>
+                                <div id="BotonAgregarAutomovil">
+                                    <button type="button" id="agregarAutomovil" class="botonAutomovil">Agregar
+                                        Automóvil</button>
                                 </div>
                             </div>
-                            <div id="BotonAgregarDispositivo">
-                                <button type="button" id="agregarDispositivo" class="botonDispositivo">Agregar Dispositivo</button>
-                            </div>
                         </div>
-                    </div>
 
-                    <!-- Información de Automóvil -->
-                    <div class="informacionAutomovil">
-                        <h2 class="personal__titulo subtitle-example">Información de Automóvil</h2>
-                        <div class="form-group">
-                            <label class="labelControl">¿Llegará con automóvil a la reunión? *</label>
-                            <div class="col-md-6">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="automovil" id="radioAutoSi" value="si" required>
-                                    <label class="form-check-label labelControl" for="radioAutoSi">Sí</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="automovil" id="radioAutoNo" value="no" required>
-                                    <label class="form-check-label labelControl" for="radioAutoNo">No</label>
-                                </div>
-                            </div>
-                            <div class="invalid-feedback">Marque una de las opciones.</div>
-                        </div>
-                        <div id="automovilHabilitada" class="hidden">
-                            <div class="form-group ">
-                                <label class="labelControl">Número de Placa*:</label>
-                                <input type="text" class="form-control form-control-lg inputControl" placeholder="Número de Placa" required>
-                                <div class="invalid-feedback">Ingrese el número de placa.</div>
-                            </div>
-                            <div class="form-group ">
-                                <label class="labelControl">Marca*:</label>
-                                <input type="text" class="form-control form-control-lg inputControl" placeholder="Marca" required>
-                                <div class="invalid-feedback">Ingrese la marca del automóvil.</div>
-                            </div>
-                            <div class="form-group ">
-                                <label class="labelControl">Modelo*:</label>
-                                <input type="text" class="form-control form-control-lg inputControl" placeholder="Modelo" required>
-                                <div class="invalid-feedback">Ingrese el modelo del automóvil.</div>
-                            </div>
-                            <div class="form-group ">
-                                <label class="labelControl">Color*:</label>
-                                <input type="text" class="form-control form-control-lg inputControl" placeholder="Color" required>
-                                <div class="invalid-feedback">Ingrese el color del automóvil.</div>
-                            </div>
-                            <div id="BotonAgregarAutomovil">
-                                <button type="button" id="agregarAutomovil" class="botonAutomovil">Agregar Automóvil</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <input class="confirm__btn" type="submit" value="Enviar">
-                </form>
+                        <input type="button" class="confirm__btn"  value="Aceptar" id="" onclick="accept()">
+                    </form>
 
 
 
-            </section>
+                </section>
 
+            </div>
         </div>
-    </div>
-</main>
+    </main>
 
-<div id="footers"></div>
+    <div id="footers"></div>
+
+    <!--<script src="../../js/invitado/aceptarReunion.js"></script> -->
+    <script src="../../js/invitado/headers.js"></script>
+    <script src="../../js/header.js"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="../../js/plantilla-formularios.js"></script>
+    <script src="../../js/validaciones.js"></script>
+    
 
 
-<script src="../../js/invitado/headers.js"></script>
-<script src="../../js/header.js"></script>
-<script src="../../js/sidebar.js"></script>
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', function (id_reunion) { // DOMContentLoaded 
+            //imprimir el id de la reunión
+        var idReunion = document.getElementById('id_Reunion');
+                if (idReunion) {
+                    var valor = idReunion.value;
+                    console.log("ID de la reunión:", valor);
+                } else {
+                    console.log("No se pudo obtener el id de la reunión");
+                }
+                
+            // Acompañantes
+            const radioAcompanantesSi = document.getElementById('radioAcompanantesSi');
+            const radioAcompanantesNo = document.getElementById('radioAcompanantesNo');
+            const acompanantesHabilitada = document.getElementById('acompanantesHabilitada');
+            const botonAgregarAcompanante = document.getElementById('agregarAcompanante');
+            let contadorAcompanantes = 1;
+            radioAcompanantesSi.addEventListener('change', function () {
+                if (radioAcompanantesSi.checked) {
+                    acompanantesHabilitada.classList.remove('hidden'); // Mostrar la sección de acompañantes
+                    resetAcompanantes(); // Asegurarse de que la lista está limpia
+                    agregarRecuadroAcompanante(); // Agregar el primer recuadro
+                    botonAgregarAcompanante.disabled = false; // Habilitar el botón de agregar acompañante
+                }
+            });
+
+            radioAcompanantesNo.addEventListener('change', function () {
+                if (radioAcompanantesNo.checked) {
+                    acompanantesHabilitada.classList.add('hidden');
+                    resetAcompanantes();
+                }
+            });
 
 
-<script src="../../js/plantilla-formularios.js"></script>
+            botonAgregarAcompanante.addEventListener('click', function () {
+                agregarRecuadroAcompanante();
+            });
 
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Acompañantes
-        const radioAcompanantesSi = document.getElementById('radioAcompanantesSi');
-        const radioAcompanantesNo = document.getElementById('radioAcompanantesNo');
-        const acompanantesHabilitada = document.getElementById('acompanantesHabilitada');
-        const botonAgregarAcompanante = document.getElementById('agregarAcompanante');
-
-        radioAcompanantesSi.addEventListener('change', function() {
-            if (radioAcompanantesSi.checked) {
-                acompanantesHabilitada.classList.remove('hidden');
+            function agregarRecuadroAcompanante() {
+                const nuevaEntrada = document.createElement('div');
+                nuevaEntrada.classList.add('form-group', 'Correo', 'has-validation');
+                nuevaEntrada.innerHTML = `
+                <label class="labelControl">Correo electrónico del acompañante ${contadorAcompanantes}*:</label>
+                <input type="email" class="form-control form-control-lg inputControl" placeholder="email@example.com" required>
+                <div class="invalid-feedback">Ingrese un correo válido.</div>
+            `;
+                acompanantesHabilitada.appendChild(nuevaEntrada);
+                contadorAcompanantes++;
             }
-        });
 
-        radioAcompanantesNo.addEventListener('change', function() {
-            if (radioAcompanantesNo.checked) {
-                acompanantesHabilitada.classList.add('hidden');
+            function resetAcompanantes() {
+                contadorAcompanantes = 1;
+                acompanantesHabilitada.innerHTML = ''; // Eliminar todos los recuadros de acompañantes
+                acompanantesHabilitada.appendChild(botonAgregarAcompanante); // Volver a agregar el botón
             }
-        });
 
-        botonAgregarAcompanante.addEventListener('click', function() {
-            const nuevaEntrada = document.createElement('div');
-            nuevaEntrada.classList.add('form-group', 'Correo', 'has-validation');
-            nuevaEntrada.innerHTML = `
-            <label class="labelControl">Correo electrónico del acompañante*:</label>
-            <input type="email" class="form-control form-control-lg inputControl" placeholder="email@example.com" required>
-            <div class="invalid-feedback">Ingrese un correo válido.</div>
-        `;
-            acompanantesHabilitada.insertBefore(nuevaEntrada, botonAgregarAcompanante);
-        });
 
-        // Dispositivos
-        const radioDispositivosSi = document.getElementById('radioDispositivosSi');
-        const radioDispositivosNo = document.getElementById('radioDispositivosNo');
-        const dispositivosHabilitada = document.getElementById('dispositivosHabilitada');
-        const botonAgregarDispositivo = document.getElementById('agregarDispositivo');
+            // Dispositivos
+            const radioDispositivosSi = document.getElementById('radioDispositivosSi');
+            const radioDispositivosNo = document.getElementById('radioDispositivosNo');
+            const dispositivosHabilitada = document.getElementById('dispositivosHabilitada');
+            const botonAgregarDispositivo = document.getElementById('agregarDispositivo');
+            let contadorDispositivos = 1;
 
-        radioDispositivosSi.addEventListener('change', function() {
-            if (radioDispositivosSi.checked) {
-                dispositivosHabilitada.classList.remove('hidden');
+            radioDispositivosSi.addEventListener('change', function () {
+                if (radioDispositivosSi.checked) {
+                    dispositivosHabilitada.classList.remove('hidden'); // Mostrar la sección de dispositivos
+                    resetDispositivos(); // Asegurarse de que la lista está limpia
+                    agregarRecuadroDispositivo(); // Agregar el primer recuadro
+                    botonAgregarDispositivo.disabled = false; // Habilitar el botón de agregar dispositivo
+                }
+            });
+
+            radioDispositivosNo.addEventListener('change', function () {
+                if (radioDispositivosNo.checked) {
+                    dispositivosHabilitada.classList.add('hidden');
+                    resetDispositivos();
+                }
+            });
+
+            botonAgregarDispositivo.addEventListener('click', function () {
+                agregarRecuadroDispositivo();
+            });
+
+            function agregarRecuadroDispositivo() {
+                const nuevaEntrada = document.createElement('div');
+                nuevaEntrada.classList.add('DatosDispositivo');
+                nuevaEntrada.innerHTML = `
+                <div class="form-group">
+                    <label class="labelControl">Tipo de Dispositivo*:</label>
+                    <input type="text" class="form-control form-control-lg inputControl" placeholder="Tipo de Dispositivo" required>
+                    <div class="invalid-feedback">Ingrese el tipo de dispositivo.</div>
+                </div>
+                <div class="form-group">
+                    <label class="labelControl">Modelo*:</label>
+                    <input type="text" class="form-control form-control-lg inputControl" placeholder="Modelo del Dispositivo" required>
+                    <div class="invalid-feedback">Ingrese el modelo del dispositivo.</div>
+                </div>
+                <div class="form-group">
+                    <label class="labelControl">Marca*:</label>
+                    <input type="text" class="form-control form-control-lg inputControl" placeholder="Marca del Dispositivo" required>
+                    <div class="invalid-feedback">Ingrese la marca del dispositivo.</div>
+                </div>
+            `;
+                dispositivosHabilitada.appendChild(nuevaEntrada);
+                contadorDispositivos++;
             }
-        });
 
-        radioDispositivosNo.addEventListener('change', function() {
-            if (radioDispositivosNo.checked) {
-                dispositivosHabilitada.classList.add('hidden');
+            function resetDispositivos() {
+                contadorDispositivos = 1;
+                dispositivosHabilitada.innerHTML = ''; // Eliminar todos los recuadros de dispositivos
+                dispositivosHabilitada.appendChild(botonAgregarDispositivo); // Volver a agregar el botón
             }
-        });
 
-        botonAgregarDispositivo.addEventListener('click', function() {
-            const nuevaEntrada = document.createElement('div');
-            nuevaEntrada.classList.add('DatosDispositivo');
-            nuevaEntrada.innerHTML = `
-            <div class="form-group ">
-                <label class="labelControl">Número de serie*:</label>
-                <input type="text" class="form-control form-control-lg inputControl" placeholder="Tipo de Dispositivo" required>
-                <div class="invalid-feedback">Ingrese el tipo de dispositivo.</div>
-            </div>
-            <div class="form-group ">
-                <label class="labelControl">Modelo*:</label>
-                <input type="text" class="form-control form-control-lg inputControl" placeholder="Modelo del Dispositivo" required>
-                <div class="invalid-feedback">Ingrese el modelo del dispositivo.</div>
-            </div>
-            <div class="form-group ">
+
+            // Automóviles
+            const radioAutoSi = document.getElementById('radioAutoSi');
+            const radioAutoNo = document.getElementById('radioAutoNo');
+            const automovilHabilitada = document.getElementById('automovilHabilitada');
+            const botonAgregarAutomovil = document.getElementById('agregarAutomovil');
+            let contadorAutomoviles = 1;
+
+            radioAutoSi.addEventListener('change', function () {
+                if (radioAutoSi.checked) {
+                    automovilHabilitada.classList.remove('hidden');
+                    resetAutomoviles(); // Asegurarse de que la lista está limpia
+                    agregarRecuadroAutomovil(); // Agregar el primer recuadro
+                    botonAgregarAutomovil.disabled = false; // Habilitar el botón de agregar automóvil
+                }
+            });
+
+            radioAutoNo.addEventListener('change', function () {
+                if (radioAutoNo.checked) {
+                    automovilHabilitada.classList.add('hidden');
+                    resetAutomoviles();
+                }
+            });
+
+            botonAgregarAutomovil.addEventListener('click', function () {
+                agregarRecuadroAutomovil();
+            });
+
+            function agregarRecuadroAutomovil() {
+                const nuevaEntrada = document.createElement('div');
+                nuevaEntrada.classList.add('form-group');
+                nuevaEntrada.innerHTML = `
+                <label class="labelControl">Número de Placa*:</label>
+                <input type="text" class="form-control form-control-lg inputControl" placeholder="Número de Placa" required>
+                <div class="invalid-feedback">Ingrese el número de placa.</div>
                 <label class="labelControl">Marca*:</label>
-                <input type="text" class="form-control form-control-lg inputControl" placeholder="Marca del Dispositivo" required>
-                <div class="invalid-feedback">Ingrese la marca del dispositivo.</div>
-            </div>
-        `;
-            dispositivosHabilitada.insertBefore(nuevaEntrada, botonAgregarDispositivo);
-        });
-
-        // Automóviles
-        const radioAutoSi = document.getElementById('radioAutoSi');
-        const radioAutoNo = document.getElementById('radioAutoNo');
-        const automovilHabilitada = document.getElementById('automovilHabilitada');
-        const botonAgregarAutomovil = document.getElementById('agregarAutomovil');
-
-        radioAutoSi.addEventListener('change', function() {
-            if (radioAutoSi.checked) {
-                automovilHabilitada.classList.remove('hidden');
+                <input type="text" class="form-control form-control-lg inputControl" placeholder="Marca" required>
+                <div class="invalid-feedback">Ingrese la marca del automóvil.</div>
+                <label class="labelControl">Modelo*:</label>
+                <input type="text" class="form-control form-control-lg inputControl" placeholder="Modelo" required>
+                <div class="invalid-feedback">Ingrese el modelo del automóvil.</div>
+                <label class="labelControl">Color*:</label>
+                <input type="text" class="form-control form-control-lg inputControl" placeholder="Color" required>
+                <div class="invalid-feedback">Ingrese el color del automóvil.</div>
+            `;
+                automovilHabilitada.insertBefore(nuevaEntrada, botonAgregarAutomovil);
+                contadorAutomoviles++;
             }
-        });
 
-        radioAutoNo.addEventListener('change', function() {
-            if (radioAutoNo.checked) {
-                automovilHabilitada.classList.add('hidden');
+            function resetAutomoviles() {
+                contadorAutomoviles = 1;
+                automovilHabilitada.innerHTML = ''; // Eliminar todos los recuadros de automóviles
+                automovilHabilitada.appendChild(botonAgregarAutomovil); // Volver a agregar el botón
             }
-        });
 
-        botonAgregarAutomovil.addEventListener('click', function() {
-            const nuevaEntrada = document.createElement('div');
-            nuevaEntrada.classList.add('form-group');
-            nuevaEntrada.innerHTML = `
-            <label class="labelControl">Número de Placa*:</label>
-            <input type="text" class="form-control form-control-lg inputControl" placeholder="Número de Placa" required>
-            <div class="invalid-feedback">Ingrese el número de placa.</div>
-        `;
-            automovilHabilitada.insertBefore(nuevaEntrada, botonAgregarAutomovil);
-        });
-    });
 
-</script>
+            //impresión de datos para verificar que se estén guardando correctamente
+            document.querySelector('.Formulario').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const acompanantesHabilitada = document.getElementById('acompanantesHabilitada');
+                const dispositivosHabilitada = document.getElementById('dispositivosHabilitada');
+                const automovilHabilitada = document.getElementById('automovilHabilitada');
+
+                if (!acompanantesHabilitada.classList.contains('hidden')) {
+                    const acompanantes = document.querySelectorAll('.Correo input');
+                    console.log('Acompañantes:', Array.from(acompanantes).map(input => input.value));
+                } else {
+                    console.log('Acompañantes: No');
+                }
+
+                if (!dispositivosHabilitada.classList.contains('hidden')) {
+                    const dispositivos = document.querySelectorAll('.DatosDispositivo input');
+                    console.log('Dispositivos:', Array.from(dispositivos).map(input => input.value));
+                } else {
+                    console.log('Dispositivos: No');
+                }
+
+                if (!automovilHabilitada.classList.contains('hidden')) {
+                    const automoviles = document.querySelectorAll('.informacionAutomovil input');
+                    console.log('Automóviles:', Array.from(automoviles).map(input => input.value));
+                } else {
+                    console.log('Automóviles: No');
+                }
+            });
+
+
+            function accept(id_reunion) {
+               
+                
+                //const idReunion = document.getElementById('id_reunion').value;
+                //console.log("ID de la reunión:", idReunion);
+
+                // Se obtienen los datos ingresados
+                const acompananteHabilitada = document.getElementById('acompananteHabilitada');
+                const dispositivoHabilitada = document.getElementById('dispositivoHabilitada');
+                const automovilHabilitada = document.getElementById('automovilHabilitada');
+
+                let acompanante = 'No';
+                let dispositivo = 'No';
+                let vehiculo = 'No';
+
+                if (!acompananteHabilitada.classList.contains('hidden')) {
+                    acompanante = document.getElementById("acompanante").value;
+                }
+
+                if (!dispositivoHabilitada.classList.contains('hidden')) {
+                    dispositivo = document.getElementById("dispositivo").value;
+                }
+
+                if (!automovilHabilitada.classList.contains('hidden')) {
+                    vehiculo = document.getElementById("vehiculo").value;
+                }
+
+                // Se crea el objeto con los datos
+                const datos = {
+                    acompanante: acompanante,
+                    vehiculo: vehiculo,
+                    dispositivo: dispositivo
+                }
+                console.log("Datos a enviar:", datos);
+
+                // Se manda a la base de datos
+                fetch("/invitado/home/AceptarReunion/" + idReunion, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(datos),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                        // Se redirecciona a agendadas.html
+                        window.location.href = "/invitado/home/agendadas.html";
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            }
+        }); // DOMContentLoaded
+    </script>
+
 
 </body>
 

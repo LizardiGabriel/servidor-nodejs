@@ -123,13 +123,6 @@
 
                 <div id="divReuniones" class="cardszzz"></div>
 
-                <hr>
-
-
-
-
-
-
             </section>
 
         </div>
@@ -137,6 +130,12 @@
 </main>
 
 <div id="footers"></div>
+<script src="../../js/invitado/headers.js"></script>
+<script src="../../js/header.js"></script>
+<script src="../../js/sidebar.js"></script>
+<!--<script src="../../js/invitado/aceptarReunion.js"></script>-->
+<!--<script src="../../js/registrarInformacionPersonal.js"></script>-->
+<script src="../../js/plantilla-formularios.js"></script>
 
 <script>
     window.onload = function () {
@@ -212,24 +211,25 @@
 
     function aceptar(id_reunion) {
         console.log('aceptar', id_reunion);
-        window.location.href = 'aceptarReunion?id_reunion=' + id_reunion;
-        /*
-        fetch('aceptarReunion', {
+        window.location.href = '/invitado/home/AceptarReunion.html?id_reunion=' + id_reunion;
+        //imprimir en consola el id de la reunion
+        console.log(id_reunion);
+        
+        fetch('/invitado/home/AceptarReunion?id_reunion=' + id_reunion, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({id_reunion})
+            }
         })
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
-                obtenerReuniones();
+                
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
-            */
+            
     }
 
     function declinar(id_reunion) {
@@ -254,12 +254,6 @@
 
 
 </script>
-<script src="../../js/invitado/headers.js"></script>
-<script src="../../js/header.js"></script>
-<script src="../../js/sidebar.js"></script>
-
-<!--<script src="../../js/registrarInformacionPersonal.js"></script>-->
-<script src="../../js/plantilla-formularios.js"></script>
 
 </body>
 

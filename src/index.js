@@ -459,15 +459,20 @@ app.get('/invitado/obtenerInfoInvitado', invitado.getInvitadoByEmail);
 app.use('/invitado/cambiarContrasena.html', express.static('./public/build2/views/Invitado/cambiarContrasena.html'));
 app.post('/invitado/cambiar', invitado.cambiarContrasena);
 
-
+//reuniones pendientes y agendadas
 app.use('/invitado/home/pendientes.html', express.static('./public/build2/views/Invitado/NotificacionesInvitado.html'));
 app.use('/invitado/home/agendadas.html', express.static('./public/build2/views/Invitado/agendadas.html'));
+app.get('/invitado/home/reunionesPendientes', invitado.reunionesPendientes);
+//app.get('/invitado/home/reunionesAgendadas', invitado.reunionesAgendadas);
 
 app.get('/invitado/home/reunionesNuevas', invitado.reunionesNuevas);
 
 
-app.use('/invitado/home/aceptarReunion', express.static('./public/build2/views/Invitado/AceptarReunion.html'));
-
+app.use('/invitado/home/AceptarReunion.html', express.static('./public/build2/views/Invitado/AceptarReunion.html'));
+//FALTA UN PUT------------------------------------------------------------------------------------------
+app.put('/invitado/home/AceptarReunion', invitado.aceptarReunion);
+app.post('/invitado/home/AceptarReunion', invitado.aceptarReunion);
+app.get('/invitado/home/Reunion/:idReunion', invitado.getReunionById);
 
 
 
