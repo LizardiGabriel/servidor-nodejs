@@ -529,6 +529,9 @@ app.post('/invitado/home/aceptarReunionData', invitado.aceptarReunion);
 
 
 
+app.get('/invitado/home/obtenerDetallesReunion', invitado.obtenerDetallesReunion);
+
+
 
 app.get('/invitado/test', (req, res) => {
   console.log('test');
