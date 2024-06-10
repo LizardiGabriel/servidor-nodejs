@@ -39,12 +39,12 @@
                     <div id="acompanantesAgregados"></div>
                     <label>¿Desea agregar acompañantes? Puede agregar hasta 5 acompañantes</label>
                     <div id="acompanantesHabilitada">
-                        <div>
-                            <label>Correo electrónico del acompañante*:</label>
-                            <input type="email" placeholder="email@example.com">
+                        <div class="form-group Correo has-validation">
+                            <label class="labelControl">Correo electrónico del acompañante*:</label>
+                            <input type="email" class="form-control form-control-lg inputControl" placeholder="email@example.com">
                         </div>
                         <div id="BotonAgregarAcompanante">
-                            <button type="button" id="agregarAcompanante">Agregar Acompañante</button>
+                            <button type="button" id="agregarAcompanante" class="botonAcompañante">Agregar Acompañante</button>
                         </div>
                     </div>
 
@@ -52,20 +52,20 @@
                     <hr/>
                     <div id="dispositivosAgregados"></div>
                     <div id="dispositivosHabilitada">
-                        <div>
-                            <label>Tipo de Dispositivo*:</label>
-                            <input type="text" placeholder="Tipo de Dispositivo">
+                        <div class="form-group">
+                            <label class="labelControl">Tipo de Dispositivo*:</label>
+                            <input class="form-control form-control-lg inputControl" type="text" placeholder="Tipo de Dispositivo">
                         </div>
-                        <div>
-                            <label>Marca*:</label>
-                            <input type="text" placeholder="Marca del Dispositivo">
+                        <div class="form-group">
+                            <label class="labelControl">Marca*:</label>
+                            <input class="form-control form-control-lg inputControl" type="text" placeholder="Marca del Dispositivo">
                         </div>
-                        <div>
-                            <label>Numero de serie*:</label>
-                            <input type="text" placeholder="Numero de serie">
+                        <div class="form-group">
+                            <label class="labelControl">Numero de serie*:</label>
+                            <input class="form-control form-control-lg inputControl" type="text" placeholder="Numero de serie">
                         </div>
                         <div id="BotonAgregarDispositivo">
-                            <button type="button" id="agregarDispositivo">Agregar Dispositivo</button>
+                            <button type="button" id="agregarDispositivo" class="botonDispositivo">Agregar Dispositivo</button>
                         </div>
                     </div>
 
@@ -73,34 +73,34 @@
                     <hr/>
                     <div id="automovilesAgregados"></div>
                     <div id="automovilHabilitada">
-                        <div>
-                            <label>Número de Placa*:</label>
-                            <input type="text" placeholder="Número de Placa">
-                            <div>Ingrese el número de placa.</div>
+                        <div class="form-group">
+                            <label class="labelControl">Número de Placa*:</label>
+                            <input class="form-control form-control-lg inputControl" type="text" placeholder="Número de Placa">
+                            <!-- <div>Ingrese el número de placa.</div> -->
                         </div>
-                        <div>
-                            <label>Marca*:</label>
-                            <input type="text" placeholder="Marca">
-                            <div>Ingrese la marca del automóvil.</div>
+                        <div class="form-group">
+                            <label class="labelControl">Marca*:</label>
+                            <input class="form-control form-control-lg inputControl" type="text" placeholder="Marca">
+                            <!-- <div>Ingrese la marca del automóvil.</div> -->
                         </div>
-                        <div>
-                            <label>Modelo*:</label>
-                            <input type="text" placeholder="Modelo">
-                            <div>Ingrese el modelo del automóvil.</div>
+                        <div class="form-group">
+                            <label class="labelControl">Modelo*:</label>
+                            <input class="form-control form-control-lg inputControl" type="text" placeholder="Modelo">
+                            <!-- <div>Ingrese el modelo del automóvil.</div> -->
                         </div>
-                        <div>
-                            <label>Color*:</label>
-                            <input type="text" placeholder="Color">
-                            <div>Ingrese el color del automóvil.</div>
+                        <div class="form-group">
+                            <label class="labelControl">Color*:</label>
+                            <input class="form-control form-control-lg inputControl" type="text" placeholder="Color">
+                            <!-- <div>Ingrese el color del automóvil.</div> -->
                         </div>
                         <div id="BotonAgregarAutomovil">
-                            <button type="button" id="agregarAutomovil">Agregar Automóvil</button>
+                            <button type="button" id="agregarAutomovil" class="botonAutomovil">Agregar Automóvil</button>
                         </div>
                     </div>
 
                     <hr/>
 
-                    <input type="button" value="aceptar" />
+                    <input class="buttonAcepatarReunion" type="button" value="Aceptar" />
                 </form>
 
 
@@ -126,7 +126,7 @@
                 console.log('Detalles de la Reunion:', data);
                 const div = document.getElementById('DetallesReunion');
                 div.innerHTML = `
-                    <p>titulo: ${data[0].titulo_reunion}</p>
+                    <p>Título: ${data[0].titulo_reunion}</p>
                     <p>Descripcion: ${data[0].descripcion_reunion}</p>
                     <p>Anfitrion: ${data[0].nombreUsuario}</p>
                     <p>Horario: ${data[0].fechasRepeticion[0].hora_inicio_repeticion} - ${data[0].fechasRepeticion[0].hora_fin_repeticion}</p>
