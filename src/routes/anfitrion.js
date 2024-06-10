@@ -6,7 +6,8 @@ const { getReunionesBD,
     getReunionesConRepeticionByIdOfUserBD,
     getSalasBD, setNewReunionBD,
     getInvitadoByEmailBD, setNewInvitadoBD, setNewInvitacionBD,
-    getReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD, getDetallesReunionByIdBD,getUsuarioByEmailBD
+    getReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD, getDetallesReunionByIdBD,getUsuarioByEmailBD,
+    updateHoraReunionBD
 
 } = require('../tools/peticiones');
 
@@ -248,6 +249,13 @@ async function updateUsuario(req, res) {
     }
 }
 
+    async function updateHoraReunion(req,res){
+        const { id_reunion,hora_fin_repeticion} = req.body;
+        const repeActualizada= await updateHoraReunionBD(id_reunion,hora_fin_repeticion);
+        console.log(repeActualizada);
+        res.status(200).json({ message: 'Reunion actualizado correctamente' });
+    }
+
 module.exports = {
     logout,
     getReunionesAnfitrion,
@@ -258,5 +266,6 @@ module.exports = {
     getInvitadoByEmail,
     getUserEmail,
     getUsuarioByEmail,
-    updateUsuario
+    updateUsuario,
+    updateHoraReunion
 };

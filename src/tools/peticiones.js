@@ -1112,6 +1112,23 @@ async function putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automovile
 }
 
 
+async function updateHoraReunionBD(id,nueva_hora) {
+    console.log('peticion a la bd de updateHoraReunion');
+    try {
+        const reunionActualizada = await prisma.repeticion.update({
+            where: { id_repeticion: Number(id) },
+            data: {
+                hora_fin_repeticion: nueva_hora
+            }
+        });
+        return reunionActualizada;
+    } catch (error) {
+        console.error('Error al actualizar reunion:', error);
+        return json({ error: 'Error al actualizar reunion' });
+    }
+}
+
+
 
 
 module.exports = {
@@ -1173,6 +1190,7 @@ module.exports = {
     setNewColadoBD,
     getInvitacionBy_IdInvitado_IdReunionBD,
 
-    createColadoBD
+    createColadoBD,
+    updateHoraReunionBD
 
 };

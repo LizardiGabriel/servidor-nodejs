@@ -62,10 +62,9 @@
             <h1 class="consultar_titulo title-example text-center">Consultar Detalles de Reunión</h1>
             <div class="botones">
                 <button class="reagendar_btn">Reagendar reunión</button>
-                <button class="reagendar30m_btn">+30 minutos</button>
-                <button class="reagendar1h_btn">+1 hora</button>
-                <button class="cancelar_btn">Cancelar reunión</button>
-                <button class="regresar_btn">Regresar</button>
+                <button id="aumentar30" class="reagendar30m_btn">+30 minutos</button>
+                <button id="aumentar60" class="reagendar1h_btn">+1 hora</button>
+                <button class="regresar_btn">Cancelar reunion</button>
             </div>
             <div class="Detalle paragraph-example">
                 <!--DETALLES DE REUNIÓN-->
@@ -95,6 +94,22 @@
                         <input type="text" id="sala" value="Sala de juntas" readonly disabled>
                     </div>
                 </form>
+
+                <button id="agregarInv">Agregar invitados</button>
+
+                <div id="formularioinv" style="display: none;">
+                    <h4><b>Formulario de Invitación</b></h4>
+                    <form id="">
+                        <label for="correos">Correo de invitación:</label><br>
+                        <input type="text" id="correoInv" name="correos" rows="4" cols="50"><br>
+
+                        <label for="acompanantes">numero de acompañantes:</label><br>
+                        <input type="number" id="acompanantesInv" name="acompanantes" required><br>
+
+                        <button type="button" id="botonAgregar" >Añadir</button>
+                    </form>
+                </div>
+
                 <!--DETALLES INVITADOS-->
                 <div class="__Tabla table-responsive paragraph-example">
                     <table class="tabla table table-hover table-bordered table-sm" id="Tabla">
@@ -113,6 +128,7 @@
 
         </div>
     </main>
+
 
     <div id="footers"> </div>
 
