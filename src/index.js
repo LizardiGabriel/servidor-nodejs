@@ -384,7 +384,7 @@ app.put('/anfitrion/catalogo/usuarios/:id', admin.updateUsuario);
 app.use('/anfitrion/reuniones/ConsultarDatos.html', express.static('./public/build2/views/Anfitrion/ConsultarDatosReunion.html'));
 app.get('/anfitrion/reuniones/detalles/:idReunion', anfitrion.getReunionById);
 app.put('/anfitrion/reuniones/hora', anfitrion.updateHoraReunion);
-
+app.post('/anfitrion/reuniones/delInvitado', anfitrion.deleteInvitado);
 
 
 

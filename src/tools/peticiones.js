@@ -317,6 +317,43 @@ async function deleteUsuarioBD(id) {
         return json({ error: 'Error al eliminar usuario' });
     }
 }
+
+async function deleteInvitadoBD(id) {
+    console.log('peticion a la bd de deleteInvitadoBD');
+    console.log(id);
+    try {
+
+        const invitacion = await prisma.invitacion.findMany({
+            where: { id_invitado: Number(id) }
+        });
+
+         await prisma.invitacion.deleteMany({
+            where: { id_invitado: Number(id) }
+        });
+
+        console.log(invitacion);
+
+        await prisma.automovil.deleteMany({
+            where: { id_invitacion: Number(invitacion[0].id_invitacion) }
+        });
+
+        await prisma.dispositivo_electronico.deleteMany({
+            where: { id_invitacion: Number(invitacion[0].id_invitacion) }
+        });
+
+        await prisma.colado.deleteMany({
+            where: { id_invitado: Number(id) }
+        });
+        
+        await prisma.invitado.delete({
+          where: { id_invitado: Number(id) }
+        });
+      }catch (error) {
+        console.error('Error al eliminar usuario:', error);
+        return json({ error: 'Error al eliminar usuario' });
+    }
+}
+
 async function getReunionesBD() {
     console.log('peticion a la bd de getReuniones');
     try {
@@ -1247,6 +1284,7 @@ module.exports = {
     getInvitadosBD,
     updateInvitadoBD,
     updateInvitadoBDtoInvitacion,
+    deleteInvitadoBD,
 
     getReunionesAdminBD,
     getInvitacionesAdminBD,

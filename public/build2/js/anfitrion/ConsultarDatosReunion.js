@@ -51,7 +51,7 @@ function cargarDatos() {
                 const response = await fetch(url);
                 const data = await response.json();
                 console.log(data);
-                agregarFila(data.nombre_invitado,data.email_invitado);
+                agregarFila(data.nombre_invitado,data.email_invitado,data.id_invitado);
                 return data;
             } catch (error) {
                 console.error('Error:', error);
@@ -59,7 +59,7 @@ function cargarDatos() {
             }
         }
 
-        function agregarFila(nombreInvitado, correoElectronico) {
+        function agregarFila(nombreInvitado, correoElectronico,id_invitado) {
             // Obtener el elemento tbody de la tabla
             const tbody = document.querySelector('.tabla__cuerpo');
         
@@ -82,7 +82,7 @@ function cargarDatos() {
                     border-radius: 10px;
                     cursor: pointer;
                     transition: background-color 0.3s ease;
-                    " onclick="eliminarInvitado()">Eliminar</button>
+                    " onclick="eliminarInvitado(${id_invitado})">Eliminar</button>
                 </td>
             `;
         
@@ -154,8 +154,6 @@ document.getElementById("botonAgregar").addEventListener('click', function(){
     enviarInvitacion(idReunion)
 });
 
-
-
 function enviarInvitacion() {
     const correoInv = document.getElementById("correoInv").value;
     const acompanantesInv = parseInt(document.getElementById("acompanantesInv").value) ;
@@ -183,3 +181,28 @@ function enviarInvitacion() {
         });
 }
 
+function eliminarInvitado(id_invitado){
+    console.log("Se borrara al invitado: "+id_invitado);
+    let datos={
+        id_invitado:id_invitado
+    }
+    fetch("/anfitrion/reuniones/delInvitado", {
+        method: 'POST',  // Cambiamos el método a PUT
+        headers: {
+            'Content-Type': 'application/json',  // Indicamos que el contenido será JSON
+        },
+        body: JSON.stringify(datos)  // Convertimos los datos a un string JSON
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();  // Convertimos la respuesta a JSON
+    })
+    .then(data => {
+        console.log('Success:', data);  // Manipulamos los datos recibidos
+    })
+    .catch(error => {
+        console.error('Error:', error);  // Manejamos cualquier error
+    });
+}

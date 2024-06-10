@@ -7,7 +7,7 @@ const { getReunionesBD,
     getSalasBD, setNewReunionBD,
     getInvitadoByEmailBD, setNewInvitadoBD, setNewInvitacionBD,
     getReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD, getDetallesReunionByIdBD,getUsuarioByEmailBD,
-    updateHoraReunionBD
+    updateHoraReunionBD,deleteInvitadoBD
 
 } = require('../tools/peticiones');
 
@@ -249,12 +249,19 @@ async function updateUsuario(req, res) {
     }
 }
 
-    async function updateHoraReunion(req,res){
-        const { id_reunion,hora_fin_repeticion} = req.body;
-        const repeActualizada= await updateHoraReunionBD(id_reunion,hora_fin_repeticion);
-        console.log(repeActualizada);
-        res.status(200).json({ message: 'Reunion actualizado correctamente' });
-    }
+async function updateHoraReunion(req,res){
+    const { id_reunion,hora_fin_repeticion} = req.body;
+    const repeActualizada= await updateHoraReunionBD(id_reunion,hora_fin_repeticion);
+    console.log(repeActualizada);
+    res.status(200).json({ message: 'Reunion actualizado correctamente' });
+}
+
+async function deleteInvitado(req,res){
+    const { id_invitado} = req.body;
+    const invitadoDel= await deleteInvitadoBD(id_invitado);
+    console.log(invitadoDel);
+    res.status(200).json({ message: 'Invitado eliminado correctamente' });
+}
 
 module.exports = {
     logout,
@@ -267,5 +274,6 @@ module.exports = {
     getUserEmail,
     getUsuarioByEmail,
     updateUsuario,
-    updateHoraReunion
+    updateHoraReunion,
+    deleteInvitado
 };
