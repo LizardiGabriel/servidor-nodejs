@@ -1135,7 +1135,7 @@ async function createColadoBD(id_invitado, idInvitacion){
 }
 
 // funcion para que el invitado guarde los dispositivos y automoviles en la invitacion que se le asigno
-async function putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automoviles){
+async function putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automoviles,qracceso){
 
     console.log('peticion a la bd de putInfoInvitadoToReunionBD, idInvitacion: ', idInvitacion, 'dispositivos: ', dispositivos, 'automoviles: ', automoviles);
 
@@ -1173,7 +1173,7 @@ async function putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automovile
             where: { id_invitacion: Number(idInvitacion) },
             data: {
                 isConfirmed: 1,
-                qr_acceso: "uploads/qr_acceso.jpg",
+                qr_acceso: "../../public/build2/qr/qr_acceso.jpg",
                 habilitado: "Si"
             }
         });
@@ -1252,6 +1252,7 @@ module.exports = {
 
     createColadoBD,
 
-    getReunionesNuebasByIdBD
+    getReunionesNuebasByIdBD,
+
 
 };

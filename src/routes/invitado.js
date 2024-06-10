@@ -9,6 +9,8 @@ require('dotenv').config();
 
 const { hashPassword, comparePassword } = require('../tools/cipher');
 const { generatePassword } = require('../tools/tools');
+const { generateQR } = require('../tools/tools');
+const { v4: uuidv4 } = require('uuid');
 const mail = require("../tools/mail");
 const jwtFunctions = require('../tools/jwtFunctions');
 
@@ -215,6 +217,11 @@ async function reunionesPendientes(req, res){
     }
 }
 
+async function guardarQR(base64Data, idInvitacion) {
+    const nombreArchivo = `qr_${uuidv4()}_${idInvitacion}.png`;
+    const filePath = await guardarImagenDesdeBase64(base64Data, nombreArchivo);
+    return filePath;
+}
 
 async function aceptarReunion(req, res){
     console.log('mensaje --> aceptarReunion');
@@ -286,8 +293,10 @@ async function aceptarReunion(req, res){
 
     }
 
-
-
+    const imagenQR = await generateQR(idInvitacion);
+    console.log('imagenQR: ', imagenQR);
+    // guardar la imagen
+    const rutaImagenQR = await guardarQR(imagenQR, idInvitacion);
 
     const actualizarInvitacionReunionBD = await putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automoviles);
     console.log('actualizarInvitacionReunionBD: ', actualizarInvitacionReunionBD);
@@ -338,7 +347,10 @@ module.exports = {
     reunionesPendientes,
     getInvitadoByEmail,
     aceptarReunion,
-    obtenerDetallesReunion
+    obtenerDetallesReunion,
+    guardarQR,
+    aceptarReunion,
+    
 };
 
 
