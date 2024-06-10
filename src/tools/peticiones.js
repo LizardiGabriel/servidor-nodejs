@@ -1173,7 +1173,7 @@ async function putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automovile
             where: { id_invitacion: Number(idInvitacion) },
             data: {
                 isConfirmed: 1,
-                qr_acceso: "../../public/build2/qr/qr_acceso.jpg",
+                qr_acceso: rutaImagenQR,
                 habilitado: "Si"
             }
         });

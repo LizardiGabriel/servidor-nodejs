@@ -297,8 +297,9 @@ async function aceptarReunion(req, res){
     console.log('imagenQR: ', imagenQR);
     // guardar la imagen
     const rutaImagenQR = await guardarQR(imagenQR, idInvitacion);
+    console.log('rutaImagenQR: ', rutaImagenQR);
 
-    const actualizarInvitacionReunionBD = await putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automoviles);
+    const actualizarInvitacionReunionBD = await putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automoviles, rutaImagenQR);
     console.log('actualizarInvitacionReunionBD: ', actualizarInvitacionReunionBD);
 
 

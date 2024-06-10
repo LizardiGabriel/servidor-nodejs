@@ -13,7 +13,7 @@ async function generatePassword() {
 async function generateQR(id_invitacion) {
     const qr = require('qrcode'); //importar la libreria qrcode
     let qrData = {
-        id_invitacion: idInvitacion,
+        idInvitacion: id_invitacion,
     }
     let qrString = JSON.stringify(qrData); //convertir el objeto a string
     let qrImage = await qr.toDataURL(qrString); //convertir el string a imagen
