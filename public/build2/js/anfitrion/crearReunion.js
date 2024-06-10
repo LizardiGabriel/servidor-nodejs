@@ -7,7 +7,7 @@ function agregarFecha() {
     const tablaFechasRepetir = document.getElementById('tablaFechasRepetir');
     const fila = document.createElement('tr');
     fila.innerHTML = `
-        <td><input type="date" class="form-control form-control-lg clockpicker" name="fechaRepetir" style="position: relative;" required></td>
+        <td><input type="date" class="form-control form-control-lg Formulario__inputGroup__input" name="fechaRepetir" style="position: relative;" required></td>
 
         <td><button class="addFecha__boton" onclick="eliminarFila(this)">Eliminar</button></td>
     `;
