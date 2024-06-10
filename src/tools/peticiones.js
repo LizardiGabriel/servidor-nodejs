@@ -1135,7 +1135,7 @@ async function createColadoBD(id_invitado, idInvitacion){
 }
 
 // funcion para que el invitado guarde los dispositivos y automoviles en la invitacion que se le asigno
-async function putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automoviles,qracceso){
+async function putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automoviles,rutaImagenQR){
 
     console.log('peticion a la bd de putInfoInvitadoToReunionBD, idInvitacion: ', idInvitacion, 'dispositivos: ', dispositivos, 'automoviles: ', automoviles);
 
