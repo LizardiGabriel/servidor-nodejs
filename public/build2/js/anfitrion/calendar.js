@@ -1,4 +1,6 @@
 
+
+
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -13,12 +15,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     for(const reunion of data){
                         for(const fecha of reunion.fechasRepeticion){
                             const evento={
+                                id_repeticion: fecha.id_repeticion,
                                 title:reunion.titulo_reunion,
                                 start: new Date(formatearFecha(fecha.fecha_repeticion)),
                                 end: new Date(formatearFecha(fecha.fecha_repeticion)),
                                 location: "Num sala "+reunion.id_sala,
                                 url: "/anfitrion/reuniones/ConsultarDatos.html?idReunion="+reunion.id_reunion+"&"+"fecha_i="+fecha.fecha_repeticion+
-                                "&"+"fecha_f="+fecha.fecha_repeticion+"&"+"hora_i="+fecha.hora_inicio_repeticion+"&"+"hora_f="+fecha.hora_fin_repeticion,
+                                "&"+"fecha_f="+fecha.fecha_repeticion+"&"+"hora_i="+fecha.hora_inicio_repeticion+"&"+"hora_f="+fecha.hora_fin_repeticion
+                                +"&"+"idRepeticion="+fecha.id_repeticion,
                                 timeStart: fecha.hora_inicio_repeticion,
                                 timeEnd: fecha.hora_fin_repeticion
                             }

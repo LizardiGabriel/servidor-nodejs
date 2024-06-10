@@ -1135,7 +1135,7 @@ async function createColadoBD(id_invitado, idInvitacion){
 }
 
 // funcion para que el invitado guarde los dispositivos y automoviles en la invitacion que se le asigno
-async function putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automoviles){
+async function putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automoviles,rutaImagenQR){
 
     console.log('peticion a la bd de putInfoInvitadoToReunionBD, idInvitacion: ', idInvitacion, 'dispositivos: ', dispositivos, 'automoviles: ', automoviles);
 
@@ -1173,7 +1173,7 @@ async function putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automovile
             where: { id_invitacion: Number(idInvitacion) },
             data: {
                 isConfirmed: 1,
-                qr_acceso: "uploads/qr_acceso.jpg",
+                qr_acceso: rutaImagenQR,
                 habilitado: "Si"
             }
         });
@@ -1186,6 +1186,23 @@ async function putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automovile
     }
 
 
+}
+
+
+async function updateHoraReunionBD(id,nueva_hora) {
+    console.log('peticion a la bd de updateHoraReunion');
+    try {
+        const reunionActualizada = await prisma.repeticion.update({
+            where: { id_repeticion: Number(id) },
+            data: {
+                hora_fin_repeticion: nueva_hora
+            }
+        });
+        return reunionActualizada;
+    } catch (error) {
+        console.error('Error al actualizar reunion:', error);
+        return json({ error: 'Error al actualizar reunion' });
+    }
 }
 
 
@@ -1251,7 +1268,9 @@ module.exports = {
     getInvitacionBy_IdInvitado_IdReunionBD,
 
     createColadoBD,
+    updateHoraReunionBD,
 
-    getReunionesNuebasByIdBD
+    getReunionesNuebasByIdBD,
+
 
 };

@@ -2,20 +2,28 @@ window.onload = function () {
     cargarDatos();
 }
 
+function addminutes(initialT,minAdd){
+    const today = new Date();
+    console.log(today);
+    const timeParts=initialT.split(':');
+    const date= new Date(today.getFullYear(),today.getMonth(),today.getDate(),parseInt(timeParts[0]),parseInt(timeParts[1]));
+    date.setMinutes(date.getMinutes()+parseInt(minAdd));
+    const hours= date.getHours().toString().padStart(2,"0");
+    const minutes= date.getMinutes().toString().padStart(2,"0");
+    console.log(hours+":"+minutes);
+    return hours+":"+minutes;
+}
+
+let url = window.location.href;
+let urlParams = new URLSearchParams(window.location.search);
+console.log(urlParams);
+const idRepeticion= urlParams.get('idRepeticion');
+const idReunion = parseInt(urlParams.get('idReunion'));
+const fecha = urlParams.get('fecha_i');
+const hora_i=urlParams.get('hora_i');
+const hora_f=urlParams.get('hora_f');
 function cargarDatos() {
     console.log("Cargando datos");
-
-    let url = window.location.href;
-    let urlParams = new URLSearchParams(window.location.search);
-    console.log(urlParams);
-    const idReunion = urlParams.get('idReunion');
-    const fecha = urlParams.get('fecha_i');
-    const hora_i=urlParams.get('hora_i');
-    const hora_f=urlParams.get('hora_f');
-
-
-    console.log('idReunion: ' + idReunion);
-
     fetch(`/anfitrion/reuniones/detalles/${idReunion}`)
         .then(response => response.json())
         .then(data => {
@@ -81,5 +89,97 @@ function cargarDatos() {
             // Añadir la fila al cuerpo de la tabla
             tbody.appendChild(fila);
         }
-
 }
+document.getElementById("aumentar30").addEventListener('click', function() {
+    let datos={
+        id_reunion:idRepeticion,
+        hora_fin_repeticion:addminutes(hora_f,30)
+    }
+    console.log(datos);
+    fetch("/anfitrion/reuniones/hora", {
+        method: 'PUT',  // Cambiamos el método a PUT
+        headers: {
+            'Content-Type': 'application/json',  // Indicamos que el contenido será JSON
+        },
+        body: JSON.stringify(datos)  // Convertimos los datos a un string JSON
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();  // Convertimos la respuesta a JSON
+    })
+    .then(data => {
+        console.log('Success:', data);  // Manipulamos los datos recibidos
+    })
+    .catch(error => {
+        console.error('Error:', error);  // Manejamos cualquier error
+    });
+});
+
+document.getElementById("aumentar60").addEventListener('click', function() {
+    let datos={
+        id_reunion:idRepeticion,
+        hora_fin_repeticion:addminutes(hora_f,60)
+    }
+    console.log(datos);
+    fetch("/anfitrion/reuniones/hora", {
+        method: 'PUT',  // Cambiamos el método a PUT
+        headers: {
+            'Content-Type': 'application/json',  // Indicamos que el contenido será JSON
+        },
+        body: JSON.stringify(datos)  // Convertimos los datos a un string JSON
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();  // Convertimos la respuesta a JSON
+    })
+    .then(data => {
+        console.log('Success:', data);  // Manipulamos los datos recibidos
+    })
+    .catch(error => {
+        console.error('Error:', error);  // Manejamos cualquier error
+    });
+});
+
+
+document.getElementById("agregarInv").addEventListener('click', function(){
+    document.getElementById("formularioinv").style.display="block";
+});
+
+document.getElementById("botonAgregar").addEventListener('click', function(){
+    console.log("Se agregan datos");
+    enviarInvitacion(idReunion)
+});
+
+
+
+function enviarInvitacion() {
+    const correoInv = document.getElementById("correoInv").value;
+    const acompanantesInv = parseInt(document.getElementById("acompanantesInv").value) ;
+
+    const envJson = {
+        idReunion,
+        correoInv,
+        acompanantesInv
+        
+    };
+    console.log(envJson);
+    fetch(`/anfitrion/reuniones/invitacion`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(envJson)
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('data:', data);
+        })
+        .catch(error => {
+            console.error('Error:', error); 
+        });
+}
+
