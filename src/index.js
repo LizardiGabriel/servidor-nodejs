@@ -418,6 +418,7 @@ app.use('/seguridad/seguridad.html', express.static('./public/build2/views/segur
 app.get('/seguridad/logout', seguridad.logout);
 app.use('/seguridad/visualizarAgenda.html', express.static('./public/build2/views/seguridad/visualizarAgendaDia.html'));
 app.get('/seguridad/getAgendas', seguridad.getReunionesAll);
+app.get('/seguridad/getAgendaID', seguridad.getReunionById);
 app.get('/seguridad/getAgendaID/:id', seguridad.getReunionByIdAll);
 app.use('/seguridad/verDatosInv.html', express.static('./public/build2/views/seguridad/consultarDatosDelInvitado.html'));
 app.use('/seguridad/EditarDatosPersonales.html', express.static('./public/build2/views/seguridad/EditarDatosPersonales.html'));

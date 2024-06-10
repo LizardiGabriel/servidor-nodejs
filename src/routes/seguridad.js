@@ -1,5 +1,5 @@
 const { log } = require('console');
-const { getReunionesBD, getUsuarioByIdBD,getReunionByIdBD,getSalaByIdBD,getInvitacionByIdBD,getInvitadoByIdBD,getInvitadoByNameBD,getInvitacionesByIdInv} = require('../tools/peticiones');
+const { getReunionesBD, getUsuarioByIdBD,getReunionByIdBD,getSalaByIdBD,getInvitacionByIdBD,getInvitadoByIdBD,getInvitadoByNameBD,getInvitacionesByIdInv, getDetallesReunionByIdBD} = require('../tools/peticiones');
 const { response } = require('express');
 const { json } = require('body-parser');
 
@@ -16,36 +16,50 @@ async function getReuniones(req, res) {
     res.json(reuniones);
 }
 
-async function getReunionesAll(req,res){
+async function getReunionesAll(req, res) {
     console.log('entre a  xd getreunionesAll');
     const reuniones = await getReunionesBD();
-    let reunionesInfo= [];
+    let reunionesInfo = [];
     for (const reunion of reuniones) {
         try {
-            console.log('reunion --->:' + reunion.id_reunion)
+            console.log('reunion --->:' + reunion.id_reunion);
             const user = await getUsuarioByIdBD(reunion.id_usuario);
             const sala = await getSalaByIdBD(reunion.id_sala);
-            const invitacion= await getInvitacionByIdBD(reunion.id_reunion);
-            const invitado= await getInvitadoByIdBD(invitacion.id_invitado);
-            console.log('id invitado' + invitado.id_invitado);
+            const invitacion = await getInvitacionByIdBD(reunion.id_reunion);
+            const invitado = await getInvitadoByIdBD(invitacion.id_invitado);
+            const detallesReunion = await getDetallesReunionByIdBD(reunion.id_reunion);
+
+            // Obtener repeticiones de la reunión
+            const repeticiones = detallesReunion.Repeticion || []; // Asegúrate de que esta es la estructura correcta donde se almacenan las repeticiones
+            
+            // Mapear repeticiones a un formato legible
+            const detallesRepeticion = repeticiones.map(rep => ({
+                fecha: rep.fecha_repeticion,
+                hora_inicio: rep.hora_inicio_repeticion,
+                hora_fin: rep.hora_fin_repeticion
+            }));
+
             const respuesta = {
                 id_reunion: reunion.id_reunion,
                 nombre_user: user.nombre_usuario,
-                apellido_user: user.apellido_paterno_usuario,
+                apellidoP_user: user.apellido_paterno_usuario,
+                apellidoM_user: user.apellido_materno_usuario,
                 nombre_sala: sala.nombre_sala,
                 titulo_reunion: reunion.titulo_reunion,
-                fecha_reunion: reunion.fecha_reunion,
-                    descripcion_reunion: reunion.descripcion_reunion,
+                descripcion_reunion: reunion.descripcion_reunion,
                 id_inv: invitado.id_invitado,
-                nombre_inv:invitado.nombre_invitado,
-                apellido_inv: invitado.apellido_paterno_invitado
+                nombre_inv: invitado.nombre_invitado,
+                apellido_inv: invitado.apellido_paterno_invitado,
+                repeticiones: detallesRepeticion, // Añadir detalles de las repeticiones
+                hora_llegada: detallesReunion.hora_llegada // Asegúrate de que este campo existe en detallesReunion
             };
+            console.log('respuesta--->', respuesta);
             reunionesInfo.push(respuesta);
         } catch (error) {
             console.error("Error al recuperar los datos:", error);
         }
     }
-    res.json(reunionesInfo)
+    res.json(reunionesInfo);
 }
 
 
@@ -122,6 +136,7 @@ async function getReunionByNaveInv(req,res) {
     }
 
 
+
 //Visualizar agenda
 module.exports = {
     logout,
@@ -130,5 +145,6 @@ module.exports = {
     getReunionByIdAll,
     getReunionesAll,
     getReunionByNaveInv,
-    getInvitadoById
+    getInvitadoById,
+    getDetallesReunionByIdBD,
 };

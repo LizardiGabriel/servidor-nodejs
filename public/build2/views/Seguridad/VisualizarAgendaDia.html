@@ -35,7 +35,7 @@
                         <tr>
                             <th scope="col" data-sort="accion" class="cabecera">Acción</th>
                             <th scope="col" data-sort="nombreInvi" class="cabecera">Nombre Invitado</th>
-                            <th scope="col" data-sort="horario" class="cabecera">Hora llegada</th>
+                            <th scope="col" data-sort="horario" class="cabecera">Fecha y hora</th>
                             <th scope="col" data-sort="nombreAnfi" class="cabecera">Nombre Anfitrión</th>
                         </tr>
                     </thead>
@@ -56,86 +56,54 @@
           const fechaYHoraElement = document.querySelector('h2');
           fechaYHoraElement.innerHTML = `${fechaFormateada}`;
         }
-
-        window.onload = actualizarFechaHora;
-
-        const intervaloActualizacion = 1000;
+      const intervaloActualizacion = 1000;
       setInterval(actualizarFechaHora, intervaloActualizacion);
       let table;
       
-      obtenerReuniones()
-      async function obtenerReuniones(){
-        let info = [];
-        console.log("Cargando invitados");
-        try{
-          const response = await fetch('/seguridad/getAgendas');
-          const invitados = await response.json();
+      window.onload = function () {
+        actualizarFechaHora();
+        obtenerReuniones();
+        
+    }
 
-          //Limpiar el arreglo 'info'
-          info.length = 0;
 
-          console.log(invitados)
-        }catch(error){
-          console.error("Error al obtener datos", error);
-          return [];
+    function obtenerReuniones() {
+    fetch("/seguridad/getAgendas", {
+        method: "GET"
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        const tbody = document.querySelector('.tabla__cuerpo');
+        tbody.innerHTML = '';
+        data.forEach(reunion => {
+            const fila = document.createElement('tr');
+            console.log(reunion.id_inv);
+
+            // Concatenar las fechas y horas de repeticiones
+            const fechasHoras = reunion.repeticiones.map(rep => {
+                return `${rep.fecha} de ${rep.hora_inicio} a ${rep.hora_fin}`;
+            }).join(", ");
+
+            fila.innerHTML = `
+                <td>
+                    <button onclick="verDetallesInv(${reunion.id_inv})">Ver</button>
+                </td>
+                <td>${reunion.nombre_inv}</td>
+                <td>${fechasHoras}</td>
+                <td>${reunion.nombre_user} ${reunion.apellidoP_user} ${reunion.apellidoM_user}</td>
+            `;
+            tbody.appendChild(fila);
+        });
+    })
+    .catch(error => console.error("Error al visualizar los datos:", error));
+}
+
+        
+        function verDetallesInv(idInvitado) {
+            const url = `verDatosInv.html?idInvitado=${idInvitado}`;    
+            window.open(url);
         }
-      }
-
-      /* function obtenerReuniones() {
-        let info = []
-        try{
-
-        }catch(error){
-          console.error("Error al obtener datos", error);
-          return [];
-        }
-          fetch("/seguridad/getAgendas", {
-              method: "GET"
-          })
-              .then(response => response.json())
-              .then(data => {
-                  console.log(data);
-                  const tablaBody = document.getElementById('cuerpoTabla');
-                  tablaBody.innerHTML = '';
-                  data.forEach(reunion => {
-                      let fecha = new Date(reunion.fecha_reunion);
-                      const fila = document.createElement('tr');
-                      console.log(reunion.id_inv);
-                      fila.innerHTML = `
-                          <td>
-                              <button onclick="verDetallesInv(${reunion.id_inv})">Ver</button>
-                          </td>
-                          <td>${reunion.nombre_inv}</td>
-                          <td>${fecha.getUTCHours()}:${fecha.getUTCMinutes()}</td>
-                          <td>${reunion.nombre_user}</td>
-                      `;
-                      tablaBody.appendChild(fila);
-                  });
-              })
-              .catch(error => console.error("Error al visualizar los datos:", error));
-      }
-
-      function verDetallesInv(idInvitado) {
-          fetch(`/seguridad/getAgendaID/${idInvitado}`, {
-              method: "GET"
-          })
-              .then(response => response.json())
-              .then(data => {
-                  console.log(data);
-                  document.getElementById('detallesReunion').innerHTML = `
-                  <h1>Detalles de la reunión</h1>
-                      <p>Id de la reunión: ${data.id_reunion}</p>
-                      <p>Nombre del anfitrión: ${data.nombre_user} ${data.apellido_user}</p>
-                      <p>Nombre de la sala: ${data.nombre_sala}</p>
-                      <p>Título de la reunión: ${data.titulo_reunion}</p>
-                  `;
-              })
-              .catch(error => console.error('Error al obtener usuario:', error));
-      }
-      function VerDatosInvitado(idInvitado) {
-          const url = `verDatosInv.html?idInvitado=${idInvitado}`;    
-          window.open(url);
-      } */
     </script>
     
     <script src="../../js/seguridad/visualizarAgendaDelDia.js"></script>
@@ -145,3 +113,4 @@
     <script src="../../js/sidebar.js"></script>
    <!--  <script src="../../js/visualizarAgenda.js"></script> -->
 </body>
+</html>
