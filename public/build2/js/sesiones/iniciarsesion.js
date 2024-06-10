@@ -27,8 +27,8 @@ function checkCredenciales() {
     },
     body: JSON.stringify({
 
-      email: email,
-      password: password,
+      email: "seguridad@test.com",
+      password: "password",
       Recuerdame: Recuerdame
     })
   })
