@@ -96,6 +96,7 @@ const rutas = [
     
     //Rutas para la edición de cuentas personales
     ['/js/admin/editarDatosPersonales.js', '../public/build2/js/admin/editarDatosPersonales.js'],
+    ['/js/anfitrion/editarDatosPersonales.js', '../public/build2/js/anfitrion/editarDatosPersonales.js'],
     
     //Rutas para la gestión de usuarios (SuperAdmin)
     ['/js/admin/gestionUsuarios.js', '../public/build2/js/admin/gestionUsuarios.js'],
@@ -123,7 +124,15 @@ const rutas = [
     ['/js/invitado/invitacion.js', '../public/build2/js/invitado/invitacion.js'],
     ['/js/invitado/RegistrarInformacionPersonal.js', '../public/build2/js/invitado/RegistrarInformacionPersonal.js'],
     ['/js/invitado/headers.js', '../public/build2/js/invitado/headers.js'],
-
+    
+    //Rutas de js para Seguridad
+    ['/js/seguridad/seguridad.js', '../public/build2/js/seguridad/seguridad.js'],
+    ['/js/seguridad/headers.js', '../public/build2/js/seguridad/headers.js'],
+    ['/js/seguridad/consultarDetallesInvitado.js', '../public/build2/js/seguridad/consultarDetallesInvitado.js'],
+    ['/js/seguridad/editarDatosPersonales.js', '../public/build2/js/seguridad/editarDatosPersonales.js'],
+    ['/js/seguridad/visualizarAgendaDelDia.js', '../public/build2/js/seguridad/visualizarAgendaDelDia.js'],
+    ['/js/seguridad/escanearQR.js', '../public/build2/js/seguridad/escanearQR.js'],
+    
 
     //Rutas de css de toda la interfaz
     ['/css/app.css', '../public/build2/css/app.css'],
@@ -343,10 +352,7 @@ app.use('/anfitrion', (req, res, next) => {
     }else
         return res.status(401).json({error: 'Unauthorized', status: 401});
 });
-app.get('/anfitrion/getFotoPerfil', (req, res) => {
-    let foto = getFoto(req.session.jwt);
-    res.status(200).json({foto: foto});
-});
+app.get('/anfitrion/getFotoPerfil', admin.getFotoAdmin);
 app.get('/anfitrion/logout', anfitrion.logout);
 
 app.use('/anfitrion/anfitrion.html', express.static('./public/build2/views/Anfitrion/anfitrion.html'));
@@ -406,12 +412,17 @@ app.use('/seguridad', (req, res, next) => {
     }else
         return res.status(401).json({error: 'Unauthorized', status: 401});
 });
-app.use('/seguridad/seguridad.html', express.static('./public/seguridad.html'));
+
+
+app.use('/seguridad/seguridad.html', express.static('./public/build2/views/seguridad/seguridad.html'));
 app.get('/seguridad/logout', seguridad.logout);
-app.use('/seguridad/visualizarAgenda.html', express.static('./public/visualizarAgenda.html'));
+app.use('/seguridad/visualizarAgenda.html', express.static('./public/build2/views/seguridad/visualizarAgendaDia.html'));
 app.get('/seguridad/getAgendas', seguridad.getReunionesAll);
 app.get('/seguridad/getAgendaID/:id', seguridad.getReunionByIdAll);
-app.use('/seguridad/verDatosInv.html', express.static('./public/verDatosInv.html'));
+app.use('/seguridad/verDatosInv.html', express.static('./public/build2/views/seguridad/consultarDatosDelInvitado.html'));
+app.use('/seguridad/EditarDatosPersonales.html', express.static('./public/build2/views/seguridad/EditarDatosPersonales.html'));
+app.use('/seguridad/escanearQR.html', express.static('./public/build2/views/seguridad/scanearQr.html'));
+app.get('/seguridad/getFotoPerfil', admin.getFotoAdmin);
 app.get('/seguridad/test', (req, res) => {
   console.log('test');
   console.log(req.session);
@@ -517,6 +528,9 @@ app.use('/invitado/home/aceptarReunion', async (req, res) => {
 
 app.post('/invitado/home/aceptarReunionData', invitado.aceptarReunion);
 
+
+
+app.get('/invitado/home/obtenerDetallesReunion', invitado.obtenerDetallesReunion);
 
 
 

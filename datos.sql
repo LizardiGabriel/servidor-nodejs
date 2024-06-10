@@ -69,7 +69,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `Invitacion` WRITE;
 /*!40000 ALTER TABLE `Invitacion` DISABLE KEYS */;
-INSERT INTO `Invitacion` VALUES (1,1,1,'uploads/qr_acceso.jpg','Si',5,1),(2,1,2,'','No',0,0),(3,1,3,'','No',0,0);
+INSERT INTO `Invitacion` VALUES (1,1,1,'uploads/qr_acceso.jpg','Si',5,1),(2,1,2,'','No',0,0),(3,1,3,'','No',0,0),(4,1,4,'','No',7,0);
 /*!40000 ALTER TABLE `Invitacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -79,7 +79,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `Invitado` WRITE;
 /*!40000 ALTER TABLE `Invitado` DISABLE KEYS */;
-INSERT INTO `Invitado` VALUES (1,'juan','juan','juan','lizardigabriel9@gmail.com','$2b$11$45hrKlVFZaOKgCKQKvfA/OrYbOeD2Q3.UwaTRjKQB0hNTJANW5RPq','5560980023','juan','public/build2/uploads/fotografia_invitado1.jpg','INE',1,1,0,1),(2,'','','','diegoillescas2210@gmail.com','709YeytV','','','uploads/usuario.webp','',0,1,1,0),(3,'','','','3lizabeth37124@gmail.com','SJ4OGNcy','','','uploads/usuario.webp','',0,1,1,0);
+INSERT INTO `Invitado` VALUES (1,'juan','juan','juan','lizardigabriel9@gmail.com','$2b$11$45hrKlVFZaOKgCKQKvfA/OrYbOeD2Q3.UwaTRjKQB0hNTJANW5RPq','5560980023','juan','public/build2/uploads/fotografia_invitado1.jpg','INE',1,1,0,1),(2,'','','','diegoillescas2210@gmail.com','709YeytV','','','uploads/usuario.webp','',0,1,1,0),(3,'','','','3lizabeth37124@gmail.com','SJ4OGNcy','','','uploads/usuario.webp','',0,1,1,0),(4,'','','','juan@gmail.com','XFbvn6ft','','','uploads/usuario.webp','',1,1,1,0);
 /*!40000 ALTER TABLE `Invitado` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -89,7 +89,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `Repeticion` WRITE;
 /*!40000 ALTER TABLE `Repeticion` DISABLE KEYS */;
-INSERT INTO `Repeticion` VALUES (1,1,'2024-05-17','10:00','12:00','Agendada');
+INSERT INTO `Repeticion` VALUES (1,1,'2024-05-17','10:00','12:00','Agendada'),(2,2,'2024-06-10','02:00PM','03:00PM','Pendiente'),(3,2,'2024-06-11','02:00PM','03:00PM','Pendiente'),(4,2,'2024-06-12','02:00PM','03:00PM','Pendiente'),(5,3,'2024-06-12','05:00PM','06:00PM','Pendiente'),(6,3,'2024-06-13','05:00PM','06:00PM','Pendiente'),(7,4,'2024-06-10','07:00PM','08:00PM','Pendiente'),(8,4,'2024-06-14','07:00PM','08:00PM','Pendiente'),(9,5,'2024-06-17','05:00PM','06:00PM','Pendiente'),(10,5,'2024-06-18','05:00PM','06:00PM','Pendiente');
 /*!40000 ALTER TABLE `Repeticion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -99,7 +99,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `Reunion` WRITE;
 /*!40000 ALTER TABLE `Reunion` DISABLE KEYS */;
-INSERT INTO `Reunion` VALUES (1,2,3,'Presentación de Proyecto','Presentación del proyecto para aprobación');
+INSERT INTO `Reunion` VALUES (1,2,3,'Presentación de Proyecto','Presentación del proyecto para aprobación'),(2,2,3,'reunion3','cita3'),(3,2,2,'reu4','desc'),(4,2,1,'reu5','desc5'),(5,2,2,'reu6','desc6');
 /*!40000 ALTER TABLE `Reunion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -119,7 +119,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `Usuario` WRITE;
 /*!40000 ALTER TABLE `Usuario` DISABLE KEYS */;
-INSERT INTO `Usuario` VALUES (1,'admin@test.com','$2b$11$tpeJKZANQoWqhevVHHTq0ODNibR0RUDcgmGVoNAiWzhjX5Iw1MR2q','Admin','Admin','Admin','5512345678','SuperAdmin','uploads/usuario.webp'),(2,'anfitrion@test.com','$2b$11$tpeJKZANQoWqhevVHHTq0ODNibR0RUDcgmGVoNAiWzhjX5Iw1MR2q','Anfitrion','Anfitrion','Anfitrion','5512345678','Anfitrion','uploads/usuario.webp'),(3,'seguridad@test.com','$2b$11$tpeJKZANQoWqhevVHHTq0ODNibR0RUDcgmGVoNAiWzhjX5Iw1MR2q','Seguridad','Seguridad','Seguridad','5512345678','Seguridad','uploads/usuario.webp');
+INSERT INTO `Usuario` VALUES (1,'admin@test.com','$2b$11$tpeJKZANQoWqhevVHHTq0ODNibR0RUDcgmGVoNAiWzhjX5Iw1MR2q','Admin','Admin','Admin','5512345678','SuperAdmin','uploads/usuario.webp'),(2,'anfitrion@test.com','$2b$11$tpeJKZANQoWqhevVHHTq0ODNibR0RUDcgmGVoNAiWzhjX5Iw1MR2q','Anfitrion','Jose','Gabriel','5512345678','Anfitrion','uploads/fotografia_usuario2.jpg'),(3,'seguridad@test.com','$2b$11$tpeJKZANQoWqhevVHHTq0ODNibR0RUDcgmGVoNAiWzhjX5Iw1MR2q','Seguridad','Seguridad','Seguridad','5512345678','Seguridad','uploads/usuario.webp');
 /*!40000 ALTER TABLE `Usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -132,4 +132,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-08 21:17:34
+-- Dump completed on 2024-06-09 10:56:42

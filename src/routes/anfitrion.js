@@ -85,7 +85,7 @@ async function getReunionesAnfitrion(req, res) {
 }
 
 async function getSalasAnfitrion(req, res) {
-    console.log('mensaje --> getSalasAnfitrion');
+    console.log('>>>>>>>>>>>>>>>>>>>>> d bsuvbhuwd   mensaje --> getSalasAnfitrion');
     //console.log(req.session);
     const salas = await getSalasBD();
     if (salas !== null) {
@@ -146,7 +146,7 @@ async function setInvitacion(req, res) {
 
     const id_invitado = invitado.id_invitado;
     
-    const setInvitacion = await setNewInvitacionBD(idReunion, id_invitado, acompanantesInv);
+    const setInvitacion = await setNewInvitacionBD(idReunion, id_invitado, acompanantesInv, 1);
     const reunion = await getDetallesReunionByIdBD(idReunion);
 
 

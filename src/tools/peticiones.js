@@ -646,7 +646,7 @@ async function setNewInvitadoBD(email, password) {
                 empresa_invitado: "",
                 foto_invitado: "uploads/usuario.webp",
                 identificacion_invitado: "",
-                es_colado_invitado: 1,
+
                 habilitado: 1,
                 newCount: 1,
                 changeFirstPass: 0
@@ -676,7 +676,7 @@ async function setNewColadoBD(email, password) {
                 empresa_invitado: "",
                 foto_invitado: "uploads/usuario.webp",
                 identificacion_invitado: "",
-                es_colado_invitado: 0,
+
                 habilitado: 1,
                 newCount: 1,
                 changeFirstPass: 0
@@ -691,7 +691,7 @@ async function setNewColadoBD(email, password) {
 
 }
 
-async function setNewInvitacionBD(idReunion, id_invitado, acompanantesInv) {
+async function setNewInvitacionBD(idReunion, id_invitado, acompanantesInv, es_colado_invitado) {
     console.log('peticion a la bd de setNewInvitacion');
     console.log('idReunion: ', idReunion, 'id_invitado: ', id_invitado);
     try {
@@ -702,7 +702,8 @@ async function setNewInvitacionBD(idReunion, id_invitado, acompanantesInv) {
                 habilitado: "No",
                 qr_acceso: "",
                 numero_colados: Number(acompanantesInv),
-                isConfirmed: 0
+                isConfirmed: 0,
+                es_colado_invitado: Number(es_colado_invitado)
             }
         });
         return nuevaInvitacion;
@@ -899,6 +900,82 @@ async function getReunionesNuebasBD(id_invitado) {
 }
 
 
+async function getReunionesNuebasByIdBD(id_invitado, idReunion) {
+
+    console.log('Petición a la BD para obtener reuniones de un invitado con detalles');
+    try {
+        // Obtener todas las invitaciones del invitado específico
+        const invitaciones = await prisma.invitacion.findMany({
+            where: {
+                id_invitado: Number(id_invitado),
+                isConfirmed: 0,
+                id_reunion: Number(idReunion)
+
+            },
+            include: {
+                reunion: {
+                    include: {
+                        sala: true,  // Incluye la sala asociada a la reunión
+                        usuario: true // Incluye el usuario asociado a la reunión
+                    }
+                }
+            }
+        });
+
+        const reuniones = [];
+
+        for (let i = 0; i < invitaciones.length; i++) {
+            const invitacion = invitaciones[i];
+            const reunion = invitacion.reunion;
+
+            // Añadir el conteo de repeticiones
+            const numRepeticion = await prisma.repeticion.count({
+                where: { id_reunion: reunion.id_reunion }
+            });
+            reunion.numRepeticion = numRepeticion;
+
+            // Añadir las fechas de repetición
+            const repeticiones = await prisma.repeticion.findMany({
+                where: { id_reunion: reunion.id_reunion }
+            });
+            const fechasRep = repeticiones.map(rep => ({
+                id_repeticion: rep.id_repeticion,
+                fecha_repeticion: rep.fecha_repeticion,
+                estatus_repeticion: rep.estatus_repeticion,
+                hora_inicio_repeticion: rep.hora_inicio_repeticion,
+                hora_fin_repeticion: rep.hora_fin_repeticion
+            }));
+            reunion.fechasRepeticion = fechasRep;
+
+            // Añadir el número de colados de la invitación
+            const numColados = invitacion.numero_colados;
+            invitacion.numColados = numColados;
+
+            // Añadir la sala y el nombre del usuario a la reunión
+            reunion.nombreSala = reunion.sala.nombre_sala;
+            reunion.nombreUsuario = `${reunion.usuario.nombre_usuario} ${reunion.usuario.apellido_paterno_usuario} ${reunion.usuario.apellido_materno_usuario}`;
+
+            // Incluir la información de la invitación en la reunión
+            if (!reunion.invitaciones) {
+                reunion.invitaciones = [];
+            }
+            reunion.invitaciones.push({
+                id_invitacion: invitacion.id_invitacion,
+                numColados: numColados
+            });
+
+            reuniones.push(reunion);
+        }
+
+        return reuniones;
+    } catch (error) {
+        console.error('Error al obtener las reuniones del invitado:', error);
+        return { error: 'Error al obtener las reuniones del invitado' };
+    }
+}
+
+
+
 async function getReunionesConRepeticionByIdOfInvitadoBD(id_invitado) {
     console.log('Petición a la BD para obtener reuniones de un invitado con detalles');
     try {
@@ -1058,7 +1135,7 @@ async function createColadoBD(id_invitado, idInvitacion){
 }
 
 // funcion para que el invitado guarde los dispositivos y automoviles en la invitacion que se le asigno
-async function putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automoviles){
+async function putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automoviles,qracceso){
 
     console.log('peticion a la bd de putInfoInvitadoToReunionBD, idInvitacion: ', idInvitacion, 'dispositivos: ', dispositivos, 'automoviles: ', automoviles);
 
@@ -1096,7 +1173,7 @@ async function putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automovile
             where: { id_invitacion: Number(idInvitacion) },
             data: {
                 isConfirmed: 1,
-                qr_acceso: "uploads/qr_acceso.jpg",
+                qr_acceso: rutaImagenQR,
                 habilitado: "Si"
             }
         });
@@ -1191,6 +1268,9 @@ module.exports = {
     getInvitacionBy_IdInvitado_IdReunionBD,
 
     createColadoBD,
-    updateHoraReunionBD
+    updateHoraReunionBD,
+
+    getReunionesNuebasByIdBD,
+
 
 };

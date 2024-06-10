@@ -15,7 +15,7 @@ function returnHTML() {
   //Ponemos activo la opción en la que se encuentra
   if (window.location.pathname == "/admin/catalogo/GestionDeInvitaciones.html") {
     optionInvitaciones = `<div id="" class="sidebar__menu-option option__active" onclick="gestionarInvitaciones()">`
-  } else if(window.location.pathname == "/admin/catalogo/GestionDeUsuarios.html"  || window.location.pathname == "/admin/editarPersonal.html") {
+  } else if(window.location.pathname == "/admin/catalogo/GestionDeUsuarios.html"  || window.location.pathname == "/admin/editarPersonal.html" || window.location.pathname == "/admin/catalogo/crearCuenta.html") {
     optionUsuarios = `<div id="" class="sidebar__menu-option option__active" onclick="gestionDeUsuarios()">`
   } else if (window.location.pathname == "/admin/catalogo/GestionarSalas.html" || window.location.pathname == "/admin/EditarSala.html" || window.location.pathname == "/admin/catalogo/CrearSala.html") {
     optionSalas = `<div id="" class="sidebar__menu-option option__active" onclick="gestionarSalas()">`

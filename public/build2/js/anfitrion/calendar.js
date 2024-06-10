@@ -40,9 +40,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return {
                 html: `
             <div style="overflow: hidden; font-size: 12px; positon: relative;  cursor: pointer; font-family: 'Inter', sans-serif;">
-                <div><strong>${info.event.title}</strong></div>
-                <div>Location: ${info.event.extendedProps.location}</div>
-                <div>Time: ${info.event.extendedProps.timeStart} - ${info.event.extendedProps.timeEnd}</div>
+                <div class="calendarTitulo"><strong>${info.event.title}</strong></div>
+                <div class="calendarUbicacion">${info.event.extendedProps.location}</div>
+                <div class="calendarHorario">${info.event.extendedProps.timeStart} - ${info.event.extendedProps.timeEnd}</div>
             </div>
             `
             }

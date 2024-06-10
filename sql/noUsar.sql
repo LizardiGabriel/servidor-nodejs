@@ -1,38 +1,4 @@
--- This is an empty migration.
-
--- Borrar todos los datos de la tabla 'Usuario'
-DELETE FROM Usuario;
-
--- Borrar todos los datos de la tabla 'Sala'
-DELETE FROM Sala;
-
--- Borrar todos los datos de la tabla 'Reunion'
-DELETE FROM Reunion;
-
--- Borrar todos los datos de la tabla 'Repeticion'
-DELETE FROM Repeticion;
-
--- Borrar todos los datos de la tabla 'Invitado'
-DELETE FROM Invitado;
-
--- Borrar todos los datos de la tabla 'Invitacion'
-DELETE FROM Invitacion;
-
--- Borrar todos los datos de la tabla 'Acceso'
-DELETE FROM Acceso;
-
--- Borrar todos los datos de la tabla 'dispositivo_electronico'
-DELETE FROM dispositivo_electronico;
-
--- Borrar todos los datos de la tabla 'Automovil'
-DELETE FROM Automovil;
-
--- Borrar todos los datos de la tabla 'Colado'
-DELETE FROM Colado;
-
--- Borrar todos los datos de la tabla 'acceso_dispositivo_electronico'
-DELETE FROM acceso_dispositivo_electronico;
-
+use beemeet;
 
 INSERT INTO Usuario ( email_usuario, password_usuario, 
             nombre_usuario, apellido_paterno_usuario, apellido_materno_usuario, 

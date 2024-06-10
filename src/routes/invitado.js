@@ -8,21 +8,21 @@ require('dotenv').config();
 
 
 const { hashPassword, comparePassword } = require('../tools/cipher');
-const { getInvitadoByIdBD, getInvitadoByIdEmailBD, setNewInvitadoBD, setNewColadoBD, getInvitacionByIdBD,
-    setNewInvitacionBD,
-    getDetallesReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD
-} = require('../tools/peticiones');
-const {getInvitadoByEmailBD,updateInvitadoBDtoInvitacion, updatePassInvitadoBD, getReunionesConRepeticionByIdOfInvitadoBD, getReunionesNuebasBD} = require('../tools/peticiones');
-
-const { getInvitacionBy_IdInvitado_IdReunionBD } = require('../tools/peticiones');
-
 const { generatePassword } = require('../tools/tools');
-
-const{putInfoInvitadoToReunionBD, createColadoBD} = require('../tools/peticiones');
+const { generateQR } = require('../tools/tools');
+const { v4: uuidv4 } = require('uuid');
 const mail = require("../tools/mail");
-
-
 const jwtFunctions = require('../tools/jwtFunctions');
+
+const { getInvitadoByIdBD, getInvitadoByIdEmailBD, setNewInvitadoBD, setNewColadoBD, getInvitacionByIdBD } = require('../tools/peticiones');
+const { setNewInvitacionBD, getDetallesReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD, getReunionesNuebasByIdBD } = require('../tools/peticiones');
+const {getInvitadoByEmailBD,updateInvitadoBDtoInvitacion, updatePassInvitadoBD, getReunionesConRepeticionByIdOfInvitadoBD, getReunionesNuebasBD} = require('../tools/peticiones');
+const { getInvitacionBy_IdInvitado_IdReunionBD } = require('../tools/peticiones');
+const{putInfoInvitadoToReunionBD, createColadoBD} = require('../tools/peticiones');
+
+
+
+
 
 async function logout(req, res) {
     console.log('mensaje --> logout');
@@ -217,6 +217,11 @@ async function reunionesPendientes(req, res){
     }
 }
 
+async function guardarQR(base64Data, idInvitacion) {
+    const nombreArchivo = `qr_${uuidv4()}_${idInvitacion}.png`;
+    const filePath = await guardarImagenDesdeBase64(base64Data, nombreArchivo);
+    return filePath;
+}
 
 async function aceptarReunion(req, res){
     console.log('mensaje --> aceptarReunion');
@@ -245,7 +250,7 @@ async function aceptarReunion(req, res){
         }
 
         const id_invitado = invitado.id_invitado;
-        const setInvitacion = await setNewInvitacionBD(idReunion, id_invitado, 0);
+        const setInvitacion = await setNewInvitacionBD(idReunion, id_invitado, 0, 0);
         const reunion = await getDetallesReunionByIdBD(idReunion);
 
         const sala = await getSalaByIdBD(reunion.id_sala);
@@ -288,10 +293,13 @@ async function aceptarReunion(req, res){
 
     }
 
+    const imagenQR = await generateQR(idInvitacion);
+    console.log('imagenQR: ', imagenQR);
+    // guardar la imagen
+    const rutaImagenQR = await guardarQR(imagenQR, idInvitacion);
+    console.log('rutaImagenQR: ', rutaImagenQR);
 
-
-
-    const actualizarInvitacionReunionBD = await putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automoviles);
+    const actualizarInvitacionReunionBD = await putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automoviles, rutaImagenQR);
     console.log('actualizarInvitacionReunionBD: ', actualizarInvitacionReunionBD);
 
 
@@ -301,6 +309,33 @@ async function aceptarReunion(req, res){
 
 
 }
+
+async function obtenerDetallesReunion(req, res){
+    console.log('mensaje --> aceptarReunion');
+    const idInvitado = getIdInvitado(req.session.jwt);
+    const idReunion = getidSeleccionado(req.session.jwt);
+
+    console.log('idInvitado:', idInvitado);
+    console.log('idReunion:', idReunion);
+
+    const reunion = await getReunionesNuebasByIdBD(idInvitado, idReunion);
+    if (reunion !== null) {
+        res.json((reunion));
+    } else {
+        res.json([]);
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -312,7 +347,11 @@ module.exports = {
     reunionesNuevas,
     reunionesPendientes,
     getInvitadoByEmail,
-    aceptarReunion
+    aceptarReunion,
+    obtenerDetallesReunion,
+    guardarQR,
+    aceptarReunion,
+    
 };
 
 

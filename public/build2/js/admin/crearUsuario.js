@@ -7,16 +7,100 @@ function addUser() {
   let rolSeguridad = document.getElementById("rolSeguridad").checked;
   let rolAnfitrion = document.getElementById("rolAnfitrion").checked;
   let rol;
+  let foto_usuario = 'prueba.jpg';
+  let telefono = '1234567890';
   //Si esta bien la validación, hacemos la petición
   if (validarAddUser(email, nombre, app, apm, rolSeguridad, rolAnfitrion)) {
     if (rolSeguridad) {
-      rol = `&rolSeguridad="on"`
+      rol = document.getElementById('rolSeguridad').value;
     } else if (rolAnfitrion) {
-      rol = `&rolAnfitrion="on"`
+      rol = document.getElementById('rolAnfitrion').value;
     }
       
-    window.location.href = `/admin/catalogo/confirmarCuenta.html?email=${email}&nombre=${nombre}&apellidoPaterno=${app}&apellidoMaterno=${apm}${rol}`
+    modal.fire({
+      timer: undefined,
+      icon: 'question',
+      title: "¿Desea continuar?",
+      html: `Se creará cuenta de usuario con los siguientes datos: <br>
+      Nombre: ${nombre}<br>
+      Apellido Paterno: ${app}<br>
+      Apellido Materno: ${apm}<br>
+      Email: ${email}<br>
+      Rol: ${rol}`,
+      showDenyButton: true,
+      confirmButtonText: "Crear cuenta de usuario",
+      denyButtonText: `Cancelar`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch('/admin/catalogo/usuarios', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              email,
+              nombre,
+              apellidoPaterno:app,
+              apellidoMaterno:apm,
+              telefono,
+              idRol:rol,
+              foto_usuario
+          })
+      })
+      .then(response => {
+          console.log('Respuesta:');
+          console.log(response);
+          if (response.ok) {
+              response.json().then(data => {
+                console.log('Usuario creado con éxito:', data.message);
+                if (data.message === 'true') {
+                  modal.fire({
+                    title: "Operación exitosa",
+                    icon: "success",
+                    text: "Usuario creado con éxito",
+                  });
+                  
+                  finishRedirect()
+                } else {
+                  modal.fire({
+                    title: "Error",
+                    icon: "error",
+                    text: "Error al crear cuenta",
+                  });
+                }
+              });
+          } else {
+            modal.fire({
+              title: "Error",
+              icon: "error",
+              text: "Error al crear usuario:" + response.statusText,
+            });
+            console.log('Error al crear usuario:', response.statusText);
+          }
+      })
+        .catch(error => {
+          modal.fire({
+            title: "Error",
+            icon: "error",
+            text: "Error al crear usuario:" + error,
+          });
+          console.error('Error al crear usuario:', error);
+        })
+      } else if (result.isDenied) {
+        
+      }
+    });
   }
+}
+
+/* Función para esperar a que se muestre el modal */
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function finishRedirect() {
+  await sleep(3000); 
+  window.location.href = '/admin/catalogo/GestionDeUsuarios.html';
 }
 
 function validarAddUser(email, nombre, app, apm, rolSeguridad, rolAnfitrion) {
