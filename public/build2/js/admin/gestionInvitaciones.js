@@ -48,8 +48,7 @@ async function loadTableData() {
             <td class="id">${item.id_inv}</td>
             <td class="nombreAnfi">${item.nombre_usu}</td>
             <td class="fecha">${item.fecha_rep}</td>
-            <td class="horaInicio">${item.hora_ini}</td>
-            <td class="horaFin">${item.hora_fin}</td>
+            <td class="horaInicio">${item.hora_ini} - ${item.hora_fin}</td>
             <td class="sala">${item.nombre_sala}</td>
             <td class="numInvi">${item.num_inv}</td>
             <td class="numAcompa">${item.correo_invitado}</td>
