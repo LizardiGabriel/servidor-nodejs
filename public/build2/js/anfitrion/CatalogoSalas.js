@@ -1,5 +1,5 @@
 /* Función para los modales */
-const modal = Swal.mixin({
+/*const modal = Swal.mixin({
     timer: 3000,
     timerProgressBar: true,
     background: "#fbfff1",
@@ -14,6 +14,8 @@ const modal = Swal.mixin({
         icon: "iconSize",
     }
 })
+
+ */
 
 window.onload = function(){
     loadTableData();
@@ -83,6 +85,8 @@ async function obtenerSalas() {
   }
 
   async function loadTableData() {
+
+    console.log('>>>>>>> Cargando datos...');
     const data = await obtenerSalas(); // Esperar a que las salas se carguen
     const tbody = document.getElementById('tablaSalas');
   

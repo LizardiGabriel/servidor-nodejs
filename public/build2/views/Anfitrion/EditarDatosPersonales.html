@@ -6,11 +6,90 @@
     <title>Beecoders - Editar datos personales</title>
     <link rel="stylesheet" href="../../css/app.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+      .msg-error-form{
+        max-width: 100%;
+        margin-top: 1rem;
+        font-size: 1.6rem;
+      }
+
+      .contenedorUser{
+        padding: 2rem;
+      }
+
+      .w-80{
+        width: 80%;
+      }
+    </style>
 </head>
 <body>
     <div id="headers"></div>
-    
+
     <main class="contenidoPrincipal">
+      <div class="contenedorUser">
+          <div class="contenedorUser__left">
+              <div class="contenedorUser__left__circle">
+                  <img id="profile-image" src="../../img/usuario.png">
+                  <div class="contenedorUser__left__circle__icon" id="upload-icon">
+                      <img src="../../img/icons/ico-camara.png" title="Subir foto">
+                      <input type="file" class="file-input" accept=".png, .jpg, .jpeg" id="file-input">
+                  </div>
+              </div>
+          </div>
+          <div class="contenedorUser__Info">
+            <div class="profileHeroSA__left">
+                <h1 class="profileHeroSA__left__titulo">Tus datos personales</h1>
+            </div>
+            <div class="profileHeroSA__right">
+                <div class="profileHeroSA__right__inputProfile">
+                    <label class="profileHeroSA__right__inputProfile__label">Nombre(s)*</label>
+                    <div class="profileHeroSA__right__inputProfile__content">
+                        <input class="inputSA" type="text" value="Juan " disabled id="nombre">
+                    </div>
+                    <div id="nombreForm" class="w-80"></div>
+                </div>
+                <div class="profileHeroSA__right__inputProfile">
+                    <label class="profileHeroSA__right__inputProfile__label">Apellido paterno*</label>
+                    <div class="profileHeroSA__right__inputProfile__content">
+                        <input class="inputSA" type="text" value="Perez" disabled id="app">
+                    </div>
+                    <div id="appForm" class="w-80"></div>
+                </div>
+                <div class="profileHeroSA__right__inputProfile">
+                    <label class="profileHeroSA__right__inputProfile__label">Apellido materno*</label>
+                    <div class="profileHeroSA__right__inputProfile__content">
+                        <input class="inputSA" type="text" value="Hernandez" disabled id="apm">
+                    </div>
+                    <div id="apmForm" class="w-80"></div>
+                </div>
+                <!-- <div class="profileHeroSA__right__inputProfile">
+                    <label class="profileHeroSA__right__inputProfile__label">Correo electrónico*</label>   
+                    <div class="profileHeroSA__right__inputProfile__content">
+                        <input class="inputSA" type="email" value="example@email.com" disabled id="loginEmail">
+                    </div>
+                    <div id="emailForm"></div>
+                </div> -->
+                
+                <div class="profileHeroSA__right__inputProfile">
+                    <label class="profileHeroSA__right__inputProfile__label">Número telefónico*</label>
+                    <div class="profileHeroSA__right__inputProfile__content">
+                        <input class="inputSA" type="tel" min="0" value="55 666 777 88" pattern="[0-9\s]{10,15}" disabled id="telefono">
+                    </div>
+                    <div id="telefonoForm" class="w-80"></div>
+                </div>
+                <div class="profileHeroSA__right__buttonContainer view" id="buttonsEdit">
+                    <button class="profileHeroSA__right__buttonContainer__buttonEdit" id="editProfile">Editar</button>   
+                    <div class="profileHeroSA__right__buttonContainer__button" style="display: none;" id="contenedorEdit">
+                        <button class="profileHeroSA__right__buttonContainer__button__secundario" id="cancelarProfile">Cancelar</button>
+                        <button class="profileHeroSA__right__buttonContainer__button__primario" id="guardarProfile" onclick="updateData()">Guardar</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+      </div>   
+  </main>
+    
+    <!-- <main class="contenidoPrincipal">
         <div class="profileHeroSA">
                 <div class="profileHeroSA__left">
                     <h1 class="profileHeroSA__left__titulo">Tus datos personales</h1>
@@ -37,7 +116,7 @@
                     <div class="profileHeroSA__right__inputProfile">
                         <label class="profileHeroSA__right__inputProfile__label">Correo Electrónico*</label>   
                         <div class="profileHeroSA__right__inputProfile__content">
-                            <input class="inputSA" type="email" placeholder="example@email.com" disabled id="inputEmail loginEmail">
+                            <input class="inputSA" type="email" placeholder="example@email.com" disabled id="inputEmail">
                         </div>
                     </div>
                     
@@ -47,23 +126,49 @@
                             <input class="inputSA" type="tel" min="0" placeholder="55 666 777 88" pattern="[0-9\s]{10,15}" disabled id="inputTel">
                         </div>
                     </div>
+                    <div class="profileHeroSA__right__inputProfile" id="SeccionFoto" style="display: none;">
+                        <label  class="profileHeroSA__right__inputProfile__label">Fotografia</label>
+                        <div class="profileHeroSA__right__inputProfile__content">
+                            <input class="inputSA" type="file" accept="image/*"  id="inputFoto">
+                        </div>
+                    </div>
                     <div class="profileHeroSA__right__buttonContainer view" id="buttonsEdit">
                         <button class="profileHeroSA__right__buttonContainer__buttonEdit" id="editProfile">Editar</button>   
                         <div class="profileHeroSA__right__buttonContainer__button" style="display: none;" id="contenedorEdit">
                             <button class="profileHeroSA__right__buttonContainer__button__secundario" id="cancelarProfile">Cancelar</button>
-                            <button class="profileHeroSA__right__buttonContainer__button__primario" id="guardarProfile">Guardar</button>
+                            <button class="profileHeroSA__right__buttonContainer__button__primario" id="guardarProfile" onclick="updateData()">Guardar</button>
                         </div>
                     </div>
+                    
                 </div>
         </div>   
-    </main>
+    </main> -->
 
     <div id="footers"></div>
 
+    <!-- Estilos para el Swal -->
+    <style>
+      .titleSize{
+        font-size: 4rem;
+      }
+      .contentSize{
+        font-size: 2rem !important;
+      }
+      .buttonSize{
+        font-size: 2rem !important;
+      }
+      .iconSize{
+        font-size: 1.5rem;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../../js/anfitrion/editarDatosPersonales.js"></script>
     <script src="../../js/anfitrion/headers.js"></script>
     <script src="../../js/buttonProfiles.js"></script>
-    <script src="../../js/sidebar.js"></script>
     <script src="/build/js/header.js"></script>
+    <script src="../../js/sidebar.js"></script>
     <script src="../../js/anfitrion.js"></script>
+    <script src="../../js/validaciones.js"></script>
+    
 </body>
 </html>

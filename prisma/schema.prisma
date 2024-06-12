@@ -68,21 +68,20 @@ model Repeticion {
 }
 
 model Invitado {
-  id_invitado               Int               @id @default(autoincrement())
+  id_invitado               Int    @id @default(autoincrement())
   nombre_invitado           String
   apellido_paterno_invitado String
   apellido_materno_invitado String
-  email_invitado            String            @unique
+  email_invitado            String @unique
   password_invitado         String
   telefono_invitado         String
   empresa_invitado          String
   foto_invitado             String
   identificacion_invitado   String
-  es_colado_invitado        Int
   habilitado                Int
-  Invitacion                Invitacion[]
-  Colado                    Colado[]
-  colado_invitado           colado_invitado[]
+
+  Invitacion Invitacion[]
+  Colado     Colado[]
 
   newCount        Int?
   changeFirstPass Int?
@@ -96,13 +95,16 @@ model Invitacion {
   habilitado    Habilitado
 
   numero_colados Int
+  isConfirmed    Int
+
+  es_colado_invitado Int?
 
   reunion                 Reunion                   @relation(fields: [id_reunion], references: [id_reunion])
   invitado                Invitado                  @relation(fields: [id_invitado], references: [id_invitado])
   Acceso                  Acceso[]
   dispositivo_electronico dispositivo_electronico[]
-  Acompaniante            Acompaniante[]
   Automovil               Automovil[]
+  Colado                  Colado[]
 }
 
 enum Habilitado {
@@ -134,17 +136,6 @@ model dispositivo_electronico {
   acceso_dispositivo_electronico acceso_dispositivo_electronico[]
 }
 
-model Acompaniante {
-  id_acompaniante               Int    @id @default(autoincrement())
-  id_invitacion                 Int
-  nombre_acompaniante           String
-  apellido_paterno_acompaniante String
-  apellido_materno_acompaniante String
-  email_acompaniante            String
-
-  invitacion Invitacion @relation(fields: [id_invitacion], references: [id_invitacion])
-}
-
 model Automovil {
   id_automovil        Int    @id @default(autoincrement())
   id_invitacion       Int
@@ -157,20 +148,13 @@ model Automovil {
 }
 
 model Colado {
-  id_colado   Int @id @default(autoincrement())
-  id_invitado Int
+  id_colado     Int @id @default(autoincrement())
+  id_invitado   Int
+  id_invitacion Int
+  isConfirmed   Int
 
-  invitado        Invitado          @relation(fields: [id_invitado], references: [id_invitado])
-  colado_invitado colado_invitado[]
-}
-
-model colado_invitado {
-  id_colado_invitado Int @id @default(autoincrement())
-  id_colado          Int
-  id_invitado        Int
-
-  colado   Colado   @relation(fields: [id_colado], references: [id_colado])
-  invitado Invitado @relation(fields: [id_invitado], references: [id_invitado])
+  invitado   Invitado   @relation(fields: [id_invitado], references: [id_invitado])
+  Invitacion Invitacion @relation(fields: [id_invitacion], references: [id_invitacion])
 }
 
 model acceso_dispositivo_electronico {

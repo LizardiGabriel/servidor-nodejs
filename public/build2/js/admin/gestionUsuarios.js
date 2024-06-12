@@ -131,7 +131,7 @@ function eliminarUsuario(idUsuario, btn) {
       .then(response => {
         if (response.ok) {
           modal.fire({
-            title: "Success",
+            title: "Operación exitosa",
             icon: "success",
             text: "Cuenta de usuario eliminada con éxito",
           });

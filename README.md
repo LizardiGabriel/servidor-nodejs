@@ -3,44 +3,35 @@
 
 
 
-Como Configurar:
+## instalacion
+### previos:
 * tener instalado node.js
-1. (nvm install v22.0.0)
-2. (sudo apt install npm)
-3. verificar: 'node --version': v22.0.0
-4. verificar 'npm -v': 10.5.1
+1. verificar en consola: ```node --version``` salida: v22.0.0
+2. verificar en consola ```npm -v```: 10.5.1
+3. tener instalado mysql server
 
 
-*pasos*
+### pasos:
 1. clonar el repositorio
-* tener algun servidor de base de datos (de preferencia mysql)
-* ejecutar el sql que esta en /sql/prueba.sql
-* configurar el archivo .env con DATABASE_URL="mysql://usuario:password@localhost:3306/nameDataBase"
-
-
-2. ejecutar 'npm install'
-3. ejecutar 'npx prisma generate'
-
-
-Una vez configurado ejecutamos en una consola
-1. 'npm run dev'
-
-En otra consola ejecutamos
-1.  npx prisma studio
-
-
-Abrimos un navegador y entramos a 
-
-localhost:3000
+2. ejecutar ```npm install```
+3. ejecutar ```npx prisma generate```
+* configurar el archivo .env con DATABASE_URL="mysql://usuario:password@localhost:3306/beemeet"
+4. ejecutar ```npx prisma migrate dev --name "ubuntu6"```
+5. ejecutar ```mysql -u root -p -D beemeet < ./sql/noUsar.sql```
 
 
 
+
+## Ejecutar
+1. En una consola ejecutar el servidor http: ```npm run dev```
+2. En otra consola ejecutar el manejador de la base de datos prisma orm ```npx prisma studio```
+3. En una pestaña del navegador accedemos a ```localhost:3000```
 
 
 instrucciones para modificar la base de datos.
-1. modificar el archivo sql y volverlo a correr en el servidor mysql workbench local
-2. modificar el esquema en ./prisma/schema.prisma
-3. ejecutar 'npx prisma migrate dev --name "nombre_del_cambio"    '
-4. si es necesario ejecutar otra vez 'npx prisma generate' y despues 'npx prisma studio'
-5. volver a correr el archivo sql en el servidor mysql workbench local
-6. listo!
+
+1. modificar el esquema en ./prisma/schema.prisma
+2. ejecutar ```npx prisma migrate dev --name "nombre_del_cambio"```
+3. modificar el archivo ./sql/noUsar.sql por si hay tablas que añadiste y eliminar los datos que se tengan 
+4. añadir datos de prueba -> ejecutar ```mysql -u root -p -D beemeet < ./sql/noUsar.sql```
+5. listo! si todo esta correcto puedes volver a ejeutar ```npx prisma studio```

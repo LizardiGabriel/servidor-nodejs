@@ -68,7 +68,7 @@ async function enviarDatos() {
               console.log('Usuario creado con éxito:', data.message);
               if (data.message === 'true') {
                 modal.fire({
-                  title: "Success",
+                  title: "Operación exitosa",
                   icon: "success",
                   text: "Usuario creado con éxito",
                 });

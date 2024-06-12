@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeeMeet - Recuperar QR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/app.css">
+    <!--Formulario-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!--SiderBar-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+<div id="headers"></div>
+
+<main class="contenidoPrincipal">
+    <div class="recuperarQR">
+        <h1 class="title-example text-center">Recuperar QR</h1>
+        <div class="__Tabla table-responsive paragraph-example">
+            <table class="tabla table table-hover table-bordered table-sm" id="Tabla">
+                <thead class="tabla__cabecera">
+                    <tr>
+                        <th scope="col" data-sort="id" class="cabecera">ID</th>
+                        <th scope="col" data-sort="reunion" class="cabecera">Reunión</th>
+                        <th scope="col" data-sort="fecha" class="cabecera" id="fecha">Fecha</th>
+                        <th scope="col" data-sort="hora" class="cabecera">Hora</th>
+                        <th scope="col" data-sort="nombreAnfi" class="cabecera">Nombre Anfitrión</th>
+                        <th scope="col" data-sort="acciones" class="cabecera">Recuperar</th>
+                    </tr>
+                </thead>
+                <tbody class="tabla__cuerpo">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<div id="footers"></div>
+
+<script>
+    window.onload = function () {
+        obtenerReuniones();
+    }
+
+    function obtenerReuniones() {
+        fetch('reunionesConfirmadas')
+            .then(response => response.json())
+            .then(reuniones => {
+                console.log('Reuniones:', reuniones);
+                const tbody = document.querySelector('.tabla__cuerpo');
+                tbody.innerHTML = ''; // Limpiar el cuerpo de la tabla
+
+                reuniones.forEach((reunion, index) => {
+                    const fila = document.createElement('tr');
+
+                    fila.innerHTML = `
+                        <td>${reunion.id_reunion}</td>
+                        <td>${reunion.titulo_reunion}</td>
+                        <td>${reunion.fechasRepeticion.map(fecha => `${fecha.fecha_repeticion}`).join('')}</td>
+                        <td>${reunion.fechasRepeticion[0].hora_inicio_repeticion} - ${reunion.fechasRepeticion[0].hora_fin_repeticion}
+                        </td>
+                        <td>${reunion.nombreUsuario}</td>
+                        <td><button class="btn btn-primary" onclick="recuperarQR(${reunion.id})">Recuperar</button></td>
+                    `;
+
+                    tbody.appendChild(fila);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+//Funcion para recuperar el QR
+    function recuperarQR(id) {
+        
+    }
+</script>
+
+<script src="../../js/invitado/headers.js"></script>
+<script src="../../js/header.js"></script>
+<script src="../../js/sidebar.js"></script>
+<script src="../../js/plantilla-formularios.js"></script>
+
+</body>
+
+</html>

@@ -48,7 +48,8 @@ async function getReunionAdminByIdBD(id_reunion) {
             const invitadito = await getInvitadoByIdBD(invitacionesReunion[i].id_invitado);
             console.log('Invitado email: ', invitadito.email_invitado);
 
-            const nombreInvColados = {
+          const nombreInvColados = {
+                nombre_invitado: invitadito.nombre_invitado,
                 numero_colados: invitacionesReunion[i].numero_colados,
                 correo_invitado: invitadito.email_invitado
             };

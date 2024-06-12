@@ -1,14 +1,66 @@
 const { log } = require('console');
-const {getInvitadoByEmailBD,updateInvitadoBDtoInvitacion} = require('../tools/peticiones');
+
 const { Prisma } = require('@prisma/client');
 const fs = require('fs');
 const path = require('path');
+const jwt = require("jsonwebtoken");
+require('dotenv').config();
+
+
+const { hashPassword, comparePassword } = require('../tools/cipher');
+const { generatePassword } = require('../tools/tools');
+const { generateQR } = require('../tools/tools');
+const { v4: uuidv4 } = require('uuid');
+const mail = require("../tools/mail");
+const jwtFunctions = require('../tools/jwtFunctions');
+
+const { getInvitadoByIdBD, getInvitadoByIdEmailBD, setNewInvitadoBD, setNewColadoBD, getInvitacionByIdBD } = require('../tools/peticiones');
+const { setNewInvitacionBD, getDetallesReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD, getReunionesNuebasByIdBD } = require('../tools/peticiones');
+const {getInvitadoByEmailBD,updateInvitadoBDtoInvitacion, updatePassInvitadoBD, getReunionesConRepeticionByIdOfInvitadoBD, getReunionesNuebasBD} = require('../tools/peticiones');
+const { getInvitacionBy_IdInvitado_IdReunionBD } = require('../tools/peticiones');
+const{putInfoInvitadoToReunionBD, createColadoBD} = require('../tools/peticiones');
+
+
+
+
 
 async function logout(req, res) {
     console.log('mensaje --> logout');
     req.session.destroy();
     res.redirect('/');
 }
+
+function getIdInvitado(jsonToken){
+    let idInvitado = '';
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            idInvitado = decoded.idInvitado;
+        }
+    });
+    return idInvitado;
+}
+
+function getidSeleccionado(jsonToken){
+    let idSeleccionado = '';
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            idSeleccionado = decoded.idSeleccionado;
+        }
+    });
+    return idSeleccionado;
+}
+
+
+
+function generateTokenInvitado(email, idInvitado, rolNum, newCount, changeFirstPass) {
+    return jwt.sign({ email: email, idInvitado: idInvitado, rol: rolNum, newCount: newCount, changeFirstPass: changeFirstPass }, process.env.SECRET_KEY, { expiresIn: '60m' });
+}
+
+
 
 async function guardarImagenDesdeBase64(base64Data, nombreArchivo) {
     // Eliminar la cabecera de datos URL si existe (data:image/png;base64,)
@@ -27,6 +79,18 @@ async function guardarImagenDesdeBase64(base64Data, nombreArchivo) {
     return filePath;
     
 }
+
+async function getInvitadoByEmail(req,res){
+    const email = req.query.email;
+    console.log('mensaje --> getInvitadoByemail');
+    const invitado = await (getInvitadoByEmail(email));
+    if (invitado !== null) {
+        res.json((invitado));
+    } else {
+        res.json([]);
+    }
+}
+
 
 async function obtenerExtensionDeBase64(cadenaBase64) {
     // Usar una expresión regular para encontrar el tipo MIME en la cadena Base64
@@ -69,18 +133,225 @@ async function Pruebaguardar( req, res)  {
 
 async function setDataInvitado(req, res) {
     console.log('mensaje --> setNDataInvitado');
-    const {nombre,apellidoPat,apellidoMa,correo,tel,empresa,identificacion,foto}=req.body;
-    const pre_invitado = await getInvitadoByEmailBD(correo);
+    const idInvitado = getIdInvitado(req.session.jwt);
+    console.log('idInvitado:', idInvitado);
+
+
+    const { nombre, apellidoPat, apellidoMa, tel, empresa, identificacion, foto} = req.body;
     const extensionfoto= await obtenerExtensionDeBase64(foto);
     console.log(extensionfoto);
-    const rutafoto= await guardarImagenDesdeBase64(foto,"fotografia_invitado"+pre_invitado.id_invitado+"."+extensionfoto);
-    const invitado= await updateInvitadoBDtoInvitacion(pre_invitado.id_invitado, correo, nombre, apellidoPat, apellidoMa, tel,empresa,identificacion,rutafoto);
-    return res.json({ message: req.body, status: 200});
+
+    const rutafoto= await guardarImagenDesdeBase64(foto,"fotografia_invitado"+idInvitado+"."+extensionfoto);
+    const invitado= await updateInvitadoBDtoInvitacion(idInvitado, nombre, apellidoPat, apellidoMa, tel,empresa,identificacion,rutafoto);
+
+    // if todo bien -> 200
+    //return res.redirect('/invitado/cambiarContrasena.html');
+    const rutita = '/invitado/cambiarContrasena.html';
+    let mensaje = '';
+    if(invitado === 200){
+        mensaje = 'Información del invitado registrada exitosamente';
+    }else if(invitado === 500){
+        mensaje = 'error al actualizar la información del invitado';
+    }
+    return res.json({ message: mensaje, status: invitado, ruta: rutita});
+
 }
+
+
+async function cambiarContrasena(req, res) {
+    console.log('mensaje --> cambiarContrasena');
+    const idInvitado = getIdInvitado(req.session.jwt);
+    console.log('idInvitado:', idInvitado);
+
+    const { password } = req.body;
+    console.log('contrasena que el usuario va a cambiar:', password);
+    const hashedPassword = await hashPassword(password);
+    const invitado = await updatePassInvitadoBD(idInvitado, hashedPassword);
+    // if todo bien -> 200
+    //return res.redirect('/invitado/cambiarContrasena.html');
+    const rutita = '/invitado/home/invitado.html';
+    let mensaje = '';
+    if(invitado === 200){
+        mensaje = 'password actualizada correctamente';
+    }else if(invitado === 500){
+        mensaje = 'error al actualizar la contraseña';
+    }
+
+
+    const invitadoNuevo = await getInvitadoByIdBD(idInvitado);
+    let newToken = jwtFunctions.modifyJwtField(req.session.jwt, 'newCount', invitadoNuevo.newCount);
+    newToken = jwtFunctions.modifyJwtField(newToken, 'changeFirstPass', invitadoNuevo.changeFirstPass);
+    req.session.jwt = newToken;
+    console.log('newToken: ', newToken);
+
+    
+    return res.status(200).json({
+        ruta: rutita,
+        status: invitado,
+        message: mensaje
+    });
+
+}
+
+async function reunionesNuevas(req, res){
+    console.log('mensaje --> reunionesPendientes');
+    const idInvitado = getIdInvitado(req.session.jwt);
+    console.log('idInvitado:', idInvitado);
+    const reuniones = await getReunionesNuebasBD(idInvitado);
+    if (reuniones !== null) {
+        res.json((reuniones));
+    } else {
+        res.json([]);
+    }
+}
+
+async function reunionesPendientes(req, res){
+    console.log('mensaje --> reunionesPendientes');
+    const idInvitado = getIdInvitado(req.session.jwt);
+    console.log('idInvitado:', idInvitado);
+    const reuniones = await getReunionesConRepeticionByIdOfInvitadoBD(idInvitado);
+    if (reuniones !== null) {
+        res.json((reuniones));
+    } else {
+        res.json([]);
+    }
+}
+
+async function guardarQR(base64Data, idInvitacion) {
+    const nombreArchivo = `qr_${uuidv4()}_${idInvitacion}.png`;
+    const filePath = await guardarImagenDesdeBase64(base64Data, nombreArchivo);
+    return filePath;
+}
+
+async function aceptarReunion(req, res){
+    console.log('mensaje --> aceptarReunion');
+    const idInvitado = getIdInvitado(req.session.jwt);
+    const idReunion = getidSeleccionado(req.session.jwt);
+
+    const invitacion = await getInvitacionBy_IdInvitado_IdReunionBD(idInvitado, idReunion);
+    const idInvitacion = invitacion.id_invitacion;
+
+    const colados = req.body.colados;
+    const dispositivos = req.body.dispositivos;
+    const automoviles = req.body.automoviles;
+
+
+    // añadirlo en un for
+    for(const colado of colados){
+        console.log('===---___>>>procesando el colado: ', colado);
+        let invitado = await getInvitadoByEmailBD(colado);
+        let wasRegistred = 1;
+        let password = ""
+        if (invitado === null) {
+            wasRegistred = 0;
+            password = await generatePassword();
+            console.log('password generated successfully:', password);
+            invitado = await setNewColadoBD(colado, password);
+        }
+
+        const id_invitado = invitado.id_invitado;
+        const setInvitacion = await setNewInvitacionBD(idReunion, id_invitado, 0, 0);
+        const reunion = await getDetallesReunionByIdBD(idReunion);
+
+        const sala = await getSalaByIdBD(reunion.id_sala);
+        const titulo = reunion.titulo_reunion;
+        const descripcion = reunion.descripcion_reunion;
+        const anfitrion = await getUsuarioByIdBD(reunion.id_usuario);
+        const repeticiones = reunion.Repeticion;
+
+        if(setInvitacion !== null){
+            let emailText = "";
+            if(wasRegistred){
+                // si el cliente ya ha sido invitado a reuniones antes --> el email debe de decir que se le envio una nueva invitacion y revise su cuenta
+                emailText =  colado + "se te ha enviado una nueva invitacion, inicia sesion para confirmar tu asistencia"
+                    + "a la reunion: "+ titulo + " en la sala: " + sala.nombre_sala + " con el anfitrion: " + anfitrion.nombre_usuario + " " + anfitrion.apellido_paterno_usuario +
+                    " con la descripcion: " + descripcion + " en la(s) fecha(s): " +
+                    repeticiones.map((rep) => { return rep.fecha_repeticion + " de " + rep.hora_inicio_repeticion + " a " + rep.hora_fin_repeticion }).join(", ") +
+                    " entra a la plataforma beemeet.com para conocer los detalles ";
+            }else{
+                emailText = "invitado@test.com, has sido invitado a una reunion " +
+                    "en la sala: " + sala.nombre_sala + " con el anfitrion: " + anfitrion.nombre_usuario + " " + anfitrion.apellido_paterno_usuario +
+                    " con la descripcion: " + descripcion + " en la(s) fecha(s): " +
+                    repeticiones.map((rep) => { return rep.fecha_repeticion + " de " + rep.hora_inicio_repeticion + " a " + rep.hora_fin_repeticion }).join(", ") +
+                    " entra a la plataforma beemeet.com para conocer los detalles " +
+                    "tu usuario es: " + colado + " y tu contrasena temporal es: " + password;
+            }
+
+            // mandar el email, el email debe tener
+            console.log('emailText: ', emailText);
+            const envio = await mail(emailText, colado);
+            console.log('envio: ', envio);
+
+            // tabla de colados
+
+            const coladito = await createColadoBD(id_invitado, idInvitacion);
+            console.log('coladito: ', coladito);
+
+        }else{
+            res.json({ message: 'error', status: 400});
+        }
+
+    }
+
+    const imagenQR = await generateQR(idInvitacion);
+    console.log('imagenQR: ', imagenQR);
+    // guardar la imagen
+    const rutaImagenQR = await guardarQR(imagenQR, idInvitacion);
+    console.log('rutaImagenQR: ', rutaImagenQR);
+
+    const actualizarInvitacionReunionBD = await putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automoviles, rutaImagenQR);
+    console.log('actualizarInvitacionReunionBD: ', actualizarInvitacionReunionBD);
+
+
+
+    res.status(200).json({ message: 'succesful', status: 200});
+
+
+
+}
+
+async function obtenerDetallesReunion(req, res){
+    console.log('mensaje --> aceptarReunion');
+    const idInvitado = getIdInvitado(req.session.jwt);
+    const idReunion = getidSeleccionado(req.session.jwt);
+
+    console.log('idInvitado:', idInvitado);
+    console.log('idReunion:', idReunion);
+
+    const reunion = await getReunionesNuebasByIdBD(idInvitado, idReunion);
+    if (reunion !== null) {
+        res.json((reunion));
+    } else {
+        res.json([]);
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = {
     logout,
     setDataInvitado,
-    Pruebaguardar
+    Pruebaguardar,
+    cambiarContrasena,
+    reunionesNuevas,
+    reunionesPendientes,
+    getInvitadoByEmail,
+    aceptarReunion,
+    obtenerDetallesReunion,
+    guardarQR,
+    aceptarReunion,
+    
 };
 
 

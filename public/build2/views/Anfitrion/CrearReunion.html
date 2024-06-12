@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BeeMeet - Crear Reunión</title>
     <link rel="stylesheet" href="../../css/app.css">
+    <!--Formulario-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -13,69 +17,105 @@
 
     
     <main class="contenidoPrincipal">
-      <div class="crearReunion">
-          <!-- <h1 class="title-example text-center">Gestionar reuniones</h1>
-          <button class="actualizarBoton" onclick="obtenerReuniones()">Actualizar Reuniones</button>
-
-          <div class="div__reuniones" id="divReuniones" class="cardszzz"></div> -->
-
-        <h1 class="subtitle-example text-center" id="AgendarReunion">Agendar Reunión</h1> 
-        <div class="col-md-9 has-validation">
-            <label class="" for="titulo_reunion">Titulo de la reunión:</label>
-            <input class="form-control form-control-lg" type="text" id="titleID" name="titulo_reunion" required>
+        <div class="crearReunion">
+            <h1 class="subtitle-example text-center" id="AgendarReunion">Agendar Reunión</h1>
+            <form class="paragraph-example Formulario needs-validation" id="formCrearReunion" novalidate>
+                <div class="form-group col-md-9 has-validation Formulario__inputGroup">
+                    <label for="titulo_reunion" class="Formulario__inputGroup__label">Título de la reunión:</label>
+                    <input class="form-control form-control-lg Formulario__inputGroup__input" type="text" id="titleID" name="titulo_reunion" required>
+                    <div class="invalid-feedback">Ingrese un título para la reunión.</div>
+                </div>
+    
+                <div class="form-group col-md-9 has-validation Formulario__inputGroup">
+                    <label for="descripcion_reunion" class="Formulario__inputGroup__label">Descripción de la reunión:</label>
+                    <input class="form-control form-control-lg Formulario__inputGroup__input" type="text" id="descID" name="descripcion_reunion" required>
+                    <div class="invalid-feedback">Ingrese una descripción.</div>
+                </div>
+    
+                <div class="form-group col-md-9 has-validation Formulario__inputGroup">
+                    <label class="Formulario__inputGroup__label" for="fecha_reunion">Fecha de inicio de la reunión:</label>
+                    <input class="form-control form-control-lg inputControl Formulario__inputGroup__input" type="date" id="dateID" name="fecha_reunion" required>
+                    <div class="invalid-feedback">Ingrese una fecha.</div>
+                </div>
+    
+                <div class="form-group col-md-9 has-validation Formulario__inputGroup">
+                    <label class="Formulario__inputGroup__label">Hora de inicio de la reunión:</label>
+                    <input id="time1ID" type="text" class="form-control form-control-lg clockpicker Formulario__inputGroup__input" data-placement="top"
+                        data-align="top" data-autoclose="false" data-format="HH:ii" max="22:30" min="10:00" step="1"
+                        required>
+                    <div class="invalid-feedback">Ingrese una hora.</div>
+                </div>
+    
+                <div class="form-group col-md-9 has-validation Formulario__inputGroup">
+                    <label class="Formulario__inputGroup__label">Hora de fin de la reunión:</label>
+                    <input id="time2ID" type="text" class="form-control form-control-lg clockpicker Formulario__inputGroup__input" data-placement="top"
+                        data-align="top" data-autoclose="false" data-format="HH:ii" max="22:30" min="10:00" step="1"
+                        required>
+                    <div class="invalid-feedback">Ingrese una hora.</div>
+                </div>
+    
+                <div class="col-md-9 form-group mb-3 row has-validation Formulario__inputGroup">
+                    <label class="col-sm-5" for="isRepetible">¿Es repetible?</label>
+                    <div class="form-check col-sm-6 Formulario__inputGroup__opCheck">
+                        <input class="form-check-input" type="checkbox" id="isRepetible" name="isRepetible" onclick="showMoreDate()">
+                        <label class="form-check-label" for="isRepetible">Sí</label>
+                    </div>
+                </div>
+    
+                <div class="Formulario__tableContainer" id="tableContainer" style="display: none;">
+                  <table class="Formulario__tableContainer__tabla" id="tablaFechasRepetir">
+                      <tr>
+                          <th>Fecha</th>
+                          <th>Acción</th>
+                      </tr>
+                  </table>
+                  <button class="addFecha__boton" id="btnAgregarFecha" type="button" onclick=" agregarFecha() ">Agregar Fecha</button>
+                </div>
+    
+                <div class="form-group col-md-9 has-validation Formulario__inputGroup">
+                    <label class="Formulario__inputGroup__label" for="nombreSala">Nombre de la sala:</label>
+                    <select id="nombreSala" name="nombreSala" required>
+                        <option value="">Seleccione una sala...</option>
+                        <option value="1">Sala 1</option>
+                        <option value="2">Sala 2</option>
+                        <option value="3">Sala 3</option>
+                    </select>
+                    <div class="invalid-feedback">Seleccione un nombre de sala.</div>
+                </div>
+    
+                <button class="button__submit" type="submit" onclick="crearReunion()">Crear Reunión</button>
+            </form>
         </div>
-        <div id="titleFormID"></div>
+    </main>
+    
+    <script>
+    // JavaScript para Bootstrap validation
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            var forms = document.getElementsByClassName('needs-validation');
+            Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
 
-        <div class="col-md-9 has-validation">
-            <label for="descripcion_reunion">Descripción de la reunión:</label>
-            <input class="form-control form-control-lg" type="text" id="descID" name="descripcion_reunion" required>
-        </div>
-        <div id="descFormID"></div>
-
-        <div class="col-md-9 has-validation" >
-            <label for="fecha_reunion">Fecha de inicio de la reunión:</label>
-            <input class="form-control form-control-lg" type="date" id="dateID" name="fecha_reunion" style="position: relative; ">
-        </div>
-        <div id="dateFormID"></div>
-
-        <div class="col-md-9 has-validation">
-            <label>Hora de inicio de la reunion</label>
-            <input type="time" id="time1ID" class="form-control form-control-lg clockpicker" required>
-        </div>
-        <div class="col-md-9 has-validation">
-            <label>Hora de fin de la reunion</label>
-            <input type="time" id="time2ID" class="form-control form-control-lg clockpicker" required>
-        </div>
-        <div id="timeFormID"></div>
-
-        <div class="col-md-9 has-validation">
-            <label class="" for="isRepetible">¿Es repetible?</label>
-            <div class="form-check opCheck">
-                <input class="form-check-input" type="checkbox" id="isRepetible" name="isRepetible" required>
-                <label class="form-check-label" for="inlineCheckbox1">Sí</label>
-            </div>
-        </div>
-
-        <table class="Tabla" id="tablaFechasRepetir">
-            <tr>
-                <th>Fecha</th>
-                <th>Acción</th>
-            </tr>
-        </table>
-
-        <button class="addFecha__boton" id="btnAgregarFecha" onclick="agregarFecha()">Agregar Fecha</button>
-
-        <div class="Selecccion form-group col-md-9 has-validation">
-            <label for="nombreSala">Nombre de la sala:</label>
-            <select class="__opciones custom-select form-control-lg" id="nombreSala" name="nombreSala" required>
-                <option value="1">Sala 1</option>
-                <option value="2">Sala 2</option>
-                <option value="3">Sala 3</option>
-            </select>
-        </div>
-        <button class="button__submit" type="submit" onclick="crearReunion()">Crear Reunión</button>
-      </div>
-  </main>
+    function showMoreDate(){
+      console.log(document.getElementById("isRepetible").checked)
+      if(document.getElementById("isRepetible").checked){
+        document.getElementById("tableContainer").style.display="block";
+      }else{
+        document.getElementById("tableContainer").style.display="none";
+      }
+    }
+    </script>
+    
 <!--     <div class="centerThis">
         <main class="contenidoPrincipal">
             <div class="crearReunion">
@@ -130,16 +170,34 @@
         </main>
     </div> -->
     
+    <!-- Estilos para el Swal -->
+    <style>
+      .titleSize{
+        font-size: 4rem;
+      }
+      .contentSize{
+        font-size: 2rem !important;
+      }
+      .buttonSize{
+        font-size: 2rem !important;
+      }
+      .iconSize{
+        font-size: 1.5rem;
+      }
+    </style>
     <div id="footers"></div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    
-    <script src="../../js/clockpicker.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="../../js/anfitrion.js"></script>
     <script src="../../js/anfitrion/headers.js"></script>
+    <script src="../../js/anfitrion/crearReunion.js"></script>
+
     <script src="../../js/header.js"></script>
     <script src="../../js/sidebar.js"></script>
-    <script src="../../js/anfitrion.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="../../js/anfitrion/crearReunion.js"></script>
+    <script src="../../js/clockpicker.js"></script>
+
+    <script src="../../js/plantilla-formularios.js"></script>
     <script src="../../js/validaciones.js"></script>
 
 

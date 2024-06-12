@@ -1,20 +1,3 @@
-/* Función para los modales */
-const modal = Swal.mixin({
-    timer: 3000,
-    timerProgressBar: true,
-    background: "#fbfff1",
-    showConfirmButton: true,
-    confirmButtonColor: "#89b6b1",
-    cancelButtonColor: "#305272",
-    width: "50%",
-    customClass: {
-        title: "titleSize",
-        htmlContainer: "contentSize",
-        confirmButton: "buttonSize",
-        icon: "iconSize",
-    }
-})
-
 window.onload = function () {
     obtenerDatos();
 }

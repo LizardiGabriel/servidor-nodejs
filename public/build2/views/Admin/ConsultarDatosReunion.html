@@ -7,167 +7,80 @@
     <title>BeeMeet - Detalles Reunión</title>
     <link rel="stylesheet" href="../../css/app.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        .btn-regresar {
-            background-color: #4ca0a3;
-            /* Color de fondo del botón */
-            color: #000000;
-            /* Color del texto */
-            border: none;
-            /* Sin borde */
-            padding: 10px 20px;
-            /* Espaciado interno */
-            text-align: center;
-            /* Alineación del texto */
-            text-decoration: none;
-            /* Sin subrayado */
-            display: inline-block;
-            /* Mostrar en línea */
-            font-size: 16px;
-            /* Tamaño de la fuente */
-            border-radius: 10px;
-            /* Bordes redondeados */
-            cursor: pointer;
-            /* Cambia el cursor al pasar sobre el botón */
-            transition: background-color 0.3s ease;
-            /* Transición suave para el cambio de color */
-        }
-
-        .btn-regresar:hover {
-            background-color: #4f7374;
-            /* Color de fondo del botón al pasar el cursor */
-            color: #ffffff;
-            /* Color del texto al pasar el cursor */
-        }
-
-        .btn-regresar:focus {
-            outline: none;
-            /* Sin contorno al enfocar */
-            box-shadow: 0 0 0 3px rgba(135, 178, 164, 0.5);
-            /* Sombra para indicar el foco */
-        }
-
-        .btn-regresar:active {
-            background-color: #4a8d8f;
-            /* Color de fondo del botón al hacer clic */
-        }
-    </style>
+    <!--DataTables-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.6/css/dataTables.dataTables.css" />
+    <script src="https://cdn.datatables.net/2.0.6/js/dataTables.js"></script>
 </head>
 
 <body>
     <div id="headers"> </div>
 
-    <main class="contenidoPrincipal">
-        <div class="contento">
-            <div class="container-shadow">
-                <div class="consultaForm">
-                    <h1 class="consultaForm__titulo">Detalles de la reunión</h1>
-                    <form class="form" method="">
-                        <!--ID-->
-                        <label for="" class="consultaForm__label">ID:</label>
-                        <input id="idReunion" name="idReunion"class="form-control consultaForm__input" type="number" value="00"
-                            aria-label="Disabled input example" disabled readonly>
-                        <!--Nombre de la reunión-->
-                        <label for="" class="consultaForm__label">Nombre de la reunión:</label>
-                        <input id="nombreReunion" name="nombreReunion" class="form-control consultaForm__input" type="text" value="Nombre de la reunión"
-                            aria-label="Disabled input example" disabled readonly>
-                        <!--Fecha-->
-                        <label for="" class="consultaForm__label">Fecha de inicio:</label>
-                        <input id="fechaInicio" name="fechaInicio" class="form-control consultaForm__input" type="date"
-                            aria-label="Disabled input example" disabled readonly>
-                        <!--Hora-->
-                        <label for="" class="consultaForm__label">Hora de inicio</label>
-                        <input id="horaInicio" name="horaInicio" class="form-control consultaForm__input" type="time"
-                            aria-label="Disabled input example" disabled readonly>
-                        <!--Sala-->
-                        <label for="" class="consultaForm__label">Sala:</label>
-                        <input id="nombreSala" name="nombreSala" class="form-control consultaForm__input" type="text" value="Sala"
-                            aria-label="Disabled input example" disabled readonly>
-                        <!--Numero-->
-                        <label for="" class="consultaForm__label">Número:</label>
-                        <input id="numeroSala" name="numeroSala" class="form-control consultaForm__input" type="number" value="00"
-                            aria-label="Disabled input example" disabled readonly>
-                        <!--Piso
-                        <label for="" class="consultaForm__label">Piso:</label>
-                        <input id="pisoSala" name="pisoSala" class="form-control consultaForm__input" type="number" value="00"
-                            aria-label="Disabled input example" disabled readonly>-->
-                        <!--Descripción-->
-                        <label for="" class="consultaForm__label">Descripción:</label>
-                        <input id="descripcionReunion" name="descripcionReunion" class="form-control consultaForm__input" type="text" value="Descripción"
-                            aria-label="Disabled input example" disabled readonly>
-                        <!--Invitado-->
-                        <label for="" class="consultaForm__label">Invitados:</label>
-                        <input id="invitadosReunion" name="invitadosReunion" class="form-control consultaForm__input" type="text" value="Invitados"
-                            aria-label="Disabled input example" disabled readonly>
-
-                        <!--Botón-->
-                        <div>
-                            <button class="btn-regresar" type="button"
-                                onclick="window.location.href='/admin/catalogo/GestionarReuniones.html'">Regresar</button>
-                        </div>
-
-                    </form>
+  <main class="contenidoPrincipal">
+    <div class="consultarDetallesReunion">
+      <h1 class="consultar_titulo title-example text-center">Consultar Detalles de Reunión</h1>
+      <div class="botones">
+        <button class="reagendar_btn" onclick="window.location.href='/admin/catalogo/GestionarReuniones.html'">Regresar</button>
+      </div>
+      <div class="Detalle paragraph-example">
+        <!--DETALLES DE REUNIÓN-->
+            <form class="DetalleReunion">
+                <div class="_idReu">
+                    <label for="reunionId">Reunión:</label>
+                    <input type="text" id="idReunion" value="ID_Reu" readonly disabled>
                 </div>
+                <div class="_tituloReu">
+                    <label for="reunionTitulo">Título:</label>
+                    <input type="text" id="nombreReunion" value="Negociación con Cliente"
+                        readonly disabled>
+                </div>
+                <div class="_fecha">
+                    <label for="reunionFecha">Fecha:</label>
+                    <input type="text" id="fechaInicio" value="20-02-2024" readonly disabled>
+                </div>
+                <div class="_horario">
+                  <label for="horario">Horario:</label>
+                  <input type="text" id="horaInicio" value="10:30 AM" readonly disabled style="width: 5ch;">
+                  <label class="guion">-</label>
+                  <input type="text" id="horaFin" value="12:00 PM" readonly disabled style="width: 5ch;">
+              </div>
+                <div class="_nombreSala">
+                    <label for="salaL">Sala:</label>
+                    <input type="text" id="nombreSala" value="Sala de juntas" readonly disabled>
+                </div>
+                <div class="_numeroSala">
+                    <label for="salaNumero">Número:</label>
+                    <input type="text" id="numeroSala" value="42" readonly disabled>
+                </div>
+                <div class="_pisoSala">
+                    <label for="salaPiso">Piso:</label>
+                    <input type="text" id="salaPiso" value="2" readonly disabled>
+                </div>
+                <div class="_tituloReu" style="width: 100%;">
+                  <label for="descripcion">Descripcion:</label>
+                  <input type="text" id="descripcionReunion" readonly disabled style="display: inline-block; width: 100%;">
+                </div>
+            </form>
+            <!--DETALLES INVITADOS-->
+            <div class="__Tabla table-responsive paragraph-example">
+                <table class="tabla table table-hover table-bordered table-sm" id="Tabla">
+                    <thead class="tabla__cabecera">
+                        <tr>
+                            <th scope="col" data-sort="nombreInvi" class="cabecera">Nombre del invitado</th>
+                            <th scope="col" data-sort="correo" class="cabecera">Correo Electrónico</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tabla__cuerpo">
+                    </tbody>
+                </table>
             </div>
         </div>
-    </main>
+    </div>
+  </main>
 
     <div id="footers"> </div>
 
-    <script>
-
-
-
-        window.onload = function () {
-            cargarDatos();
-        }
-
-        function cargarDatos() {
-            console.log("Cargando datos");
-
-            let url = window.location.href;
-            let urlParams = new URLSearchParams(window.location.search);
-            const idReunion = urlParams.get('idReunion');
-            console.log('idReunion: ' + idReunion);
-        
-            fetch(`/admin/catalogo/reuniones/${idReunion}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data); 
-                    
-                    //rellenar los campos del formulario con los datos de la reunion
-                    document.getElementById('idReunion').value = data.id_reunion;
-                    document.getElementById('nombreReunion').value = data.titulo_reunion;
-                    // Parse and set the date
-                    let fecha = new Date(data.fechasRepeticion[0].fecha_repeticion);
-                    if (!isNaN(fecha.getTime())) {
-                        let formattedDate = fecha.toISOString().split('T')[0];
-                        document.getElementById('fechaInicio').value = formattedDate;
-                    } else {
-                        console.error('Invalid date format:', data.fechasRepeticion[0].fecha_repeticion);
-                    }
-                    document.getElementById('horaInicio').value = data.fechasRepeticion[0].hora_inicio_repeticion;
-                    document.getElementById('nombreSala').value = data.nombreSala;
-                    document.getElementById('numeroSala').value = data.id_sala;
-                    //document.getElementById('pisoSala').value = data.piso_sala;
-                    document.getElementById('descripcionReunion').value = data.descripcion_reunion;
-                    document.getElementById('invitadosReunion').value = data.invitados_reunion;
-                    
-                   
-
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-
-
-
-        }
-
-    </script>
-
-
-
+    <script src="../../js/admin/consultarDatosReunion.js"></script>
     <script src="../../js/admin/headers.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/sidebar.js"></script>

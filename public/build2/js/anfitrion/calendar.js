@@ -1,4 +1,6 @@
 
+
+
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -13,11 +15,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     for(const reunion of data){
                         for(const fecha of reunion.fechasRepeticion){
                             const evento={
+                                id_repeticion: fecha.id_repeticion,
                                 title:reunion.titulo_reunion,
                                 start: new Date(formatearFecha(fecha.fecha_repeticion)),
                                 end: new Date(formatearFecha(fecha.fecha_repeticion)),
                                 location: "Num sala "+reunion.id_sala,
-                                url: "anfitrion/detallesreunion/${reunion.id_reunion}",
+                                url: "/anfitrion/reuniones/ConsultarDatos.html?idReunion="+reunion.id_reunion+"&"+"fecha_i="+fecha.fecha_repeticion+
+                                "&"+"fecha_f="+fecha.fecha_repeticion+"&"+"hora_i="+fecha.hora_inicio_repeticion+"&"+"hora_f="+fecha.hora_fin_repeticion
+                                +"&"+"idRepeticion="+fecha.id_repeticion,
                                 timeStart: fecha.hora_inicio_repeticion,
                                 timeEnd: fecha.hora_fin_repeticion
                             }
@@ -35,17 +40,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return {
                 html: `
             <div style="overflow: hidden; font-size: 12px; positon: relative;  cursor: pointer; font-family: 'Inter', sans-serif;">
-                <div><strong>${info.event.title}</strong></div>
-                <div>Location: ${info.event.extendedProps.location}</div>
-                <div>Date: ${info.event.start.toLocaleDateString(
-                    "es-US",
-                    {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                    }
-                )}</div>
-                <div>Time: ${info.event.extendedProps.timeStart} - ${info.event.extendedProps.timeEnd}</div>
+                <div class="calendarTitulo"><strong>${info.event.title}</strong></div>
+                <div class="calendarUbicacion">${info.event.extendedProps.location}</div>
+                <div class="calendarHorario">${info.event.extendedProps.timeStart} - ${info.event.extendedProps.timeEnd}</div>
             </div>
             `
             }

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeeMeet - Datos del Invitado</title>
+    <link rel="stylesheet" href="../../css/app.css">
+    <!--SiderBar-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+</head>
+
+<body>
+  <div id="headers"></div>
+
+    <main class="QR">
+        <div id="your-qr"></div>
+        <h1>Scanear QR</h1>
+        <div style="display: flex; justify-content: center;">
+            <div id="my-qr" style="width: 800px;"></div>
+        </div>
+    </main>
+
+    <div id="footers"></div>
+
+    <script src="../../js/seguridad/seguridad.js"></script>
+    <script src="../../js/seguridad/headers.js"></script> 
+    <script src="../../js/header.js"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script>
+        function domReady(fn) {
+            if (document.readyState === "complete" || document.readyState === "interactive") {
+                setTimeout(fn, 1);
+            } else {
+                document.addEventListener("DOMContentLoaded", fn);
+            }
+        }
+
+        domReady(function () {
+            var myqr = document.getElementById('your-qr');
+            var lastResult, countResults = 0;
+
+            function onScanSuccess(decodedText, decodedResult) {
+                if (decodedText !== lastResult) {
+                    ++countResults;
+                    lastResult = decodedText;
+
+                    alert("QR: " + decodedText);
+                    // Corregido el uso de comillas para la interpolación de cadenas
+                    myqr.innerHTML = `You scanned ${countResults} : ${decodedText}`;
+                }
+            }
+
+            // Corregido el nombre de la clase a Html5QrcodeScanner
+            var htmlscanner = new Html5QrcodeScanner(
+                "my-qr", { fps: 10, qrbox: 250 }
+            );
+
+            htmlscanner.render(onScanSuccess);
+        });
+    </script>
+
+
+
+</body>
+
+</html>

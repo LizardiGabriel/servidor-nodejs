@@ -6,13 +6,93 @@
     <title>Beecoders - Editar datos personales</title>
     <link rel="stylesheet" href="../../css/app.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+      .msg-error-form{
+        max-width: 100%;
+        margin-top: 1rem;
+        font-size: 1.6rem;
+      }
+
+      .contenedorUser{
+        padding: 2rem;
+      }
+
+      .w-80{
+        width: 80%;
+      }
+    </style>
 </head>
 <body>
 
 
 
     <div id="headers"></div>
+
     <main class="contenidoPrincipal">
+      <div class="contenedorUser">
+          <div class="contenedorUser__left">
+              <div class="contenedorUser__left__circle">
+                  <img id="profile-image" src="../../img/usuario.png">
+                  <div class="contenedorUser__left__circle__icon" id="upload-icon">
+                      <img src="../../img/icons/ico-camara.png" title="Subir foto">
+                      <input type="file" class="file-input" accept=".png, .jpg, .jpeg" id="file-input">
+                  </div>
+              </div>
+          </div>
+          <div class="contenedorUser__Info">
+            <div class="profileHeroSA__left">
+                <h1 class="profileHeroSA__left__titulo">Tus datos personales</h1>
+            </div>
+            <div class="profileHeroSA__right">
+                <div class="profileHeroSA__right__inputProfile">
+                    <label class="profileHeroSA__right__inputProfile__label">Nombre(s)*</label>
+                    <div class="profileHeroSA__right__inputProfile__content">
+                        <input class="inputSA" type="text" value="Juan " disabled id="nombre">
+                    </div>
+                    <div id="nombreForm" class="w-80"></div>
+                </div>
+                <div class="profileHeroSA__right__inputProfile">
+                    <label class="profileHeroSA__right__inputProfile__label">Apellido paterno*</label>
+                    <div class="profileHeroSA__right__inputProfile__content">
+                        <input class="inputSA" type="text" value="Perez" disabled id="app">
+                    </div>
+                    <div id="appForm" class="w-80"></div>
+                </div>
+                <div class="profileHeroSA__right__inputProfile">
+                    <label class="profileHeroSA__right__inputProfile__label">Apellido materno*</label>
+                    <div class="profileHeroSA__right__inputProfile__content">
+                        <input class="inputSA" type="text" value="Hernandez" disabled id="apm">
+                    </div>
+                    <div id="apmForm" class="w-80"></div>
+                </div>
+                <!-- <div class="profileHeroSA__right__inputProfile">
+                    <label class="profileHeroSA__right__inputProfile__label">Correo electrónico*</label>   
+                    <div class="profileHeroSA__right__inputProfile__content">
+                        <input class="inputSA" type="email" value="example@email.com" disabled id="loginEmail">
+                    </div>
+                    <div id="emailForm"></div>
+                </div> -->
+                
+                <div class="profileHeroSA__right__inputProfile">
+                    <label class="profileHeroSA__right__inputProfile__label">Número telefónico*</label>
+                    <div class="profileHeroSA__right__inputProfile__content">
+                        <input class="inputSA" type="tel" min="0" value="55 666 777 88" pattern="[0-9\s]{10,15}" disabled id="telefono">
+                    </div>
+                    <div id="telefonoForm" class="w-80"></div>
+                </div>
+                <div class="profileHeroSA__right__buttonContainer view" id="buttonsEdit">
+                    <button class="profileHeroSA__right__buttonContainer__buttonEdit" id="editProfile">Editar</button>   
+                    <div class="profileHeroSA__right__buttonContainer__button" style="display: none;" id="contenedorEdit">
+                        <button class="profileHeroSA__right__buttonContainer__button__secundario" id="cancelarProfile">Cancelar</button>
+                        <button class="profileHeroSA__right__buttonContainer__button__primario" id="guardarProfile" onclick="updateData()">Guardar</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+      </div>   
+  </main>
+
+    <!-- <main class="contenidoPrincipal">
         <div class="profileHeroSA">
                 <div class="profileHeroSA__left">
                     <h1 class="profileHeroSA__left__titulo">Tus datos personales</h1>
@@ -59,103 +139,32 @@
                     </div>
                 </div>
         </div>   
-    </main>
+    </main> -->
 
     <div id="footers"></div>
-    <script>
-    document.addEventListener('DOMContentLoaded',async function() {
-        try {
-        const response = await fetch('/admin/getemail');
-        const data = await response.json();
-        var datosUsuario = await getData(data.email);  // Usar await aquí garantiza que esperamos el resultado
-        const nombre= document.getElementById("inputNom");
-        nombre.placeholder=datosUsuario.nombre_usuario;
-        const ApellidoPat= document.getElementById("inputApePat");
-        ApellidoPat.placeholder=datosUsuario.apellido_paterno_usuario;
-        const ApellidoMat= document.getElementById("inputApeMat");
-        ApellidoMat.placeholder=datosUsuario.apellido_materno_usuario;
-        const Tel= document.getElementById("inputTel");
-        Tel.placeholder=datosUsuario.telefono_usuario;
 
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-    });
-
-    async function updateData(){
-        try {
-            const response = await fetch('/admin/getemail');
-            const data = await response.json();
-            var datosUsuario = await getData(data.email);
-            console.log(datosUsuario);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-        const nombre= document.getElementById("inputNom").value; // Obtener el valor del input
-        const ApellidoPat= document.getElementById("inputApePat").value;
-        const ApellidoMat= document.getElementById("inputApeMat").value;
-        //obtener el valor del input para el telefono, es un entero por lo que se usa parseInt
-        const Tel= document.getElementById("inputTel").value;
-        const file_foto = document.getElementById("inputFoto").files[0];
-
-        let datatoSend={
-            email:datosUsuario.email_usuario,
-            nombre: nombre,
-            apellidoPaterno:ApellidoPat,
-            apellidoMaterno:ApellidoMat,
-            telefono:Tel,
-            idRol:datosUsuario.rol_usuario,
-        }
-
-        if (file_foto) {
-            const reader = new FileReader();
-            reader.onloadend = function() {
-                datatoSend.fotoUsuario = reader.result; // Añade la foto en formato Base64 al objeto data
-                enviarData(datatoSend,datosUsuario.id_usuario);
-            };
-            reader.readAsDataURL(file_foto);
-        } else {
-            console.log("Hubo un error al cargar los datos");
-            enviarData(datatoSend,datosUsuario.id_usuario);
-        }
-
-    }
-
-    async function getData(correo) {
-    try {
-        // Remover el ':' adicional del inicio de la URL si no es necesario
-        const response = await fetch('/admin/catalogo/usuarioEmail/:'+correo);
-        const data = await response.json();
-        return data;  // Asegura que data sea devuelta de la función
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        return null;  // Devolver null o algún indicativo de error
-    }
-}
-
-    function enviarData(data,id_usuario) {
-
-        console.log(data);
-            fetch('/admin/catalogo/usuarios/:'+id_usuario, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Respuesta del servidor:', data);
-            })
-            .catch(error => console.error('Error al mandar datos:', error));
-    }
-
-
-    </script>
+    <!-- Estilos para el Swal -->
+    <style>
+      .titleSize{
+        font-size: 4rem;
+      }
+      .contentSize{
+        font-size: 2rem !important;
+      }
+      .buttonSize{
+        font-size: 2rem !important;
+      }
+      .iconSize{
+        font-size: 1.5rem;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../js/admin/headers.js"></script>
+    <script src="../../js/admin/editarDatosPersonales.js"></script>
     <script src="../../js/buttonProfiles.js"></script>
     <script src="../../js/sidebar.js"></script>
     <script src="/build/js/header.js"></script>
     <script src="../../js/superAdmin.js"></script>
+    <script src="../../js/validaciones.js"></script>
 </body>
 </html>

@@ -118,6 +118,7 @@ function enviarInvitacion(idReunion) {
         
     };
 
+    console.log(envJson);
     fetch(`reuniones/invitacion`, {
         method: 'POST',
         headers: {

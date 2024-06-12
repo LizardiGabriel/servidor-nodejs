@@ -76,7 +76,7 @@ function enviarForm() {
           if (response.ok) {
             // redirigir a salas
             modal.fire({
-              title: "Success",
+              title: "Operación exitosa",
               icon: "success",
               text: "Sala editada correctamente",
             });

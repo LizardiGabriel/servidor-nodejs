@@ -30,6 +30,12 @@
             font-size: 16px;
             padding: 5px;
         }
+        
+        .msg-error-form{
+          max-width: 100%;
+          margin-top: 1rem;
+          font-size: 1.6rem;
+        }
     </style>
 
 </head>
@@ -38,82 +44,75 @@
     <div id="headers"></div>
 
     <main class="contenidoPrincipal">
-        <h1 class="Titulo title-example text-center">Editar Cuenta</h1>
-        <!-- Puesto con radios -->
-        <div>
-            <div class="form-group mb-3 row">
-                <label class="form-label col-sm-2">Puesto*</label>
-                <div class="col-sm-10">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="puesto" id="rolSeguridad"
-                            value="Seguridad">
-                        <label class="form-label" for="seguridadEdificio">Seguridad Edificio</label>
+      <div class="container-shadow">
+        <div class="editForm">
+          <h1 class="Titulo title-example text-center">Editar Cuenta Anfitrión/Seguridad</h1>
+          <div class="Formulario needs-validation paragraph-example">
+            <!-- Puesto con radios -->
+            <div>
+                <div class="form-group mb-3 row">
+                    <label class="editForm__label col-sm-2">Puesto*</label>
+                    <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="puesto" id="rolSeguridad" value="Seguridad">
+                            <label class="editForm__label" for="seguridadEdificio">Seguridad Edificio</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="puesto" id="rolAnfitrion" value="Anfitrion">
+                            <label class="editForm__label" for="anfitrion">Anfitrión</label>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="puesto" id="rolAnfitrion" value="Anfitrion">
-                        <label class="form-label" for="anfitrion">Anfitrión</label>
-                    </div>
                 </div>
+                <div id="rolForm"></div>
             </div>
-            <div id="rolForm"></div>
-        </div>
-        <!--Nombre-->
-        <div>
-            <div class="form-group has-validation mb-3 row">
-                <label class="form-label col-sm-2">Nombre(s)*</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control form-control-lg" id="nombre" placeholder="Nombre"
-                        required>
+            <!--Correo-->
+            <div>
+              <label class="editForm__label">Correo Electrónico*</label>
+              <div class="inputForm">
+                  <input type="email" class="input" id="loginEmail" placeholder="email@example.com" required>
+              </div>
+              <div id="emailForm"></div>
+            </div>
+            <!--Nombre-->
+            <div>
+              <label class="editForm__label">Nombre(s)*</label>
+              <div class="inputForm">
+                  <input type="text" class="input" id="nombre" placeholder="Nombre"   required>
+              </div>
+              <div id="nombreForm"></div>
+            </div>
+            <!--Apellido Pa-->
+            <div>
+                <label class="editForm__label">Apellido Paterno*</label>
+                <div class="inputForm">
+                    <input type="text" class="input" id="app" placeholder="Apellido Paterno" required>
                 </div>
+                <div id="appForm"></div>
             </div>
-            <div id="nombreForm"></div>
-          </div>
-        <!--Apellido Pa-->
-        <div>
-            <div class="form-group has-validation mb-3 row">
-                <label class="form-label col-sm-2">Apellido Paterno*</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="app" placeholder="Apellido Paterno"
-                        required>
-                </div>
+            <!--Apellido Ma-->
+            <div>
+              <label class="editForm__label">Apellido Materno*</label>
+              <div class="inputForm">
+                  <input type="text" class="input" id="apm" placeholder="Apellido Materno" required>
+              </div>
+              <div id="apmForm"></div>
             </div>
-            <div id="appForm"></div>
-        </div>
-        <!--Apellido Ma-->
-        <div>
-            <div class="form-group has-validation mb-3 row">
-                <label class="form-label col-sm-2">Apellido Materno*</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="apm" placeholder="Apellido Materno"
-                        required>
-                </div>
+            <!--Número de Teléfono-->
+            <div>
+              <label class="editForm__label">Número de teléfono*</label>
+              <div class="inputForm">
+                <input type="tel" class="input" id="telefono" placeholder="55 + 1234 5678" min="0" pattern="[0-9]{10}" required>
+              </div>
+              <div id="telefonoForm"></div>
             </div>
-            <div id="apmForm"></div>
-        </div>
-        <!--Correo-->
-        <div class="form-group has-validation mb-3 row">
-            <label class="form-label col-sm-2">Correo Electrónico*</label>
-            <div class="col-sm-10">
-                <input type="email" class="form-control" id="loginEmail" placeholder="email@example.com" required>
-            </div>
-            <div id="emailForm"></div>
-        </div>
-        <!--Número de Teléfono-->
-        <div class="form-group has-validation mb-3 row">
-            <label class="form-label col-sm-2">Número de teléfono*</label>
-            <div class="col-sm-10">
-                <input type="tel" class="form-control" id="telefono" placeholder="55 + 1234 5678" min="0"
-                    pattern="[0-9]{10}" required>
-            </div>
-            <div id="telefonoForm"></div>
-        </div>
-        <div class="boton d-flex justify-content-around">
 
-            <div class="col-md-3">
-                <input type="button" value="Enviar" class="buttonForm" onclick="enviarForm()" id="">
+            <div class="button-container">
+                <input type="button" value="Editar cuenta" class="button" onclick="enviarForm()" id="">
+                <button type="button" class="button-submit" onclick="cancelarForm()">Cancelar</button>
             </div>
+          </div>
         </div>
-      <button type="button" onclick="cancelarForm()">Click Me!</button>
+      </div>
     </main>
 
     <div id="footers"></div>

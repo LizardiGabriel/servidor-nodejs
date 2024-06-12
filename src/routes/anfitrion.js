@@ -6,7 +6,8 @@ const { getReunionesBD,
     getReunionesConRepeticionByIdOfUserBD,
     getSalasBD, setNewReunionBD,
     getInvitadoByEmailBD, setNewInvitadoBD, setNewInvitacionBD,
-    getReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD, getDetallesReunionByIdBD
+    getReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD, getDetallesReunionByIdBD,getUsuarioByEmailBD,
+    updateHoraReunionBD,deleteInvitadoBD
 
 } = require('../tools/peticiones');
 
@@ -25,6 +26,7 @@ async function logout(req, res) {
     req.session.destroy();
     res.redirect('/');
 }
+
 function verifyTokenAndGetUserId(jsonToken) {
     return new Promise((resolve, reject) => {
         jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
@@ -40,6 +42,27 @@ function verifyTokenAndGetUserId(jsonToken) {
     });
 }
 
+function getemail(jsonToken){
+    let email = "";
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            email= decoded.email;
+        }
+    });
+    return email;
+}
+
+async function getUserEmail(req,res){
+    console.log('=============================mensaje -->Se intento obtener del correo');
+    if(req.session){
+        res.json({ email: getemail(req.session.jwt) }); 
+    }
+    else {
+        res.status(403).send('No autorizado');
+    }
+}
 
 async function getReunionesAnfitrion(req, res) {
     console.log('mensaje --> getReunionesAll');
@@ -62,7 +85,7 @@ async function getReunionesAnfitrion(req, res) {
 }
 
 async function getSalasAnfitrion(req, res) {
-    console.log('mensaje --> getSalasAnfitrion');
+    console.log('>>>>>>>>>>>>>>>>>>>>> d bsuvbhuwd   mensaje --> getSalasAnfitrion');
     //console.log(req.session);
     const salas = await getSalasBD();
     if (salas !== null) {
@@ -123,7 +146,7 @@ async function setInvitacion(req, res) {
 
     const id_invitado = invitado.id_invitado;
     
-    const setInvitacion = await setNewInvitacionBD(idReunion, id_invitado, acompanantesInv);
+    const setInvitacion = await setNewInvitacionBD(idReunion, id_invitado, acompanantesInv, 1);
     const reunion = await getDetallesReunionByIdBD(idReunion);
 
 
@@ -182,6 +205,63 @@ async function getReunionById(req, res) {
     }
 }
 
+async function getInvitadoByEmail(req,res){
+    const email = req.query.email;
+    console.log('mensaje --> getInvitadoByemail');
+    const invitado = await (getInvitadoByEmailBD(email));
+    if (invitado !== null) {
+        res.json((invitado));
+    } else {
+        res.json([]);
+    }
+}
+
+async function getUsuarioByEmail(req, res) {
+    console.log('========================= get Usuario By email: ', req.params)
+    const { email } = req.params;
+    const usuario = await getUsuarioByEmailBD(email.replace(/^:/, ''));
+    res.json(usuario);
+}
+
+async function updateUsuario(req, res) {
+    const { id } = req.params;
+    const { email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, fotoUsuario } = req.body;
+    console.log(req.body);
+    console.log('id: ', id, 'email: ', email, 'nombre: ', nombre, 'apellidoPaterno: ', apellidoPaterno);
+    const id_final = id.replace(/^:/, '');
+
+    if (fotoUsuario && esCadenaBase64Valida(fotoUsuario)) {
+        const extensionfoto = await obtenerExtensionDeBase64(fotoUsuario);
+        const rutafoto = await guardarImagenDesdeBase64(fotoUsuario, "fotografia_usuario" + id_final + "." + extensionfoto);
+        console.log(rutafoto);
+        const usuarioActualizado = await updateUsuarioBD(id_final, email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, rutafoto);
+        console.log('usuarioActualizado: ', usuarioActualizado);
+        res.status(200).json({ message: 'Usuario actualizado correctamente' });
+    } else if (fotoUsuario) {
+        console.error('Cadena base64 inválida para fotoUsuario.');
+        const usuarioActualizadoNoFoto = await updateUsuarioBD(id_final, email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, '');
+        res.status(201).json({ message: 'Usuario actualizado pero fotoUsuario inválido o ausente' });
+
+    } else {
+        console.error('fotoUsuario está undefined o es inválido.');
+        const usuarioActualizadoNoFoto = await updateUsuarioBD(id_final, email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, '');
+        res.status(201).json({ message: 'Usuario actualizado pero fotoUsuario inválido o ausente' });
+    }
+}
+
+async function updateHoraReunion(req,res){
+    const { id_reunion,hora_fin_repeticion} = req.body;
+    const repeActualizada= await updateHoraReunionBD(id_reunion,hora_fin_repeticion);
+    console.log(repeActualizada);
+    res.status(200).json({ message: 'Reunion actualizado correctamente' });
+}
+
+async function deleteInvitado(req,res){
+    const { id_invitado} = req.body;
+    const invitadoDel= await deleteInvitadoBD(id_invitado);
+    console.log(invitadoDel);
+    res.status(200).json({ message: 'Invitado eliminado correctamente' });
+}
 
 module.exports = {
     logout,
@@ -189,5 +269,11 @@ module.exports = {
     getSalasAnfitrion,
     setNewReunion,
     setInvitacion,
-    getReunionById
+    getReunionById,
+    getInvitadoByEmail,
+    getUserEmail,
+    getUsuarioByEmail,
+    updateUsuario,
+    updateHoraReunion,
+    deleteInvitado
 };

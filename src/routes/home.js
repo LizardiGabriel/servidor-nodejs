@@ -9,8 +9,8 @@ function generateAccessToken(email, idUsuario, rolNum, nombre, apellido, foto) {
     return jwt.sign({ email: email, idUsuario: idUsuario, rol: rolNum, nombre: nombre, apellido: apellido, foto: foto }, process.env.SECRET_KEY, { expiresIn: '20m' });
 }
 
-function generateTokenInvitado(email, idInvitado, rolNum, newCount, changeFirstPass) {
-    return jwt.sign({ email: email, idInvitado: idInvitado, rol: rolNum, newCount: newCount, changeFirstPass: changeFirstPass }, process.env.SECRET_KEY, { expiresIn: '5m' });
+function generateTokenInvitado(email, idInvitado, rolNum, newCount, changeFirstPass, idSeleccionado) {
+    return jwt.sign({ email: email, idInvitado: idInvitado, rol: rolNum, newCount: newCount, changeFirstPass: changeFirstPass, idSeleccionado: -1 }, process.env.SECRET_KEY, { expiresIn: '60m' });
 }
 
 async function login(req, res) {
@@ -34,16 +34,10 @@ async function login(req, res) {
                 // si el invitado existe
                 if(password === invitado.password_invitado){
                     console.log('invitado password correcto');
-                    if(invitado.es_colado_invitado === 1){
-                        console.log('es invitado');
-                        rutita = '/invitado/home/invitado.html';
-                        token = generateTokenInvitado(email, invitado.id_invitado, 4, invitado.newCount, invitado.changeFirstPass);
-                    }else if(invitado.es_colado_invitado === 0){
-                        console.log('es colado');
-                        rutita = '/acompañante/acompañante.html';
-                        token = generateAccessToken(email, invitado.id_invitado, 5);
+                    console.log('es invitado');
+                    rutita = '/invitado/home/invitado.html';
+                    token = generateTokenInvitado(email, invitado.id_invitado, 4, invitado.newCount, invitado.changeFirstPass);
 
-                    }
                     req.session.jwt = token;
                     return res.status(200).json({
                         ruta: rutita,

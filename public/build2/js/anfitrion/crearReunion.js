@@ -1,28 +1,13 @@
-/* Función para los modales */
-const modal = Swal.mixin({
-    timer: 3000,
-    timerProgressBar: true,
-    background: "#fbfff1",
-    showConfirmButton: true,
-    confirmButtonColor: "#89b6b1",
-    cancelButtonColor: "#305272",
-    width: "50%",
-    customClass: {
-        title: "titleSize",
-        htmlContainer: "contentSize",
-        confirmButton: "buttonSize",
-        icon: "iconSize",
-    }
-})
 
 window.onload = function () {
     obtenerSalas();
 }
 function agregarFecha() {
+    console.log('agregarFecha');
     const tablaFechasRepetir = document.getElementById('tablaFechasRepetir');
     const fila = document.createElement('tr');
     fila.innerHTML = `
-        <td><input type="date" class="form-control form-control-lg clockpicker" name="fechaRepetir" style="position: relative;" required></td>
+        <td><input type="date" class="form-control form-control-lg Formulario__inputGroup__input" name="fechaRepetir" style="position: relative;" required></td>
 
         <td><button class="addFecha__boton" onclick="eliminarFila(this)">Eliminar</button></td>
     `;
@@ -35,6 +20,8 @@ function eliminarFila(boton) {
 
 
 function crearReunion() {
+    console.log('crearReunion');
+    event.preventDefault();
     const titulo_reunion = document.getElementById('titleID').value;
     const descripcion_reunion = document.getElementById('descID').value;
     const fecha_reunion = document.getElementById('dateID').value;
@@ -69,6 +56,21 @@ function crearReunion() {
         .then(response => response.json())
         .then(data => {
             console.log('data:', data);
+            if (data.respuesta === 'true') {
+                modal.fire({
+                    title: "Reunión creada",
+                    icon: "success",
+                    text: "La reunión se ha creado exitosamente",
+                }).then(() => {
+                    window.location.href = '/anfitrion/reuniones.html';
+                });
+            } else {
+                modal.fire({
+                    title: "Error",
+                    icon: "error",
+                    text: data.error,
+                });
+            }
         })
         .catch(error => {
             console.error('Error:', error);
@@ -98,3 +100,9 @@ function obtenerSalas() {
             console.error('Error:', error);
         });
 }
+
+const botonAddFecha = document.getElementById("btnAgregarFecha");
+
+botonAddFecha.addEventListener("click", (evt)=>{
+        evt.preventDefault();
+})
