@@ -67,6 +67,7 @@
     }
 
 
+    let dataTable;
     function obtenerReuniones() {
     fetch("/seguridad/getAgendas", {
         method: "GET"
@@ -86,24 +87,46 @@
             }).join(", ");
 
             fila.innerHTML = `
-                <td>
-                    <button onclick="verDetallesInv(${reunion.id_inv})">Ver</button>
+                <td class="accion">
+                  <button class="btn btn-sm visualizar" data-id="${reunion.id_inv}" onclick="verDetallesInv(${reunion.id_inv})"><img src="../../img/icons/ico-view.svg"></button>
                 </td>
-                <td>${reunion.nombre_inv}</td>
-                <td>${fechasHoras}</td>
-                <td>${reunion.nombre_user} ${reunion.apellidoP_user} ${reunion.apellidoM_user}</td>
+                <td class="nombreI">${reunion.nombre_inv}</td>
+                <td class="horario">${fechasHoras}</td>
+                <td class="nombreA">${reunion.nombre_user} ${reunion.apellidoP_user} ${reunion.apellidoM_user}</td>
             `;
             tbody.appendChild(fila);
         });
+        cargarFiltros();
     })
     .catch(error => console.error("Error al visualizar los datos:", error));
 }
 
+function cargarFiltros() {
+  // Destruir y volver a inicializar DataTable
+  if (!$.fn.DataTable.isDataTable('#Tabla')) {
+    dataTable = $('#Tabla').DataTable({
+      pagingType: 'full_numbers', //Tipo de paginación
+      info: false, //Desactiva la información de los registros totales
+      language: {
+        lengthMenu: 'Mostrar _MENU_ registros', //Para cambiar el texto de los registros que se muestran
+        search: 'Buscar',
+        zeroRecords: 'No se encontró ninguna coincidencia ):'
+      },
+      columnDefs: [
+        { "orderable": false, "targets": -1 } // Desactiva el ordenamiento en la última columna (Acciones)
+      ],
+      autoWidth: true
+    });
+  } else {
+    dataTable.draw()
+  }
+}
+
         
-        function verDetallesInv(idInvitado) {
-            const url = `verDatosInv.html?idInvitado=${idInvitado}`;    
-            window.open(url);
-        }
+    function verDetallesInv(idInvitado) {
+        const url = `verDatosInv.html?idInvitado=${idInvitado}`;    
+        window.open(url);
+    }
     </script>
     
     <script src="../../js/seguridad/visualizarAgendaDelDia.js"></script>
