@@ -1,7 +1,29 @@
+let url = window.location.href;
+let urlParams = new URLSearchParams(window.location.search);
+console.log(urlParams);
+const idReunion = parseInt(urlParams.get('idReunion'));
+
 
 window.onload = function () {
-    obtenerSalas();
+    obtenerSalas();   
+    if(!isNaN(idReunion)){
+        console.log("Se requieren cargar los datos");
+        cargarDatosReunion(idReunion)
+    }
+        
 }
+
+function cargarDatosReunion(idReunion){
+    fetch(`/anfitrion/reuniones/detalles/${idReunion}`)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);    
+    })
+    .catch(error => {
+        console.log(error);
+    })
+}
+
 function agregarFecha() {
     console.log('agregarFecha');
     const tablaFechasRepetir = document.getElementById('tablaFechasRepetir');

@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     return response.json();
                 })
                 .then(function(data){
+                    console.log(data);
                     let reunionesmap=[];
                     for(const reunion of data){
                         for(const fecha of reunion.fechasRepeticion){
