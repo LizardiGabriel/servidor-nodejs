@@ -2,17 +2,26 @@ window.onload = function () {
     cargarDatos();
 }
 
-function addminutes(initialT,minAdd){
+function addminutes(initialT, minAdd) {
     const today = new Date();
     console.log(today);
-    const timeParts=initialT.split(':');
-    const date= new Date(today.getFullYear(),today.getMonth(),today.getDate(),parseInt(timeParts[0]),parseInt(timeParts[1]));
-    date.setMinutes(date.getMinutes()+parseInt(minAdd));
-    const hours= date.getHours().toString().padStart(2,"0");
-    const minutes= date.getMinutes().toString().padStart(2,"0");
-    console.log(hours+":"+minutes);
-    return hours+":"+minutes;
+    const timeParts = initialT.split(':');
+    const date = new Date(today.getFullYear(), today.getMonth(), today.getDate(), parseInt(timeParts[0]), parseInt(timeParts[1]));
+    date.setMinutes(date.getMinutes() + parseInt(minAdd));
+
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const isAM = hours < 12;
+    if (hours > 12) {
+        hours -= 12;
+    } else if (hours === 0) {
+        hours = 12;  // Trata la medianoche como 12 AM
+    }
+    const formattedTime = hours.toString().padStart(2, "0") + ":" + minutes + (isAM ? " AM" : " PM");
+    console.log(formattedTime);
+    return formattedTime;
 }
+
 
 let url = window.location.href;
 let urlParams = new URLSearchParams(window.location.search);
@@ -70,19 +79,8 @@ function cargarDatos() {
             fila.innerHTML = `
                 <td>${nombreInvitado}</td>
                 <td>${correoElectronico}</td>
-                <td style="text-align: center">
-                    <button style="            
-                    background-color: #89b6b1;
-                    color: #000000;
-                    border: none;
-                    padding: 10px 20px;
-                    text-align: center;
-                    text-decoration: none;
-                    font-size: 16px;
-                    border-radius: 10px;
-                    cursor: pointer;
-                    transition: background-color 0.3s ease;
-                    " onclick="eliminarInvitado(${id_invitado})">Eliminar</button>
+                <td class="acciones">
+                    <button class="btn btn-sm eliminar" onclick="eliminarInvitado(${id_invitado})"><img src="../../img/icons/ico-trash.svg" alt="Eliminar"></button>
                 </td>
             `;
         
@@ -152,6 +150,10 @@ document.getElementById("agregarInv").addEventListener('click', function(){
 document.getElementById("botonAgregar").addEventListener('click', function(){
     console.log("Se agregan datos");
     enviarInvitacion(idReunion)
+});
+
+document.getElementById("reagendar").addEventListener('click', function(){
+    window.location.href="/anfitrion/crearReunion?idReunion="+idReunion+"&"+"hora_i="+hora_i+"&"+"hora_f="+hora_f;
 });
 
 function enviarInvitacion() {
