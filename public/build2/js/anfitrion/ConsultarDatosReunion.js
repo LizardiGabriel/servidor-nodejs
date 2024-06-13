@@ -164,7 +164,7 @@ document.getElementById("botonAgregar").addEventListener('click', function(){
 });
 
 document.getElementById("reagendar").addEventListener('click', function(){
-    window.location.href="/anfitrion/crearReunion?idReunion="+idReunion;
+    window.location.href="/anfitrion/crearReunion?idReunion="+idReunion+"&"+"hora_i="+hora_i+"&"+"hora_f="+hora_f;
 });
 
 function enviarInvitacion() {
