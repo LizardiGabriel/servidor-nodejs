@@ -23,7 +23,7 @@ function returnHTML() {
             </svg>
         </div>
     </div>
-    <div id="sidebar__list" class="sidebar__menu" style="grid-template-columns:repeat(3, 6rem)">
+    <div id="sidebar__list" class="sidebar__menu"  style="grid-template-columns:repeat(2, 6rem)">
     
         
         <a href="/invitado/home/pendientes.html" >
