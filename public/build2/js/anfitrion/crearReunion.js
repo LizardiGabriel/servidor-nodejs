@@ -1,7 +1,49 @@
+let url = window.location.href;
+let urlParams = new URLSearchParams(window.location.search);
+console.log(urlParams);
+const idReunion = parseInt(urlParams.get('idReunion'));
+const horaInicio = urlParams.get('hora_i');
+const horaFin = urlParams.get('hora_f');
 
-window.onload = function () {
-    obtenerSalas();
+
+window.onload = async  function () {
+    await obtenerSalas();   
+    if(!isNaN(idReunion)){
+        console.log("Se requieren cargar los datos");
+        cargarDatosReunion(idReunion)
+    }        
 }
+
+function cargarDatosReunion(idReunion){
+    fetch(`/anfitrion/reuniones/detalles/${idReunion}`)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);    
+        document.getElementById("titleID").value=data.titulo_reunion;
+        document.getElementById("titleID").disabled=true;
+        document.getElementById("descID").value=data.descripcion_reunion;
+        document.getElementById("descID").disabled=true;
+        document.getElementById("time1ID").value=horaInicio;
+        document.getElementById("time1ID").disabled=true;
+        document.getElementById("time2ID").value=horaFin;
+        document.getElementById("time2ID").disabled=true;
+        var select = document.getElementById('nombreSala');
+        var opciones = select.options;
+      
+        for (var i = 0; i < opciones.length; i++) {
+          if (opciones[i].text === data.nombreSala) {
+            select.selectedIndex = i;
+            break;
+          }
+        }
+        select.disabled=true;
+
+    })
+    .catch(error => {
+        console.log(error);
+    })
+}
+
 function agregarFecha() {
     console.log('agregarFecha');
     const tablaFechasRepetir = document.getElementById('tablaFechasRepetir');
@@ -82,7 +124,7 @@ function crearReunion() {
         });
 }
 
-function obtenerSalas() {
+async function obtenerSalas() {
     fetch('salas')
         .then(response => response.json())
         .then(salas => {
@@ -106,3 +148,22 @@ const botonAddFecha = document.getElementById("btnAgregarFecha");
 botonAddFecha.addEventListener("click", (evt)=>{
         evt.preventDefault();
 })
+
+//Funciones auxiliares 
+function convertirHora12a24(hora12) {
+        const hora = hora12.slice(0, -2);  // Quitar los últimos dos caracteres (PM o AM)
+        const modificador = hora12.slice(-2);  // Extraer AM o PM
+    
+        let [horas, minutos] = hora.split(':');
+    
+        horas = parseInt(horas, 10);
+    
+        if (modificador === 'PM' && horas !== 12) {
+            horas += 12;
+        } else if (modificador === 'AM' && horas === 12) {
+            horas = 0;
+        }
+    
+        const hora24 = `${horas.toString().padStart(2, '0')}:${minutos}`;
+        return hora24;
+}
