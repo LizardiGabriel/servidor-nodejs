@@ -79,19 +79,8 @@ function cargarDatos() {
             fila.innerHTML = `
                 <td>${nombreInvitado}</td>
                 <td>${correoElectronico}</td>
-                <td style="text-align: center">
-                    <button style="            
-                    background-color: #89b6b1;
-                    color: #000000;
-                    border: none;
-                    padding: 10px 20px;
-                    text-align: center;
-                    text-decoration: none;
-                    font-size: 16px;
-                    border-radius: 10px;
-                    cursor: pointer;
-                    transition: background-color 0.3s ease;
-                    " onclick="eliminarInvitado(${id_invitado})">Eliminar</button>
+                <td class="acciones">
+                    <button class="btn btn-sm eliminar" onclick="eliminarInvitado(${id_invitado})"><img src="../../img/icons/ico-trash.svg" alt="Eliminar"></button>
                 </td>
             `;
         

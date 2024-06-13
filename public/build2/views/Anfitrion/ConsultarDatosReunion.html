@@ -7,51 +7,9 @@
     <title>BeeMeet - Detalles Reunión</title>
     <link rel="stylesheet" href="../../css/app.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        .btn-regresar {
-            background-color: #4ca0a3;
-            /* Color de fondo del botón */
-            color: #000000;
-            /* Color del texto */
-            border: none;
-            /* Sin borde */
-            padding: 10px 20px;
-            /* Espaciado interno */
-            text-align: center;
-            /* Alineación del texto */
-            text-decoration: none;
-            /* Sin subrayado */
-            display: inline-block;
-            /* Mostrar en línea */
-            font-size: 16px;
-            /* Tamaño de la fuente */
-            border-radius: 10px;
-            /* Bordes redondeados */
-            cursor: pointer;
-            /* Cambia el cursor al pasar sobre el botón */
-            transition: background-color 0.3s ease;
-            /* Transición suave para el cambio de color */
-        }
-
-        .btn-regresar:hover {
-            background-color: #4f7374;
-            /* Color de fondo del botón al pasar el cursor */
-            color: #ffffff;
-            /* Color del texto al pasar el cursor */
-        }
-
-        .btn-regresar:focus {
-            outline: none;
-            /* Sin contorno al enfocar */
-            box-shadow: 0 0 0 3px rgba(135, 178, 164, 0.5);
-            /* Sombra para indicar el foco */
-        }
-
-        .btn-regresar:active {
-            background-color: #4a8d8f;
-            /* Color de fondo del botón al hacer clic */
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -59,57 +17,69 @@
 
     <main class="contenidoPrincipal">
         <div class="consultarDetallesReunion">
-            <h1 class="consultar_titulo title-example text-center">Consultar Detalles de Reunión</h1>
-            <div class="botones">
-                <button id="reagendar" class="reagendar_btn">Reagendar reunión</button>
-                <button id="aumentar30" class="reagendar30m_btn">+30 minutos</button>
-                <button id="aumentar60" class="reagendar1h_btn">+1 hora</button>
-                <button class="regresar_btn">Cancelar reunion</button>
-            </div>
             <div class="Detalle paragraph-example">
+                <h1 class="consultar_titulo title-example text-center">Detalles de reunión</h1>
+                <div class="botones">
+                <button id="reagendar" class="reagendar_btn">Reagendar reunión</button>
+                    <button id="aumentar30" class="reagendar30m_btn">+30 minutos</button>
+                    <button id="aumentar60" class="reagendar1h_btn">+1 hora</button>
+                    <button class="cancelar_btn">Cancelar reunión</button>
+                </div>
                 <!--DETALLES DE REUNIÓN-->
-                <form class="DetalleReunion">
-                    <div class="_idReu">
-                        <label for="reunionId">Reunión:</label>
-                        <input type="text" id="reunionId" value="ID_Reu" readonly disabled>
+                <form class="DetalleReunion row g-3">
+                    <div class="col-md-4">
+                        <label for="reunionId">Número de reunión:</label>
+                        <input type="text" class="Ninput" id="reunionId" value="ID_Reu" readonly disabled>
                     </div>
-                    <div class="_tituloReu">
+                    <div class="col-md-4">
                         <label for="reunionTitulo">Título:</label>
-                        <input type="text" id="reunionTitulo" value="Negociación con Cliente"
-                            readonly disabled>
+                        <input type="text" class="Ninput" id="reunionTitulo" value="Negociación con Cliente" readonly
+                            disabled>
                     </div>
-                    <div class="_fecha">
-                        <label for="reunionFecha">Fecha:</label>
-                        <input type="text" id="reunionFecha" value="20-02-2024" readonly disabled>
-                    </div>
-                    <div class="_horario">
-                        <label for="horario">Horario:</label>
-                        <input type="text" id="horarioInicio" value="10:30 AM" readonly disabled>
-                        <label class="guion">-</label>
-                        <input type="text" id="horarioFin" value="12:00 PM" readonly disabled>
-
-                    </div>
-                    <div class="_nombreSala">
+                    <div class="col-md-4">
                         <label for="salaL">Sala:</label>
-                        <input type="text" id="sala" value="Sala de juntas" readonly disabled>
+                        <input type="text" class="Ninput" id="sala" value="Sala de juntas" readonly disabled>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="reunionFecha">Fecha:</label>
+                        <input type="text" class="Ninput" id="reunionFecha" value="20-02-2024" readonly disabled>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="horario">Hora de inicio:</label>
+                        <input type="text" class="Ninput" id="horarioInicio" value="10:30 AM" readonly disabled>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="horario">Hora de fin:</label>
+                        <input type="text" class="Ninput" id="horarioFin" value="12:00 PM" readonly disabled>
                     </div>
                 </form>
-
-                <button id="agregarInv">Agregar invitados</button>
-
+                <div class="boton">
+                    <button id="agregarInv" class="aggInvitado__btn">Agregar invitado</button>
+                </div>
+                <br>
                 <div id="formularioinv" style="display: none;">
-                    <h4><b>Formulario de Invitación</b></h4>
-                    <form id="">
-                        <label for="correos">Correo de invitación:</label><br>
-                        <input type="text" id="correoInv" name="correos" rows="4" cols="50"><br>
-
-                        <label for="acompanantes">numero de acompañantes:</label><br>
-                        <input type="number" id="acompanantesInv" name="acompanantes" required><br>
-
-                        <button type="button" id="botonAgregar" >Añadir</button>
+                    <form id="" class="agregarCorreo row g-3">
+                        <div class="col-md-4">
+                            <label for="correos" class="Nlabel">Correo electrónico:</label>
+                            <input type="text" class="Ninput" id="correoInv" name="correos" required>
+                            <div class="invalid-feedback">
+                                Ingrese su correo electrónico.
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="acompanantes" class="Nlabel">Número de acompañantes:</label>
+                            <input type="number" class="Ninput" id="acompanantesInv" name="acompanantes" required>
+                            <div class="invalid-feedback">
+                                Ingrese el número de acompañantes.
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="conboton">
+                                <button type= "button" id="botonAgregar" class="anadirbtn">Enviar</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
-
                 <!--DETALLES INVITADOS-->
                 <div class="__Tabla table-responsive paragraph-example">
                     <table class="tabla table table-hover table-bordered table-sm" id="Tabla">
@@ -125,10 +95,8 @@
                     </table>
                 </div>
             </div>
-
         </div>
     </main>
-
 
     <div id="footers"> </div>
 
