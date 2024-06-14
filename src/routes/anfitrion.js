@@ -7,7 +7,7 @@ const { getReunionesBD,
     getSalasBD, setNewReunionBD,
     getInvitadoByEmailBD, setNewInvitadoBD, setNewInvitacionBD,
     getReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD, getDetallesReunionByIdBD,getUsuarioByEmailBD,
-    updateHoraReunionBD,deleteInvitadoBD
+    updateHoraReunionBD,deleteInvitadoBD, getInvitacionBy_IdInvitado_IdReunionBD
 
 } = require('../tools/peticiones');
 
@@ -145,6 +145,19 @@ async function setInvitacion(req, res) {
     }
 
     const id_invitado = invitado.id_invitado;
+
+    // antes de enviar la invitacion, checar que el invitado no haya sido regsitrado a la misma reunion
+    // si ya ha sido registrado, no enviar la invitacion
+    const invitacion = await getInvitacionBy_IdInvitado_IdReunionBD(id_invitado, idReunion)
+
+    console.log('invitacion ya antes?: ', invitacion);
+
+    if(invitacion !== null){
+        res.json({ message: 'error', status: 400});
+        return;
+    }
+
+
     
     const setInvitacion = await setNewInvitacionBD(idReunion, id_invitado, acompanantesInv, 1);
     const reunion = await getDetallesReunionByIdBD(idReunion);

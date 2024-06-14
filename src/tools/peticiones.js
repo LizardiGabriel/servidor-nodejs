@@ -600,6 +600,39 @@ async function getReunionesConRepeticionByIdOfUserBD(id_usuario) {
     }
 }
 
+// la uso para seguridad xd
+async function getInvitacionesByIdReunionBD(id_reunion) {
+    console.log('Petición a la BD de getInvitacionesByIdReunion');
+    try {
+        const invitaciones = await prisma.invitacion.findMany({
+            where: {
+                id_reunion: Number(id_reunion),
+                //isConfirmed: 1
+            },
+            select: {
+                id_invitacion: true,
+                id_invitado: true,
+                qr_acceso: true,
+                habilitado: true,
+                numero_colados: true,
+                isConfirmed: true,
+                es_colado_invitado: true
+
+
+            }
+        });
+        if (invitaciones.length === 0) {
+            return null;
+        }
+
+        return invitaciones;
+    } catch (error) {
+        console.error('Error al obtener las invitaciones para la reunión:', error);
+        return json({ error: 'Error al obtener las invitaciones' });
+    }
+
+}
+
 async function setNewReunionBD(
     titulo_reunion, descripcion_reunion, fecha_reunion, hora_inicio_reunion,
     hora_fin_reunion, isRepetible, nombreSala, fechasRepetir, id_usuario) {
@@ -1309,6 +1342,8 @@ module.exports = {
     updateHoraReunionBD,
 
     getReunionesNuebasByIdBD,
+
+    getInvitacionesByIdReunionBD
 
 
 };

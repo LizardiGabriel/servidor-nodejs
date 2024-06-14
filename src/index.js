@@ -329,6 +329,19 @@ app.use('/anfitrion/catalogo/uploads', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, rutaArchivo));
 });
 
+app.use('/anfitrion/reuniones/uploads', (req, res) => {
+    // obtener la peticion actual
+    const rutaArchivo = '../public/build2/uploads' + req.path;
+    res.status(200).sendFile(path.join(__dirname, rutaArchivo));
+});
+
+app.use('/seguridad/uploads', (req, res) => {
+    // obtener la peticion actual
+    const rutaArchivo = '../public/build2/uploads' + req.path;
+    res.status(200).sendFile(path.join(__dirname, rutaArchivo));
+});
+
+
 app.get('/admin/test', (req, res) => {
   console.log('test');
   console.log(req.session);

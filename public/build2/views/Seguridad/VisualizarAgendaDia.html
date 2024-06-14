@@ -82,16 +82,14 @@
             console.log(reunion.id_inv);
 
             // Concatenar las fechas y horas de repeticiones
-            const fechasHoras = reunion.repeticiones.map(rep => {
-                return `${rep.fecha} de ${rep.hora_inicio} a ${rep.hora_fin}`;
-            }).join(", ");
+
 
             fila.innerHTML = `
                 <td class="accion">
                   <button class="btn btn-sm visualizar" data-id="${reunion.id_inv}" onclick="verDetallesInv(${reunion.id_inv})"><img src="../../img/icons/ico-view.svg"></button>
                 </td>
                 <td class="nombreI">${reunion.nombre_inv}</td>
-                <td class="horario">${fechasHoras}</td>
+                <td class="horario">${reunion.fecha_reunion}</td>
                 <td class="nombreA">${reunion.nombre_user} ${reunion.apellidoP_user} ${reunion.apellidoM_user}</td>
             `;
             tbody.appendChild(fila);
