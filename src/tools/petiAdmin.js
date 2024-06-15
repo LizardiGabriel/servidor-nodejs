@@ -176,7 +176,11 @@ async function obtenerDetallesInvitacionAnfiBD(idReunion, idInvitado) {
                 invitado: true,
                 Automovil: true,
                 dispositivo_electronico: true,
-                Colado: true
+                Colado: {
+                    include: {
+                        invitado: true
+                    }
+                }
             }
         });
 
@@ -186,11 +190,13 @@ async function obtenerDetallesInvitacionAnfiBD(idReunion, idInvitado) {
 
         const detallesInvitacion = {
             //nombre_completo_invitado: `${invitacion.invitado.nombre_invitado} ${invitacion.invitado.apellido_paterno_invitado} ${invitacion.invitado.apellido_materno_invitado}`,
+            idReunion: invitacion.id_reunion,
             nombre_invitado: invitacion.invitado.nombre_invitado,
             apellido_paterno_invitado: invitacion.invitado.apellido_paterno_invitado,
             apellido_materno_invitado: invitacion.invitado.apellido_materno_invitado,
             email_invitado: invitacion.invitado.email_invitado,
             empresa_invitado: invitacion.invitado.empresa_invitado,
+            foto_invitado: invitacion.invitado.foto_invitado,
             lista_autos: invitacion.Automovil.map(auto => ({
                 color: auto.color_automovil,
                 matricula: auto.matricula_automovil,
@@ -206,18 +212,23 @@ async function obtenerDetallesInvitacionAnfiBD(idReunion, idInvitado) {
         };
 
 
-        /*
+
         if (invitacion.es_colado_invitado === 1) {
+            // console.log('colados de invitado:', invitacion.Colado);
+
             detallesInvitacion.lista_acompanantes = invitacion.Colado.map(colado => ({
-                //nombre: `${colado.invitado.nombre_invitado} ${colado.invitado.apellido_paterno_invitado} ${colado.invitado.apellido_materno_invitado}`
+                isConfirmed: colado.isConfirmed,
+                idInvitado: colado.id_invitado,
+
                 nombre: colado.invitado.nombre_invitado,
                 apellidoPat: colado.invitado.apellido_paterno_invitado,
                 apellidoMat: colado.invitado.apellido_materno_invitado,
                 correo: colado.invitado.email_invitado
+
             }));
+
         }
-        
-         */
+
 
         return detallesInvitacion;
 

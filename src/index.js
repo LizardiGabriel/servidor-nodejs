@@ -456,7 +456,8 @@ app.use('/invitado', async (req, res, next) => {
         console.log('jwt: ' + req.session.jwt);
         let rol = getRol(req.session.jwt);
         if (rol !== 4) {
-            return res.status(401).json({error: 'Unauthorized ppp: ' + rol, status: 401});
+            return res.redirect('/home/login.html');
+            //return res.status(401).json({error: 'Unauthorized ppp: ' + rol, status: 401});
         }
         if (rol === 4) {
             next();

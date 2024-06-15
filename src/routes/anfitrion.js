@@ -834,8 +834,8 @@ async function getInfo_idInv_idReu(req,res){
     console.log('mensaje --> getInfo_idInv_idReu');
     console.log('ZZZZZZZZZ >>> id_reunion: ', idReunion, 'id_invitado: ', idInvitado);
     const invitacion = await obtenerDetallesInvitacionAnfiBD(idReunion, idInvitado);
-    console.log(invitacion);
-    res.json("ok");
+
+    res.status(200).json(invitacion);
 }
 
 module.exports = {
