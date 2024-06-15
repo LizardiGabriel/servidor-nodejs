@@ -97,6 +97,50 @@
 
     <div id="footers"></div>
 
+    <script>
+
+
+
+        window.onload = function() {
+            getInfoInvitacion();
+
+        }
+
+
+
+        function getInfoInvitacion(){
+            let idReunion = 0;
+            let idInvitado = 0;
+            let url = new URLSearchParams(location.search);
+            idReunion = url.get('idReunion');
+            idInvitado = url.get('idInvitado');
+            alert("idReunion: " + idReunion + ", idInvitado:" + idInvitado);
+
+            // fetch para obtener la información del usuario y la info que va a traer
+            const data = {
+                idReunion: idReunion,
+                idInvitado: idInvitado
+            }
+            fetch("/anfitrion/reuniones/invitadoInf", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                //llenar los campos con la info que trae
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+
+
+
+        }
+    </script>
     <script src="../../js/anfitrion/headers.js"></script>
     <script src="/build/js/header.js"></script>
     <script src="../../js/sidebar.js"></script>

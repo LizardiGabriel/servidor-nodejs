@@ -11,7 +11,7 @@ const { getReunionesBD,
 
 } = require('../tools/peticiones');
 
-const { getReunionAdminByIdBD } = require('../tools/petiAdmin');
+const { getReunionAdminByIdBD, getReunionAnfitrionByIdBD, obtenerDetallesInvitacionAnfiBD} = require('../tools/petiAdmin');
 
 const jwt = require("jsonwebtoken");
 
@@ -210,7 +210,7 @@ async function setInvitacion(req, res) {
 async function getReunionById(req, res) {
     console.log('mensaje --> getReunionById');
     const { idReunion } = req.params;
-    const reunion = await getReunionAdminByIdBD(idReunion);
+    const reunion = await getReunionAnfitrionByIdBD(idReunion);
     if (reunion !== null) {
         res.json(reunion);
     } else {
@@ -276,6 +276,16 @@ async function deleteInvitado(req,res){
     res.status(200).json({ message: 'Invitado eliminado correctamente' });
 }
 
+// getInfo_idInv_idReu
+async function getInfo_idInv_idReu(req,res){
+    const {idReunion,idInvitado} = req.body;
+    console.log('mensaje --> getInfo_idInv_idReu');
+    console.log('ZZZZZZZZZ >>> id_reunion: ', idReunion, 'id_invitado: ', idInvitado);
+    const invitacion = await obtenerDetallesInvitacionAnfiBD(idReunion, idInvitado);
+    console.log(invitacion);
+    res.json("ok");
+}
+
 module.exports = {
     logout,
     getReunionesAnfitrion,
@@ -288,5 +298,6 @@ module.exports = {
     getUsuarioByEmail,
     updateUsuario,
     updateHoraReunion,
-    deleteInvitado
+    deleteInvitado,
+    getInfo_idInv_idReu
 };

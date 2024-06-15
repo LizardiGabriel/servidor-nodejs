@@ -355,15 +355,18 @@ app.use('/anfitrion', (req, res, next) => {
     if (req.session) {
         let rol = getRol(req.session.jwt);
         if (rol !== 2) {
-            return res.status(401).json({error: 'Unauthorized', status: 401});
+            return res.redirect('/home/login.html');
+            //return res.status(401).json({error: 'Unauthorized', status: 401});
         }
         if (rol === 2) {
             next();
         } else {
-            res.status(401).send('Unauthorized');
+            return res.redirect('/home/login.html');
+            //res.status(401).send('Unauthorized');
         }
     }else
-        return res.status(401).json({error: 'Unauthorized', status: 401});
+        return res.redirect('/home/login.html');
+        //return res.status(401).json({error: 'Unauthorized', status: 401});
 });
 app.get('/anfitrion/getFotoPerfil', admin.getFotoAdmin);
 app.get('/anfitrion/logout', anfitrion.logout);
@@ -398,6 +401,10 @@ app.use('/anfitrion/reuniones/ConsultarDatos.html', express.static('./public/bui
 app.get('/anfitrion/reuniones/detalles/:idReunion', anfitrion.getReunionById);
 app.put('/anfitrion/reuniones/hora', anfitrion.updateHoraReunion);
 app.post('/anfitrion/reuniones/delInvitado', anfitrion.deleteInvitado);
+
+app.use('/anfitrion/reuniones/ConsultarDatosInvitado.html', express.static('./public/build2/views/Anfitrion/ConsultarDatosInvitado.html'));
+app.post('/anfitrion/reuniones/invitadoInf', anfitrion.getInfo_idInv_idReu);
+
 
 
 
