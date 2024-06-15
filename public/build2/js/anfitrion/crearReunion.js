@@ -132,10 +132,13 @@ async function obtenerSalas() {
             const selectSala = document.getElementById('nombreSala');
             selectSala.innerHTML = '';
             salas.forEach(sala => {
-                const option = document.createElement('option');
-                option.value = sala.id_sala;
-                option.textContent = sala.nombre_sala;
-                selectSala.appendChild(option);
+                if(sala.estatus_sala === "Disponible"){
+                    const option = document.createElement('option');
+                    option.value = sala.id_sala;
+                    option.textContent = sala.nombre_sala;
+                    selectSala.appendChild(option);
+                }
+
             });
         })
         .catch(error => {
