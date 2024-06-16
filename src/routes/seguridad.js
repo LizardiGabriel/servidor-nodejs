@@ -1,10 +1,11 @@
+const express = require('express');
 const { log } = require('console');
 const { getReunionesBD, getUsuarioByIdBD,getReunionByIdBD,getSalaByIdBD,getInvitacionByIdBD,getInvitadoByIdBD,getInvitadoByNameBD,getInvitacionesByIdInv, getDetallesReunionByIdBD,
     getInvitacionesByIdReunionBD
 } = require('../tools/peticiones');
 const { response } = require('express');
 const { json } = require('body-parser');
-const {obtenerDetallesInvitacionAnfiBD, getInvitacionByIdSeguridadBD, obtenerDetallesInvitacionSeguridadBD} = require("../tools/petiAdmin");
+const {registrarHoraEnBD,registrarAutomovilEnBD,registrarDispositivoEnBD,obtenerDetallesInvitacionAnfiBD, getInvitacionByIdSeguridadBD, obtenerDetallesInvitacionSeguridadBD} = require("../tools/petiAdmin");
 
 
 async function logout(req, res) {
@@ -189,6 +190,59 @@ async function getSeguridadInfo_idInv_idReu(req,res){
 }
 
 
+async function registrarHora(req, res) {
+    const { idInvitacion, hora, tipo } = req.body;
+    try {
+        const invitacionActualizada = await registrarHoraEnBD(idInvitacion, hora, tipo);
+        if (invitacionActualizada) {
+            res.json({ status: 'success' });
+        } else {
+            res.status(404).json({ status: 'error', message: 'Invitación no encontrada' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: 'error' });
+    }
+}
+
+
+
+
+/*
+async function registrarDispositivo(req, res) {
+    const { idInvitacion, idDispositivo } = req.body;
+    try {
+        const accesoDispositivo = await registrarDispositivoEnBD(idInvitacion, idDispositivo);
+        if (accesoDispositivo) {
+            res.json({ status: 'success' });
+        } else {
+            res.status(500).json({ status: 'error', message: 'No se pudo registrar el dispositivo' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: 'error' });
+    }
+}
+
+
+
+async function registrarAutomovil(req, res) {
+    const { idInvitacion, idAutomovil } = req.body;
+    try {
+        const accesoAutomovil = await registrarAutomovilEnBD(idInvitacion, idAutomovil);
+        if (accesoAutomovil) {
+            res.json({ status: 'success' });
+        } else {
+            res.status(500).json({ status: 'error', message: 'No se pudo registrar el automóvil' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: 'error' });
+    }
+}
+
+*/
+
 
 
 //Visualizar agenda
@@ -201,5 +255,8 @@ module.exports = {
     getReunionByNaveInv,
     getInvitadoById,
     getDetallesReunionByIdBD,
-    getSeguridadInfo_idInv_idReu
+    getSeguridadInfo_idInv_idReu,
+    registrarHora,
+    
+    
 };

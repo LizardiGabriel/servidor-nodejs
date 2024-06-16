@@ -448,7 +448,10 @@ app.use('/seguridad/verDatosInv.html', express.static('./public/build2/views/seg
 app.use('/seguridad/EditarDatosPersonales.html', express.static('./public/build2/views/seguridad/EditarDatosPersonales.html'));
 app.use('/seguridad/escanearQR.html', express.static('./public/build2/views/seguridad/scanearQr.html'));
 app.get('/seguridad/getFotoPerfil', admin.getFotoAdmin);
+app.post('/seguridad/registrarHora', seguridad.registrarHora);
 
+//app.post('/seguridad/registrarDispositivo', seguridad.registrarDispositivo);
+//app.post('/seguridad/registrarAutomovil', seguridad.registrarAutomovil);
 
 // lizardi
 app.post('/seguridad/reuniones/invitadoInf', seguridad.getSeguridadInfo_idInv_idReu);
