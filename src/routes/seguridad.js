@@ -4,6 +4,7 @@ const { getReunionesBD, getUsuarioByIdBD,getReunionByIdBD,getSalaByIdBD,getInvit
 } = require('../tools/peticiones');
 const { response } = require('express');
 const { json } = require('body-parser');
+const {obtenerDetallesInvitacionAnfiBD, getInvitacionByIdSeguridadBD, obtenerDetallesInvitacionSeguridadBD} = require("../tools/petiAdmin");
 
 
 async function logout(req, res) {
@@ -52,6 +53,7 @@ async function getReunionesAll(req, res) {
                         const invitado = await getInvitadoByIdBD(invitacion.id_invitado);
                         console.log('invitado--->', invitado.id_invitado);
                         const respuesta = {
+                            isConfirmed: invitacion.isConfirmed,
                             id_reunion: reunion.id_reunion,
                             nombre_user: user.nombre_usuario,
                             apellidoP_user: user.apellido_paterno_usuario,
@@ -167,6 +169,17 @@ async function getReunionByNaveInv(req,res) {
         }
     }
 
+async function getSeguridadInfo_idInv_idReu(req,res){
+    const {idReunion,idInvitado} = req.body;
+    console.log('mensaje --> getInfo_idInv_idReu');
+    console.log('ZZZZZZZZZ >>> id_reunion: ', idReunion, 'id_invitado: ', idInvitado);
+    const id_invitacion = await getInvitacionByIdSeguridadBD(idReunion, idInvitado);
+    const invitacion = await obtenerDetallesInvitacionSeguridadBD(id_invitacion);
+
+    res.status(200).json(invitacion);
+}
+
+
 
 
 //Visualizar agenda
@@ -179,4 +192,5 @@ module.exports = {
     getReunionByNaveInv,
     getInvitadoById,
     getDetallesReunionByIdBD,
+    getSeguridadInfo_idInv_idReu
 };
