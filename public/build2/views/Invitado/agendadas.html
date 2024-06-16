@@ -66,7 +66,7 @@
                         <td>${reunion.fechasRepeticion[0].hora_inicio_repeticion} - ${reunion.fechasRepeticion[0].hora_fin_repeticion}
                         </td>
                         <td>${reunion.nombreUsuario}</td>
-                        <td><button class="btn btn-primary" onclick="recuperarQR(${reunion.id})">Recuperar</button></td>
+                        <td><button class="btn btn-primary" onclick="recuperarQR(${reunion.invitaciones[0].id_invitacion},${reunion.id_reunion})">Recuperar</button></td>
                     `;
 
                     tbody.appendChild(fila);
@@ -77,8 +77,27 @@
             });
     }
 //Funcion para recuperar el QR
-    function recuperarQR(id) {
-        
+    function recuperarQR(id_invitacion,id_reunion) {
+      let data={
+        id_invitacion:id_invitacion,
+        id_reunion: id_reunion
+      }
+      console.log(data);
+// Realiza la solicitud fetch a la URL especificada con las opciones configuradas
+    fetch('/invitado/recuperarQr', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json()) // Procesa la respuesta para convertirla en JSON
+    .then(data => {
+        console.log('Respuesta recibida:', data); // Maneja los datos recibidos
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error); // Maneja posibles errores
+    });
     }
 </script>
 

@@ -3,7 +3,7 @@ const smtpTransport = require('nodemailer-smtp-transport');
 
 
 
-async function main(htmlContent, core) {
+async function main(htmlContent, core,asunto) {
     if (!core || typeof core !== 'string') {
         throw new Error('Invalid recipient email address');
     }
@@ -20,7 +20,7 @@ async function main(htmlContent, core) {
     const mailOptions = {
         from: 'beemeet7@gmail.com',
         to: core,
-        subject: 'BeeCoders-Invitación a reunión',
+        subject: asunto,
         html: htmlContent
     };
 
