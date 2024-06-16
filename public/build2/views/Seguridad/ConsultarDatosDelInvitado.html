@@ -143,15 +143,19 @@
         window.onload = function() {
             let idReunion = 0;
             let idInvitado = 0;
+
+            let idInvitacion = 0;
             let url = new URLSearchParams(location.search);
 
             idReunion = url.get('idReunion');
             idInvitado = url.get('idInvitado');
-            alert("idReunion: " + idReunion + ", idInvitado:" + idInvitado);
+            idInvitacion = url.get('idInvitacion');
+
 
             const data = {
                 idReunion: idReunion,
-                idInvitado: idInvitado
+                idInvitado: idInvitado,
+                idInvitacion: idInvitacion
             }
             fetch("/seguridad/reuniones/invitadoInf", {
                 method: "POST",

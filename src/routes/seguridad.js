@@ -170,10 +170,19 @@ async function getReunionByNaveInv(req,res) {
     }
 
 async function getSeguridadInfo_idInv_idReu(req,res){
-    const {idReunion,idInvitado} = req.body;
+    const {idReunion,idInvitado, idInvitacion} = req.body;
     console.log('mensaje --> getInfo_idInv_idReu');
-    console.log('ZZZZZZZZZ >>> id_reunion: ', idReunion, 'id_invitado: ', idInvitado);
-    const id_invitacion = await getInvitacionByIdSeguridadBD(idReunion, idInvitado);
+    console.log('ZZZZZZZZZ >>> id_reunion: ', idReunion, 'id_invitado: ', idInvitado, 'id_invitacion: ', idInvitacion);
+
+    let id_invitacion = 0;
+
+    if (idInvitacion === null){
+        id_invitacion = await getInvitacionByIdSeguridadBD(idReunion, idInvitado);
+    }else{
+        id_invitacion = idInvitacion;
+    }
+
+
     const invitacion = await obtenerDetallesInvitacionSeguridadBD(id_invitacion);
 
     res.status(200).json(invitacion);

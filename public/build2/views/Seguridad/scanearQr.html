@@ -48,9 +48,13 @@
                     ++countResults;
                     lastResult = decodedText;
 
-                    alert("QR: " + decodedText);
                     // Corregido el uso de comillas para la interpolación de cadenas
                     myqr.innerHTML = `You scanned ${countResults} : ${decodedText}`;
+
+                    // convertir el decodedText a un objeto JSON
+                    var obj = JSON.parse(decodedText);
+                    console.log(obj.idInvitacion);
+                    window.location.href = `verDatosInv.html?idInvitacion=${obj.idInvitacion}`;
                 }
             }
 
