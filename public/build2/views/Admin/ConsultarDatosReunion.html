@@ -16,67 +16,69 @@
 <body>
     <div id="headers"> </div>
 
-  <main class="contenidoPrincipal">
-    <div class="consultarDetallesReunion">
-      <h1 class="consultar_titulo title-example text-center">Consultar Detalles de Reunión</h1>
-      <div class="botones">
-        <button class="reagendar_btn" onclick="window.location.href='/admin/catalogo/GestionarReuniones.html'">Regresar</button>
-      </div>
-      <div class="Detalle paragraph-example">
-        <!--DETALLES DE REUNIÓN-->
-            <form class="DetalleReunion">
-                <div class="_idReu">
-                    <label for="reunionId">Reunión:</label>
-                    <input type="text" id="idReunion" value="ID_Reu" readonly disabled>
+    <main class="contenidoPrincipal">
+        <div class="consultarDatosReunion">
+            <div class="Detalle paragraph-example">
+                <h1 class="consultar_titulo title-example text-center">Detalles de la reunión</h1>
+                <div class="botones">
+                    <button class="regresar_btn"
+                        onclick="window.location.href='/admin/catalogo/GestionarReuniones.html'">Regresar</button>
                 </div>
-                <div class="_tituloReu">
-                    <label for="reunionTitulo">Título:</label>
-                    <input type="text" id="nombreReunion" value="Negociación con Cliente"
-                        readonly disabled>
+                <form class="DetalleReunion row g-3">
+                    <div class="col-md-6">
+                        <label for="reunionId">Reunión:</label>
+                        <input type="text" class="Ninput" id="idReunion" value="ID_Reu" readonly disabled>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="reunionTitulo">Título:</label>
+                        <input type="text" class="Ninput" id="nombreReunion" value="Negociación con Cliente" readonly
+                            disabled>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="salaL">Sala:</label>
+                        <input type="text" class="Ninput" id="nombreSala" value="Sala de juntas" readonly disabled>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="salaNumero">Número:</label>
+                        <input type="text" class="Ninput" id="numeroSala" value="42" readonly disabled>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="salaPiso">Piso:</label>
+                        <input type="text" class="Ninput" id="nombreSala" value="Sala de juntas" readonly disabled>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="reunionFecha">Fecha:</label>
+                        <input type="text" class="Ninput" id="fechaInicio" value="20-02-2024" readonly disabled>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="horario">Hora de inicio:</label>
+                        <input type="text" class="Ninput" id="horaInicio" value="10:30 AM" readonly disabled>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="horario">Hora de fin:</label>
+                        <input type="text" class="Ninput" id="horaFin" value="12:00 PM" readonly disabled>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="descripcion">Descripcion:</label>
+                        <input type="text" class="Ninput" id="descripcionReunion" readonly disabled>
+                    </div>
+                </form>
+                <!--DETALLES INVITADOS-->
+                <div class="__Tabla table-responsive paragraph-example">
+                    <table class="tabla table table-hover table-bordered table-sm" id="Tabla">
+                        <thead class="tabla__cabecera">
+                            <tr>
+                                <th scope="col" data-sort="nombreInvi" class="cabecera">Nombre del invitado</th>
+                                <th scope="col" data-sort="correo" class="cabecera">Correo electrónico</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tabla__cuerpo">
+                        </tbody>
+                    </table>
                 </div>
-                <div class="_fecha">
-                    <label for="reunionFecha">Fecha:</label>
-                    <input type="text" id="fechaInicio" value="20-02-2024" readonly disabled>
-                </div>
-                <div class="_horario">
-                  <label for="horario">Horario:</label>
-                  <input type="text" id="horaInicio" value="10:30 AM" readonly disabled style="width: 5ch;">
-                  <label class="guion">-</label>
-                  <input type="text" id="horaFin" value="12:00 PM" readonly disabled style="width: 5ch;">
-              </div>
-                <div class="_nombreSala">
-                    <label for="salaL">Sala:</label>
-                    <input type="text" id="nombreSala" value="Sala de juntas" readonly disabled>
-                </div>
-                <div class="_numeroSala">
-                    <label for="salaNumero">Número:</label>
-                    <input type="text" id="numeroSala" value="42" readonly disabled>
-                </div>
-                <div class="_pisoSala">
-                    <label for="salaPiso">Piso:</label>
-                    <input type="text" id="salaPiso" value="2" readonly disabled>
-                </div>
-                <div class="_tituloReu" style="width: 100%;">
-                  <label for="descripcion">Descripcion:</label>
-                  <input type="text" id="descripcionReunion" readonly disabled style="display: inline-block; width: 100%;">
-                </div>
-            </form>
-            <!--DETALLES INVITADOS-->
-            <div class="__Tabla table-responsive paragraph-example">
-                <table class="tabla table table-hover table-bordered table-sm" id="Tabla">
-                    <thead class="tabla__cabecera">
-                        <tr>
-                            <th scope="col" data-sort="nombreInvi" class="cabecera">Nombre del invitado</th>
-                            <th scope="col" data-sort="correo" class="cabecera">Correo Electrónico</th>
-                        </tr>
-                    </thead>
-                    <tbody class="tabla__cuerpo">
-                    </tbody>
-                </table>
             </div>
         </div>
-    </div>
-  </main>
+    </main>
 
     <div id="footers"> </div>
 
