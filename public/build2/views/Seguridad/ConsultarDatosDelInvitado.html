@@ -13,7 +13,7 @@
 </head>
 
 <body>
-  <div id="headers"></div>
+    <div id="headers"></div>
 
     <main class="contenidoPrincipal">
         <div class="HeroInvitado">
@@ -30,15 +30,15 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label HeroInvitadolabel">Invitado:</label>
                             <div class="col-sm-9">
-                                <input id="nombre_invitado" class="form-control HeroInvitadoinput" type="text" value="José Manuel Perez"
-                                    disabled>
+                                <input id="nombre_invitado" class="form-control HeroInvitadoinput" type="text"
+                                    value="José Manuel Perez" disabled>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label HeroInvitadolabel">Anfitrión:</label>
                             <div class="col-sm-9">
-                                <input id="nombre_anfitrion" class="form-control HeroInvitadoinput" type="text" value="Nombre Anfitrión"
-                                    disabled>
+                                <input id="nombre_anfitrion" class="form-control HeroInvitadoinput" type="text"
+                                    value="Nombre Anfitrión" disabled>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -51,17 +51,20 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label HeroInvitadolabel">Identificación a presentar:</label>
                             <div class="col-sm-9">
-                                <input id="identificacion_invitado" class="form-control HeroInvitadoinput" type="text" value="INE" disabled>
+                                <input id="identificacion_invitado" class="form-control HeroInvitadoinput" type="text"
+                                    value="INE" disabled>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label HeroInvitadolabel">Número de piso:</label>
                             <div class="col-sm-3">
-                                <input id="piso_sala" class="form-control HeroInvitadoinput" type="number" value="21" disabled>
+                                <input id="piso_sala" class="form-control HeroInvitadoinput" type="number" value="21"
+                                    disabled>
                             </div>
                             <label class="col-sm-3 col-form-label HeroInvitadolabel">Número de sala:</label>
                             <div class="col-sm-3">
-                                <input id="numero_sala" class="form-control HeroInvitadoinput" type="number" value="6" disabled>
+                                <input id="numero_sala" class="form-control HeroInvitadoinput" type="number" value="6"
+                                    disabled>
                             </div>
                         </div>
                     </div>
@@ -78,14 +81,14 @@
                                 <th scope="col" data-sort="Eliminar" class="cabecera">Eliminar registro</th>
                             </tr>
                         </thead>
-                        <tbody class="tabla__cuerpo">
+                        <tbody class="tabla__cuerpo" id="tabla_acceso">
                         </tbody>
                     </table>
                 </div>
             </div>
             <div class="BotonesEyS">
-                <input type="submit" value="Entrada" class="BotonesEyS__Entrada">
-                <input type="submit" value="Salida" class="BotonesEyS__Salida">
+                <button id="btnEntrada" class="BotonesEyS__Entrada">Registrar Entrada</button>
+                <button id="btnSalida" class="BotonesEyS__Salida">Registrar Salida</button>
             </div>
             <div class="HeroDispositivos">
                 <h2>Dispositivos Electrónicos</h2>
@@ -115,13 +118,13 @@
                 <div class="__Tabla table-responsive paragraph-example">
                     <table class="tabla table table-hover table-bordered table-sm" id="TablaCarros">
                         <thead class="tabla__cabecera">
-                        <tr>
-                            <th scope="col" data-sort="Dispositivos" class="cabecera">Marca</th>
-                            <th scope="col" data-sort="NumSerie" class="cabecera">Modelo</th>
-                            <th scope="col" data-sort="NumSerie" class="cabecera">Matrícula</th>
-                            <th scope="col" data-sort="NumSerie" class="cabecera">Color</th>
-                            <th scope="col" data-sort="NumSerie" class="cabecera">Presente</th>
-                        </tr>
+                            <tr>
+                                <th scope="col" data-sort="Dispositivos" class="cabecera">Marca</th>
+                                <th scope="col" data-sort="NumSerie" class="cabecera">Modelo</th>
+                                <th scope="col" data-sort="NumSerie" class="cabecera">Matrícula</th>
+                                <th scope="col" data-sort="NumSerie" class="cabecera">Color</th>
+                                <th scope="col" data-sort="NumSerie" class="cabecera">Presente</th>
+                            </tr>
                         </thead>
                         <tbody class="tabla__cuerpo" id="tabla_carros">
                         </tbody>
@@ -140,10 +143,9 @@
 
 
     <script>
-        window.onload = function() {
+        window.onload = function () {
             let idReunion = 0;
             let idInvitado = 0;
-
             let idInvitacion = 0;
             let url = new URLSearchParams(location.search);
 
@@ -212,16 +214,97 @@
                     data.Automovil.forEach(carro => {
                         let fila = document.createElement("tr");
                         fila.innerHTML = `
-                            <td>${carro.marca_automovil}</td>
-                            <td>${carro.modelo_automovil}</td>
-                            <td>${carro.matricula_automovil}</td>
-                            <td>${carro.color_automovil}</td>
-                            <td><input type="checkbox" id="auto_${carro.id_automovil}" value="${carro.id_automovil}"></td>
-                        `;
+                        <td>${carro.marca_automovil}</td>
+                        <td>${carro.modelo_automovil}</td>
+                        <td>${carro.matricula_automovil}</td>
+                        <td>${carro.color_automovil}</td>
+                        <td><input type="checkbox" id="auto_${carro.id_automovil}" value="${carro.id_automovil}"></td>
+                    `;
                         tablaAutos.appendChild(fila);
                     });
+                    
 
+                    // Llenar la tabla de accesos
+                    const tablaAcceso = document.getElementById("tabla_acceso");
+                    data.acceso.forEach(acceso => {
+                        const row = tablaAcceso.insertRow();
+                        row.insertCell(0).textContent = acceso.hora_entrada;
+                        row.insertCell(1).textContent = acceso.hora_salida;
+                        const deleteCell = row.insertCell(2);
+                        const deleteButton = document.createElement("button");
+                        deleteButton.textContent = "Eliminar";
+                        deleteButton.onclick = function () {
+                            row.remove();
+                        };
+                        deleteCell.appendChild(deleteButton);
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
 
+                    // Botones de registrar entrada y salida
+                    document.getElementById("btnEntrada").onclick = function () {
+                        registrarHora("entrada");
+                    };
+
+                    document.getElementById("btnSalida").onclick = function () {
+                        registrarHora("salida");
+                    };
+
+                    /*// Registro de dispositivos y automóviles
+                    document.querySelectorAll('#tabla_dispositivos input[type="checkbox"]').forEach(function (checkbox) {
+                        checkbox.addEventListener('change', function () {
+                            if (this.checked) {
+                                registrarDispositivo(this.value);
+                            }
+                        });
+                    });
+
+                    document.querySelectorAll('#tabla_carros input[type="checkbox"]').forEach(function (checkbox) {
+                        checkbox.addEventListener('change', function () {
+                            if (this.checked) {
+                                registrarAutomovil(this.value);
+                            }
+                        });
+                    });*/
+                    function registrarHora(tipo) {
+                    const tablaAcceso = document.getElementById("tabla_acceso");
+                    const currentTime = new Date().toLocaleTimeString(); // Obtener la hora actual
+
+                    if (tipo === "entrada") {
+                        const row = tablaAcceso.insertRow();
+                        row.insertCell(0).textContent = currentTime; // Establecer la hora actual en Hora de Entrada
+                        row.insertCell(1).textContent = ""; // Celda vacía para Hora de Salida
+
+                        const deleteCell = row.insertCell(2);
+                        const deleteButton = document.createElement("button");
+                        deleteButton.textContent = "Eliminar";
+                        deleteButton.onclick = function () {
+                            row.remove();
+                        };
+                        deleteCell.appendChild(deleteButton);
+
+                    } else if (tipo === "salida") {
+                        const lastRow = tablaAcceso.rows[tablaAcceso.rows.length - 1];
+                        if (lastRow && lastRow.cells[1].textContent === "") { // Verificar si la última fila y su celda existen y si la celda de Hora de Salida está vacía
+                            lastRow.cells[1].textContent = currentTime; // Establecer la hora actual en Hora de Salida
+                        } else {
+                            const row = tablaAcceso.insertRow();
+                            row.insertCell(0).textContent = ""; // Celda vacía para Hora de Entrada
+                            row.insertCell(1).textContent = currentTime; // Establecer la hora actual en Hora de Salida
+
+                            const deleteCell = row.insertCell(2);
+                            const deleteButton = document.createElement("button");
+                            deleteButton.textContent = "Eliminar";
+                            deleteButton.onclick = function () {
+                                row.remove();
+                            };
+                            deleteCell.appendChild(deleteButton);
+                        }
+                    }
+                }
+                    
                     // con el id de la invitacion registrar en tabla acceso hora acceso con un fetch
 
                     // con el id de la invitacion registrar en tabla acceso hora salida con un fetch
@@ -232,13 +315,9 @@
 
                     // implementar la opcion de eliminar un registro de la tabla acceso
 
+        
 
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
-
-        }
+                }
 
 
     </script>

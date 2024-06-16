@@ -42,13 +42,13 @@ async function getReunionAdminByIdBD(id_reunion) {
         const invitacionesReunion = await prisma.invitacion.findMany({
             where: { id_reunion: reunion.id_reunion }
         });
-        
+
         var infoInvitados = [];
         for (let i = 0; i < invitacionesReunion.length; i++) {
             const invitadito = await getInvitadoByIdBD(invitacionesReunion[i].id_invitado);
             console.log('Invitado email: ', invitadito.email_invitado);
 
-          const nombreInvColados = {
+            const nombreInvColados = {
                 nombre_invitado: invitadito.nombre_invitado,
                 numero_colados: invitacionesReunion[i].numero_colados,
                 correo_invitado: invitadito.email_invitado
@@ -243,7 +243,7 @@ async function obtenerDetallesInvitacionAnfiBD(idReunion, idInvitado) {
     }
 }
 
-async function getIsConfirmedColado(idInvitado, id_reunion){
+async function getIsConfirmedColado(idInvitado, id_reunion) {
     try {
         console.log('Petición a la BD de getIsConfirmedColado');
         console.log('id_reunion:', id_reunion);
@@ -303,10 +303,10 @@ async function obtenerDetallesInvitacionSeguridadBD(id_invitacion) {
                 id_invitacion: Number(id_invitacion)
             },
             include: {
-                reunion: {
+                reunion: {  //reunion
                     include: {
-                        sala: true,
-                        usuario: {
+                        sala: true,  //sala
+                        usuario: {   //usuario
                             select: {
                                 nombre_usuario: true,
                                 apellido_paterno_usuario: true,
@@ -316,7 +316,7 @@ async function obtenerDetallesInvitacionSeguridadBD(id_invitacion) {
                         }
                     }
                 },
-                invitado: {
+                invitado: { //invitado
                     select: {
                         nombre_invitado: true,
                         apellido_paterno_invitado: true,
@@ -330,21 +330,32 @@ async function obtenerDetallesInvitacionSeguridadBD(id_invitacion) {
                         habilitado: true
                     }
                 },
-                Automovil: true,
-                Colado: {
-                    include: {
-                        invitado: true
+                dispositivo_electronico:{
+                    select:{
+                        no_serie_dispositivo_electronico: true,
+                        modelo_dispositivo_electronico: true,
+                        marca_dispositivo_electronico: true
                     }
                 },
-                dispositivo_electronico: true,
-                Acceso: {
-                    include: {
-                        acceso_dispositivo_electronico: true
+                Automovil: {
+                    select: {
+                        color_automovil: true,
+                        marca_automovil: true,
+                        matricula_automovil: true,
+                        modelo_automovil: true
                     }
-
-                }
+                },
+                Colado: {
+                    select:{
+                        id_invitado: true,
+                        isConfirmed: true,
+                        email_colado: true,
+                    }
+                },
             }
-        });
+           
+                
+            });
 
         if (!invitacion) {
             throw new Error('No se encontró la invitación con los IDs proporcionados');
@@ -408,7 +419,51 @@ async function obtenerDetallesInvitacionSeguridadBD(id_invitacion) {
     }
 }
 
+async function registrarHoraEnBD(idInvitacion, tipo) {
+    const fechaActual = new Date();
 
+    if (tipo === 'entrada') {
+        return await prisma.Acceso.create({
+            data: {
+                id_invitacion: parseInt(idInvitacion),
+                hora_entrada_acceso: fechaActual.toISOString(),
+                hora_salida_acceso: fechaActual.toISOString(),
+                nota_acceso: 'Entrada'
+            }
+        });
+    } else {
+        return await prisma.Acceso.create({
+            data: {
+                id_invitacion: parseInt(idInvitacion),
+                hora_salida_acceso: fechaActual.toISOString(),
+                hora_entrada_acceso: fechaActual.toISOString(),
+                nota_acceso: 'Salida'
+            }
+        });
+    }
+}
+
+/*
+async function registrarDispositivoEnBD(idInvitacion, idDispositivo) {
+    return await prisma.acceso_dispositivo.updateMany({
+        data: {
+            id_invitacion: parseInt(idInvitacion),
+            id_dispositivo_electronico: parseInt(idDispositivo)
+        }
+    });
+}
+
+
+async function registrarAutomovilEnBD(idInvitacion, idAutomovil) {
+    return await prisma.acceso_automovil.updateMany({
+        data: {
+            id_invitacion: parseInt(idInvitacion),
+            id_automovil: parseInt(idAutomovil),
+            checka: true
+        }
+    });
+}
+*/
 
 
 module.exports = {
@@ -416,6 +471,10 @@ module.exports = {
     getReunionAnfitrionByIdBD,
     obtenerDetallesInvitacionAnfiBD,
     getInvitacionByIdSeguridadBD,
-    obtenerDetallesInvitacionSeguridadBD
+    obtenerDetallesInvitacionSeguridadBD,
+    registrarHoraEnBD,
+    
+
+    
 };
 
