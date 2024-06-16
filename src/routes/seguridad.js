@@ -1,7 +1,10 @@
 const { log } = require('console');
-const { getReunionesBD, getUsuarioByIdBD,getReunionByIdBD,getSalaByIdBD,getInvitacionByIdBD,getInvitadoByIdBD,getInvitadoByNameBD,getInvitacionesByIdInv, getDetallesReunionByIdBD} = require('../tools/peticiones');
+const { getReunionesBD, getUsuarioByIdBD,getReunionByIdBD,getSalaByIdBD,getInvitacionByIdBD,getInvitadoByIdBD,getInvitadoByNameBD,getInvitacionesByIdInv, getDetallesReunionByIdBD,
+    getInvitacionesByIdReunionBD
+} = require('../tools/peticiones');
 const { response } = require('express');
 const { json } = require('body-parser');
+const {obtenerDetallesInvitacionAnfiBD, getInvitacionByIdSeguridadBD, obtenerDetallesInvitacionSeguridadBD} = require("../tools/petiAdmin");
 
 
 async function logout(req, res) {
@@ -23,15 +26,11 @@ async function getReunionesAll(req, res) {
     for (const reunion of reuniones) {
         try {
             console.log('reunion --->:' + reunion.id_reunion);
-            const user = await getUsuarioByIdBD(reunion.id_usuario);
-            const sala = await getSalaByIdBD(reunion.id_sala);
-            const invitacion = await getInvitacionByIdBD(reunion.id_reunion);
-            const invitado = await getInvitadoByIdBD(invitacion.id_invitado);
             const detallesReunion = await getDetallesReunionByIdBD(reunion.id_reunion);
-
             // Obtener repeticiones de la reunión
-            const repeticiones = detallesReunion.Repeticion || []; // Asegúrate de que esta es la estructura correcta donde se almacenan las repeticiones
-            
+            // Asegúrate de que esta es la estructura correcta donde se almacenan las repeticiones
+            const repeticiones = detallesReunion.Repeticion || [];
+
             // Mapear repeticiones a un formato legible
             const detallesRepeticion = repeticiones.map(rep => ({
                 fecha: rep.fecha_repeticion,
@@ -39,22 +38,57 @@ async function getReunionesAll(req, res) {
                 hora_fin: rep.hora_fin_repeticion
             }));
 
-            const respuesta = {
-                id_reunion: reunion.id_reunion,
-                nombre_user: user.nombre_usuario,
-                apellidoP_user: user.apellido_paterno_usuario,
-                apellidoM_user: user.apellido_materno_usuario,
-                nombre_sala: sala.nombre_sala,
-                titulo_reunion: reunion.titulo_reunion,
-                descripcion_reunion: reunion.descripcion_reunion,
-                id_inv: invitado.id_invitado,
-                nombre_inv: invitado.nombre_invitado,
-                apellido_inv: invitado.apellido_paterno_invitado,
-                repeticiones: detallesRepeticion, // Añadir detalles de las repeticiones
-                hora_llegada: detallesReunion.hora_llegada // Asegúrate de que este campo existe en detallesReunion
-            };
-            console.log('respuesta--->', respuesta);
-            reunionesInfo.push(respuesta);
+            for(const detalle of detallesRepeticion){
+
+                const user = await getUsuarioByIdBD(reunion.id_usuario);
+                const sala = await getSalaByIdBD(reunion.id_sala);
+                // corregir para obtener todas las invitaciones a la reunion
+                // const invitacion = await getInvitacionByIdBD(reunion.id_reunion);
+                // const invitado = await getInvitadoByIdBD(invitacion.id_invitado);
+
+                const invitaciones = await getInvitacionesByIdReunionBD(reunion.id_reunion);
+                for (const invitacion of invitaciones) {
+                    try {
+                        console.log('invitacion--->', invitacion.id_invitado);
+                        const invitado = await getInvitadoByIdBD(invitacion.id_invitado);
+                        console.log('invitado--->', invitado.id_invitado);
+                        const respuesta = {
+                            isConfirmed: invitacion.isConfirmed,
+                            id_reunion: reunion.id_reunion,
+                            nombre_user: user.nombre_usuario,
+                            apellidoP_user: user.apellido_paterno_usuario,
+                            apellidoM_user: user.apellido_materno_usuario,
+                            nombre_sala: sala.nombre_sala,
+                            titulo_reunion: reunion.titulo_reunion,
+                            descripcion_reunion: reunion.descripcion_reunion,
+                            id_inv: invitado.id_invitado,
+                            nombre_inv: invitado.nombre_invitado,
+                            apellido_inv: invitado.apellido_paterno_invitado,
+                            //repeticiones: detallesRepeticion, // Añadir detalles de las repeticiones
+                            fecha_reunion: detalle.fecha,
+                            hora_inicio: detalle.hora_inicio,
+                            hora_fin: detalle.hora_fin
+
+
+                        };
+                        console.log('respuesta--->', respuesta);
+                        reunionesInfo.push(respuesta);
+
+
+
+
+                    } catch (error) {
+                        console.error("Error al recuperar los datos:", error);
+                    }
+                }
+
+            }
+
+
+
+
+
+
         } catch (error) {
             console.error("Error al recuperar los datos:", error);
         }
@@ -135,6 +169,26 @@ async function getReunionByNaveInv(req,res) {
         }
     }
 
+async function getSeguridadInfo_idInv_idReu(req,res){
+    const {idReunion,idInvitado, idInvitacion} = req.body;
+    console.log('mensaje --> getInfo_idInv_idReu');
+    console.log('ZZZZZZZZZ >>> id_reunion: ', idReunion, 'id_invitado: ', idInvitado, 'id_invitacion: ', idInvitacion);
+
+    let id_invitacion = 0;
+
+    if (idInvitacion === null){
+        id_invitacion = await getInvitacionByIdSeguridadBD(idReunion, idInvitado);
+    }else{
+        id_invitacion = idInvitacion;
+    }
+
+
+    const invitacion = await obtenerDetallesInvitacionSeguridadBD(id_invitacion);
+
+    res.status(200).json(invitacion);
+}
+
+
 
 
 //Visualizar agenda
@@ -147,4 +201,5 @@ module.exports = {
     getReunionByNaveInv,
     getInvitadoById,
     getDetallesReunionByIdBD,
+    getSeguridadInfo_idInv_idReu
 };

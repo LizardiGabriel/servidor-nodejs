@@ -83,7 +83,339 @@ async function getInvitadoByIdBD(id) {
         return json({ error: 'Error al obtener el invitado' });
     }
 }
+
+
+async function getReunionAnfitrionByIdBD(id_reunion) {
+    console.log('Petición a la BD de getReunionByIdBD');
+    try {
+        // Obtener la reunión por su ID con todas las relaciones necesarias
+        const reunion = await prisma.reunion.findUnique({
+            where: { id_reunion: Number(id_reunion) },
+            include: {
+                Repeticion: true,
+                Invitacion: {
+                    include: {
+                        invitado: true,
+                        Colado: {
+                            include: {
+                                invitado: true
+                            }
+                        }
+                    }
+                },
+                sala: true
+            }
+        });
+
+        if (!reunion) {
+            throw new Error('Reunión no encontrada');
+        }
+
+        // Agregar el número de repeticiones de la reunión
+        reunion.numRepeticion = reunion.Repeticion.length;
+
+        // Formatear las fechas de repetición de la reunión
+        reunion.fechasRepeticion = reunion.Repeticion.map(rep => ({
+            id_repeticion: rep.id_repeticion,
+            fecha_repeticion: rep.fecha_repeticion,
+            estatus_repeticion: rep.estatus_repeticion,
+            hora_inicio_repeticion: rep.hora_inicio_repeticion,
+            hora_fin_repeticion: rep.hora_fin_repeticion
+        }));
+
+        // Obtener información de los invitados de la reunión
+        reunion.infoInvitados = reunion.Invitacion.map(invitacion => {
+            let infoInvitado = {
+                nombre_invitado: invitacion.invitado.nombre_invitado,
+                correo_invitado: invitacion.invitado.email_invitado,
+                numero_colados: invitacion.numero_colados,
+                id_invitado: invitacion.id_invitado,
+                isConfirmed: invitacion.isConfirmed,
+                es_colado_invitado: invitacion.es_colado_invitado
+            };
+            if (invitacion.es_colado_invitado === 1) {
+                // añadir los colados de los invitados y despues retornar
+                infoInvitado.colados = invitacion.Colado.map(colado => ({
+                    nombre_invitado: colado.invitado.nombre_invitado,
+                    correo_invitado: colado.invitado.email_invitado,
+                    id_colado: colado.id_invitado,
+                }));
+            }
+            return infoInvitado;
+
+        });
+
+        // Agregar el nombre de la sala
+        reunion.nombreSala = reunion.sala.nombre_sala;
+
+        // Eliminar propiedades innecesarias antes de retornar el objeto
+        delete reunion.Repeticion;
+        delete reunion.Invitacion;
+        delete reunion.sala;
+
+        return reunion;
+
+    } catch (error) {
+        console.error('Error al obtener la reunión:', error);
+        return { error: 'Error al obtener la reunión' };
+    }
+}
+
+async function obtenerDetallesInvitacionAnfiBD(idReunion, idInvitado) {
+    try {
+        console.log('Petición a la BD de obtenerDetallesInvitacionAnfiBD');
+        console.log('id_reunion:', idReunion);
+        console.log('id_invitado:', idInvitado);
+
+        const invitacion = await prisma.invitacion.findFirst({
+            where: {
+                id_invitado: Number(idInvitado),
+                id_reunion: Number(idReunion)
+            },
+            include: {
+                invitado: true,
+                Automovil: true,
+                dispositivo_electronico: true,
+                Colado: {
+                    include: {
+                        invitado: true
+                    }
+                }
+            }
+        });
+
+        if (!invitacion) {
+            throw new Error('No se encontró la invitación con los IDs proporcionados');
+        }
+
+        const detallesInvitacion = {
+            //nombre_completo_invitado: `${invitacion.invitado.nombre_invitado} ${invitacion.invitado.apellido_paterno_invitado} ${invitacion.invitado.apellido_materno_invitado}`,
+            idReunion: invitacion.id_reunion,
+            nombre_invitado: invitacion.invitado.nombre_invitado,
+            apellido_paterno_invitado: invitacion.invitado.apellido_paterno_invitado,
+            apellido_materno_invitado: invitacion.invitado.apellido_materno_invitado,
+            email_invitado: invitacion.invitado.email_invitado,
+            empresa_invitado: invitacion.invitado.empresa_invitado,
+            foto_invitado: invitacion.invitado.foto_invitado,
+            lista_autos: invitacion.Automovil.map(auto => ({
+                color: auto.color_automovil,
+                matricula: auto.matricula_automovil,
+                marca: auto.marca_automovil,
+                modelo: auto.modelo_automovil
+            })),
+            lista_dispositivos: invitacion.dispositivo_electronico.map(dispositivo => ({
+                no_serie: dispositivo.no_serie_dispositivo_electronico,
+                modelo: dispositivo.modelo_dispositivo_electronico,
+                marca: dispositivo.marca_dispositivo_electronico
+            })),
+            es_colado_invitado: invitacion.es_colado_invitado
+        };
+
+
+
+        if (invitacion.es_colado_invitado === 1) {
+            // console.log('colados de invitado:', invitacion.Colado);
+
+            const lista_acompanantesPromises = invitacion.Colado.map(async (colado) => {
+                const isConfirmed = await getIsConfirmedColado(colado.id_invitado, invitacion.id_reunion);
+                return {
+                    idInvitado: colado.id_invitado,
+                    idReunion: invitacion.id_reunion,
+                    isConfirmed: isConfirmed,
+                    nombre: colado.invitado.nombre_invitado,
+                    apellidoPat: colado.invitado.apellido_paterno_invitado,
+                    apellidoMat: colado.invitado.apellido_materno_invitado,
+                    correo: colado.invitado.email_invitado
+                };
+            });
+
+            detallesInvitacion.lista_acompanantes = await Promise.all(lista_acompanantesPromises);
+
+
+        }
+
+
+        return detallesInvitacion;
+
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+async function getIsConfirmedColado(idInvitado, id_reunion){
+    try {
+        console.log('Petición a la BD de getIsConfirmedColado');
+        console.log('id_reunion:', id_reunion);
+        console.log('id_invitado:', idInvitado);
+
+        const invitacion = await prisma.invitacion.findFirst({
+            where: {
+                id_invitado: Number(idInvitado),
+                id_reunion: Number(id_reunion)
+            }
+        });
+
+        if (!invitacion) {
+            throw new Error('No se encontró la invitación con los IDs proporcionados');
+        }
+
+        return invitacion.isConfirmed;
+
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+
+
+async function getInvitacionByIdSeguridadBD(idReunion, idInvitado) {
+    console.log('Petición a la BD de getInvitacionByIdSeguridadBD');
+    try {
+        // Obtener la invitación por su ID
+        const invitacion = await prisma.invitacion.findFirst({
+            where: {
+                id_reunion: Number(idReunion),
+                id_invitado: Number(idInvitado)
+            }
+        });
+
+        if (!invitacion) {
+            throw new Error('Invitación no encontrada');
+        }
+
+        return invitacion.id_invitacion;
+
+    } catch (error) {
+        console.error('Error al obtener la invitación:', error);
+        return { error: 'Error al obtener la invitación' };
+    }
+
+}
+
+async function obtenerDetallesInvitacionSeguridadBD(id_invitacion) {
+    try {
+        console.log('Petición a la BD de obtenerDetallesInvitacionSeguridadBD');
+        console.log('id_invitacion:', id_invitacion);
+        const invitacion = await prisma.invitacion.findFirst({
+            where: {
+                id_invitacion: Number(id_invitacion)
+            },
+            include: {
+                reunion: {
+                    include: {
+                        sala: true,
+                        usuario: {
+                            select: {
+                                nombre_usuario: true,
+                                apellido_paterno_usuario: true,
+                                apellido_materno_usuario: true
+                            }
+
+                        }
+                    }
+                },
+                invitado: {
+                    select: {
+                        nombre_invitado: true,
+                        apellido_paterno_invitado: true,
+                        apellido_materno_invitado: true,
+                        email_invitado: true,
+                        empresa_invitado: true,
+                        foto_invitado: true,
+                        telefono_invitado: true,
+                        id_invitado: true,
+                        identificacion_invitado: true,
+                        habilitado: true
+                    }
+                },
+                Automovil: true,
+                Colado: {
+                    include: {
+                        invitado: true
+                    }
+                },
+                dispositivo_electronico: true,
+                Acceso: {
+                    include: {
+                        acceso_dispositivo_electronico: true
+                    }
+
+                }
+            }
+        });
+
+        if (!invitacion) {
+            throw new Error('No se encontró la invitación con los IDs proporcionados');
+        }
+
+        console.log('>>>>>>>>----------->>>>>>>>Invitacion:', invitacion);
+
+        return invitacion;
+
+        /*
+
+        const detallesInvitacion = {
+            //nombre_completo_invitado: `${invitacion.invitado.nombre_invitado} ${invitacion.invitado.apellido_paterno_invitado} ${invitacion.invitado.apellido_materno_invitado}`,
+            idReunion: invitacion.id_reunion,
+            nombre_invitado: invitacion.invitado.nombre_invitado,
+            apellido_paterno_invitado: invitacion.invitado.apellido_paterno_invitado,
+            apellido_materno_invitado: invitacion.invitado.apellido_materno_invitado,
+            email_invitado: invitacion.invitado.email_invitado,
+            empresa_invitado: invitacion.invitado.empresa_invitado,
+            foto_invitado: invitacion.invitado.foto_invitado,
+            lista_autos: invitacion.Automovil.map(auto => ({
+                color: auto.color_automovil,
+                matricula: auto.matricula_automovil,
+                marca: auto.marca_automovil,
+                modelo: auto.modelo_automovil
+            })),
+            lista_dispositivos: invitacion.dispositivo_electronico.map(dispositivo => ({
+                no_serie: dispositivo.no_serie_dispositivo_electronico,
+                modelo: dispositivo.modelo_dispositivo_electronico,
+                marca: dispositivo.marca_dispositivo_electronico
+            })),
+            es_colado_invitado: invitacion.es_colado_invitado
+        };
+
+
+
+        if (invitacion.es_colado_invitado === 1) {
+            // console.log('colados de invitado:', invitacion.Colado);
+
+            detallesInvitacion.lista_acompanantes = invitacion.Colado.map(colado => ({
+                isConfirmed: colado.isConfirmed,
+                idInvitado: colado.id_invitado,
+
+                nombre: colado.invitado.nombre_invitado,
+                apellidoPat: colado.invitado.apellido_paterno_invitado,
+                apellidoMat: colado.invitado.apellido_materno_invitado,
+                correo: colado.invitado.email_invitado
+
+            }));
+
+        }
+
+
+        return detallesInvitacion;
+
+         */
+
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+
+
+
 module.exports = {
-    getReunionAdminByIdBD
+    getReunionAdminByIdBD,
+    getReunionAnfitrionByIdBD,
+    obtenerDetallesInvitacionAnfiBD,
+    getInvitacionByIdSeguridadBD,
+    obtenerDetallesInvitacionSeguridadBD
 };
 

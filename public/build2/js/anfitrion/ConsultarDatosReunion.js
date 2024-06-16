@@ -36,7 +36,7 @@ function cargarDatos() {
     fetch(`/anfitrion/reuniones/detalles/${idReunion}`)
         .then(response => response.json())
         .then(data => {
-            console.log(data);    
+            console.log(data);
             document.getElementById('reunionId').value = data.id_reunion;
             document.getElementById('reunionTitulo').value = data.titulo_reunion;
             document.getElementById('sala').value = data.nombreSala;
@@ -45,7 +45,8 @@ function cargarDatos() {
             document.getElementById('horarioFin').value=hora_f;
 
             for (const invitado of data.infoInvitados) {
-                fetchInvitadoByEmail(invitado.correo_invitado);
+                if(invitado.es_colado_invitado===1)
+                fetchInvitadoByEmail(invitado, data.id_reunion);
 
             }
         })
@@ -53,22 +54,17 @@ function cargarDatos() {
             console.log(error);
         });
 
-        async function fetchInvitadoByEmail(email) {
+        async function fetchInvitadoByEmail(infoInvitados, id_reunion) {
             try {
-                const url = new URL('/anfitrion/obtenerInfoInvitado','http://localhost:3000');
-                url.searchParams.append('email', email);  // Añadir el email como parámetro de consulta
-                const response = await fetch(url);
-                const data = await response.json();
-                console.log(data);
-                agregarFila(data.nombre_invitado,data.email_invitado,data.id_invitado);
-                return data;
+                let isConfirmed = infoInvitados.isConfirmed === 1 ? 'Confirmado' : 'Pendiente';
+                agregarFila(infoInvitados.nombre_invitado,infoInvitados.correo_invitado,infoInvitados.id_invitado, isConfirmed, id_reunion);
             } catch (error) {
                 console.error('Error:', error);
                 return [];  // Retorna un arreglo vacío en caso de error
             }
         }
 
-        function agregarFila(nombreInvitado, correoElectronico,id_invitado) {
+        function agregarFila(nombreInvitado, correoElectronico,id_invitado, isConfirmed, id_reunion) {
             // Obtener el elemento tbody de la tabla
             const tbody = document.querySelector('.tabla__cuerpo');
         
@@ -78,7 +74,8 @@ function cargarDatos() {
             // Agregar columnas <td> para nombre, correo y acciones
             fila.innerHTML = `
                 <td>${nombreInvitado}</td>
-                <td>${correoElectronico}</td>
+                <td><a href="ConsultarDatosInvitado.html?idReunion=${id_reunion}&idInvitado=${id_invitado}">${correoElectronico}</a></td>
+                <td>${isConfirmed}</td>
                 <td class="acciones">
                     <button class="btn btn-sm eliminar" onclick="eliminarInvitado(${id_invitado})"><img src="../../img/icons/ico-trash.svg" alt="Eliminar"></button>
                 </td>

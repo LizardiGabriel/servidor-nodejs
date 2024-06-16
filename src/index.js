@@ -132,6 +132,7 @@ const rutas = [
     ['/js/seguridad/editarDatosPersonales.js', '../public/build2/js/seguridad/editarDatosPersonales.js'],
     ['/js/seguridad/visualizarAgendaDelDia.js', '../public/build2/js/seguridad/visualizarAgendaDelDia.js'],
     ['/js/seguridad/escanearQR.js', '../public/build2/js/seguridad/escanearQR.js'],
+    ['/js/consultarDatosDelInvitado.js', '../public/build2/js/consultarDetallesInvitado.js'],
     
 
     //Rutas de css de toda la interfaz
@@ -329,6 +330,19 @@ app.use('/anfitrion/catalogo/uploads', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, rutaArchivo));
 });
 
+app.use('/anfitrion/reuniones/uploads', (req, res) => {
+    // obtener la peticion actual
+    const rutaArchivo = '../public/build2/uploads' + req.path;
+    res.status(200).sendFile(path.join(__dirname, rutaArchivo));
+});
+
+app.use('/seguridad/uploads', (req, res) => {
+    // obtener la peticion actual
+    const rutaArchivo = '../public/build2/uploads' + req.path;
+    res.status(200).sendFile(path.join(__dirname, rutaArchivo));
+});
+
+
 app.get('/admin/test', (req, res) => {
   console.log('test');
   console.log(req.session);
@@ -342,15 +356,18 @@ app.use('/anfitrion', (req, res, next) => {
     if (req.session) {
         let rol = getRol(req.session.jwt);
         if (rol !== 2) {
-            return res.status(401).json({error: 'Unauthorized', status: 401});
+            return res.redirect('/home/login.html');
+            //return res.status(401).json({error: 'Unauthorized', status: 401});
         }
         if (rol === 2) {
             next();
         } else {
-            res.status(401).send('Unauthorized');
+            return res.redirect('/home/login.html');
+            //res.status(401).send('Unauthorized');
         }
     }else
-        return res.status(401).json({error: 'Unauthorized', status: 401});
+        return res.redirect('/home/login.html');
+        //return res.status(401).json({error: 'Unauthorized', status: 401});
 });
 app.get('/anfitrion/getFotoPerfil', admin.getFotoAdmin);
 app.get('/anfitrion/logout', anfitrion.logout);
@@ -386,6 +403,10 @@ app.get('/anfitrion/reuniones/detalles/:idReunion', anfitrion.getReunionById);
 app.put('/anfitrion/reuniones/hora', anfitrion.updateHoraReunion);
 app.post('/anfitrion/reuniones/delInvitado', anfitrion.deleteInvitado);
 
+app.use('/anfitrion/reuniones/ConsultarDatosInvitado.html', express.static('./public/build2/views/Anfitrion/ConsultarDatosInvitado.html'));
+app.post('/anfitrion/reuniones/invitadoInf', anfitrion.getInfo_idInv_idReu);
+
+
 
 
 
@@ -402,7 +423,8 @@ app.use('/seguridad', (req, res, next) => {
     if (req.session) {
         let rol = getRol(req.session.jwt);
         if (rol !== 3) {
-            return res.status(401).json({error: 'Unauthorized', status: 401});
+            return res.redirect('/home/login.html');
+            // return res.status(401).json({error: 'Unauthorized', status: 401});
         }
         if (rol === 3) {
             next();
@@ -418,12 +440,20 @@ app.use('/seguridad/seguridad.html', express.static('./public/build2/views/segur
 app.get('/seguridad/logout', seguridad.logout);
 app.use('/seguridad/visualizarAgenda.html', express.static('./public/build2/views/seguridad/visualizarAgendaDia.html'));
 app.get('/seguridad/getAgendas', seguridad.getReunionesAll);
+
+
 app.get('/seguridad/getAgendaID', seguridad.getReunionById);
 app.get('/seguridad/getAgendaID/:id', seguridad.getReunionByIdAll);
 app.use('/seguridad/verDatosInv.html', express.static('./public/build2/views/seguridad/consultarDatosDelInvitado.html'));
 app.use('/seguridad/EditarDatosPersonales.html', express.static('./public/build2/views/seguridad/EditarDatosPersonales.html'));
 app.use('/seguridad/escanearQR.html', express.static('./public/build2/views/seguridad/scanearQr.html'));
 app.get('/seguridad/getFotoPerfil', admin.getFotoAdmin);
+
+
+// lizardi
+app.post('/seguridad/reuniones/invitadoInf', seguridad.getSeguridadInfo_idInv_idReu);
+
+
 app.get('/seguridad/test', (req, res) => {
   console.log('test');
   console.log(req.session);
@@ -436,7 +466,8 @@ app.use('/invitado', async (req, res, next) => {
         console.log('jwt: ' + req.session.jwt);
         let rol = getRol(req.session.jwt);
         if (rol !== 4) {
-            return res.status(401).json({error: 'Unauthorized ppp: ' + rol, status: 401});
+            return res.redirect('/home/login.html');
+            //return res.status(401).json({error: 'Unauthorized ppp: ' + rol, status: 401});
         }
         if (rol === 4) {
             next();

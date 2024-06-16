@@ -20,73 +20,56 @@
 
     <main class="contenidoPrincipal">
         <section class="consultarDatosInvitado">
-            <form>
+            <form id="formInvitado">
                 <div class="campo">
-                    <label for="">Nombre del Invitado:</label>
-                    <input type="text" name="" id="" value="Maria del Rosario Gonzalez Borja" disabled>
+                    <label for="nombreInvitado">Nombre del Invitado:</label>
+                    <input type="text" id="nombreInvitado" disabled>
                 </div>
                 <div class="campo">
-                    <label for="">Empresa u Organización:</label>
-                    <input type="text" name="" id="" value="Super Secret Intelligence" disabled>
+                    <label for="empresaInvitado">Empresa u Organización:</label>
+                    <input type="text" id="empresaInvitado" disabled>
                 </div>
-                <div class="campoFlex">
-                    <div class="campo">
-                        <label for="">Tipo de vehículo</label>
-                        <input type="text" name="" id="" value="Super Secret Intelligence" disabled>
-                    </div>
-                    <div class="campo">
-                        <label for="">Placas:</label>
-                        <input type="text" name="" id="" value="CSD-12" disabled>
-                    </div>
+
+                <div class="campo campoTabla">
+                    <p>Automóviles</p>
+                    <table class="campo__tabla" id="tablaCarros">
+                        <tbody>
+                        <tr>
+                            <th>Color</th>
+                            <th>Marca</th>
+                            <th>Matrícula</th>
+                            <th>Modelo</th>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
+
                 <div class="campo campoTabla">
                     <p>Dispositivos Electrónicos</p>
-                    <table class="campo__tabla">
+                    <table class="campo__tabla" id="tablaDispositivos">
                         <tbody>
-                            <tr>
-                                <th>Dispositivo</th>
-                                <th>Número de Serie</th>
-                            </tr>
-                            <tr>
-                                <td>Asus Rog</td>
-                                <td>ASDFS-21DFS-FSDFRE-123-RWEEW</td>
-                            </tr>
-                            <tr>
-                                <td>Iphone 15</td>
-                                <td>BDFG-FDGD2-EWRWE2-EWFW-21312</td>
-                            </tr>
-                            <tr>
-                                <td>Earpods Pro 2Gen</td>
-                                <td>FSDFDSF-DFSD-324-CSCF3-FS-212</td>
-                            </tr>
+                        <tr>
+                            <th>Dispositivo</th>
+                            <th>Número de Serie</th>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
             </form>
             <form class="segundaParte">
                 <div class="invitadoIMG">
-                    <img src="../../img/usuario.webp" alt="Usuario">
+                    <img src="../../img/usuario.webp" alt="Usuario" id="fotoInvitado">
                 </div>
                 <div class="campo campoTabla">
                     <p>Lista de Acompañantes</p>
-                    <table class="campo__tabla">
+                    <table class="campo__tabla" id="tablaAcompanantes">
                         <tbody>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Correo Electrónico</th>
-                            </tr>
-                            <tr>
-                                <td>Luis Rodriguez Martinez</td>
-                                <td>luis8921_12@correo.com</td>
-                            </tr>
-                            <tr>
-                                <td>Sofia Nieves Nieves</td>
-                                <td>sofi21_292@correo.com</td>
-                            </tr>
-                            <tr>
-                                <td>Ximena Lopez Ramirez</td>
-                                <td>xime231_324@correo.com</td>
-                            </tr>
+                        <tr>
+
+                            <th>Nombre</th>
+                            <th>Correo Electrónico</th>
+                            <th>Estatus</th>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -97,6 +80,121 @@
 
     <div id="footers"></div>
 
+    <script>
+
+
+
+        window.onload = function() {
+            getInfoInvitacion();
+
+        }
+
+
+
+        function getInfoInvitacion(){
+            let idReunion = 0;
+            let idInvitado = 0;
+            let url = new URLSearchParams(location.search);
+            idReunion = url.get('idReunion');
+            idInvitado = url.get('idInvitado');
+            alert("idReunion: " + idReunion + ", idInvitado:" + idInvitado);
+
+            // fetch para obtener la información del usuario y la info que va a traer
+            const data = {
+                idReunion: idReunion,
+                idInvitado: idInvitado
+            }
+            fetch("/anfitrion/reuniones/invitadoInf", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                /*
+
+                idReunion: 2
+                nombre_invitado: "jose"
+                apellido_materno_invitado: "lizardi"
+                apellido_paterno_invitado: "gabriel"
+                empresa_invitado: "escom"
+                email_invitado: "lizardigabriel9@gmail.com"
+                es_colado_invitado: 1
+
+                lista_acompanantes: Array (1)
+                0 {apellidoMat: "aqw", apellidoPat: "asd", correo: "colado1@test.com", idInvitado: 4, isConfirmed: 0, nombre: "juan"}
+
+                lista_autos: Array (1)
+                0 {color: "qwe", matricula: "que", marca: "qwe", modelo: "qwe"}
+
+                lista_dispositivos: [{no_serie: "asd", modelo: "asd", marca: "asd"}] (1)
+                * */
+
+
+                llenarCampos(data);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+
+
+
+        }
+
+        function llenarCampos(data) {
+            document.getElementById('fotoInvitado').src = data.foto_invitado;
+            document.getElementById('nombreInvitado').value = data.nombre_invitado + ' ' + data.apellido_paterno_invitado + ' ' + data.apellido_materno_invitado;
+            document.getElementById('empresaInvitado').value = data.empresa_invitado;
+
+
+
+            let tablaCarros = document.getElementById('tablaCarros').getElementsByTagName('tbody')[0];
+            data.lista_autos.forEach(auto => {
+                let row = tablaCarros.insertRow();
+                let cellColor = row.insertCell(0);
+                let cellMarca = row.insertCell(1);
+                let cellMatricula = row.insertCell(2);
+                let cellModelo = row.insertCell(3);
+
+                cellColor.textContent = auto.color;
+                cellMarca.textContent = auto.marca;
+                cellMatricula.textContent = auto.matricula;
+                cellModelo.textContent = auto.modelo;
+
+            });
+
+            let tablaDispositivos = document.getElementById('tablaDispositivos').getElementsByTagName('tbody')[0];
+            data.lista_dispositivos.forEach(dispositivo => {
+                let row = tablaDispositivos.insertRow();
+                let cellModelo = row.insertCell(0);
+                let cellNoSerie = row.insertCell(1);
+                cellModelo.textContent = dispositivo.modelo;
+                cellNoSerie.textContent = dispositivo.no_serie;
+            });
+
+            let tablaAcompanantes = document.getElementById('tablaAcompanantes').getElementsByTagName('tbody')[0];
+            if (data.es_colado_invitado == 1) {
+
+
+                data.lista_acompanantes.forEach(acompanante => {
+                    let row = tablaAcompanantes.insertRow();
+                    let cellNombre = row.insertCell(0);
+                    let cellCorreo = row.insertCell(1);
+                    let cellEstatus = row.insertCell(2);
+                    cellNombre.textContent = acompanante.nombre + ' ' + acompanante.apellidoPat + ' ' + acompanante.apellidoMat;
+                    cellCorreo.innerHTML = `<a href="ConsultarDatosInvitado.html?idReunion=${data.idReunion}&idInvitado=${acompanante.idInvitado}">${acompanante.correo}</a>`;
+                    cellEstatus.textContent = acompanante.isConfirmed == 1 ? 'Confirmado' : 'Pendiente';
+                });
+            }else{
+                tablaAcompanantes.style.display = 'none';
+            }
+        }
+
+
+    </script>
     <script src="../../js/anfitrion/headers.js"></script>
     <script src="/build/js/header.js"></script>
     <script src="../../js/sidebar.js"></script>

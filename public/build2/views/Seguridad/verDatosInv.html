@@ -121,6 +121,7 @@
         // Obtener el idInvitado desde URL
         const urlParams = new URLSearchParams(window.location.search);
         const idInvitado = urlParams.get('idInvitado');
+        const idReunion = urlParams.get('idReunion');
 
         // Función para obtener los datos del invitado desde la base de datos
         async function obtenerDatosInvitado() {
@@ -129,6 +130,7 @@
                 const response = await fetch(`/seguridad/getInvitadoById/${idInvitado}`);
                 if (response.ok) {
                     const invitado = await response.json();
+                    alert("respuesta" + invitado);
                     console.log(invitado);
                     actualizarCampos(invitado);
 

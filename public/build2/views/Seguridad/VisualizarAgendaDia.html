@@ -78,23 +78,23 @@
         const tbody = document.querySelector('.tabla__cuerpo');
         tbody.innerHTML = '';
         data.forEach(reunion => {
-            const fila = document.createElement('tr');
-            console.log(reunion.id_inv);
+            if(reunion.isConfirmed === 1) {
+                const fila = document.createElement('tr');
+                console.log(reunion.id_inv);
 
-            // Concatenar las fechas y horas de repeticiones
-            const fechasHoras = reunion.repeticiones.map(rep => {
-                return `${rep.fecha} de ${rep.hora_inicio} a ${rep.hora_fin}`;
-            }).join(", ");
+                // Concatenar las fechas y horas de repeticiones
 
-            fila.innerHTML = `
+                fila.innerHTML = `
                 <td class="accion">
-                  <button class="btn btn-sm visualizar" data-id="${reunion.id_inv}" onclick="verDetallesInv(${reunion.id_inv})"><img src="../../img/icons/ico-view.svg"></button>
+                  <button class="btn btn-sm visualizar" data-id="${reunion.id_inv}" onclick="verDetallesInv(${reunion.id_inv}, ${reunion.id_reunion})"><img src="../../img/icons/ico-view.svg"></button>
                 </td>
                 <td class="nombreI">${reunion.nombre_inv}</td>
-                <td class="horario">${fechasHoras}</td>
+                <td class="horario">${reunion.fecha_reunion}</td>
                 <td class="nombreA">${reunion.nombre_user} ${reunion.apellidoP_user} ${reunion.apellidoM_user}</td>
-            `;
-            tbody.appendChild(fila);
+                `;
+                tbody.appendChild(fila);
+            }
+
         });
         cargarFiltros();
     })
@@ -123,8 +123,8 @@ function cargarFiltros() {
 }
 
         
-    function verDetallesInv(idInvitado) {
-        const url = `verDatosInv.html?idInvitado=${idInvitado}`;    
+    function verDetallesInv(idInvitado, id_reunion) {
+        const url = `verDatosInv.html?idInvitado=${idInvitado}&idReunion=${id_reunion}`;
         window.open(url);
     }
     </script>

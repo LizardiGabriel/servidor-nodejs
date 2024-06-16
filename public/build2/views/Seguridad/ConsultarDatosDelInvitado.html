@@ -22,7 +22,7 @@
                 <div class="col-md-4">
                     <div class="HeroInvitadoImg">
                         <img src="../../img/examples/sample-dwight-k-schrute.jpg" class="img-fluid rounded-circle"
-                            alt="Invitado">
+                            alt="Invitado" id="fotitoInvitado">
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -30,38 +30,38 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label HeroInvitadolabel">Invitado:</label>
                             <div class="col-sm-9">
-                                <input class="form-control HeroInvitadoinput" type="text" value="José Manuel Perez"
+                                <input id="nombre_invitado" class="form-control HeroInvitadoinput" type="text" value="José Manuel Perez"
                                     disabled>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label HeroInvitadolabel">Anfitrión:</label>
                             <div class="col-sm-9">
-                                <input class="form-control HeroInvitadoinput" type="text" value="Nombre Anfitrión"
+                                <input id="nombre_anfitrion" class="form-control HeroInvitadoinput" type="text" value="Nombre Anfitrión"
                                     disabled>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label HeroInvitadolabel">Empresa/Organización:</label>
                             <div class="col-sm-9">
-                                <input class="form-control HeroInvitadoinput" type="text"
+                                <input id="empresa_invitado" class="form-control HeroInvitadoinput" type="text"
                                     value="Super Secret Intelligence" disabled>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label HeroInvitadolabel">Identificación a presentar:</label>
                             <div class="col-sm-9">
-                                <input class="form-control HeroInvitadoinput" type="text" value="INE" disabled>
+                                <input id="identificacion_invitado" class="form-control HeroInvitadoinput" type="text" value="INE" disabled>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label HeroInvitadolabel">Número de piso:</label>
                             <div class="col-sm-3">
-                                <input class="form-control HeroInvitadoinput" type="number" value="21" disabled>
+                                <input id="piso_sala" class="form-control HeroInvitadoinput" type="number" value="21" disabled>
                             </div>
                             <label class="col-sm-3 col-form-label HeroInvitadolabel">Número de sala:</label>
                             <div class="col-sm-3">
-                                <input class="form-control HeroInvitadoinput" type="number" value="6" disabled>
+                                <input id="numero_sala" class="form-control HeroInvitadoinput" type="number" value="6" disabled>
                             </div>
                         </div>
                     </div>
@@ -93,16 +93,43 @@
                     <table class="tabla table table-hover table-bordered table-sm" id="TablaDispositivos">
                         <thead class="tabla__cabecera">
                             <tr>
-                                <th scope="col" data-sort="Dispositivos" class="cabecera">Dispositivo</th>
+                                <th scope="col" data-sort="Dispositivos" class="cabecera">Marca</th>
+                                <th scope="col" data-sort="NumSerie" class="cabecera">Modelo</th>
                                 <th scope="col" data-sort="NumSerie" class="cabecera">Número de Serie</th>
                                 <th scope="col" data-sort="NumSerie" class="cabecera">Presente</th>
                             </tr>
                         </thead>
-                        <tbody class="tabla__cuerpo">
+                        <tbody class="tabla__cuerpo" id="tabla_dispositivos">
                         </tbody>
                     </table>
                 </div>
             </div>
+
+            <div class="BotonesEyS">
+                <input type="submit" value="Guardar" class="BotonesEyS__Guardar" disabled>
+            </div>
+
+
+            <div class="HeroDispositivos">
+                <h2>Automóviles</h2>
+                <div class="__Tabla table-responsive paragraph-example">
+                    <table class="tabla table table-hover table-bordered table-sm" id="TablaCarros">
+                        <thead class="tabla__cabecera">
+                        <tr>
+                            <th scope="col" data-sort="Dispositivos" class="cabecera">Marca</th>
+                            <th scope="col" data-sort="NumSerie" class="cabecera">Modelo</th>
+                            <th scope="col" data-sort="NumSerie" class="cabecera">Matrícula</th>
+                            <th scope="col" data-sort="NumSerie" class="cabecera">Color</th>
+                            <th scope="col" data-sort="NumSerie" class="cabecera">Presente</th>
+                        </tr>
+                        </thead>
+                        <tbody class="tabla__cuerpo" id="tabla_carros">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
             <div class="BotonesEyS">
                 <input type="submit" value="Guardar" class="BotonesEyS__Guardar" disabled>
             </div>
@@ -111,11 +138,114 @@
 
     <div id="footers"></div>
 
+
+    <script>
+        window.onload = function() {
+            let idReunion = 0;
+            let idInvitado = 0;
+
+            let idInvitacion = 0;
+            let url = new URLSearchParams(location.search);
+
+            idReunion = url.get('idReunion');
+            idInvitado = url.get('idInvitado');
+            idInvitacion = url.get('idInvitacion');
+
+
+            const data = {
+                idReunion: idReunion,
+                idInvitado: idInvitado,
+                idInvitacion: idInvitacion
+            }
+            fetch("/seguridad/reuniones/invitadoInf", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    /*
+                    data.id_invitacion
+
+
+                    data.Acceso []
+                    data.Automovil [
+                    data.Colado []
+                    data.dispositivo_electronico []
+                    data.invitado {}
+                    data.reunion {}
+
+                    data.es_colado_invitado
+                    data.habilitado
+                    data.id_invitado
+                    data.id_reunion
+                    data.isConfirmed
+                    data.numero_colados
+                    data.qr_acceso
+                    * */
+
+                    document.getElementById("fotitoInvitado").src = data.invitado.foto_invitado;
+                    document.getElementById("nombre_invitado").value = data.invitado.nombre_invitado + " " + data.invitado.apellido_paterno_invitado + " " + data.invitado.apellido_materno_invitado;
+                    document.getElementById("nombre_anfitrion").value = data.reunion.usuario.nombre_usuario + " " + data.reunion.usuario.apellido_paterno_usuario + " " + data.reunion.usuario.apellido_materno_usuario;
+                    document.getElementById("empresa_invitado").value = data.invitado.empresa_invitado;
+                    document.getElementById("identificacion_invitado").value = data.invitado.identificacion_invitado;
+                    document.getElementById("piso_sala").value = data.reunion.sala.piso_sala;
+                    document.getElementById("numero_sala").value = data.reunion.sala.numero_sala;
+
+                    let tablaDispositivos = document.getElementById("tabla_dispositivos");
+                    data.dispositivo_electronico.forEach(dispositivo => {
+                        let fila = document.createElement("tr");
+                        fila.innerHTML = `
+                            <td>${dispositivo.marca_dispositivo_electronico}</td>
+                            <td>${dispositivo.modelo_dispositivo_electronico}</td>
+                            <td>${dispositivo.no_serie_dispositivo_electronico}</td>
+                            <td><input type="checkbox" id="dispositivo_${dispositivo.id_dispositivo_electronico}" value="${dispositivo.id_dispositivo_electronico}"></td>
+                        `;
+                        tablaDispositivos.appendChild(fila);
+                    });
+
+
+                    let tablaAutos = document.getElementById("tabla_carros");
+                    data.Automovil.forEach(carro => {
+                        let fila = document.createElement("tr");
+                        fila.innerHTML = `
+                            <td>${carro.marca_automovil}</td>
+                            <td>${carro.modelo_automovil}</td>
+                            <td>${carro.matricula_automovil}</td>
+                            <td>${carro.color_automovil}</td>
+                            <td><input type="checkbox" id="auto_${carro.id_automovil}" value="${carro.id_automovil}"></td>
+                        `;
+                        tablaAutos.appendChild(fila);
+                    });
+
+
+                    // con el id de la invitacion registrar en tabla acceso hora acceso con un fetch
+
+                    // con el id de la invitacion registrar en tabla acceso hora salida con un fetch
+
+                    // con el id de la invitacion y el id del dispositivo registrar en tabla acceso los dispositivos con los que entra
+
+                    // con el id de la invitacion y el id del carro registrar en tabla acceso los carros con los que entra
+
+                    // implementar la opcion de eliminar un registro de la tabla acceso
+
+
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+
+        }
+
+
+    </script>
     <script src="../../js/seguridad/seguridad.js"></script>
     <script src="../../js/seguridad/headers.js"></script>
     <script src="../../js/header.js"></script>
     <script src="../../js/sidebar.js"></script>
-    <script src="../../js/consultarDatosDelInvitado.js"></script>
 </body>
 
 </html>

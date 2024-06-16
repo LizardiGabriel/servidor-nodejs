@@ -35,79 +35,85 @@
 
                 <form novalidate>
                     <!-- Información de Acompañantes -->
-                    <hr/>
-                    <div id="acompanantesAgregados"></div>
-                    <label>¿Desea agregar acompañantes? Puede agregar hasta 5 acompañantes</label>
-                    <div id="acompanantesHabilitada">
-                        <div class="form-group Correo has-validation">
-                            <label class="labelControl">Correo electrónico del acompañante*:</label>
-                            <input type="email" class="form-control form-control-lg inputControl" placeholder="email@example.com">
-                        </div>
-                        <div id="BotonAgregarAcompanante">
-                            <button type="button" id="agregarAcompanante" class="botonAcompañante">Agregar Acompañante</button>
-                        </div>
-                    </div>
+                     <div class="acompanantes">
+                         <div id="acompanantesAgregados"><span>Lista de acompañantes:</span></div>
+                         <div>
+                             <label class="instruccion">¿Desea agregar acompañantes? Puede agregar hasta 5 acompañantes</label>
+                             <div id="acompanantesHabilitada">
+                                 <div class="form-group Correo has-validation">
+                                     <label class="labelControl">Correo electrónico del acompañante*:</label>
+                                     <input type="email" class="form-control form-control-lg inputControl mb-25rem" id="loginEmail" placeholder="email@example.com">
+                                     <div id="emailForm"></div>
+                                 </div>
+                                 <div id="BotonAgregarAcompanante">
+                                     <button type="button" id="agregarAcompanante" class="botonAcompañante">Agregar Acompañante</button>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
 
-                    <!-- Información de Dispositivos -->
-                    <hr/>
-                    <div id="dispositivosAgregados"></div>
-                    <div id="dispositivosHabilitada">
-                        <div class="form-group">
-                            <label class="labelControl">Tipo de Dispositivo*:</label>
-                            <input class="form-control form-control-lg inputControl" type="text" placeholder="Tipo de Dispositivo">
-                        </div>
-                        <div class="form-group">
-                            <label class="labelControl">Marca*:</label>
-                            <input class="form-control form-control-lg inputControl" type="text" placeholder="Marca del Dispositivo">
-                        </div>
-                        <div class="form-group">
-                            <label class="labelControl">Numero de serie*:</label>
-                            <input class="form-control form-control-lg inputControl" type="text" placeholder="Numero de serie">
-                        </div>
-                        <div id="BotonAgregarDispositivo">
-                            <button type="button" id="agregarDispositivo" class="botonDispositivo">Agregar Dispositivo</button>
-                        </div>
-                    </div>
+                     <div class="dispositivos">
+                         <!-- Información de Dispositivos -->
+                         <div id="dispositivosAgregados"><span>Lista de dispositivos:</span></div>
+                         <div>
+                             <label class="instruccion">¿Llevará algun dispositivo?</label>
+                             <div id="dispositivosHabilitada">
+                                 <div class="form-group">
+                                     <label class="labelControl">Tipo de Dispositivo*:</label>
+                                     <input class="form-control form-control-lg inputControl" type="text" placeholder="Tipo de Dispositivo">
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="labelControl">Marca*:</label>
+                                     <input class="form-control form-control-lg inputControl" type="text" placeholder="Marca del Dispositivo">
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="labelControl">Numero de serie*:</label>
+                                     <input class="form-control form-control-lg inputControl" type="text" placeholder="Numero de serie">
+                                 </div>
+                                 <div id="BotonAgregarDispositivo">
+                                     <button type="button" id="agregarDispositivo" class="botonDispositivo">Agregar Dispositivo</button>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
 
-                    <!-- Información de Automóvil -->
-                    <hr/>
-                    <div id="automovilesAgregados"></div>
-                    <div id="automovilHabilitada">
-                        <div class="form-group">
-                            <label class="labelControl">Número de Placa*:</label>
-                            <input class="form-control form-control-lg inputControl" type="text" placeholder="Número de Placa">
-                            <!-- <div>Ingrese el número de placa.</div> -->
-                        </div>
-                        <div class="form-group">
-                            <label class="labelControl">Marca*:</label>
-                            <input class="form-control form-control-lg inputControl" type="text" placeholder="Marca">
-                            <!-- <div>Ingrese la marca del automóvil.</div> -->
-                        </div>
-                        <div class="form-group">
-                            <label class="labelControl">Modelo*:</label>
-                            <input class="form-control form-control-lg inputControl" type="text" placeholder="Modelo">
-                            <!-- <div>Ingrese el modelo del automóvil.</div> -->
-                        </div>
-                        <div class="form-group">
-                            <label class="labelControl">Color*:</label>
-                            <input class="form-control form-control-lg inputControl" type="text" placeholder="Color">
-                            <!-- <div>Ingrese el color del automóvil.</div> -->
-                        </div>
-                        <div id="BotonAgregarAutomovil">
-                            <button type="button" id="agregarAutomovil" class="botonAutomovil">Agregar Automóvil</button>
-                        </div>
-                    </div>
-
-                    <hr/>
-
-                    <input class="buttonAcepatarReunion" type="button" value="Aceptar" />
+                     <div class="automoviles">
+                         <!-- Información de Automóvil -->
+                         <div id="automovilesAgregados"><span>Lista de automoviles</span></div>
+                         <div>
+                             <label class="instruccion">¿Llegará en automóvil propio?</label>
+                             <div id="automovilHabilitada">
+                                 <div class="form-group">
+                                     <label class="labelControl">Número de Placa*:</label>
+                                     <input class="form-control form-control-lg inputControl" type="text" placeholder="Número de Placa">
+                                     <!-- <div>Ingrese el número de placa.</div> -->
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="labelControl">Marca*:</label>
+                                     <input class="form-control form-control-lg inputControl" type="text" placeholder="Marca">
+                                     <!-- <div>Ingrese la marca del automóvil.</div> -->
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="labelControl">Modelo*:</label>
+                                     <input class="form-control form-control-lg inputControl" type="text" placeholder="Modelo">
+                                     <!-- <div>Ingrese el modelo del automóvil.</div> -->
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="labelControl">Color*:</label>
+                                     <input class="form-control form-control-lg inputControl" type="text" placeholder="Color">
+                                     <!-- <div>Ingrese el color del automóvil.</div> -->
+                                 </div>
+                                 <div id="BotonAgregarAutomovil">
+                                     <button type="button" id="agregarAutomovil" class="botonAutomovil">Agregar Automóvil</button>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="buttonContainer">
+                         <input class="buttonAcepatarReunion" type="button" value="Aceptar" />
+                     </div>
                 </form>
-
-
-
-
             </section>
-
         </div>
     </div>
 </main>
@@ -126,17 +132,17 @@
                 console.log('Detalles de la Reunion:', data);
                 const div = document.getElementById('DetallesReunion');
                 div.innerHTML = `
-                    <p>Título: ${data[0].titulo_reunion}</p>
-                    <p>Descripcion: ${data[0].descripcion_reunion}</p>
-                    <p>Anfitrion: ${data[0].nombreUsuario}</p>
-                    <p>Horario: ${data[0].fechasRepeticion[0].hora_inicio_repeticion} - ${data[0].fechasRepeticion[0].hora_fin_repeticion}</p>
-                    <p>Fecha(s): ${data[0].numRepeticion}</p>
+                    <p><span>Título: </span>${data[0].titulo_reunion}</p>
+                    <p><span>Descripcion: </span>${data[0].descripcion_reunion}</p>
+                    <p><span>Anfitrion: </span>${data[0].nombreUsuario}</p>
+                    <p><span>Horario: </span>${data[0].fechasRepeticion[0].hora_inicio_repeticion} - ${data[0].fechasRepeticion[0].hora_fin_repeticion}</p>
+                    <p><span>Fecha(s): </span>${data[0].numRepeticion}</p>
                     <ul>
                         ${data[0].fechasRepeticion.map(fecha => `<li>${fecha.fecha_repeticion}</li>`).join('')}
                     </ul>
-                    <p>Colados permitidos: ${data[0].invitaciones[0].numColados}</p>
+                    <p><span>Colados permitidos: </span>${data[0].invitaciones[0].numColados}</p>
 
-                    <p>Sala: ${data[0].nombreSala}</p>
+                    <p><span>Sala: </span>${data[0].nombreSala}</p>
 
                 `;
             })
@@ -151,6 +157,9 @@
         const colados = [];
         const dispositivos = [];
         const automoviles = [];
+        let cuentaA = 1; //Para contar numero de acompañantes, dispositivos, automoviles
+        let cuentaB = 1; //Para contar numero de acompañantes, dispositivos, automoviles
+        let cuentaC = 1; //Para contar numero de acompañantes, dispositivos, automoviles
 
         const maxAcompanantes = 5;
 
@@ -159,9 +168,11 @@
             if (email && colados.length < maxAcompanantes) {
                 colados.push(email);
                 const div = document.createElement('div');
-                div.textContent = `Acompañante: ${email}`;
+                div.classList.add("comoTal")
+                div.innerHTML = `<span>${cuentaA}) </span> ${email}`;
                 document.getElementById('acompanantesAgregados').appendChild(div);
                 document.querySelector('#acompanantesHabilitada input[type="email"]').value = '';
+                cuentaA++;
             } else if (colados.length >= maxAcompanantes) {
                 alert('No puede agregar más de 5 colados.');
             }
@@ -174,11 +185,13 @@
             if (tipo && marca && numeroSerie) {
                 dispositivos.push({ tipo, marca, numeroSerie });
                 const div = document.createElement('div');
-                div.textContent = `Dispositivo: ${tipo}, Marca: ${marca}, Número de Serie: ${numeroSerie}`;
+                div.classList.add("comoTal")
+                div.innerHTML = `<span>${cuentaB}) </span> ${tipo}, ${marca}, ${numeroSerie}`;
                 document.getElementById('dispositivosAgregados').appendChild(div);
                 document.querySelector('#dispositivosHabilitada input[placeholder="Tipo de Dispositivo"]').value = '';
                 document.querySelector('#dispositivosHabilitada input[placeholder="Marca del Dispositivo"]').value = '';
                 document.querySelector('#dispositivosHabilitada input[placeholder="Numero de serie"]').value = '';
+                cuentaB++;
             }
         });
 
@@ -190,12 +203,14 @@
             if (placa && marca && modelo && color) {
                 automoviles.push({ placa, marca, modelo, color });
                 const div = document.createElement('div');
-                div.textContent = `Automóvil: Placa: ${placa}, Marca: ${marca}, Modelo: ${modelo}, Color: ${color}`;
+                div.classList.add("comoTal")
+                div.innerHTML = `<span>${cuentaC}) </span> ${placa}, ${marca}, ${modelo}, ${color}`;
                 document.getElementById('automovilesAgregados').appendChild(div);
                 document.querySelector('#automovilHabilitada input[placeholder="Número de Placa"]').value = '';
                 document.querySelector('#automovilHabilitada input[placeholder="Marca"]').value = '';
                 document.querySelector('#automovilHabilitada input[placeholder="Modelo"]').value = '';
                 document.querySelector('#automovilHabilitada input[placeholder="Color"]').value = '';
+                cuentaC++;
             }
         });
 
@@ -348,6 +363,7 @@
 <script src="../../js/header.js"></script>
 <script src="../../js/sidebar.js"></script>
 <script src="../../js/plantilla-formularios.js"></script>
+<script src="../../js/validaciones.js"></script>
 
 </body>
 
