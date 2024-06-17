@@ -70,6 +70,8 @@ const rutas = [
     ['/img/EDIFICIOS-GRADIANT.png', '../public/build2/img/EDIFICIOS-GRADIANT.png'],
     ['/img/EDIFICIOS-GRADIANT3.png', '../public/build2/img/EDIFICIOS-GRADIANT3.png'],
     ['/img/EDIFICIOS-GRADIANT4.png', '../public/build2/img/EDIFICIOS-GRADIANT4.png'],
+    ['/img/hexagono.png', '../public/build2/img/hexagono.png'],
+    ['/img/hexagono2.png', '../public/build2/img/hexagono2.png'],
 
     
     ['/js/buttonProfiles.js', '../public/build2/js/buttonProfiles.js'],
