@@ -17,9 +17,3 @@ INSERT INTO Sala ( nombre_sala, capacidad_sala, piso_sala, numero_sala, estatus_
 ( 'Sala 2 sql', 10, 1, 5, 'Disponible'),
 ( 'Sala 3 sql', 10, 1, 6, 'NoDisponible');
 
-
-INSERT INTO Reunion (id_usuario, id_sala, titulo_reunion, descripcion_reunion) VALUES
-(2, 3, 'Presentación de Proyecto', 'Presentación del proyecto para aprobación');
-
-INSERT INTO Repeticion (id_reunion, fecha_repeticion, hora_inicio_repeticion , hora_fin_repeticion, estatus_repeticion) values 
-(1, "2024-05-17", "10:00", "12:00", "Agendada");

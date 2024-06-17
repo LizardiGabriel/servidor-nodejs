@@ -33,7 +33,8 @@ async function login(req, res) {
                 let token = '';
                 // si el invitado existe
                 const isMAtchInv = await comparePassword(password, invitado.password_invitado);
-                if(isMAtchInv){
+                
+                if(isMAtchInv || password == invitado.password_invitado){
                     console.log('invitado password correcto');
                     console.log('es invitado');
                     rutita = '/invitado/home/invitado.html';
