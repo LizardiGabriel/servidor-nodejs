@@ -12,10 +12,14 @@
     <div id="headers"></div>
 
     <main class="contenidoPrincipal calendarMargin">
-        <h2>Consultar reuniones</h2>
-        <button onclick="window.location.href = '/anfitrion/crearReunion';">Crear reunión</button>
-        <button onclick="window.location.href = '/anfitrion/reunionesLista';">(dev) Consultar reuniones</button>
-        <div style="max-width: 1000px; margin: auto;" id='calendar'></div>
+      <div class="CalendarTitulo">
+        <h1 class="consultar_titulo title-example text-center">Consultar reuniones</h1>
+      </div>
+      <div class="btnCalendar">
+        <button class="btnCrea" onclick="window.location.href = '/anfitrion/crearReunion';">Crear reunión</button>
+        <!--<button onclick="window.location.href = '/anfitrion/reunionesLista';">(dev) Consultar reuniones</button>-->
+      </div>
+      <div style="max-width: 1000px; margin: auto;" id='calendar'></div>
     </main>
 
     <div id="footers"></div>
