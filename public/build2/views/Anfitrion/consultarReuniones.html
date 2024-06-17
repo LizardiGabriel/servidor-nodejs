@@ -12,14 +12,34 @@
     <div id="headers"></div>
 
     <main class="contenidoPrincipal calendarMargin">
-        <h2>Consultar reuniones</h2>
-        <button onclick="window.location.href = '/anfitrion/crearReunion';">Crear reunión</button>
-        <button onclick="window.location.href = '/anfitrion/reunionesLista';">(dev) Consultar reuniones</button>
-        <div style="max-width: 1000px; margin: auto;" id='calendar'></div>
+      <div class="CalendarTitulo">
+        <h1 class="consultar_titulo title-example text-center">Consultar reuniones</h1>
+      </div>
+      <div class="btnCalendar">
+        <button class="btnCrea" onclick="window.location.href = '/anfitrion/crearReunion';">Crear reunión</button>
+        <!--<button onclick="window.location.href = '/anfitrion/reunionesLista';">(dev) Consultar reuniones</button>-->
+      </div>
+      <div style="max-width: 1000px; margin: auto;" id='calendar'></div>
     </main>
 
     <div id="footers"></div>
 
+    <!-- Estilos para el Swal -->
+    <style>
+      .titleSize{
+        font-size: 4rem;
+      }
+      .contentSize{
+        font-size: 2rem !important;
+      }
+      .buttonSize{
+        font-size: 2rem !important;
+      }
+      .iconSize{
+        font-size: 1.5rem;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../js/anfitrion/headers.js"></script>
     <script src="/build/js/header.js"></script>
     <script src="../../js/sidebar.js"></script>

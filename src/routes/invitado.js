@@ -5,8 +5,6 @@ const fs = require('fs');
 const path = require('path');
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
-
-
 const { hashPassword, comparePassword } = require('../tools/cipher');
 const { generatePassword } = require('../tools/tools');
 const { generateQR } = require('../tools/tools');
@@ -18,8 +16,7 @@ const { getInvitadoByIdBD, getInvitadoByIdEmailBD, setNewInvitadoBD, setNewColad
 const { setNewInvitacionBD, getDetallesReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD, getReunionesNuebasByIdBD } = require('../tools/peticiones');
 const {getInvitadoByEmailBD,updateInvitadoBDtoInvitacion, updatePassInvitadoBD, getReunionesConRepeticionByIdOfInvitadoBD, getReunionesNuebasBD} = require('../tools/peticiones');
 const { getInvitacionBy_IdInvitado_IdReunionBD } = require('../tools/peticiones');
-const{putInfoInvitadoToReunionBD, createColadoBD} = require('../tools/peticiones');
-
+const{putInfoInvitadoToReunionBD, createColadoBD,getReunionByIdBD} = require('../tools/peticiones');
 
 
 
@@ -28,6 +25,18 @@ async function logout(req, res) {
     console.log('mensaje --> logout');
     req.session.destroy();
     res.redirect('/');
+}
+
+function getemail(jsonToken){
+    let email = "";
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            email= decoded.email;
+        }
+    });
+    return email;
 }
 
 function getIdInvitado(jsonToken){
@@ -113,6 +122,21 @@ async function obtenerExtensionDeBase64(cadenaBase64) {
     }
     return ''; // Devuelve una cadena vacía si no se encuentra el tipo MIME
 }
+
+function encodeImageToBase64(filePath) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(filePath, (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                // Convertir los datos de la imagen a base64
+                const base64Image = data.toString('base64');
+                resolve(base64Image);
+            }
+        });
+    });
+}
+
 
 
 
@@ -228,15 +252,21 @@ async function aceptarReunion(req, res){
     console.log('mensaje --> aceptarReunion');
     const idInvitado = getIdInvitado(req.session.jwt);
     const idReunion = getidSeleccionado(req.session.jwt);
-
     const invitacion = await getInvitacionBy_IdInvitado_IdReunionBD(idInvitado, idReunion);
     const idInvitacion = invitacion.id_invitacion;
-
     const colados = req.body.colados;
     const dispositivos = req.body.dispositivos;
     const automoviles = req.body.automoviles;
 
-
+    const invitado= await getInvitadoByIdBD(idInvitado);
+    const reunion= await getReunionByIdBD(idReunion);
+    const anfitrion = await getUsuarioByIdBD(reunion.id_usuario);
+    const sala = await getSalaByIdBD(reunion.id_sala);
+    const detReunion=await getDetallesReunionByIdBD(idReunion);
+    const repeticiones = detReunion.Repeticion;
+    console.log("Info aqui");
+    console.log(repeticiones);
+    console.log(sala.nombre_sala);
     // añadirlo en un for
     for(const colado of colados){
         console.log('===---___>>>procesando el colado: ', colado);
@@ -280,13 +310,14 @@ async function aceptarReunion(req, res){
 
             // mandar el email, el email debe tener
             console.log('emailText: ', emailText);
-            const envio = await mail(emailText, colado);
+            const envio = await mail(emailText, colado,'BeeCoders-Invitación a reunión');
             console.log('envio: ', envio);
 
             // tabla de colados
-
             const coladito = await createColadoBD(id_invitado, idInvitacion);
             console.log('coladito: ', coladito);
+
+
 
         }else{
             res.json({ message: 'error', status: 400});
@@ -303,7 +334,374 @@ async function aceptarReunion(req, res){
     const actualizarInvitacionReunionBD = await putInfoInvitadoToReunionBD(idInvitacion, dispositivos, automoviles, rutaImagenQR);
     console.log('actualizarInvitacionReunionBD: ', actualizarInvitacionReunionBD);
 
+    const invitacionbyid =await getInvitacionByIdBD(idInvitacion);
+    const rutaQr=path.join('public/build2',invitacionbyid.qr_acceso);
+    let imageContent = fs.readFileSync(rutaQr);
+    let emailText = `<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeeCoders - QR Reunión</title>
+    <style type="text/css">
+        body {
+            background-color: #f9f8f8;
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            font-family: Arial, sans-serif;
+        }
+
+        .ContenidoCorreo {
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            max-width: 80%;
+            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.33);
+            border-radius: 10px;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .header .header_img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .footer .footer_img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .ContenidoCorreo .Correo {
+            max-width: 80%;
+            padding: 4rem;
+        }
+
+        .saludo,
+        .correoDiv,
+        .contraDiv,
+        .enlaceSesion {
+            margin-left: 2rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .firma,
+        .qrReunion {
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .firma #BeeCoders {
+            font-size: 1.3rem;
+        }
+
+        input {
+            border: none;
+            font-size: 1.1rem;
+            overflow: hidden;
+            color: #48716E;
+            font-weight: bold;
+        }
+
+        .inputTabla {
+            color: #333333;
+            font-weight: 400;
+            width: 100%;
+            white-space: pre-wrap;
+        }
+
+        input .inputCorreo {
+            min-width: 70%;
+        }
+
+        #enlace {
+            width: 75%;
+        }
+
+        .imagen,
+        .QR {
+            width: 15rem;
+        }
+
+        h3,
+        h2 {
+            padding-right: 0.5rem;
+        }
+
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+            margin: 0px auto;
+        }
+
+        .tg-wrap {
+            margin-bottom: 3rem;
+            margin-top: 3rem;
+        }
+
+        .tg th,
+        .tg td {
+            border-color: #48716E;
+            border-style: solid;
+            border-width: 3px;
+            font-size: 14px;
+            font-weight: normal;
+            overflow: hidden;
+            padding: 10px 5px;
+            word-break: normal;
+        }
+
+        .tg .tg-1,
+        .tg .tg-2 {
+            background-color: #dbf1ee;
+            border-color: #48716e;
+            color: #333333;
+            text-align: left;
+            vertical-align: middle
+        }
+
+        .tg .tg-2 {
+            text-align: center;
+        }
+
+        #bold-font {
+            font-weight: bold;
+        }
+
+        @media only screen and (max-width: 800px) {
+
+            body,
+            input {
+                font-size: 0.8rem;
+            }
+
+            .ContenidoCorreo .Correo {
+                max-width: 80%;
+                padding: 2rem;
+            }
+
+            input {
+
+                text-align: center;
+            }
+
+            #inicioSesion {
+                padding-right: 0;
+            }
+
+            .saludo,
+            .correoDiv,
+            .contraDiv,
+            .enlaceSesion {
+                margin-left: 0rem;
+                margin-bottom: 1.5rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .firma #BeeCoders {
+                font-size: 1rem;
+            }
+
+            .imagen,
+            .QR {
+                width: 10rem;
+            }
+
+            .tg th,
+            .tg td {
+                font-size: 10px;
+            }
+        }
+
+        @media screen and (max-width: 767px) {
+            .tg {
+                width: auto !important;
+            }
+
+            .tg col {
+                width: auto !important;
+            }
+
+            .tg-wrap {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                margin: auto 0px;
+            }
+        }
+
+        @media screen and (max-width: 555px) {
+
+            body,
+            input {
+                font-size: 0.6rem;
+            }
+
+            .ContenidoCorreo {
+                max-width: 90%;
+            }
+
+            .ContenidoCorreo .Correo {
+                max-width: 90%;
+                padding: 0.8rem;
+            }
+
+            input {
+                text-align: center;
+            }
+
+            #inicioSesion {
+                padding-right: 0;
+            }
+
+            .saludo,
+            .correoDiv,
+            .contraDiv,
+            .enlaceSesion {
+                margin-left: 0rem;
+                margin-bottom: 1rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .firma #BeeCoders {
+                font-size: 0.8rem;
+            }
+
+            .imagen {
+                width: 6rem;
+            }
+
+            .tg th,
+            .tg td {
+                font-size: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="ContenidoCorreo">
+        <section class="header">
+            <img class="header_img" src="https://i.imgur.com/gol0fCj.png">
+        </section>
+
+        <section class="Correo">
+            <div class="Informacion">
+                <div class="saludo">
+                    <h3>Hola</h3>
+                    <input type="text" id="nombreInvitado" class="inputNombre" value="${invitado.email_invitado} "
+                        readonly disabled>
+                </div>
+                <p>Ya está confirmada tu asistencia a la siguiente reunión:</p>
+            </div>
+            <div class="Tabla tg-wrap">
+                <table class="tg">
+                    <thead>
+                        <tr>
+                            <th class="tg-2" colspan="7">
+                                <h1 id="bold-font">Detalle de la Reunión</h1>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="tg-1" rowspan="5">
+                                <img class="imagen" src="https://i.imgur.com/tTgwfr6.png[/img]">
+                            </td>
+                            <td class="tg-1" colspan="6">
+                                <h3 id="bold-font">Anfitrión:</h3>
+                                <input type="text" id="nombreAnfi" class="inputTabla" value="${anfitrion.nombre_usuario} ${anfitrion.apellido_paterno_usuario}"
+                                    readonly disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-1" colspan="3">
+                                <h3 id="bold-font">Piso:</h3>
+                                <input type="number" id="piso" class="inputTabla" value="${sala.piso_sala}" readonly disabled>
+                            </td>
+                            <td class="tg-1" colspan="3">
+                                <h3 id="bold-font">Sala:</h3>
+                                <input type="text" id="sala" class="inputTabla" value="${sala.nombre_sala}" readonly disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-1" colspan="6">
+                                <h3 id="bold-font">Fecha:</h3>
+                                <input type="text" id="fecha" class="inputTabla" value="${repeticiones.map(rep => `${rep.fecha_repeticion}`).join(", ")}" readonly disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-1" colspan="3">
+                                <h3 id="bold-font">Hora de Inicio:</h3>
+                                <input type="text" id="horaInicio" class="inputTabla" value="${repeticiones.map(rep => `${rep.hora_inicio_repeticion}`).join(", ")}" readonly
+                                    disabled>
+                            </td>
+                            <td class="tg-1" colspan="3">
+                                <h3 id="bold-font">Hora de Fin:</h3>
+                                <input type="text" id="horaFin" class="inputTabla" value="${repeticiones.map(rep => `${rep.hora_fin_repeticion}`).join(", ")}" readonly
+                                    disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-2">
+                                <h3 id="bold-font">Nombre de la reunión:</h3>
+                                <input type="text" id="${reunion.titulo_reunion}" class="inputTabla"
+                                    value="Daily Meeting equipo BeeCoders" readonly disabled>
+                            </td>
+                            <td class="tg-1" colspan="6">
+                                <h3 id="bold-font">Descripción:</h3>
+                                <input type="text" id="${reunion.descripcion_reunion}" class="inputTabla descripcion"
+                                    value="Conocer los avances del desarrollo del proyecto “BeeMeet” por parte del equipo “BeeCoders”"
+                                    readonly disabled>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="DatosCuenta">
+                <p>No olvides que el día de la reunión deberás presentar el siguiente QR que contiene toda la
+                    información que registraste de tus datos personales, es importante que lo muestres para poder
+                    accesar al edificio:
+                </p>
+                <div class="qrReunion">
+                    <img src="cid:imagen1" alt="Foto qr">
+                </div>
+                <p>En caso de que pierdas este QR, siempre podrás recuperarlo a través de la cuenta que creaste. </p>
+            </div>
+            <div class="firma">
+                <h3>ATTE:</h3>
+                <p id="BeeCoders"> BeeCoders &#128029;</p>
+            </div>
+        </section>
+
+        <section class="footer">
+            <img class="footer_img" src="https://i.imgur.com/MyTjwOi.png">
+        </section>
+
+    </main>
+
+</body>
+
+</html>
+        `;
+
+    const envio = await mail(emailText, invitado.email_invitado,'BeeCoders-QR ACCESO',imageContent);
+    console.log('envio: ', envio);
+    
+    
 
     res.status(200).json({ message: 'succesful', status: 200});
 
@@ -325,8 +723,316 @@ async function obtenerDetallesReunion(req, res){
     } else {
         res.json([]);
     }
+}
 
 
+async function recuperarQr(req,res){
+    const {id_invitacion,id_reunion}=req.body;
+    const reunion= await getDetallesReunionByIdBD(id_reunion);
+    const invitacion= await getInvitacionByIdBD(id_invitacion);
+    const correoInv= getemail(req.session.jwt);
+    const rutaQr=path.join('public/build2',invitacion.qr_acceso);
+    const invitado= await getInvitadoByEmailBD(correoInv);
+    let imageContent = fs.readFileSync(rutaQr);
+    let emailText = `<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeeCoders - Recuperar QR</title>
+    <style type="text/css">
+        body {
+            background-color: #f9f8f8;
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            font-family: Arial, sans-serif;
+        }
+
+        .ContenidoCorreo {
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            max-width: 80%;
+            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.33);
+            border-radius: 10px;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .header .header_img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .footer .footer_img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .ContenidoCorreo .Correo {
+            max-width: 80%;
+            padding: 4rem;
+        }
+
+        .saludo,
+        .correoDiv,
+        .contraDiv,
+        .enlaceSesion {
+            margin-left: 2rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .firma,
+        .qrReunion {
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .firma #BeeCoders {
+            font-size: 1.3rem;
+        }
+
+        input {
+            border: none;
+            font-size: 1.1rem;
+            overflow: hidden;
+            color: #48716E;
+            font-weight: bold;
+        }
+
+        .inputTabla {
+            color: #333333;
+            font-weight: 400;
+            width: 100%;
+            white-space: pre-wrap;
+        }
+
+        input .inputCorreo {
+            min-width: 70%;
+        }
+
+        #enlace {
+            width: 75%;
+        }
+
+        .imagen,
+        .QR {
+            width: 15rem;
+        }
+
+        h3,
+        h2 {
+            padding-right: 0.5rem;
+        }
+
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+            margin: 0px auto;
+        }
+
+        .tg-wrap {
+            margin-bottom: 3rem;
+            margin-top: 3rem;
+        }
+
+        .tg th,
+        .tg td {
+            border-color: #48716E;
+            border-style: solid;
+            border-width: 3px;
+            font-size: 14px;
+            font-weight: normal;
+            overflow: hidden;
+            padding: 10px 5px;
+            word-break: normal;
+        }
+
+        .tg .tg-1,
+        .tg .tg-2 {
+            background-color: #dbf1ee;
+            border-color: #48716e;
+            color: #333333;
+            text-align: left;
+            vertical-align: middle
+        }
+
+        .tg .tg-2 {
+            text-align: center;
+        }
+
+        #bold-font {
+            font-weight: bold;
+        }
+
+        @media only screen and (max-width: 800px) {
+
+            body,
+            input {
+                font-size: 0.8rem;
+            }
+
+            .ContenidoCorreo .Correo {
+                max-width: 80%;
+                padding: 2rem;
+            }
+
+            input {
+
+                text-align: center;
+            }
+
+            #inicioSesion {
+                padding-right: 0;
+            }
+
+            .saludo,
+            .correoDiv,
+            .contraDiv,
+            .enlaceSesion {
+                margin-left: 0rem;
+                margin-bottom: 1.5rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .firma #BeeCoders {
+                font-size: 1rem;
+            }
+
+            .imagen,
+            .QR {
+                width: 10rem;
+            }
+
+            .tg th,
+            .tg td {
+                font-size: 10px;
+            }
+        }
+
+        @media screen and (max-width: 767px) {
+            .tg {
+                width: auto !important;
+            }
+
+            .tg col {
+                width: auto !important;
+            }
+
+            .tg-wrap {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                margin: auto 0px;
+            }
+        }
+
+        @media screen and (max-width: 555px) {
+
+            body,
+            input {
+                font-size: 0.6rem;
+            }
+
+            .ContenidoCorreo {
+                max-width: 90%;
+            }
+
+            .ContenidoCorreo .Correo {
+                max-width: 90%;
+                padding: 0.8rem;
+            }
+
+            input {
+                text-align: center;
+            }
+
+            #inicioSesion {
+                padding-right: 0;
+            }
+
+            .saludo,
+            .correoDiv,
+            .contraDiv,
+            .enlaceSesion {
+                margin-left: 0rem;
+                margin-bottom: 1rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .firma #BeeCoders {
+                font-size: 0.8rem;
+            }
+
+            .imagen {
+                width: 6rem;
+            }
+
+            .tg th,
+            .tg td {
+                font-size: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="ContenidoCorreo">
+        <section class="header">
+            <img class="header_img" src="https://i.imgur.com/gol0fCj.png">
+        </section>
+
+        <section class="Correo">
+            <div class="Informacion">
+                <div class="saludo">
+                    <h3>Hola</h3>
+                    <input type="text" id="nombreInvitado" class="inputNombre" value="${invitado.nombre_invitado} ${invitado.apellido_paterno_invitado}"
+                        readonly disabled>
+                </div>
+                <p>Solicitaste la recuperación de QR para la siguiente reunión: <b>${reunion.titulo_reunion}</b></p>
+            </div>
+            <div class="DatosCuenta">
+                <p>No olvides que el día de la reunión deberás presentar el siguiente QR que contiene toda la
+                    información que registraste de tus datos personales, es importante que lo muestres para poder
+                    accesar al edificio:
+                </p>
+                <div class="qrReunion">
+                    <img src="cid:imagen1" alt="Foto qr">
+                </div>
+            </div>
+            <div class="firma">
+                <h3>ATTE:</h3>
+                <p id="BeeCoders"> BeeCoders &#128029;</p>
+            </div>
+        </section>
+
+        <section class="footer">
+            <img class="footer_img" src="https://i.imgur.com/MyTjwOi.png">
+        </section>
+
+    </main>
+
+</body>
+
+</html>
+    `;
+    const envio = await mail(emailText, correoInv,'BeeCoders-Recuperacion del QR',imageContent);
+    console.log('envio: ', envio);
+    res.status(200).json({ message: 'succesful', status: 200});
 }
 
 
@@ -352,6 +1058,7 @@ module.exports = {
     obtenerDetallesReunion,
     guardarQR,
     aceptarReunion,
+    recuperarQr
     
 };
 

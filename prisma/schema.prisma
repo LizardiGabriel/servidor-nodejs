@@ -123,6 +123,7 @@ model Acceso {
   invitacion                     Invitacion                       @relation(fields: [id_invitacion], references: [id_invitacion])
   reunion                        Reunion                          @relation(fields: [id_reunion], references: [id_reunion])
   acceso_dispositivo_electronico acceso_dispositivo_electronico[]
+  acceso_automovil               acceso_automovil[]
 }
 
 model dispositivo_electronico {
@@ -144,17 +145,17 @@ model Automovil {
   marca_automovil     String
   modelo_automovil    String
 
-  invitacion Invitacion @relation(fields: [id_invitacion], references: [id_invitacion])
+  invitacion       Invitacion         @relation(fields: [id_invitacion], references: [id_invitacion])
+  acceso_automovil acceso_automovil[]
 }
 
 model Colado {
-  id_colado     Int @id @default(autoincrement())
+  id_colado     Int        @id @default(autoincrement())
   id_invitado   Int
   id_invitacion Int
   isConfirmed   Int
-
-  invitado   Invitado   @relation(fields: [id_invitado], references: [id_invitado])
-  Invitacion Invitacion @relation(fields: [id_invitacion], references: [id_invitacion])
+  invitado      Invitado   @relation(fields: [id_invitado], references: [id_invitado])
+  Invitacion    Invitacion @relation(fields: [id_invitacion], references: [id_invitacion])
 }
 
 model acceso_dispositivo_electronico {
@@ -165,4 +166,15 @@ model acceso_dispositivo_electronico {
 
   acceso                  Acceso                  @relation(fields: [id_acceso], references: [id_acceso])
   dispositivo_electronico dispositivo_electronico @relation(fields: [id_dispositivo_electronico], references: [id_dispositivo_electronico])
+}
+
+// tabla para acceso de automovil
+model acceso_automovil {
+  id_acceso_automovil Int @id @default(autoincrement())
+  id_acceso           Int
+  id_automovil        Int
+  checka              Int
+
+  acceso    Acceso    @relation(fields: [id_acceso], references: [id_acceso])
+  Automovil Automovil @relation(fields: [id_automovil], references: [id_automovil])
 }

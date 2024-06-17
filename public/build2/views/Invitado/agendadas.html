@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BeeMeet - Recuperar QR</title>
+    <title>BeeMeet - Reuniones</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
 
 <main class="contenidoPrincipal">
     <div class="recuperarQR">
-        <h1 class="title-example text-center">Recuperar QR</h1>
+        <h1 class="title-example text-center">Reuniones</h1>
         <div class="__Tabla table-responsive paragraph-example">
             <table class="tabla table table-hover table-bordered table-sm" id="Tabla">
                 <thead class="tabla__cabecera">
@@ -30,7 +30,7 @@
                         <th scope="col" data-sort="reunion" class="cabecera">Reunión</th>
                         <th scope="col" data-sort="fecha" class="cabecera" id="fecha">Fecha</th>
                         <th scope="col" data-sort="hora" class="cabecera">Hora</th>
-                        <th scope="col" data-sort="nombreAnfi" class="cabecera">Nombre Anfitrión</th>
+                        <th scope="col" data-sort="nombreAnfi" class="cabecera">Anfitrión</th>
                         <th scope="col" data-sort="acciones" class="cabecera">Recuperar</th>
                     </tr>
                 </thead>
@@ -66,7 +66,7 @@
                         <td>${reunion.fechasRepeticion[0].hora_inicio_repeticion} - ${reunion.fechasRepeticion[0].hora_fin_repeticion}
                         </td>
                         <td>${reunion.nombreUsuario}</td>
-                        <td><button class="btn btn-primary" onclick="recuperarQR(${reunion.id})">Recuperar</button></td>
+                        <td class="acciones"><button class="btn btn-sm eliminar" onclick="recuperarQR(${reunion.invitaciones[0].id_invitacion},${reunion.id_reunion})"><img src="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/07/1499401426qr_icon.svg" alt="Escaner"></button></td>
                     `;
 
                     tbody.appendChild(fila);
@@ -77,8 +77,27 @@
             });
     }
 //Funcion para recuperar el QR
-    function recuperarQR(id) {
-        
+    function recuperarQR(id_invitacion,id_reunion) {
+      let data={
+        id_invitacion:id_invitacion,
+        id_reunion: id_reunion
+      }
+      console.log(data);
+// Realiza la solicitud fetch a la URL especificada con las opciones configuradas
+    fetch('/invitado/recuperarQr', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json()) // Procesa la respuesta para convertirla en JSON
+    .then(data => {
+        console.log('Respuesta recibida:', data); // Maneja los datos recibidos
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error); // Maneja posibles errores
+    });
     }
 </script>
 

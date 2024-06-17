@@ -52,6 +52,7 @@ app.use(errorHandler());
 
 
 const rutas = [
+  //Recursos de imagen
     ['/prueba.ico', '../public/favicon.ico'],
     ['/img/BeeMeet2.png', '../public/build2/img/BeeMeet2.png'],
     ['/img/BeeMeet.png', '../public/build2/img/BeeMeet.png'],
@@ -63,7 +64,14 @@ const rutas = [
     ['/build/img/BeeMeet.png', '../public/build2/img/BeeMeet.png'],
     ['/img/icons/ico-view.svg', '../public/build2/img/icons/view.png'],
     ['/img/bee.png', '../public/build2/img/bee.png'],
+    ['/img/NUBE.png', '../public/build2/img/NUBE.png'],
+    ['/img/NUBES.png', '../public/build2/img/NUBES.png'],
     ['/img/EDIFICIO.png', '../public/build2/img/EDIFICIO.png'],
+    ['/img/EDIFICIOS-GRADIANT.png', '../public/build2/img/EDIFICIOS-GRADIANT.png'],
+    ['/img/EDIFICIOS-GRADIANT3.png', '../public/build2/img/EDIFICIOS-GRADIANT3.png'],
+    ['/img/EDIFICIOS-GRADIANT4.png', '../public/build2/img/EDIFICIOS-GRADIANT4.png'],
+    ['/img/hexagono.png', '../public/build2/img/hexagono.png'],
+    ['/img/hexagono2.png', '../public/build2/img/hexagono2.png'],
 
     
     ['/js/buttonProfiles.js', '../public/build2/js/buttonProfiles.js'],
@@ -133,6 +141,8 @@ const rutas = [
     ['/js/seguridad/visualizarAgendaDelDia.js', '../public/build2/js/seguridad/visualizarAgendaDelDia.js'],
     ['/js/seguridad/escanearQR.js', '../public/build2/js/seguridad/escanearQR.js'],
     ['/js/consultarDatosDelInvitado.js', '../public/build2/js/consultarDetallesInvitado.js'],
+    ['/js/qrCode.min.js', '../public/build2/js/seguridad/qrCode.min.js'],
+    ['/js/scanQR.js', '../public/build2/js/seguridad/scanQR.js'],
     
 
     //Rutas de css de toda la interfaz
@@ -396,6 +406,7 @@ app.get('/anfitrion/catalogo/usuarioEmail/:email', admin.getUsuarioByEmail);
 
 
 app.post('/anfitrion/reuniones', anfitrion.setNewReunion);
+app.post('/anfitrion/reunionesReagendar', anfitrion.reagendarReunion);
 app.post('/anfitrion/reuniones/invitacion', anfitrion.setInvitacion);
 app.put('/anfitrion/catalogo/usuarios/:id', admin.updateUsuario);
 app.use('/anfitrion/reuniones/ConsultarDatos.html', express.static('./public/build2/views/Anfitrion/ConsultarDatosReunion.html'));
@@ -448,7 +459,13 @@ app.use('/seguridad/verDatosInv.html', express.static('./public/build2/views/seg
 app.use('/seguridad/EditarDatosPersonales.html', express.static('./public/build2/views/seguridad/EditarDatosPersonales.html'));
 app.use('/seguridad/escanearQR.html', express.static('./public/build2/views/seguridad/scanearQr.html'));
 app.get('/seguridad/getFotoPerfil', admin.getFotoAdmin);
+app.post('/seguridad/registrarHora', seguridad.registrarHora);
+app.post('/seguridad/confirmarDispositivo', seguridad.confirmarDispositivo);
+app.post('/seguridad/confirmarAutomovil', seguridad.confirmarAutomovil);
 
+
+//app.post('/seguridad/registrarDispositivo', seguridad.registrarDispositivo);
+//app.post('/seguridad/registrarAutomovil', seguridad.registrarAutomovil);
 
 // lizardi
 app.post('/seguridad/reuniones/invitadoInf', seguridad.getSeguridadInfo_idInv_idReu);
@@ -517,7 +534,7 @@ app.use('/invitado/home/agendadas.html', express.static('./public/build2/views/I
 
 app.get('/invitado/home/reunionesNuevas', invitado.reunionesNuevas);
 app.get('/invitado/home/reunionesConfirmadas', invitado.reunionesPendientes);
-
+app.post('/invitado/recuperarQr', invitado.recuperarQr)
 
 
 
@@ -577,7 +594,7 @@ app.get('/invitado/test', (req, res) => {
 
 
 
-app.use('/not-found', express.static('./public/notFound.html'));
+app.use('/not-found', express.static('./public/build2/views/Sesiones/notFound.html'));
 
 
 

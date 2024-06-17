@@ -1,10 +1,11 @@
+const express = require('express');
 const { log } = require('console');
 const { getReunionesBD, getUsuarioByIdBD,getReunionByIdBD,getSalaByIdBD,getInvitacionByIdBD,getInvitadoByIdBD,getInvitadoByNameBD,getInvitacionesByIdInv, getDetallesReunionByIdBD,
     getInvitacionesByIdReunionBD
 } = require('../tools/peticiones');
 const { response } = require('express');
 const { json } = require('body-parser');
-const {obtenerDetallesInvitacionAnfiBD, getInvitacionByIdSeguridadBD, obtenerDetallesInvitacionSeguridadBD} = require("../tools/petiAdmin");
+const {confirmarDispositivosBD,confirmarAutomovilesBD,registrarHoraEnBD,obtenerDetallesInvitacionAnfiBD, getInvitacionByIdSeguridadBD, obtenerDetallesInvitacionSeguridadBD} = require("../tools/petiAdmin");
 
 
 async function logout(req, res) {
@@ -35,7 +36,8 @@ async function getReunionesAll(req, res) {
             const detallesRepeticion = repeticiones.map(rep => ({
                 fecha: rep.fecha_repeticion,
                 hora_inicio: rep.hora_inicio_repeticion,
-                hora_fin: rep.hora_fin_repeticion
+                hora_fin: rep.hora_fin_repeticion,
+                id_repeticion: rep.id_repeticion
             }));
 
             for(const detalle of detallesRepeticion){
@@ -67,7 +69,8 @@ async function getReunionesAll(req, res) {
                             //repeticiones: detallesRepeticion, // Añadir detalles de las repeticiones
                             fecha_reunion: detalle.fecha,
                             hora_inicio: detalle.hora_inicio,
-                            hora_fin: detalle.hora_fin
+                            hora_fin: detalle.hora_fin,
+                            id_repeticion: detalle.id_repeticion
 
 
                         };
@@ -189,6 +192,44 @@ async function getSeguridadInfo_idInv_idReu(req,res){
 }
 
 
+async function registrarHora(req, res) {
+    const { idInvitacion, hora, tipo } = req.body;
+    try {
+        const invitacionActualizada = await registrarHoraEnBD(idInvitacion, hora, tipo);
+        if (invitacionActualizada) {
+            res.json({ status: 'success' });
+        } else {
+            res.status(404).json({ status: 'error', message: 'Invitación no encontrada' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: 'error' });
+    }
+}
+
+
+
+async function confirmarDispositivo(req, res) {
+    const { idInvitacion, dispositivos } = req.body;
+    try {
+        await confirmarDispositivosBD(idInvitacion, dispositivos);
+        res.json({ status: 'success' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: 'error', message: 'Error al confirmar dispositivos' });
+    }
+}
+
+async function confirmarAutomovil(req, res) {
+    const { idInvitacion, automoviles } = req.body;
+    try {
+        await confirmarAutomovilesBD(idInvitacion, automoviles);
+        res.json({ status: 'success' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: 'error', message: 'Error al confirmar automóviles' });
+    }
+}
 
 
 //Visualizar agenda
@@ -201,5 +242,10 @@ module.exports = {
     getReunionByNaveInv,
     getInvitadoById,
     getDetallesReunionByIdBD,
-    getSeguridadInfo_idInv_idReu
+    getSeguridadInfo_idInv_idReu,
+    registrarHora,
+    confirmarAutomovil,
+    confirmarDispositivo
+    
+    
 };

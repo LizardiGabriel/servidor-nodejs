@@ -157,38 +157,9 @@ prueba2.insertAdjacentHTML('beforeend', returnHTML2());
 function returnHTML2() {
     return `
     <footer class="footer">
-    <div class="contenedor">
-        <div class="beemeet">
-            <div class="beemeet__logo">
-                <img src="../../img/BeeMeet2.png" alt="Logo Beemeet">
-            </div>
-            <h3 class="beemeet__titulo">BeeMeet</h3>
-        </div>
-        <div class="usernames">
-            <p>Equipo de BeeCoders:</p>
-            <div class="usernames__container">
-                <div class="usernames1">
-                    <p>@RafaElJefe</p>
-                    <p>@DianaLaConsejera</p>
-                    <p>@CesarLaLechugaFresca</p>
-                    <p>@LizardiElGranProgramador</p>
-                    <p>@DaniBoyElFrontProgramador</p>
-                    <p>@DiegoElCPC</p>
-                </div>
-                <div class="usernames2">
-                    <p>@RorroElMusculoso</p>
-                    <p>@LeoElCuadrado</p>
-                    <p>@ToñitoElChispas</p>
-                    <p>@AdoElBienPortado</p>
-                    <p>@VallejoLaCreativa</p>
-                    <p>@SaulElChambeador</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <hr>
-    <p class="copyright">Copyright. Todos los derechos reservados. BeeMeet © 2024</p>
-</footer>
+        <hr>
+        <p class="copyright">Copyright. Todos los derechos reservados. BeeMeet © 2024</p>
+    </footer>
     `;
 }
 
@@ -200,11 +171,18 @@ fetch(`/admin/getFotoPerfil`)
     .then(response => response.json())
     .then(data => {
         console.log(data);
-        element.style.backgroundImage = `url('${data.foto}')`;
+      element.style.backgroundImage = `url('${data.foto}')`;
+      element.style.backgroundSize = "100% 100%"; // Abarca el 100% del ancho y ajusta la altura automáticamente
+      element.style.backgroundRepeat = "no-repeat"; // No repetir la imagen
+      element.style.backgroundPosition = "center center"; // Centrar la imagen
     }
     )
     .catch(error => {
-        element.style.backgroundImage = "url('../img/usuario.webp')";
+      element.style.backgroundImage = "url('../img/usuario.webp')";
+      element.style.backgroundSize = "100% 100%"; // Abarca el 100% del ancho y ajusta la altura automáticamente
+      element.style.backgroundRepeat = "no-repeat"; // No repetir la imagen
+      element.style.backgroundPosition = "center center"; // Centrar la imagen
+
         console.log(error);
     });
 

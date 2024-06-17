@@ -48,6 +48,21 @@
 
     <div id="footers"></div>
 
+    <!-- Estilos para el Swal -->
+    <style>
+      .titleSize{
+        font-size: 4rem;
+      }
+      .contentSize{
+        font-size: 2rem !important;
+      }
+      .buttonSize{
+        font-size: 2rem !important;
+      }
+      .iconSize{
+        font-size: 1.5rem;
+      }
+    </style>
     <script>
       //Fecha y Hora en tiempo real
       function actualizarFechaHora() {
@@ -60,11 +75,10 @@
       setInterval(actualizarFechaHora, intervaloActualizacion);
       let table;
       
-      window.onload = function () {
         actualizarFechaHora();
+        console.log("Hola");
         obtenerReuniones();
         
-    }
 
 
     let dataTable;

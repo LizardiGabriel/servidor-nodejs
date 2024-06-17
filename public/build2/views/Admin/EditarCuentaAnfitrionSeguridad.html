@@ -65,13 +65,23 @@
                 </div>
                 <div id="rolForm"></div>
             </div>
-            <!--Correo-->
-            <div>
-              <label class="editForm__label">Correo Electrónico*</label>
-              <div class="inputForm">
-                  <input type="email" class="input" id="loginEmail" placeholder="email@example.com" required>
+            <div class="row">
+              <!--Correo-->
+              <div class="col-md-8">
+                <label class="editForm__label">Correo Electrónico*</label>
+                <div class="inputForm">
+                    <input type="email" class="input" id="loginEmail" placeholder="email@example.com" required>
+                  </div>
+                  <div id="emailForm"></div>
               </div>
-              <div id="emailForm"></div>
+              <!--Número de Teléfono-->
+              <div class="col-md-4">
+                <label class="editForm__label">Número de teléfono*</label>
+                <div class="inputForm">
+                  <input type="tel" class="input" id="telefono" placeholder="55 + 1234 5678" min="0" pattern="[0-9]{10}" required>
+                </div>
+                <div id="telefonoForm"></div>
+              </div>
             </div>
             <!--Nombre-->
             <div>
@@ -81,29 +91,23 @@
               </div>
               <div id="nombreForm"></div>
             </div>
-            <!--Apellido Pa-->
-            <div>
-                <label class="editForm__label">Apellido Paterno*</label>
+            <div class="row">
+              <!--Apellido Pa-->
+              <div class="col-md-6">
+                  <label class="editForm__label">Apellido Paterno*</label>
+                  <div class="inputForm">
+                      <input type="text" class="input" id="app" placeholder="Apellido Paterno" required>
+                  </div>
+                  <div id="appForm"></div>
+              </div>
+              <!--Apellido Ma-->
+              <div class="col-md-6">
+                <label class="editForm__label">Apellido Materno*</label>
                 <div class="inputForm">
-                    <input type="text" class="input" id="app" placeholder="Apellido Paterno" required>
+                    <input type="text" class="input" id="apm" placeholder="Apellido Materno" required>
                 </div>
-                <div id="appForm"></div>
-            </div>
-            <!--Apellido Ma-->
-            <div>
-              <label class="editForm__label">Apellido Materno*</label>
-              <div class="inputForm">
-                  <input type="text" class="input" id="apm" placeholder="Apellido Materno" required>
+                <div id="apmForm"></div>
               </div>
-              <div id="apmForm"></div>
-            </div>
-            <!--Número de Teléfono-->
-            <div>
-              <label class="editForm__label">Número de teléfono*</label>
-              <div class="inputForm">
-                <input type="tel" class="input" id="telefono" placeholder="55 + 1234 5678" min="0" pattern="[0-9]{10}" required>
-              </div>
-              <div id="telefonoForm"></div>
             </div>
 
             <div class="button-container">
