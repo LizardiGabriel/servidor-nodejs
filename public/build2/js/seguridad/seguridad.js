@@ -18,6 +18,31 @@ const modal = Swal.mixin({
   }
 })
 
+window.onload = function () { 
+  if(window.location.pathname == "/seguridad/seguridad.html")
+    obtenerDatos();
+}
+
+function obtenerDatos() { 
+  console.log('ObtenerDatos');
+  fetch('/get-nombre')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Datos de la sesión:', data);
+            let nombrehtml = document.getElementById('nameGet');
+            nombrehtml.innerHTML = data.nombre;
+        })
+        .catch((error) => {
+            console.error('Error al obtener los datos de la sesión:', error);
+            modal.fire({
+                title: "Error",
+                icon: "error",
+                text: error,
+            });
+        }
+        );
+}
+
 function logout() {
   fetch("/seguridad/logout", {
     method: "GET"
