@@ -52,6 +52,7 @@ app.use(errorHandler());
 
 
 const rutas = [
+  //Recursos de imagen
     ['/prueba.ico', '../public/favicon.ico'],
     ['/img/BeeMeet2.png', '../public/build2/img/BeeMeet2.png'],
     ['/img/BeeMeet.png', '../public/build2/img/BeeMeet.png'],
@@ -63,7 +64,12 @@ const rutas = [
     ['/build/img/BeeMeet.png', '../public/build2/img/BeeMeet.png'],
     ['/img/icons/ico-view.svg', '../public/build2/img/icons/view.png'],
     ['/img/bee.png', '../public/build2/img/bee.png'],
+    ['/img/NUBE.png', '../public/build2/img/NUBE.png'],
+    ['/img/NUBES.png', '../public/build2/img/NUBES.png'],
     ['/img/EDIFICIO.png', '../public/build2/img/EDIFICIO.png'],
+    ['/img/EDIFICIOS-GRADIANT.png', '../public/build2/img/EDIFICIOS-GRADIANT.png'],
+    ['/img/EDIFICIOS-GRADIANT3.png', '../public/build2/img/EDIFICIOS-GRADIANT3.png'],
+    ['/img/EDIFICIOS-GRADIANT4.png', '../public/build2/img/EDIFICIOS-GRADIANT4.png'],
 
     
     ['/js/buttonProfiles.js', '../public/build2/js/buttonProfiles.js'],
@@ -583,7 +589,7 @@ app.get('/invitado/test', (req, res) => {
 
 
 
-app.use('/not-found', express.static('./public/notFound.html'));
+app.use('/not-found', express.static('./public/build2/views/Sesiones/notFound.html'));
 
 
 
