@@ -57,7 +57,7 @@
                 </div>                
               </div>
                 
-              <div class="row w-100">
+              <div id="conatinerRepetible" class="row w-100">
                 <div class="col-md-9 form-group mb-12 row has-validation Formulario__inputGroup">
                   <label class="col-sm-5" for="isRepetible">¿Es repetible?</label>
                   <div class="form-check col-sm-6 Formulario__inputGroup__opCheck">
@@ -87,8 +87,8 @@
                     <div class="invalid-feedback">Seleccione un nombre de sala.</div>
                 </div>
               </div>
-    
-                <button class="button__submit" type="submit" onclick="crearReunion()">Crear Reunión</button>
+                <button id="buttonCrear" class="button__submit" type="submit" onclick="crearReunion()">Crear Reunión</button>
+                <button id="buttonReagendar" style="display: none;" class="button__submit" type="submit" onclick="ReagendarReunion()">Reagendar Reunión</button>
             </form>
         </div>
     </main>

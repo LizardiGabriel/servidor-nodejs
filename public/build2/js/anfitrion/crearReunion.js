@@ -4,7 +4,7 @@ console.log(urlParams);
 const idReunion = parseInt(urlParams.get('idReunion'));
 const horaInicio = urlParams.get('hora_i');
 const horaFin = urlParams.get('hora_f');
-
+const idRep = parseInt(urlParams.get('idRep'));
 
 window.onload = async  function () {
     await obtenerSalas();   
@@ -27,6 +27,9 @@ function cargarDatosReunion(idReunion){
         document.getElementById("time1ID").disabled=true;
         document.getElementById("time2ID").value=horaFin;
         document.getElementById("time2ID").disabled=true;
+        document.getElementById("conatinerRepetible").style.display="none";
+        document.getElementById("buttonCrear").style.display="none";
+        document.getElementById("buttonReagendar").style.display="block";        
         var select = document.getElementById('nombreSala');
         var opciones = select.options;
       
@@ -124,6 +127,56 @@ function crearReunion() {
         });
 }
 
+function ReagendarReunion(){
+    const fecha_reunion = document.getElementById('dateID').value;
+    const envJson = {
+        idReunion: idReunion,
+        idRep: idRep,
+        fecha_reunion: fecha_reunion
+    };
+    console.log(envJson);
+    
+    fetch('reunionesReagendar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(envJson)
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('data:', data);
+            if (data.respuesta === 'true') {
+                modal.fire({
+                    title: "Reunión reagendada",
+                    icon: "success",
+                    text: "La reunión se ha actualizado exitosamente",
+                }).then(() => {
+                    window.location.href = '/anfitrion/reuniones.html';
+                });
+            } else {
+                modal.fire({
+                    title: "Error",
+                    icon: "error",
+                    text: data.error,
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            modal.fire({
+                title: "Error",
+                icon: "error",
+                text: data.error,
+            });
+        });
+
+}
+
+
+
+
+
 async function obtenerSalas() {
     fetch('salas')
         .then(response => response.json())
@@ -145,6 +198,8 @@ async function obtenerSalas() {
             console.error('Error:', error);
         });
 }
+
+
 
 const botonAddFecha = document.getElementById("btnAgregarFecha");
 

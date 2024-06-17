@@ -159,6 +159,22 @@ async function updateSalaBD(id, nombreSala, cupoMaximo, piso, numerito, estatus)
     }
 }
 
+async function updateDateRepBD(id,fecha) {
+    console.log('peticion a la bd de updateFechaRepeticion');
+    try {
+        const repeActualizada = await prisma.repeticion.update({
+            where: { id_repeticion: Number(id) },
+            data: {
+                fecha_repeticion: fecha
+            }
+        });
+        return repeActualizada;
+    } catch (error) {
+        console.error('Error al actualizar la repeticion:', error);
+        return json({ error: 'Error al actualizar la repeticion' });
+    }
+}
+
 async function deleteSalaBD(id) {
     console.log('peticion a la bd de deleteSala');
     try {
@@ -345,9 +361,6 @@ async function deleteInvitadoBD(id) {
             where: { id_invitado: Number(id) }
         });
         
-        await prisma.invitado.delete({
-          where: { id_invitado: Number(id) }
-        });
       }catch (error) {
         console.error('Error al eliminar usuario:', error);
         return json({ error: 'Error al eliminar usuario' });
@@ -1340,6 +1353,7 @@ module.exports = {
 
     createColadoBD,
     updateHoraReunionBD,
+    updateDateRepBD,
 
     getReunionesNuebasByIdBD,
 

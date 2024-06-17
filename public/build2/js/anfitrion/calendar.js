@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.log(data);
                     let reunionesmap=[];
                     for(const reunion of data){
+                        let indice=0;
                         for(const fecha of reunion.fechasRepeticion){
                             const evento={
                                 id_repeticion: fecha.id_repeticion,
@@ -23,11 +24,12 @@ document.addEventListener('DOMContentLoaded', function() {
                                 location: "Num sala "+reunion.id_sala,
                                 url: "/anfitrion/reuniones/ConsultarDatos.html?idReunion="+reunion.id_reunion+"&"+"fecha_i="+fecha.fecha_repeticion+
                                 "&"+"fecha_f="+fecha.fecha_repeticion+"&"+"hora_i="+fecha.hora_inicio_repeticion+"&"+"hora_f="+fecha.hora_fin_repeticion
-                                +"&"+"idRepeticion="+fecha.id_repeticion,
+                                +"&"+"idRepeticion="+fecha.id_repeticion+"&"+"idRep="+fecha.id_repeticion,
                                 timeStart: fecha.hora_inicio_repeticion,
                                 timeEnd: fecha.hora_fin_repeticion
                             }
                             reunionesmap.push(evento);
+                            indice++;
                         }
                     }
                     console.log(reunionesmap);

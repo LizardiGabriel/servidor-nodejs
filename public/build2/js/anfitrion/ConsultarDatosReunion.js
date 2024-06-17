@@ -31,8 +31,9 @@ const idReunion = parseInt(urlParams.get('idReunion'));
 const fecha = urlParams.get('fecha_i');
 const hora_i=urlParams.get('hora_i');
 const hora_f=urlParams.get('hora_f');
+const idRep=parseInt(urlParams.get('idRep'));
 function cargarDatos() {
-    console.log("Cargando datos");
+    console.log("Cargando datos");url
     fetch(`/anfitrion/reuniones/detalles/${idReunion}`)
         .then(response => response.json())
         .then(data => {
@@ -150,7 +151,7 @@ document.getElementById("botonAgregar").addEventListener('click', function(){
 });
 
 document.getElementById("reagendar").addEventListener('click', function(){
-    window.location.href="/anfitrion/crearReunion?idReunion="+idReunion+"&"+"hora_i="+hora_i+"&"+"hora_f="+hora_f;
+    window.location.href="/anfitrion/crearReunion?idReunion="+idReunion+"&"+"hora_i="+hora_i+"&"+"hora_f="+hora_f+"&"+"idRep="+idRep;
 });
 
 function enviarInvitacion() {

@@ -402,6 +402,7 @@ app.get('/anfitrion/catalogo/usuarioEmail/:email', admin.getUsuarioByEmail);
 
 
 app.post('/anfitrion/reuniones', anfitrion.setNewReunion);
+app.post('/anfitrion/reunionesReagendar', anfitrion.reagendarReunion);
 app.post('/anfitrion/reuniones/invitacion', anfitrion.setInvitacion);
 app.put('/anfitrion/catalogo/usuarios/:id', admin.updateUsuario);
 app.use('/anfitrion/reuniones/ConsultarDatos.html', express.static('./public/build2/views/Anfitrion/ConsultarDatosReunion.html'));
