@@ -348,8 +348,7 @@ async function obtenerDetallesInvitacionSeguridadBD(id_invitacion) {
                 Colado: {
                     select:{
                         id_invitado: true,
-                        isConfirmed: true,
-                        email_colado: true,
+                        isConfirmed: true
                     }
                 },
             }

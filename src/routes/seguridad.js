@@ -36,7 +36,8 @@ async function getReunionesAll(req, res) {
             const detallesRepeticion = repeticiones.map(rep => ({
                 fecha: rep.fecha_repeticion,
                 hora_inicio: rep.hora_inicio_repeticion,
-                hora_fin: rep.hora_fin_repeticion
+                hora_fin: rep.hora_fin_repeticion,
+                id_repeticion: rep.id_repeticion
             }));
 
             for(const detalle of detallesRepeticion){
@@ -68,7 +69,8 @@ async function getReunionesAll(req, res) {
                             //repeticiones: detallesRepeticion, // Añadir detalles de las repeticiones
                             fecha_reunion: detalle.fecha,
                             hora_inicio: detalle.hora_inicio,
-                            hora_fin: detalle.hora_fin
+                            hora_fin: detalle.hora_fin,
+                            id_repeticion: detalle.id_repeticion
 
 
                         };

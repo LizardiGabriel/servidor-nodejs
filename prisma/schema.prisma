@@ -145,18 +145,17 @@ model Automovil {
   marca_automovil     String
   modelo_automovil    String
 
-  invitacion Invitacion   @relation(fields: [id_invitacion], references: [id_invitacion])
+  invitacion       Invitacion         @relation(fields: [id_invitacion], references: [id_invitacion])
   acceso_automovil acceso_automovil[]
 }
 
 model Colado {
-  id_colado     Int @id @default(autoincrement())
+  id_colado     Int        @id @default(autoincrement())
   id_invitado   Int
   id_invitacion Int
   isConfirmed   Int
-  email_colado  String
-  invitado   Invitado   @relation(fields: [id_invitado], references: [id_invitado])
-  Invitacion Invitacion @relation(fields: [id_invitacion], references: [id_invitacion])
+  invitado      Invitado   @relation(fields: [id_invitado], references: [id_invitado])
+  Invitacion    Invitacion @relation(fields: [id_invitacion], references: [id_invitacion])
 }
 
 model acceso_dispositivo_electronico {
@@ -169,8 +168,8 @@ model acceso_dispositivo_electronico {
   dispositivo_electronico dispositivo_electronico @relation(fields: [id_dispositivo_electronico], references: [id_dispositivo_electronico])
 }
 
-//tabla para acceso de automovil 
-model acceso_automovil{
+// tabla para acceso de automovil
+model acceso_automovil {
   id_acceso_automovil Int @id @default(autoincrement())
   id_acceso           Int
   id_automovil        Int
