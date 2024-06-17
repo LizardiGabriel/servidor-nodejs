@@ -44,27 +44,40 @@ function obtenerDatos() {
 }
 
 function logout() {
-  fetch("/seguridad/logout", {
-    method: "GET"
-  })
-  .then(response => {
-    if (response.ok) {
-      window.location.href = "/home/login.html";
-    } else {
-      modal.fire({
-        icon: "error",
-        text: "Error al cerrar sesión: " + response.statusText,
-      });
-      console.error("Error al cerrar sesión:", response.statusText);
-    }
-  })
-.catch(error => {
   modal.fire({
-    icon: "error",
-    text: error,
+    timer: undefined,
+    icon: 'question',
+    title: "¿Desea cerrar sesión?",
+    showDenyButton: true,
+    confirmButtonText: "Cerrar sesión",
+    denyButtonText: `Cancelar`
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch("/seguridad/logout", {
+        method: "GET"
+      })
+      .then(response => {
+        if (response.ok) {
+          window.location.href = "/home/login.html";
+        } else {
+          modal.fire({
+            icon: "error",
+            text: "Error al cerrar sesión: " + response.statusText,
+          });
+          console.error("Error al cerrar sesión:", response.statusText);
+        }
+      })
+      .catch(error => {
+        modal.fire({
+          icon: "error",
+          text: error,
+        });
+        console.error("Error al cerrar sesión:", error)
+      });
+    } else if (result.isDenied) {
+      
+    }
   });
-  console.error("Error al cerrar sesión:", error)
-});
 }
 
 //Funciones de redireccionamiento

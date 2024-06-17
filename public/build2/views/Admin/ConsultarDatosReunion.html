@@ -25,11 +25,11 @@
                         onclick="window.location.href='/admin/catalogo/GestionarReuniones.html'">Regresar</button>
                 </div>
                 <form class="DetalleReunion row g-3">
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         <label for="reunionId">Reunión:</label>
                         <input type="text" class="Ninput" id="idReunion" value="ID_Reu" readonly disabled>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-6">
                         <label for="reunionTitulo">Título:</label>
                         <input type="text" class="Ninput" id="nombreReunion" value="Negociación con Cliente" readonly
                             disabled>
@@ -82,6 +82,22 @@
 
     <div id="footers"> </div>
 
+    <!-- Estilos para el Swal -->
+    <style>
+      .titleSize{
+        font-size: 4rem;
+      }
+      .contentSize{
+        font-size: 2rem !important;
+      }
+      .buttonSize{
+        font-size: 2rem !important;
+      }
+      .iconSize{
+        font-size: 1.5rem;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../js/admin/consultarDatosReunion.js"></script>
     <script src="../../js/admin/headers.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
