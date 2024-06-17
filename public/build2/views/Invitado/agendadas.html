@@ -66,7 +66,7 @@
                         <td>${reunion.fechasRepeticion[0].hora_inicio_repeticion} - ${reunion.fechasRepeticion[0].hora_fin_repeticion}
                         </td>
                         <td>${reunion.nombreUsuario}</td>
-                        <td><button class="btn btn-primary" onclick="recuperarQR(${reunion.invitaciones[0].id_invitacion},${reunion.id_reunion})">Recuperar</button></td>
+                        <td class="acciones"><button class="btn btn-sm eliminar" onclick="recuperarQR(${reunion.invitaciones[0].id_invitacion},${reunion.id_reunion})"><img src="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/07/1499401426qr_icon.svg" alt="Escaner"></button></td>
                     `;
 
                     tbody.appendChild(fila);
