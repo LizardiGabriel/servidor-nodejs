@@ -2,7 +2,6 @@ window.onload = function () {
     obtenerDatos();
 }
 function obtenerDatos() {
-
     console.log('obtenerDatos');
     fetch('/get-nombre')
         .then(response => response.json())

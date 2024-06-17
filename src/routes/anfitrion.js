@@ -747,7 +747,7 @@ async function setInvitacion(req, res) {
 
         // mandar el email, el email debe tener
         console.log('emailText: ', emailText);
-        const envio = await mail(emailText, correoInv);
+        const envio = await mail(emailText, correoInv,'BeeCoders-Invitación a reunión');
         console.log('envio: ', envio);
         res.json({ message: 'succesful', status: 200});
 

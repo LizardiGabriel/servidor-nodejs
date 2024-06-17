@@ -142,6 +142,14 @@ prueba2.insertAdjacentHTML('beforeend', returnHTML2());
 
 function returnHTML2() {
     return `
+    <footer class="footer">
+        <hr>
+        <p class="copyright">Copyright. Todos los derechos reservados. BeeMeet © 2024</p>
+    </footer>`;
+}
+
+/*function returnHTML2() {
+    return `
         <footer class="footer">
     <div class="contenedor">
         <div class="beemeet">
@@ -175,8 +183,5 @@ function returnHTML2() {
     <hr>
     <p class="copyright">Copyright. Todos los derechos reservados. BeeMeet © 2024</p>
 </footer>
-
-    
     `;
-}
-
+}*/
