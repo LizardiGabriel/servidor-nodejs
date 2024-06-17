@@ -449,6 +449,9 @@ app.use('/seguridad/EditarDatosPersonales.html', express.static('./public/build2
 app.use('/seguridad/escanearQR.html', express.static('./public/build2/views/seguridad/scanearQr.html'));
 app.get('/seguridad/getFotoPerfil', admin.getFotoAdmin);
 app.post('/seguridad/registrarHora', seguridad.registrarHora);
+app.post('/seguridad/confirmarDispositivo', seguridad.confirmarDispositivo);
+app.post('/seguridad/confirmarAutomovil', seguridad.confirmarAutomovil);
+
 
 //app.post('/seguridad/registrarDispositivo', seguridad.registrarDispositivo);
 //app.post('/seguridad/registrarAutomovil', seguridad.registrarAutomovil);
