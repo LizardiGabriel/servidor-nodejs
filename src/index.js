@@ -520,7 +520,7 @@ app.use('/invitado/home/agendadas.html', express.static('./public/build2/views/I
 
 app.get('/invitado/home/reunionesNuevas', invitado.reunionesNuevas);
 app.get('/invitado/home/reunionesConfirmadas', invitado.reunionesPendientes);
-
+app.post('/invitado/recuperarQr', invitado.recuperarQr)
 
 
 

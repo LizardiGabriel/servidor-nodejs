@@ -5,8 +5,6 @@ const fs = require('fs');
 const path = require('path');
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
-
-
 const { hashPassword, comparePassword } = require('../tools/cipher');
 const { generatePassword } = require('../tools/tools');
 const { generateQR } = require('../tools/tools');
@@ -28,6 +26,18 @@ async function logout(req, res) {
     console.log('mensaje --> logout');
     req.session.destroy();
     res.redirect('/');
+}
+
+function getemail(jsonToken){
+    let email = "";
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            email= decoded.email;
+        }
+    });
+    return email;
 }
 
 function getIdInvitado(jsonToken){
@@ -113,6 +123,21 @@ async function obtenerExtensionDeBase64(cadenaBase64) {
     }
     return ''; // Devuelve una cadena vacía si no se encuentra el tipo MIME
 }
+
+function encodeImageToBase64(filePath) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(filePath, (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                // Convertir los datos de la imagen a base64
+                const base64Image = data.toString('base64');
+                resolve(base64Image);
+            }
+        });
+    });
+}
+
 
 
 
@@ -280,7 +305,7 @@ async function aceptarReunion(req, res){
 
             // mandar el email, el email debe tener
             console.log('emailText: ', emailText);
-            const envio = await mail(emailText, colado);
+            const envio = await mail(emailText, colado,'BeeCoders-Invitación a reunión');
             console.log('envio: ', envio);
 
             // tabla de colados
@@ -329,6 +354,315 @@ async function obtenerDetallesReunion(req, res){
 
 }
 
+async function recuperarQr(req,res){
+    const {id_invitacion,id_reunion}=req.body;
+    const reunion= await getDetallesReunionByIdBD(id_reunion);
+    const invitacion= await getInvitacionByIdBD(id_invitacion);
+    const correoInv= getemail(req.session.jwt);
+    const rutaQr=path.join('public/build2',invitacion.qr_acceso);
+    const fotoQr= await encodeImageToBase64(rutaQr);
+    const invitado= await getInvitadoByEmailBD(correoInv);
+    let emailText = `<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeeCoders - Recuperar QR</title>
+    <style type="text/css">
+        body {
+            background-color: #f9f8f8;
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            font-family: Arial, sans-serif;
+        }
+
+        .ContenidoCorreo {
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            max-width: 80%;
+            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.33);
+            border-radius: 10px;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .header .header_img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .footer .footer_img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .ContenidoCorreo .Correo {
+            max-width: 80%;
+            padding: 4rem;
+        }
+
+        .saludo,
+        .correoDiv,
+        .contraDiv,
+        .enlaceSesion {
+            margin-left: 2rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .firma,
+        .qrReunion {
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .firma #BeeCoders {
+            font-size: 1.3rem;
+        }
+
+        input {
+            border: none;
+            font-size: 1.1rem;
+            overflow: hidden;
+            color: #48716E;
+            font-weight: bold;
+        }
+
+        .inputTabla {
+            color: #333333;
+            font-weight: 400;
+            width: 100%;
+            white-space: pre-wrap;
+        }
+
+        input .inputCorreo {
+            min-width: 70%;
+        }
+
+        #enlace {
+            width: 75%;
+        }
+
+        .imagen,
+        .QR {
+            width: 15rem;
+        }
+
+        h3,
+        h2 {
+            padding-right: 0.5rem;
+        }
+
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+            margin: 0px auto;
+        }
+
+        .tg-wrap {
+            margin-bottom: 3rem;
+            margin-top: 3rem;
+        }
+
+        .tg th,
+        .tg td {
+            border-color: #48716E;
+            border-style: solid;
+            border-width: 3px;
+            font-size: 14px;
+            font-weight: normal;
+            overflow: hidden;
+            padding: 10px 5px;
+            word-break: normal;
+        }
+
+        .tg .tg-1,
+        .tg .tg-2 {
+            background-color: #dbf1ee;
+            border-color: #48716e;
+            color: #333333;
+            text-align: left;
+            vertical-align: middle
+        }
+
+        .tg .tg-2 {
+            text-align: center;
+        }
+
+        #bold-font {
+            font-weight: bold;
+        }
+
+        @media only screen and (max-width: 800px) {
+
+            body,
+            input {
+                font-size: 0.8rem;
+            }
+
+            .ContenidoCorreo .Correo {
+                max-width: 80%;
+                padding: 2rem;
+            }
+
+            input {
+
+                text-align: center;
+            }
+
+            #inicioSesion {
+                padding-right: 0;
+            }
+
+            .saludo,
+            .correoDiv,
+            .contraDiv,
+            .enlaceSesion {
+                margin-left: 0rem;
+                margin-bottom: 1.5rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .firma #BeeCoders {
+                font-size: 1rem;
+            }
+
+            .imagen,
+            .QR {
+                width: 10rem;
+            }
+
+            .tg th,
+            .tg td {
+                font-size: 10px;
+            }
+        }
+
+        @media screen and (max-width: 767px) {
+            .tg {
+                width: auto !important;
+            }
+
+            .tg col {
+                width: auto !important;
+            }
+
+            .tg-wrap {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                margin: auto 0px;
+            }
+        }
+
+        @media screen and (max-width: 555px) {
+
+            body,
+            input {
+                font-size: 0.6rem;
+            }
+
+            .ContenidoCorreo {
+                max-width: 90%;
+            }
+
+            .ContenidoCorreo .Correo {
+                max-width: 90%;
+                padding: 0.8rem;
+            }
+
+            input {
+                text-align: center;
+            }
+
+            #inicioSesion {
+                padding-right: 0;
+            }
+
+            .saludo,
+            .correoDiv,
+            .contraDiv,
+            .enlaceSesion {
+                margin-left: 0rem;
+                margin-bottom: 1rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .firma #BeeCoders {
+                font-size: 0.8rem;
+            }
+
+            .imagen {
+                width: 6rem;
+            }
+
+            .tg th,
+            .tg td {
+                font-size: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="ContenidoCorreo">
+        <section class="header">
+            <img class="header_img" src="https://i.imgur.com/gol0fCj.png">
+        </section>
+
+        <section class="Correo">
+            <div class="Informacion">
+                <div class="saludo">
+                    <h3>Hola</h3>
+                    <input type="text" id="nombreInvitado" class="inputNombre" value="${invitado.nombre_invitado} ${invitado.apellido_paterno_invitado}"
+                        readonly disabled>
+                </div>
+                <p>Solicitaste la recuperación de QR para la siguiente reunión: <b>${reunion.titulo_reunion}</b></p>
+            </div>
+            <div class="DatosCuenta">
+                <p>No olvides que el día de la reunión deberás presentar el siguiente QR que contiene toda la
+                    información que registraste de tus datos personales, es importante que lo muestres para poder
+                    accesar al edificio:
+                </p>
+                <div class="qrReunion">
+                    <img id="QR" src="data:image/png;base64,${fotoQr}" alt="Foto qr">
+                </div>
+            </div>
+            <div class="firma">
+                <h3>ATTE:</h3>
+                <p id="BeeCoders"> BeeCoders &#128029;</p>
+            </div>
+        </section>
+
+        <section class="footer">
+            <img class="footer_img" src="https://i.imgur.com/MyTjwOi.png">
+        </section>
+
+    </main>
+
+</body>
+
+</html>
+    `;
+    console.log(emailText);
+    const envio = await mail(emailText, correoInv,'BeeCoders-Recuperacion del QR');
+    console.log('envio: ', envio);
+    res.status(200).json({ message: 'succesful', status: 200});
+}
+
 
 
 
@@ -352,6 +686,7 @@ module.exports = {
     obtenerDetallesReunion,
     guardarQR,
     aceptarReunion,
+    recuperarQr
     
 };
 
