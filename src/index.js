@@ -70,6 +70,8 @@ const rutas = [
     ['/img/EDIFICIOS-GRADIANT.png', '../public/build2/img/EDIFICIOS-GRADIANT.png'],
     ['/img/EDIFICIOS-GRADIANT3.png', '../public/build2/img/EDIFICIOS-GRADIANT3.png'],
     ['/img/EDIFICIOS-GRADIANT4.png', '../public/build2/img/EDIFICIOS-GRADIANT4.png'],
+    ['/img/hexagono.png', '../public/build2/img/hexagono.png'],
+    ['/img/hexagono2.png', '../public/build2/img/hexagono2.png'],
 
     
     ['/js/buttonProfiles.js', '../public/build2/js/buttonProfiles.js'],
@@ -139,6 +141,8 @@ const rutas = [
     ['/js/seguridad/visualizarAgendaDelDia.js', '../public/build2/js/seguridad/visualizarAgendaDelDia.js'],
     ['/js/seguridad/escanearQR.js', '../public/build2/js/seguridad/escanearQR.js'],
     ['/js/consultarDatosDelInvitado.js', '../public/build2/js/consultarDetallesInvitado.js'],
+    ['/js/qrCode.min.js', '../public/build2/js/seguridad/qrCode.min.js'],
+    ['/js/scanQR.js', '../public/build2/js/seguridad/scanQR.js'],
     
 
     //Rutas de css de toda la interfaz

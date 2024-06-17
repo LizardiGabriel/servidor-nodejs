@@ -63,7 +63,6 @@
         font-size: 1.5rem;
       }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
       //Fecha y Hora en tiempo real
       function actualizarFechaHora() {
@@ -76,12 +75,10 @@
       setInterval(actualizarFechaHora, intervaloActualizacion);
       let table;
       
-      window.onload = function () {
         actualizarFechaHora();
         console.log("Hola");
         obtenerReuniones();
         
-    }
 
 
     let dataTable;
