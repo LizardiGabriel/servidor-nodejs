@@ -108,11 +108,6 @@
                 </div>
             </div>
 
-            <div class="BotonesEyS">
-                <input type="submit" value="Guardar" class="BotonesEyS__Guardar" disabled>
-            </div>
-
-
             <div class="HeroDispositivos">
                 <h2>Automóviles</h2>
                 <div class="__Tabla table-responsive paragraph-example">
@@ -131,18 +126,34 @@
                     </table>
                 </div>
             </div>
+        </div>
 
-
-            <div class="BotonesEyS">
-                <input type="submit" value="Guardar" class="BotonesEyS__Guardar" disabled>
-            </div>
+        <div>
+            <button id="confirmarDispositivos">Confirmar Dispositivos</button>
+            <button id="confirmarAutomoviles">Confirmar Automóviles</button>
         </div>
     </main>
 
     <div id="footers"></div>
 
 
-    <script>
+<!-- Estilos para el Swal -->
+<style>
+  .titleSize{
+    font-size: 4rem;
+  }
+  .contentSize{
+    font-size: 2rem !important;
+  }
+  .buttonSize{
+    font-size: 2rem !important;
+  }
+  .iconSize{
+    font-size: 1.5rem;
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
         window.onload = function () {
             let idReunion = 0;
             let idInvitado = 0;
@@ -153,12 +164,12 @@
             idInvitado = url.get('idInvitado');
             idInvitacion = url.get('idInvitacion');
 
-
             const data = {
                 idReunion: idReunion,
                 idInvitado: idInvitado,
                 idInvitacion: idInvitacion
             }
+
             fetch("/seguridad/reuniones/invitadoInf", {
                 method: "POST",
                 headers: {
@@ -169,29 +180,10 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log('Success:', data);
-                    /*
-                    data.id_invitacion
-
-
-                    data.Acceso []
-                    data.Automovil [
-                    data.Colado []
-                    data.dispositivo_electronico []
-                    data.invitado {}
-                    data.reunion {}
-
-                    data.es_colado_invitado
-                    data.habilitado
-                    data.id_invitado
-                    data.id_reunion
-                    data.isConfirmed
-                    data.numero_colados
-                    data.qr_acceso
-                    * */
 
                     document.getElementById("fotitoInvitado").src = data.invitado.foto_invitado;
-                    document.getElementById("nombre_invitado").value = data.invitado.nombre_invitado + " " + data.invitado.apellido_paterno_invitado + " " + data.invitado.apellido_materno_invitado;
-                    document.getElementById("nombre_anfitrion").value = data.reunion.usuario.nombre_usuario + " " + data.reunion.usuario.apellido_paterno_usuario + " " + data.reunion.usuario.apellido_materno_usuario;
+                    document.getElementById("nombre_invitado").value = `${data.invitado.nombre_invitado} ${data.invitado.apellido_paterno_invitado} ${data.invitado.apellido_materno_invitado}`;
+                    document.getElementById("nombre_anfitrion").value = `${data.reunion.usuario.nombre_usuario} ${data.reunion.usuario.apellido_paterno_usuario} ${data.reunion.usuario.apellido_materno_usuario}`;
                     document.getElementById("empresa_invitado").value = data.invitado.empresa_invitado;
                     document.getElementById("identificacion_invitado").value = data.invitado.identificacion_invitado;
                     document.getElementById("piso_sala").value = data.reunion.sala.piso_sala;
@@ -204,11 +196,10 @@
                             <td>${dispositivo.marca_dispositivo_electronico}</td>
                             <td>${dispositivo.modelo_dispositivo_electronico}</td>
                             <td>${dispositivo.no_serie_dispositivo_electronico}</td>
-                            <td><input type="checkbox" id="dispositivo_${dispositivo.id_dispositivo_electronico}" value="${dispositivo.id_dispositivo_electronico}"></td>
+                            <td><input type="checkbox" class="dispositivoPresente" value="${dispositivo.id_dispositivo_electronico}"></td>
                         `;
                         tablaDispositivos.appendChild(fila);
                     });
-
 
                     let tablaAutos = document.getElementById("tabla_carros");
                     data.Automovil.forEach(carro => {
@@ -218,14 +209,12 @@
                         <td>${carro.modelo_automovil}</td>
                         <td>${carro.matricula_automovil}</td>
                         <td>${carro.color_automovil}</td>
-                        <td><input type="checkbox" id="auto_${carro.id_automovil}" value="${carro.id_automovil}"></td>
+                        <td><input type="checkbox" class="automovilPresente" value="${carro.id_automovil}"></td>
                     `;
                         tablaAutos.appendChild(fila);
                     });
-                    
 
-                    // Llenar la tabla de accesos
-                    const tablaAcceso = document.getElementById("tabla_acceso");
+                    let tablaAcceso = document.getElementById("tabla_acceso");
                     data.acceso.forEach(acceso => {
                         const row = tablaAcceso.insertRow();
                         row.insertCell(0).textContent = acceso.hora_entrada;
@@ -243,39 +232,39 @@
                     console.error('Error:', error);
                 });
 
-                    // Botones de registrar entrada y salida
-                    document.getElementById("btnEntrada").onclick = function () {
-                        registrarHora("entrada");
+            document.getElementById("btnEntrada").onclick = function () {
+                registrarHora("entrada");
+            };
+
+            document.getElementById("btnSalida").onclick = function () {
+                registrarHora("salida");
+            };
+
+            function registrarHora(tipo) {
+                const tablaAcceso = document.getElementById("tabla_acceso");
+                const currentTime = new Date().toLocaleTimeString();
+
+                if (tipo === "entrada") {
+                    const row = tablaAcceso.insertRow();
+                    row.insertCell(0).textContent = currentTime;
+                    row.insertCell(1).textContent = "";
+
+                    const deleteCell = row.insertCell(2);
+                    const deleteButton = document.createElement("button");
+                    deleteButton.textContent = "Eliminar";
+                    deleteButton.onclick = function () {
+                        row.remove();
                     };
+                    deleteCell.appendChild(deleteButton);
 
-                    document.getElementById("btnSalida").onclick = function () {
-                        registrarHora("salida");
-                    };
-
-                    /*// Registro de dispositivos y automóviles
-                    document.querySelectorAll('#tabla_dispositivos input[type="checkbox"]').forEach(function (checkbox) {
-                        checkbox.addEventListener('change', function () {
-                            if (this.checked) {
-                                registrarDispositivo(this.value);
-                            }
-                        });
-                    });
-
-                    document.querySelectorAll('#tabla_carros input[type="checkbox"]').forEach(function (checkbox) {
-                        checkbox.addEventListener('change', function () {
-                            if (this.checked) {
-                                registrarAutomovil(this.value);
-                            }
-                        });
-                    });*/
-                    function registrarHora(tipo) {
-                    const tablaAcceso = document.getElementById("tabla_acceso");
-                    const currentTime = new Date().toLocaleTimeString(); // Obtener la hora actual
-
-                    if (tipo === "entrada") {
+                } else if (tipo === "salida") {
+                    const lastRow = tablaAcceso.rows[tablaAcceso.rows.length - 1];
+                    if (lastRow && lastRow.cells[1].textContent === "") {
+                        lastRow.cells[1].textContent = currentTime;
+                    } else {
                         const row = tablaAcceso.insertRow();
-                        row.insertCell(0).textContent = currentTime; // Establecer la hora actual en Hora de Entrada
-                        row.insertCell(1).textContent = ""; // Celda vacía para Hora de Salida
+                        row.insertCell(0).textContent = "";
+                        row.insertCell(1).textContent = currentTime;
 
                         const deleteCell = row.insertCell(2);
                         const deleteButton = document.createElement("button");
@@ -284,47 +273,97 @@
                             row.remove();
                         };
                         deleteCell.appendChild(deleteButton);
-
-                    } else if (tipo === "salida") {
-                        const lastRow = tablaAcceso.rows[tablaAcceso.rows.length - 1];
-                        if (lastRow && lastRow.cells[1].textContent === "") { // Verificar si la última fila y su celda existen y si la celda de Hora de Salida está vacía
-                            lastRow.cells[1].textContent = currentTime; // Establecer la hora actual en Hora de Salida
-                        } else {
-                            const row = tablaAcceso.insertRow();
-                            row.insertCell(0).textContent = ""; // Celda vacía para Hora de Entrada
-                            row.insertCell(1).textContent = currentTime; // Establecer la hora actual en Hora de Salida
-
-                            const deleteCell = row.insertCell(2);
-                            const deleteButton = document.createElement("button");
-                            deleteButton.textContent = "Eliminar";
-                            deleteButton.onclick = function () {
-                                row.remove();
-                            };
-                            deleteCell.appendChild(deleteButton);
-                        }
                     }
                 }
-                    
-                    // con el id de la invitacion registrar en tabla acceso hora acceso con un fetch
+            }
 
-                    // con el id de la invitacion registrar en tabla acceso hora salida con un fetch
-
-                    // con el id de la invitacion y el id del dispositivo registrar en tabla acceso los dispositivos con los que entra
-
-                    // con el id de la invitacion y el id del carro registrar en tabla acceso los carros con los que entra
-
-                    // implementar la opcion de eliminar un registro de la tabla acceso
-
-        
+            document.getElementById('confirmarDispositivos').addEventListener('click', async () => {
+                const dispositivos = Array.from(document.querySelectorAll('.dispositivoPresente:checked')).map(checkbox => checkbox.value);
+                if (dispositivos.length === 0) {
+                    // Mostrar mensaje de error porque no se seleccionó ningún dispositivo
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Por favor, selecciona al menos un dispositivo para confirmar.',
+                        confirmButtonText: 'Aceptar'
+                    });
+                    return; // Detener la ejecución
+                }
+                if (dispositivos.length > 0) {
+                    const response = await fetch('/seguridad/confirmarDispositivo', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ idInvitacion: idInvitacion, dispositivos })
+                    });
+                    const result = await response.json();
+                    console.log(result);
+                    //muestra mensaje en pantalla de "guardado exitoso" si el resultado es success
+                    if (result.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Guardado exitoso',
+                            showConfirmButton: true,
+                            timer: 1500
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error al guardar',
+                            text: 'Ocurrió un error al guardar los dispositivos',
+                            showConfirmButton: true,
+                            timer: 1500
+                        });
+                    }
 
                 }
+            });
 
-
+            document.getElementById('confirmarAutomoviles').addEventListener('click', async () => {
+                const automoviles = Array.from(document.querySelectorAll('.automovilPresente:checked')).map(checkbox => checkbox.value);
+                if (automoviles.length === 0) {
+                    // Mostrar mensaje de error porque no se seleccionó ningún dispositivo
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Por favor, selecciona al menos un automovil para confirmar.',
+                        confirmButtonText: 'Aceptar'
+                    });
+                    return; // Detener la ejecución
+                }
+                if (automoviles.length > 0) {
+                    const response = await fetch('/seguridad/confirmarAutomovil', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ idInvitacion: idInvitacion, automoviles })
+                    });
+                    const result = await response.json();
+                    console.log(result);
+                    //muestra mensaje en pantalla de "guardado exitoso" si el resultado es success
+                    if (result.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Guardado exitoso',
+                            showConfirmButton: true,
+                            timer: 1500
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error al guardar',
+                            text: 'Ocurrió un error al guardar los dispositivos',
+                            showConfirmButton: true,
+                            timer: 1500
+                        });
+                    }
+                }
+            });
+        }
     </script>
     <script src="../../js/seguridad/seguridad.js"></script>
     <script src="../../js/seguridad/headers.js"></script>
     <script src="../../js/header.js"></script>
     <script src="../../js/sidebar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
