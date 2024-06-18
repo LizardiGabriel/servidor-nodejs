@@ -6,6 +6,7 @@
     <script src='../../js/index.global.min.js'></script>
     <title>Calendario</title>
     <link rel="stylesheet" href="../../css/app.css">
+    <!-- <link rel="stylesheet" href="../../css/calendar.css"> -->
 </head>
 <body>
 
@@ -15,7 +16,20 @@
         <h2>Consultar reuniones</h2>
         <button onclick="window.location.href = '/anfitrion/crearReunion';">Crear reunión</button>
         <button onclick="window.location.href = '/anfitrion/reunionesLista';">(dev) Consultar reuniones</button>
-        <div style="max-width: 1000px; margin: auto;" id='calendar'></div>
+        
+        <section id="seccionCalendario">
+            <div id='calendar'></div>
+            
+            <!-- Modal para detalles del evento -->
+            <div id="eventModal" style="display:none;">
+                <div onclick="closeModal()"></div>
+                <div class="event-details">
+                    <h3>Events on <span id="modalDate"></span></h3>
+                    <div id="modalEvents"></div>
+                    <button onclick="closeModal()">Close</button>
+                </div>
+            </div>
+        </section>
     </main>
 
     <div id="footers"></div>
