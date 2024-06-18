@@ -155,11 +155,17 @@ fetch(`/anfitrion/getFotoPerfil`)
     .then(response => response.json())
     .then(data => {
         console.log(data);
-        element.style.backgroundImage = `url('${data.foto}')`;
+      element.style.backgroundImage = `url('${data.foto}')`;
+      element.style.backgroundSize = "100% 100%"; // Abarca el 100% del ancho y ajusta la altura automáticamente
+      element.style.backgroundRepeat = "no-repeat"; // No repetir la imagen
+      element.style.backgroundPosition = "center center"; // Centrar la imagen
         console.log(element.style.backgroundImage);
     }
     )
     .catch(error => {
-        element.style.backgroundImage = "url('../img/usuario.webp')";
+      element.style.backgroundImage = "url('../img/usuario.webp')";
+      element.style.backgroundSize = "100% 100%"; // Abarca el 100% del ancho y ajusta la altura automáticamente
+      element.style.backgroundRepeat = "no-repeat"; // No repetir la imagen
+      element.style.backgroundPosition = "center center"; // Centrar la imagen
         console.log(error);
     });

@@ -20,10 +20,12 @@
             <div class="Detalle paragraph-example">
                 <h1 class="consultar_titulo title-example text-center">Detalles de reunión</h1>
                 <div class="botones">
-                <button id="reagendar" class="reagendar_btn">Reagendar reunión</button>
-                    <button id="aumentar30" class="reagendar30m_btn">+30 minutos</button>
-                    <button id="aumentar60" class="reagendar1h_btn">+1 hora</button>
-                    <button class="cancelar_btn">Cancelar reunión</button>
+                  <button id="aumentar30" class="reagendar30m_btn">+30 minutos</button>
+                  <button id="aumentar60" class="reagendar1h_btn">+1 hora</button>
+                </div>
+                <div class="botones">
+                  <button id="reagendar" class="reagendar_btn">Reagendar reunión</button>
+                  <button class="cancelar_btn">Cancelar reunión</button>
                 </div>
                 <!--DETALLES DE REUNIÓN-->
                 <form class="DetalleReunion row g-3">
@@ -54,7 +56,7 @@
                     </div>
                 </form>
                 <div class="boton">
-                    <button id="agregarInv" class="aggInvitado__btn">Agregar invitado</button>
+                    <button id="agregarInv" class="aggInvitado__btn" style="width: 100%;">Agregar invitado</button>
                 </div>
                 <br>
                 <div id="formularioinv" style="display: none;">
@@ -101,6 +103,22 @@
 
     <div id="footers"> </div>
 
+    <!-- Estilos para el Swal -->
+    <style>
+      .titleSize{
+        font-size: 4rem;
+      }
+      .contentSize{
+        font-size: 2rem !important;
+      }
+      .buttonSize{
+        font-size: 2rem !important;
+      }
+      .iconSize{
+        font-size: 1.5rem;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../js/anfitrion/headers.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/sidebar.js"></script>

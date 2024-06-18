@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BeeMeet - Registro</title>
+    <title>BeeMeet - Pendientes</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -28,7 +28,7 @@
 <main class="contenidoPrincipal">
 
     <div id="contenedor_main">
-        <h1 class="reuniones__titulo">Reuniones Pendientes</h1>
+        <h1 class="reuniones__titulo">Reuniones pendientes</h1>
         <div class="misReunionesGRID" id="divReuniones"></div>
     </div>
 
@@ -109,12 +109,15 @@
                         <p class="anfitrionReunion">Sala: ${reunion.nombreSala}</p>
                         <!-- <p class="anfitrionReunion">Descripcion: ${reunion.descripcion_reunion}</p> -->
 
-                    </div>
+                    
                     <div class="buttonReunion__Container">
                         <button class="buttonReunion" onclick="aceptar(${reunion.id_reunion})" >Aceptar</button>
+                    </div>
+                    <br>
+                    <div class="buttonReunion__Container">
                         <button class="buttonReunion" onclick="declinar(${reunion.id_reunion})" >Eliminar</button>
                     </div>
-
+</div>
 
                     `;
                     divReuniones.appendChild(card);

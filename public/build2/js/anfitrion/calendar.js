@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     let eventosPorDia = {};
 
                     for(const reunion of data){
+                        let indice=0;
                         for(const fecha of reunion.fechasRepeticion){
                             const fechaFormateada = formatearFecha(fecha.fecha_repeticion);
 

@@ -31,8 +31,9 @@ const idReunion = parseInt(urlParams.get('idReunion'));
 const fecha = urlParams.get('fecha_i');
 const hora_i=urlParams.get('hora_i');
 const hora_f=urlParams.get('hora_f');
+const idRep=parseInt(urlParams.get('idRep'));
 function cargarDatos() {
-    console.log("Cargando datos");
+    console.log("Cargando datos");url
     fetch(`/anfitrion/reuniones/detalles/${idReunion}`)
         .then(response => response.json())
         .then(data => {
@@ -150,7 +151,7 @@ document.getElementById("botonAgregar").addEventListener('click', function(){
 });
 
 document.getElementById("reagendar").addEventListener('click', function(){
-    window.location.href="/anfitrion/crearReunion?idReunion="+idReunion+"&"+"hora_i="+hora_i+"&"+"hora_f="+hora_f;
+    window.location.href="/anfitrion/crearReunion?idReunion="+idReunion+"&"+"hora_i="+hora_i+"&"+"hora_f="+hora_f+"&"+"idRep="+idRep;
 });
 
 function enviarInvitacion() {
@@ -161,7 +162,6 @@ function enviarInvitacion() {
         idReunion,
         correoInv,
         acompanantesInv
-        
     };
     console.log(envJson);
     fetch(`/anfitrion/reuniones/invitacion`, {
@@ -173,9 +173,27 @@ function enviarInvitacion() {
     })
         .then(response => response.json())
         .then(data => {
-            console.log('data:', data);
+          modal.fire({
+            title: "Invitación creada",
+            icon: "success",
+            text: "La invitación se ha enviado exitosamente",
+          })
+
+          document.querySelector('.tabla__cuerpo').innerHTML = "";
+          cargarDatos();
+
+          //Desaparecemos el formulario y reestablecemos los campos
+          document.getElementById("correoInv").value = "";
+          document.getElementById("acompanantesInv").value = "" ;
+          document.getElementById("formularioinv").style.display="none";
+          console.log('data:', data);
         })
-        .catch(error => {
+      .catch(error => {
+            modal.fire({
+              title: "Error",
+              icon: "error",
+              text: "Error: " + error,
+            })
             console.error('Error:', error); 
         });
 }
@@ -198,10 +216,23 @@ function eliminarInvitado(id_invitado){
         }
         return response.json();  // Convertimos la respuesta a JSON
     })
-    .then(data => {
+      .then(data => {
+        modal.fire({
+          title: "Invitación cancelada",
+          icon: "success",
+          text: "La invitación se ha eliminado exitosamente",
+        })
+
+        document.querySelector('.tabla__cuerpo').innerHTML = "";
+        cargarDatos();
         console.log('Success:', data);  // Manipulamos los datos recibidos
     })
-    .catch(error => {
+      .catch(error => {
+        modal.fire({
+          title: "Error",
+          icon: "error",
+          text: "Error: " + error,
+        })
         console.error('Error:', error);  // Manejamos cualquier error
     });
 }

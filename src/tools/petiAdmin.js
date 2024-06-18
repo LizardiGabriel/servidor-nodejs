@@ -348,8 +348,7 @@ async function obtenerDetallesInvitacionSeguridadBD(id_invitacion) {
                 Colado: {
                     select:{
                         id_invitado: true,
-                        isConfirmed: true,
-                        email_colado: true,
+                        isConfirmed: true
                     }
                 },
             }
@@ -443,27 +442,37 @@ async function registrarHoraEnBD(idInvitacion, tipo) {
     }
 }
 
-/*
-async function registrarDispositivoEnBD(idInvitacion, idDispositivo) {
-    return await prisma.acceso_dispositivo.updateMany({
-        data: {
-            id_invitacion: parseInt(idInvitacion),
-            id_dispositivo_electronico: parseInt(idDispositivo)
-        }
-    });
+
+async function confirmarDispositivosBD(idInvitacion, dispositivos) {
+    for (let dispositivo of dispositivos) {
+        await prisma.acceso_dispositivo_electronico.updateMany({
+            where: {
+                id_acceso: dispositivo.idAcceso, // Ajusta esto según tu lógica
+                id_dispositivo_electronico: dispositivo.idDispositivo
+            },
+            data: {
+                checka: 1 // O cualquier otro valor que indique confirmación
+            }
+        });
+    }
+}
+
+async function confirmarAutomovilesBD(idInvitacion, automoviles) {
+    for (let automovil of automoviles) {
+        await prisma.acceso_automovil.updateMany({
+            where: {
+                id_acceso: automovil.idAcceso, // Ajusta esto según tu lógica
+                id_automovil: automovil.idAutomovil
+            },
+            data: {
+                checka: 1 // O cualquier otro valor que indique confirmación
+            }
+        });
+    }
 }
 
 
-async function registrarAutomovilEnBD(idInvitacion, idAutomovil) {
-    return await prisma.acceso_automovil.updateMany({
-        data: {
-            id_invitacion: parseInt(idInvitacion),
-            id_automovil: parseInt(idAutomovil),
-            checka: true
-        }
-    });
-}
-*/
+
 
 
 module.exports = {
@@ -473,7 +482,8 @@ module.exports = {
     getInvitacionByIdSeguridadBD,
     obtenerDetallesInvitacionSeguridadBD,
     registrarHoraEnBD,
-    
+    confirmarAutomovilesBD,
+    confirmarDispositivosBD
 
     
 };

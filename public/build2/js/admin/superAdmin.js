@@ -20,27 +20,66 @@ const modal = Swal.mixin({
 
 
 function logout() {
-    fetch("/admin/logout", {
-      method: "GET"
-    })
-    .then(response => {
-      if (response.ok) {
-        window.location.href = "/home/login.html";
-      } else {
+  modal.fire({
+    timer: undefined,
+    icon: 'question',
+    title: "¿Desea cerrar sesión?",
+    showDenyButton: true,
+    confirmButtonText: "Cerrar sesión",
+    denyButtonText: `Cancelar`
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch("/admin/logout", {
+        method: "GET"
+      })
+      .then(response => {
+        if (response.ok) {
+          window.location.href = "/home/login.html";
+        } else {
+          modal.fire({
+            icon: "error",
+            text: "Error al cerrar sesión: " + response.statusText,
+          });
+          console.error("Error al cerrar sesión:", response.statusText);
+        }
+      })
+      .catch(error => {
         modal.fire({
           icon: "error",
-          text: "Error al cerrar sesión: " + response.statusText,
+          text: error,
         });
-        console.error("Error al cerrar sesión:", response.statusText);
-      }
-    })
-  .catch(error => {
-    modal.fire({
-      icon: "error",
-      text: error,
-    });
-    console.error("Error al cerrar sesión:", error)
+        console.error("Error al cerrar sesión:", error)
+      });
+    } else if (result.isDenied) {
+      
+    }
   });
+    
+}
+
+window.onload = function () { 
+  if(window.location.pathname == "/admin/admin.html")
+    obtenerDatos();
+}
+
+function obtenerDatos() { 
+  console.log('ObtenerDatos');
+  fetch('/get-nombre')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Datos de la sesión:', data);
+            let nombrehtml = document.getElementById('nameGet');
+            nombrehtml.innerHTML = data.nombre;
+        })
+        .catch((error) => {
+            console.error('Error al obtener los datos de la sesión:', error);
+            modal.fire({
+                title: "Error",
+                icon: "error",
+                text: error,
+            });
+        }
+        );
 }
 
 //funciones de redireccionamiento

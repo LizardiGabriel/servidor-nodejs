@@ -19,18 +19,30 @@ const modal = Swal.mixin({
 })
 
 function logout() {
-    fetch("/anfitrion/logout", {
+  modal.fire({
+    timer: undefined,
+    icon: 'question',
+    title: "¿Desea cerrar sesión?",
+    showDenyButton: true,
+    confirmButtonText: "Cerrar sesión",
+    denyButtonText: `Cancelar`
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch("/anfitrion/logout", {
         method: "GET"
-    })
-        .then(response => {
-            if (response.ok) {
-                window.location.href = "/home/login.html";
-            } else {
-                console.error("Error al cerrar sesión:", response.statusText);
-            }
-        })
-        .catch(error => console.error("Error al cerrar sesión:", error));
-
+      })
+      .then(response => {
+          if (response.ok) {
+              window.location.href = "/home/login.html";
+          } else {
+              console.error("Error al cerrar sesión:", response.statusText);
+          }
+      })
+      .catch(error => console.error("Error al cerrar sesión:", error));
+    } else if (result.isDenied) {
+      
+    }
+  });
 }
 
 function refReuniones() {

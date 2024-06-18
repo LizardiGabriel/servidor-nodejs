@@ -8,67 +8,57 @@
     <link rel="stylesheet" href="../../css/app.css">
     <!--SiderBar-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script src="../../js/qrCode.min.js"></script>
 
 </head>
 
 <body>
   <div id="headers"></div>
 
-    <main class="QR">
-        <div id="your-qr"></div>
-        <h1>Scanear QR</h1>
-        <div style="display: flex; justify-content: center;">
-            <div id="my-qr" style="width: 800px;"></div>
-        </div>
-    </main>
+  <main class="contenidoPrincipal">
+      <div class="containerScan">
+        <h1 class="text-center">Escanear codigo QR</h1>
+          <div class="row text-center">
+              <a id="btn-scan-qr" href="#">
+                  <img src="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/07/1499401426qr_icon.svg" class="img-fluid text-center" width="175">
+              <a/>
+              <canvas hidden="" id="qr-canvas" class="img-fluid"></canvas>
+          </div>
+          <div class="botonesScan">
+              <div class="ContenedorBotonScan">
+                  <button class="botonScanOn" onclick="encenderCamara()">Encender</button>
+              </div>
+              <div class="ContenedorBotonScan">
+                  <button class="botonScanOff" onclick="cerrarCamara()">Detener</button>
+              </div>
+          </div>
+      </div>
+    <script src="../../js/scanQR.js"></script>
+  </main>
 
     <div id="footers"></div>
 
+    <!-- Estilos para el Swal -->
+    <style>
+      .titleSize{
+        font-size: 4rem;
+      }
+      .contentSize{
+        font-size: 2rem !important;
+      }
+      .buttonSize{
+        font-size: 2rem !important;
+      }
+      .iconSize{
+        font-size: 1.5rem;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../js/seguridad/seguridad.js"></script>
     <script src="../../js/seguridad/headers.js"></script> 
     <script src="../../js/header.js"></script>
     <script src="../../js/sidebar.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
-    <script>
-        function domReady(fn) {
-            if (document.readyState === "complete" || document.readyState === "interactive") {
-                setTimeout(fn, 1);
-            } else {
-                document.addEventListener("DOMContentLoaded", fn);
-            }
-        }
-
-        domReady(function () {
-            var myqr = document.getElementById('your-qr');
-            var lastResult, countResults = 0;
-
-            function onScanSuccess(decodedText, decodedResult) {
-                if (decodedText !== lastResult) {
-                    ++countResults;
-                    lastResult = decodedText;
-
-                    // Corregido el uso de comillas para la interpolación de cadenas
-                    myqr.innerHTML = `You scanned ${countResults} : ${decodedText}`;
-
-                    // convertir el decodedText a un objeto JSON
-                    var obj = JSON.parse(decodedText);
-                    console.log(obj.idInvitacion);
-                    window.location.href = `verDatosInv.html?idInvitacion=${obj.idInvitacion}`;
-                }
-            }
-
-            // Corregido el nombre de la clase a Html5QrcodeScanner
-            var htmlscanner = new Html5QrcodeScanner(
-                "my-qr", { fps: 10, qrbox: 250 }
-            );
-
-            htmlscanner.render(onScanSuccess);
-        });
-    </script>
-
-
-
 </body>
 
 </html>

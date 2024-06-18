@@ -5,7 +5,7 @@ const { getReunionesBD, getUsuarioByIdBD,getReunionByIdBD,getSalaByIdBD,getInvit
 } = require('../tools/peticiones');
 const { response } = require('express');
 const { json } = require('body-parser');
-const {registrarHoraEnBD,registrarAutomovilEnBD,registrarDispositivoEnBD,obtenerDetallesInvitacionAnfiBD, getInvitacionByIdSeguridadBD, obtenerDetallesInvitacionSeguridadBD} = require("../tools/petiAdmin");
+const {confirmarDispositivosBD,confirmarAutomovilesBD,registrarHoraEnBD,obtenerDetallesInvitacionAnfiBD, getInvitacionByIdSeguridadBD, obtenerDetallesInvitacionSeguridadBD} = require("../tools/petiAdmin");
 
 
 async function logout(req, res) {
@@ -36,7 +36,8 @@ async function getReunionesAll(req, res) {
             const detallesRepeticion = repeticiones.map(rep => ({
                 fecha: rep.fecha_repeticion,
                 hora_inicio: rep.hora_inicio_repeticion,
-                hora_fin: rep.hora_fin_repeticion
+                hora_fin: rep.hora_fin_repeticion,
+                id_repeticion: rep.id_repeticion
             }));
 
             for(const detalle of detallesRepeticion){
@@ -68,7 +69,8 @@ async function getReunionesAll(req, res) {
                             //repeticiones: detallesRepeticion, // Añadir detalles de las repeticiones
                             fecha_reunion: detalle.fecha,
                             hora_inicio: detalle.hora_inicio,
-                            hora_fin: detalle.hora_fin
+                            hora_fin: detalle.hora_fin,
+                            id_repeticion: detalle.id_repeticion
 
 
                         };
@@ -207,42 +209,27 @@ async function registrarHora(req, res) {
 
 
 
-
-/*
-async function registrarDispositivo(req, res) {
-    const { idInvitacion, idDispositivo } = req.body;
+async function confirmarDispositivo(req, res) {
+    const { idInvitacion, dispositivos } = req.body;
     try {
-        const accesoDispositivo = await registrarDispositivoEnBD(idInvitacion, idDispositivo);
-        if (accesoDispositivo) {
-            res.json({ status: 'success' });
-        } else {
-            res.status(500).json({ status: 'error', message: 'No se pudo registrar el dispositivo' });
-        }
+        await confirmarDispositivosBD(idInvitacion, dispositivos);
+        res.json({ status: 'success' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ status: 'error' });
+        res.status(500).json({ status: 'error', message: 'Error al confirmar dispositivos' });
     }
 }
 
-
-
-async function registrarAutomovil(req, res) {
-    const { idInvitacion, idAutomovil } = req.body;
+async function confirmarAutomovil(req, res) {
+    const { idInvitacion, automoviles } = req.body;
     try {
-        const accesoAutomovil = await registrarAutomovilEnBD(idInvitacion, idAutomovil);
-        if (accesoAutomovil) {
-            res.json({ status: 'success' });
-        } else {
-            res.status(500).json({ status: 'error', message: 'No se pudo registrar el automóvil' });
-        }
+        await confirmarAutomovilesBD(idInvitacion, automoviles);
+        res.json({ status: 'success' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ status: 'error' });
+        res.status(500).json({ status: 'error', message: 'Error al confirmar automóviles' });
     }
 }
-
-*/
-
 
 
 //Visualizar agenda
@@ -257,6 +244,8 @@ module.exports = {
     getDetallesReunionByIdBD,
     getSeguridadInfo_idInv_idReu,
     registrarHora,
+    confirmarAutomovil,
+    confirmarDispositivo
     
     
 };

@@ -7,7 +7,7 @@ const { getReunionesBD,
     getSalasBD, setNewReunionBD,
     getInvitadoByEmailBD, setNewInvitadoBD, setNewInvitacionBD,
     getReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD, getDetallesReunionByIdBD,getUsuarioByEmailBD,
-    updateHoraReunionBD,deleteInvitadoBD, getInvitacionBy_IdInvitado_IdReunionBD
+    updateHoraReunionBD,deleteInvitadoBD, getInvitacionBy_IdInvitado_IdReunionBD,updateDateRepBD
 
 } = require('../tools/peticiones');
 
@@ -838,6 +838,13 @@ async function getInfo_idInv_idReu(req,res){
     res.status(200).json(invitacion);
 }
 
+async function reagendarReunion(req,res){
+    const {idReunion,idRep,fecha_reunion}=req.body;
+    const repeticionAct=await updateDateRepBD(idRep,fecha_reunion);
+    console.log(repeticionAct);
+    res.status(200).json({ message: 'Reunion reagendada correctamente' });
+}
+
 module.exports = {
     logout,
     getReunionesAnfitrion,
@@ -851,5 +858,6 @@ module.exports = {
     updateUsuario,
     updateHoraReunion,
     deleteInvitado,
-    getInfo_idInv_idReu
+    getInfo_idInv_idReu,
+    reagendarReunion
 };
