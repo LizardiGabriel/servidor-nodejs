@@ -52,68 +52,70 @@ const timeForm = document.getElementById("timeFormID");
 
 //E-MAIL
 const validateEmail = (email) => {
-    return email.match(
-        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
+  return email.match(
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  );
 };
 
 //PASSWORD
 const validatePassword = (password) => {
-    if (password.length < 10 || password.length > 20)
-        return "Length";
-    else if (!(password.match(/[A-Z]/)))
-        return "Mayus";
-    else if (!(password.match(/\d.*\d/)))
-        return "Num";
-    else if (!(password.match(/[!@#$%^&*(),.?":{}|<>_-].*[!@#$%^&*(),.?":{}|<>_-]/)))
-        return "Symbol";
-    else
-        return "OK";
+  if (password.length < 10 || password.length > 20)
+    return "Length";
+  else if (!(password.match(/[A-Z]/)))
+    return "Mayus";
+  else if (!(password.match(/\d.*\d/)))
+    return "Num";
+  else if (!(password.match(/[!@#$%^&*(),.?":{}|<>_-].*[!@#$%^&*(),.?":{}|<>_-]/)))
+    return "Symbol";
+  else
+    return "OK";
 };
 
 //TITLE
 const validateTitle = (title) => {
-    // console.log("Validando titulo")
-    return title.length < 20;
+  // console.log("Validando titulo")
+  //return title.length < 20;
+  return title.trim() !== '' && title.length < 20;
 }
 //DESC
 const validateDesc = (desc) => {
-    return desc.length < 60;
+  //return desc.length < 60;
+  return desc.trim() !== '' && desc.length < 20;
 }
 //DATE
 function getTodayDate() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Los meses son indexados desde 0
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // Los meses son indexados desde 0
+  const day = String(today.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 const validateDate = (date) => {
-    date.setAttribute('min', getTodayDate()); //Desde la fecha de hoy en adelante   
+  date.setAttribute('min', getTodayDate()); //Desde la fecha de hoy en adelante   
 }
 
 //TIME
 function convertirHora(hora) {
-    const partes = hora.split(':');
-    const date = new Date();
-    date.setHours(partes[0], partes[1], 0, 0);
-    return date;
+  const partes = hora.split(':');
+  const date = new Date();
+  date.setHours(partes[0], partes[1], 0, 0);
+  return date;
 }
 
 const validateTime = (time1, time2) => {
-    const timeFirst = time1.value;
-    const timeLast = time2.value;
-    if (timeFirst && timeLast) {
-        const inicio = convertirHora(timeFirst);
-        const fin = convertirHora(timeLast);
+  const timeFirst = time1.value;
+  const timeLast = time2.value;
+  if (timeFirst && timeLast) {
+    const inicio = convertirHora(timeFirst);
+    const fin = convertirHora(timeLast);
 
-        if (inicio >= fin) {
-            return 0;
-        } else {
-            return 1;
-        }
+    if (inicio >= fin) {
+      return 0;
+    } else {
+      return 1;
     }
+  }
 }
 
 
@@ -133,7 +135,7 @@ const validateNumber = (text) => {
 }
 
 //Texto sin numeros y sin espacios
-const validateTextWithoutSpacesNumber = (text) => { 
+const validateTextWithoutSpacesNumber = (text) => {
   return text.match(/^[áéíóúÁÉÍÓÚÑñäëïöüÄËÏÖÜa-zA-Z]{1,100}$/);
 }
 
@@ -146,75 +148,75 @@ var msgErrorEmail = '<p class="msg-error-form">El correo electrónico no es vali
 
 let valorP;
 if (loginPassword != null)
-    loginPassword.addEventListener('input', () => {
-        valorP = loginPassword.value;
-        //Valido Password
-        let msg = validatePassword(valorP);
-        switch (msg) {
-            case "Length":
-                passwordForm.innerHTML = '<p class="msg-error-form">La contraseña deber ser al menos de 10 caracteres de longitud</p>';
-                break;
-            case "Mayus":
-                passwordForm.innerHTML = '<p class="msg-error-form">La contraseña debe contener al menos 1 mayuscula</p>';
-                break;
-            case "Num":
-                passwordForm.innerHTML = '<p class="msg-error-form">La contraseña debe contener al menos 2 números</p>';
-                break;
-            case "Symbol":
-                passwordForm.innerHTML = '<p class="msg-error-form">La contraseña debe contener al menos 2 símbolos</p>';
-                break;
-            case "OK":
-                passwordForm.innerHTML = '';
-                break;
-        }
-    });
+  loginPassword.addEventListener('input', () => {
+    valorP = loginPassword.value;
+    //Valido Password
+    let msg = validatePassword(valorP);
+    switch (msg) {
+      case "Length":
+        passwordForm.innerHTML = '<p class="msg-error-form">La contraseña deber ser al menos de 10 caracteres de longitud</p>';
+        break;
+      case "Mayus":
+        passwordForm.innerHTML = '<p class="msg-error-form">La contraseña debe contener al menos 1 mayuscula</p>';
+        break;
+      case "Num":
+        passwordForm.innerHTML = '<p class="msg-error-form">La contraseña debe contener al menos 2 números</p>';
+        break;
+      case "Symbol":
+        passwordForm.innerHTML = '<p class="msg-error-form">La contraseña debe contener al menos 2 símbolos</p>';
+        break;
+      case "OK":
+        passwordForm.innerHTML = '';
+        break;
+    }
+  });
 
 let valorPR;
 if (loginPasswordR != null)
-    loginPasswordR.addEventListener('input', () => {
-        valorPR = loginPasswordR.value;
-        //Valido Password
-        let msg = validatePassword(valorPR);
-        if (msg != "OK" && valorPR != valorP) {
-            passwordFormR.innerHTML = '<p class="msg-error-form">La contraseña no coincide</p>';
-        } else {
-            passwordFormR.innerHTML = '';
-        }
-    });
-
-if (loginEmail != null)
-    loginEmail.addEventListener('input', () => {
-        let valor = loginEmail.value;
-        //Valido Email
-        if (!validateEmail(valor))
-            emailForm.innerHTML = msgErrorEmail;
-        else
-            emailForm.innerHTML = '';
-    });
-/* Validación mientras se detecta el teclado */
-/* Confirmación de la contraseña */
-if(loginPasswordR != null)
-loginPasswordR.addEventListener('input', () => {
+  loginPasswordR.addEventListener('input', () => {
     valorPR = loginPasswordR.value;
     //Valido Password
     let msg = validatePassword(valorPR);
-    if(msg != "OK" && valorPR != valorP){
-        passwordFormR.innerHTML = '<p class="msg-error-form">La contraseña no coincide</p>';
+    if (msg != "OK" && valorPR != valorP) {
+      passwordFormR.innerHTML = '<p class="msg-error-form">La contraseña no coincide</p>';
     } else {
       passwordFormR.innerHTML = '';
     }
-});
+  });
 
-/* Campo de login */
-if(loginEmail != null)
-loginEmail.addEventListener('input', () => {
+if (loginEmail != null)
+  loginEmail.addEventListener('input', () => {
     let valor = loginEmail.value;
     //Valido Email
-    if(!validateEmail(valor))
-        emailForm.innerHTML = msgErrorEmail;
+    if (!validateEmail(valor))
+      emailForm.innerHTML = msgErrorEmail;
     else
-        emailForm.innerHTML = '';
-});
+      emailForm.innerHTML = '';
+  });
+/* Validación mientras se detecta el teclado */
+/* Confirmación de la contraseña */
+if (loginPasswordR != null)
+  loginPasswordR.addEventListener('input', () => {
+    valorPR = loginPasswordR.value;
+    //Valido Password
+    let msg = validatePassword(valorPR);
+    if (msg != "OK" && valorPR != valorP) {
+      passwordFormR.innerHTML = '<p class="msg-error-form">La contraseña no coincide</p>';
+    } else {
+      passwordFormR.innerHTML = '';
+    }
+  });
+
+/* Campo de login */
+if (loginEmail != null)
+  loginEmail.addEventListener('input', () => {
+    let valor = loginEmail.value;
+    //Valido Email
+    if (!validateEmail(valor))
+      emailForm.innerHTML = msgErrorEmail;
+    else
+      emailForm.innerHTML = '';
+  });
 
 /* Campo de nombre */
 if (nombre != null) {
@@ -242,7 +244,7 @@ if (app != null) {
 
 /* Campo de apellido materno */
 if (apm != null) {
-  apm.addEventListener('input', () => { 
+  apm.addEventListener('input', () => {
     let valor = apm.value;
     //Valido Apellido materno
     if (!validateTextWithoutSpacesNumber(valor))
@@ -253,8 +255,8 @@ if (apm != null) {
 }
 
 /* Campo de telefono */
-if (telefono != null) { 
-  telefono.addEventListener('input', () => { 
+if (telefono != null) {
+  telefono.addEventListener('input', () => {
     let valor = telefono.value;
     //Valido telefono
     if (!validatePhoneNumber(valor))
@@ -266,10 +268,10 @@ if (telefono != null) {
 
 /* Campo nombre de sala */
 if (nombreSala != null) {
-  nombreSala.addEventListener('input', () => { 
+  nombreSala.addEventListener('input', () => {
     let valor = nombreSala.value;
     //Valido nombre sala
-    if (!validateTextWithSpacesNumber(valor)) 
+    if (!validateTextWithSpacesNumber(valor))
       nombreSalaForm.innerHTML = `<p class="msg-error-form">El nombre de sala no es valido</p>`
     else
       nombreSalaForm.innerHTML = ``
@@ -281,7 +283,7 @@ if (numberSala != null) {
   numberSala.addEventListener('input', () => {
     let valor = numberSala.value;
     //Valido numero de sala
-    if (!validateNumber(valor)) 
+    if (!validateNumber(valor))
       numberSalaForm.innerHTML = `<p class="msg-error-form">El número de sala no es valido</p>`
     else
       numberSalaForm.innerHTML = ``
@@ -315,77 +317,118 @@ if (cupoMaxSala != null) {
 
 //CHECKBOX
 if (checkbox1 != null)
-    checkbox1.addEventListener("change", function () {
-        if (this.checked) {
-            checkbox2.checked = false;
-        }
-    });
+  checkbox1.addEventListener("change", function () {
+    if (this.checked) {
+      checkbox2.checked = false;
+    }
+  });
 
 if (checkbox2 != null)
-    checkbox2.addEventListener("change", function () {
-        if (this.checked) {
-            checkbox1.checked = false;
-        }
-    });
-if(checkbox1 != null)
-checkbox1.addEventListener("change", function() {
-  if (this.checked) {
-    checkbox2.checked = false;
-  }
-  rolForm.innerHTML = ``;
-});
+  checkbox2.addEventListener("change", function () {
+    if (this.checked) {
+      checkbox1.checked = false;
+    }
+  });
+if (checkbox1 != null)
+  checkbox1.addEventListener("change", function () {
+    if (this.checked) {
+      checkbox2.checked = false;
+    }
+    rolForm.innerHTML = ``;
+  });
 
-if(checkbox2 != null)
-checkbox2.addEventListener("change", function() {
-  if (this.checked) {
-    checkbox1.checked = false;
-  }
-  rolForm.innerHTML = ``;
-});
+if (checkbox2 != null)
+  checkbox2.addEventListener("change", function () {
+    if (this.checked) {
+      checkbox1.checked = false;
+    }
+    rolForm.innerHTML = ``;
+  });
 
 if (eyeButton != null) {
-    eyeButton.addEventListener("click", () => {
-        const currentType = loginPassword.getAttribute("type");
-        const newType = currentType === "password" ? "text" : "password";
-        loginPassword.setAttribute("type", newType);
-    });
+  eyeButton.addEventListener("click", () => {
+    const currentType = loginPassword.getAttribute("type");
+    const newType = currentType === "password" ? "text" : "password";
+    loginPassword.setAttribute("type", newType);
+  });
 }
 if (eyeButtonR != null) {
-    eyeButtonR.addEventListener("click", () => {
-        console.log("VER")
-        const currentType = loginPasswordR.getAttribute("type");
-        const newType = currentType === "password" ? "text" : "password";
-        loginPasswordR.setAttribute("type", newType);
-    });
+  eyeButtonR.addEventListener("click", () => {
+    console.log("VER")
+    const currentType = loginPasswordR.getAttribute("type");
+    const newType = currentType === "password" ? "text" : "password";
+    loginPasswordR.setAttribute("type", newType);
+  });
 }
 
-if (titleee != null){
-    titleee.addEventListener("input", () => {
-        console.log(titleee.length)
-        if (!validateTitle(titleee.value))
-            titleForm.innerHTML = '<p class="msg-error-form">El título debe ser menor de 20 caracteres</p>';
-        else
-            titleForm.innerHTML = '';
-    })
+if (titleee != null) {
+  titleee.addEventListener("input", () => {
+    let valor = titleee.value;
+    if (!validateTitle(valor))
+      titleForm.innerHTML = '<p class="msg-error-form">El título debe ser menor de 20 caracteres</p>';
+    else
+      titleForm.innerHTML = '';
+  })
 }
 
-if (desc != null){
-    desc.addEventListener("input", () => {
-        if (!validateDesc(desc.value))
-            descForm.innerHTML = '<p class="msg-error-form">La descripción debe ser menor de 60 caracteres</p>';
-        else
-            descForm.innerHTML = '';
-    })
+if (desc != null) {
+  desc.addEventListener("input", () => {
+    let valor = desc.value;
+    if (!validateDesc(valor))
+      descForm.innerHTML = '<p class="msg-error-form">La descripción debe ser menor de 60 caracteres</p>';
+    else
+      descForm.innerHTML = '';
+  })
 }
 
-if(date != null)
-    validateDate(date);
+document.getElementById('dateID').addEventListener('input', function() {
+  const inputDate = this.value;
+  const minDate = getTodayDate();
 
-if (time1 != null && time2 != null){
-    time2.addEventListener("input", () => {
-        if (!validateTime(time1, time2))
-            timeForm.innerHTML = '<p class="msg-error-form">Ingrese un horario valido</p>';
-        else
-            timeForm.innerHTML = '';
-    })
-}
+  // Configura la fecha mínima cada vez que se ingresa algo, por si acaso no se estableció correctamente al cargar la página
+  this.setAttribute('min', minDate);
+
+  if (inputDate >= minDate) {
+    document.getElementById('dateFormID').innerHTML = ''; // Oculta el mensaje de error si la fecha es válida
+  } else {
+    document.getElementById('dateFormID').innerHTML = '<p class="msg-error-form">La fecha debe ser igual o posterior a la fecha de hoy.</p>';
+  }
+});
+
+document.getElementById('time1ID').addEventListener('input', function() {
+  const startTime = this.value;
+  const endTimeInput = document.getElementById('time2ID');
+
+  if (startTime) {
+    // Suponiendo que ambos campos son elementos de hora y aceptan valores en formato "HH:MM"
+    const startTimeParts = startTime.split(':');
+    let hour = parseInt(startTimeParts[0], 10);
+    let minutes = parseInt(startTimeParts[1], 10);
+
+    // Asegurándonos de que el tiempo mínimo de fin sea al menos 1 minuto después del inicio
+    minutes += 1;
+    if (minutes === 60) {
+      minutes = 0;
+      hour += 1;
+    }
+
+    // Formateando la hora para asegurar el cumplimiento del formato "HH:MM"
+    const minEndTime = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+    // Configurando el valor mínimo para la hora de fin
+    endTimeInput.setAttribute('min', minEndTime);
+  }
+});
+
+document.getElementById('time2ID').addEventListener('input', function() {
+  const endTime = this.value;
+  const startTimeInput = document.getElementById('time1ID').value;
+  const endTimeForm = document.getElementById('timeFormID');
+
+  // Validar que la hora de fin no sea antes de la hora de inicio
+  if (endTime <= startTimeInput) {
+    endTimeForm.innerHTML = '<p class="msg-error-form">La hora de fin debe ser posterior a la hora de inicio</p>';
+  } else {
+    endTimeForm.innerHTML = '';
+  }
+});
