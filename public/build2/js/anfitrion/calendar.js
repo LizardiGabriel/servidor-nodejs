@@ -84,7 +84,7 @@ function showModal(dateStr, eventos) {
     eventos.forEach(event => {
         const eventDiv = document.createElement('div');
         eventDiv.innerHTML = `<strong class="tituloReunionEvent">${(event.title)}</strong><br>
-                              <p class="detallesReunionEvent">${event.location}</p><br>
+                              <p class="detallesReunionEvent detallesReunionEvent-e">${event.location}</p><br>
                               <p class="detallesReunionEvent">${event.timeStart} - ${event.timeEnd}</p><br>`;
         const detailsButton = document.createElement('button');
         detailsButton.innerText = 'Detalles';
