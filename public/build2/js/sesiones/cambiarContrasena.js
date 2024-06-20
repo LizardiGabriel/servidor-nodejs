@@ -1,3 +1,5 @@
+
+
 /* Función para los modales */
 const modal = Swal.mixin({
   timer: 3000,
@@ -18,11 +20,16 @@ const modal = Swal.mixin({
   }
 })
 
-var id = 'a';
-var email = 'a';
+var id = '';
+var email = '';
+var tipo='';
 /* Al cargar la página se le asigna la información necesaria como el id y el email */
-window.onload = function () {
-  cargarInfoDelUrl();
+window.onload = async function () {
+  const datos= await cargarInfoDelUrl();
+  console.log(datos);
+  id=datos.id;
+  email=datos.email;
+  tipo=datos.tipo
 }
 
 /* Se le asigna los datos de id e email */
@@ -30,14 +37,29 @@ async function cargarInfoDelUrl() {
   url = window.location.href;
   urlParams = new URLSearchParams(window.location.search);
 
-  id = urlParams.get('id');
-  email = urlParams.get('email');
+  token = urlParams.get('tk');
+  console.log(token);
+  try {
+    const decoded = jwt_decode(token);
+    console.log(decoded);
+    return decoded;
+  } catch (err) {
+    console.error('Invalid token', err);
+    return null;
+  }
 }
 
 
 function cambiarCon(){
   let password = document.getElementById('loginPassword').value;
   let passwordR = document.getElementById('loginPasswordR').value;
+  let data={
+    id:id,
+    email: email,
+    tipo:tipo,
+    password:password
+  }
+  console.log(data);
   //Verificamos si tiene valor
   if (password) {
     if (passwordR) {
@@ -56,11 +78,7 @@ function cambiarCon(){
               headers: {
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify({
-                id,
-                email,
-                password,
-              })
+              body: JSON.stringify(data)
             })
               .then(response => response.json())
               .then(data => {
