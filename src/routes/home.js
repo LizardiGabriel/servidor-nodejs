@@ -1,9 +1,11 @@
-const {getUsersByEmailBD, createUserBD, updateUserBD, getInvitadoByIdBD, getInvitadoByIdEmailBD} = require('../tools/peticiones');
+const {getUsersByEmailBD, createUserBD, updateUserBD, getInvitadoByIdBD, getInvitadoByIdEmailBD,getInvitadoByEmailBD,updatePassInvitadoBD} = require('../tools/peticiones');
 const { hashPassword, comparePassword } = require('../tools/cipher');
 const { json } = require('body-parser');
 const { stat } = require('fs');
 const jwt = require('jsonwebtoken');
+const { token } = require('morgan');
 require('dotenv').config();
+const mail = require("../tools/mail");
 
 function generateAccessToken(email, idUsuario, rolNum, nombre, apellido, foto) {
     return jwt.sign({ email: email, idUsuario: idUsuario, rol: rolNum, nombre: nombre, apellido: apellido, foto: foto }, process.env.SECRET_KEY, { expiresIn: '20m' });
@@ -12,7 +14,9 @@ function generateAccessToken(email, idUsuario, rolNum, nombre, apellido, foto) {
 function generateTokenInvitado(email, idInvitado, rolNum, newCount, changeFirstPass, idSeleccionado) {
     return jwt.sign({ email: email, idInvitado: idInvitado, rol: rolNum, newCount: newCount, changeFirstPass: changeFirstPass, idSeleccionado: -1 }, process.env.SECRET_KEY, { expiresIn: '60m' });
 }
-
+function generateTokenToRecover(email, id,tipo) {
+    return jwt.sign({ email: email,  tipo: tipo ,id: id}, process.env.SECRET_KEY, { expiresIn: '30m' });
+}
 async function login(req, res) {
     try {
         console.log('mensaje --> login');
@@ -129,10 +133,24 @@ async function recuperar(req, res) {
         const email = req.body.email;
         // console.log('peticion contorlador, param: email: ' + email);
         const usuario = await getUsersByEmailBD(email);
-        if (usuario === null) {
+        const invitado= await getInvitadoByEmailBD(email);
+        if (usuario === null && invitado===null ) {
             return res.status(404).json({ error: 'notFound', status: 404});
         }
-        res.status(200).json({ message: 'Usuario encontrado', id: usuario.id_usuario});
+        if(usuario){
+            const token=generateTokenToRecover(email, usuario.id_usuario,"usuario");
+            console.log(token);
+            generateCorreo(email,"http://localhost:3000/home/recuperar2.html?tk="+token);
+            res.status(200).json({ message: 'Usuario encontrado', id: usuario.id_usuario});
+            
+        }
+        else if(invitado){
+            const token=generateTokenToRecover(email,invitado.id_invitado,"invitado");
+            console.log(token);
+            generateCorreo(email,"http://localhost:3000/home/recuperar2.html?tk="+token);
+            res.status(200).json({ message: 'Invitado encontrado', id: invitado.id_invitado});
+        }
+            
     } catch (error) {
         console.error('Error en recuperar:', error);
     }
@@ -141,15 +159,263 @@ async function recuperar(req, res) {
 async function cambiar(req, res) {
     try {
         console.log('mensaje --> cambiar');
-        const { id, email, password } = req.body;
+
+        const { id, email,tipo, password } = req.body;
         // console.log('peticion contorlador, param: id: ' + id + ' email: ' + email + ' contrasena: ' + password);
         const hashedPassword = await hashPassword(password);
-        const usuario = await updateUserBD(id, email, hashedPassword);
+        if(tipo	==="usuario"){
+            const usuario = await updateUserBD(id, email, hashedPassword);
+        }
+        else if(tipo==="invitado"){
+            const invitado = await updatePassInvitadoBD (id, hashedPassword);
+        }
+            
         res.status(200).json({ message: 'Contraseña actualizada efectivamente' });
     }
     catch (error) {
         console.error('Error en cambiar:', error);
     }
+}
+
+async function generateCorreo(correo,liga){
+    let emailText = `<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeeCoders - Recuperar contraseña</title>
+    <style type="text/css">
+        body {
+            background-color: #f9f8f8;
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            font-family: Arial, sans-serif;
+        }
+
+        .ContenidoCorreo {
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            max-width: 80%;
+            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.33);
+            border-radius: 10px;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .header .header_img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .footer .footer_img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .ContenidoCorreo .Correo {
+            max-width: 80%;
+            padding: 4rem;
+        }
+
+        .saludo {
+            margin-left: 0rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .firma,
+        .divToken,
+        .enlaceSesion {
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .firma {
+            margin-top: 3rem;
+        }
+
+        .firma #BeeCoders {
+            font-size: 1.3rem;
+        }
+
+        input {
+            background-color: #f9f8f8;
+            border: none;
+            font-size: 1.1rem;
+            overflow: hidden;
+            color: #48716E;
+            font-weight: bold;
+        }
+
+        input .inputCorreo {
+            min-width: 70%;
+        }
+
+        #enlace {
+            width: 75%;
+        }
+
+        #token,
+        #enlace {
+            text-align: center;
+            min-width: 80%;
+        }
+
+        h3,
+        h2 {
+            padding-right: 0.5rem;
+        }
+
+        #bold-font {
+            font-weight: bold;
+        }
+
+        @media only screen and (max-width: 800px) {
+
+            body,
+            input {
+                text-align: center;
+                font-size: 0.7rem;
+            }
+
+            .ContenidoCorreo .Correo {
+                max-width: 80%;
+                padding: 2rem;
+            }
+
+
+            .DatosToken {
+                margin-top: 2rem;
+            }
+
+            input {
+
+                text-align: center;
+            }
+
+            input .inputCorreo {
+                min-width: 90%;
+            }
+
+            #enlace {
+                width: 90%;
+            }
+
+            #inicioSesion {
+                padding-right: 0;
+            }
+
+            .saludo {
+                margin-left: 0rem;
+                margin-bottom: 1.5rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .firma #BeeCoders {
+                font-size: 1rem;
+            }
+        }
+
+        @media screen and (max-width: 555px) {
+
+            body,
+            input {
+                text-align: center;
+                font-size: 0.6rem;
+            }
+
+            .ContenidoCorreo {
+                max-width: 90%;
+            }
+
+            .ContenidoCorreo .Correo {
+                max-width: 90%;
+                padding: 0.8rem;
+            }
+
+            .DatosToken {
+                margin-top: 1.5rem;
+            }
+
+            input {
+                text-align: center;
+            }
+
+            input .inputCorreo {
+                min-width: 90%;
+            }
+
+            #enlace {
+                width: 90%;
+            }
+
+            #inicioSesion {
+                padding-right: 0;
+            }
+
+            .saludo {
+                margin-left: 0rem;
+                margin-bottom: 1rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .firma #BeeCoders {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="ContenidoCorreo">
+        <section class="header">
+            <img class="header_img" src="https://i.imgur.com/gol0fCj.png">
+        </section>
+
+        <section class="Correo">
+            <div class="Informacion">
+                <div class="saludo">
+                    <h3>Hola</h3>
+                    <input type="text" id="nombreInvitado" class="inputNombre" value="${correo}"
+                        readonly disabled>
+                </div>
+            </div>
+            <div class="DatosToken">
+                <p>Solicitaste la recuperación de tu contraseña,Dirígite al siguiente enlace para que puedas configurar tu nueva contraseña: </p>
+                <div class="enlaceSesion">
+                    <p type="url" class="enlace" id="enlace">${liga}</p>
+                        
+                </div>
+            </div>
+            <div class="firma">
+                <h3>ATTE:</h3>
+                <p id="BeeCoders"> BeeCoders &#128029;</p>
+            </div>
+        </section>
+
+        <section class="footer">
+            <img class="footer_img" src="https://i.imgur.com/MyTjwOi.png">
+        </section>
+
+    </main>
+</body>
+</html>
+    `;
+    const envio = await mail(emailText, correo,'BeeCoders-Recuperacion de contraseña');
 }
 
 module.exports = {
