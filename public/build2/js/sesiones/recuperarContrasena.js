@@ -47,9 +47,15 @@ function enviar() {
           } else {
             console.log(data.message);
             console.log(data.id);
-
-            window.location.href = '/home/recuperar2.html?id=' + data.id + '&email=' + email;
-
+            modal.fire({
+              title: "Éxito",
+              icon: "success",
+              text: 'Operación realizada con éxito: Correo enviado',
+            }).then((result) => {
+              if (result.isConfirmed || result.isDismissed) {
+                window.location.href = '/home/login.html';
+              }
+            });
           }
         })
         .catch(error => {
