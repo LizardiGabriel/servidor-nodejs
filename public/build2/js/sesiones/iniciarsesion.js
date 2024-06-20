@@ -27,8 +27,8 @@ function checkCredenciales() {
     },
     body: JSON.stringify({
 
-      email: email,
-      password: password,
+      email: "prueba@gmail.com",
+      password: "esxDZZ43",
       Recuerdame: Recuerdame
     })
   })
@@ -53,7 +53,7 @@ function checkCredenciales() {
         });
         break;
       case 500:
-        Swal.fire({
+        modal.fire({
           icon: "error",
           text: data.error,
         });
