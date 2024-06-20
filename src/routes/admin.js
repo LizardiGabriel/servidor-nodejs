@@ -2,6 +2,8 @@ const { getSalasBD, setNewSalaBD, getSalaByIdBD, updateSalaBD, deleteSalaBD } = 
 const { getUsuariosBD, setNewUsuarioBD, getUsuarioByIdBD, getUsuarioByEmailBD, updateUsuarioBD, deleteUsuarioBD} = require('../tools/peticiones');
 const { getInvitadosBD, getInvitadoByIdBD, updateInvitadoBD, getReunionesAdminBD, getInvitacionesAdminBD, getFotoFromUsuarioBD } = require('../tools/peticiones');
 const { getReunionAdminByIdBD } = require('../tools/petiAdmin');
+const { hashPassword} = require('../tools/cipher');
+const mail = require('../tools/mail');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -159,11 +161,41 @@ async function updateInvitado(req, res) {
     res.json(invitadoActualizado);
 
 }
+async function generatePassword() {
+    let password = "";
+    let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    let numbers = "0123456789";
+    let specialCharacters = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~";
+    
+    // Agregar al menos 2 caracteres especiales
+    for (let i = 0; i < 2; i++) {
+        password += specialCharacters.charAt(Math.floor(Math.random() * specialCharacters.length));
+    }
+
+    // Agregar al menos 2 números
+    for (let i = 0; i < 2; i++) {
+        password += numbers.charAt(Math.floor(Math.random() * numbers.length));
+    }
+
+    // Completar el resto de la contraseña con letras hasta que tenga un total de 10 caracteres
+    while (password.length < 10) {
+        password += letters.charAt(Math.floor(Math.random() * letters.length));
+    }
+
+    // Mezclar la contraseña para que los caracteres especiales y los números no estén siempre en las mismas posiciones
+    password = password.split('').sort(() => 0.5 - Math.random()).join('');
+
+    return password ;
+}
+
 
 async function setNewUsuario(req, res) {
     console.log('=============================mensaje --> setNewUsuario');
     const { email, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario } = req.body;
-    const contrasena = '123456';
+    const previuscont=await generatePassword();
+    console.log(previuscont);
+    const contrasena = await hashPassword(previuscont);
+
 
     const isEmailAlreadyRegistered = await getUsuarioByEmailBD(email);
     if (isEmailAlreadyRegistered) {
@@ -174,6 +206,218 @@ async function setNewUsuario(req, res) {
         console.log('email: ', email, 'contrasena: ', contrasena, 'nombre: ', nombre, 'apellidoPaterno:', apellidoPaterno, 'apellidoMaterno: ', apellidoMaterno, 'telefono: ', telefono, 'idRol: ', idRol, 'foto_usuario: ', foto_usuario);
         const nuevoUsuario = await setNewUsuarioBD(email, contrasena, nombre, apellidoPaterno, apellidoMaterno, telefono, idRol, foto_usuario);
         console.log('respuesta de la bd xd: ', nuevoUsuario);
+        let  emailText = `<html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>BeeCoders - Invitación a Reunión</title>
+            <style type="text/css">
+                body {
+                    background-color: #f9f8f8;
+                    display: flex;
+                    flex-direction: column;
+                    align-content: center;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 1.1rem;
+                    font-family: Arial, sans-serif;
+                }
+
+                .ContenidoCorreo {
+                    display: flex;
+                    flex-direction: column;
+                    align-content: center;
+                    justify-content: center;
+                    align-items: center;
+                    max-width: 80%;
+                    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.33);
+                    border-radius: 10px;
+                    margin-top: 2rem;
+                    margin-bottom: 2rem;
+                }
+                .header .header_img {
+                    max-width: 100%;
+                    border-radius: 10px;
+                }
+                .footer .footer_img {
+                    max-width: 100%;
+                    border-radius: 10px;
+                }
+                .ContenidoCorreo .Correo {
+                    max-width: 80%;
+                    padding: 4rem;
+                }
+                .saludo,
+                .correoDiv,
+                .contraDiv,
+                .enlaceSesion {
+                    margin-left: 2rem;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                }
+                .firma {
+                    display: flex;
+                    align-content: center;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .firma #BeeCoders {
+                    font-size: 1.3rem;
+                }
+                input {
+                    border: none;
+                    font-size: 1.1rem;
+                    overflow: hidden;
+                    color: #48716E;
+                    font-weight: bold;
+                }
+                .inputTabla {
+                    color: #333333;
+                    font-weight: 400;
+                    width: 100%;
+                    white-space: pre-wrap;
+                }
+                input .inputCorreo {
+                    min-width: 70%;
+                }
+                #enlace {
+                    width: 75%;
+                }
+                .imagen {
+                    width: 15rem;
+                }
+                h3,
+                h2 {
+                    padding-right: 0.5rem;
+                }
+                .tg {
+                    border-collapse: collapse;
+                    border-spacing: 0;
+                    margin: 0px auto;
+                }
+                .tg-wrap {
+                    margin-bottom: 3rem;
+                    margin-top: 3rem;
+                }
+                .tg th,
+                .tg td {
+                    border-color: #48716E;
+                    border-style: solid;
+                    border-width: 3px;
+                    font-size: 14px;
+                    font-weight: normal;
+                    overflow: hidden;
+                    padding: 10px 5px;
+                    word-break: normal;
+                }
+                .tg .tg-1,
+                .tg .tg-2 {
+                    background-color: #dbf1ee;
+                    border-color: #48716e;
+                    color: #333333;
+                    text-align: left;
+                    vertical-align: middle
+                }
+                .tg .tg-2 {
+                    text-align: center;
+                }
+                #bold-font {
+                    font-weight: bold;
+                }
+
+                @media only screen and (max-width: 800px) {
+
+                    body,
+                    input {
+                        font-size: 0.8rem;
+                    }
+                    .ContenidoCorreo .Correo {
+                        max-width: 80%;
+                        padding: 2rem;
+                    }
+                    input{
+                        
+                        text-align: center;
+                    }
+                    #inicioSesion {
+                        padding-right: 0;
+                    }
+                    .saludo,
+                    .correoDiv,
+                    .contraDiv,
+                    .enlaceSesion {
+                        margin-left: 0rem;
+                        margin-bottom: 1.5rem;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                    }
+                    .firma #BeeCoders {
+                        font-size: 1rem;
+                    }
+
+                    .imagen {
+                        width: 10rem;
+                    }
+
+                    .tg th,
+                    .tg td {
+                        font-size: 10px;
+                    }
+                }
+
+                @media screen and (max-width: 767px) {
+                    .tg {
+                        width: auto !important;
+                    }
+                    .tg col {
+                        width: auto !important;
+                    }
+                    .tg-wrap {
+                        overflow-x: auto;
+                        -webkit-overflow-scrolling: touch;
+                        margin: auto 0px;
+                    }
+                }
+            </style>
+        </head>
+
+        <body>
+            <main class="ContenidoCorreo">
+                <section class="header">
+                    <img class="header_img" src="https://i.imgur.com/iaW86XO.png">
+                </section>
+
+                <section class="Correo">
+                    <div class="DatosCuenta">
+                        <h3>Hola ${nombre} , bienvenido a BEE MET</h3>
+                        <p>Los datos de la cuenta con la que podrás ingresar a nuestra plataforma, son los siguientes:</p>
+                        <div class="correoDiv">
+                            <h3 id="bold-font">Correo Usuario:</h3>
+                            <h2 type="text" class="usuario inputCorreo" id="usuario">${email}</h2>
+                        </div>
+                        <div class="contraDiv">
+                            <h3 id="bold-font">Contraseña:</h3>
+                            <input type="text" class="contra inputCorreo" id="contra" value="${previuscont}" readonly disabled>
+                        </div>
+                    </div>
+                    <div class="firma">
+                        <h3>ATTE:</h3>
+                        <p id="BeeCoders"> BeeCoders &#128029;</p>
+                    </div>
+                </section>
+                <section class="footer"><img class="footer_img" src="https://i.imgur.com/MyTjwOi.png" alt="footer">
+                </section>
+
+            </main>
+
+        </body>
+
+        </html>
+
+        `;
+        const envio = await mail(emailText, email,'BeeCoders-Nuevo usuario');
         res.status(200).json({ message: nuevoUsuario });
     }
 
