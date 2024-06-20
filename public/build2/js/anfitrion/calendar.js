@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
+        locale: 'es',
         initialView: 'dayGridMonth',
         events: function(info, successCallback, failureCallback){
             fetch('reuniones')
@@ -61,12 +62,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function formatearFecha(fechaString) {
-    const fecha = new Date(fechaString);
+    const fecha = new Date(fechaString + 'T00:00:00Z'); // Asegura que la fecha se interprete en UTC
 
     // Extraer los componentes de la fecha
-    let mes = fecha.getMonth() + 1; // getMonth() devuelve un índice basado en 0
-    let dia = fecha.getDate(); // Considerando índice en 0
-    let año = fecha.getFullYear();
+    let mes = fecha.getUTCMonth() + 1; // getUTCMonth() devuelve un índice basado en 0
+    let dia = fecha.getUTCDate(); // Considerando índice en 0
+    let año = fecha.getUTCFullYear();
 
     // Asegurar que el día y mes tengan dos dígitos
     mes = mes < 10 ? '0' + mes : mes;
@@ -75,6 +76,7 @@ function formatearFecha(fechaString) {
     // Formatear la fecha en el formato deseado
     return `${año}-${mes}-${dia}`; // Ajusta el formato para que coincida con el formato 'startStr'
 }
+
 
 function showModal(dateStr, eventos) {
     document.getElementById('modalDate').innerText = dateStr;
