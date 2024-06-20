@@ -595,7 +595,7 @@ async function aceptarReunion(req, res){
 <body>
     <main class="ContenidoCorreo">
         <section class="header">
-            <img class="header_img" src="https://i.imgur.com/gol0fCj.png">
+            <img class="header_img" src="https://i.imgur.com/I7vq7C9.png">
         </section>
 
         <section class="Correo">
@@ -993,7 +993,7 @@ async function recuperarQr(req,res){
 <body>
     <main class="ContenidoCorreo">
         <section class="header">
-            <img class="header_img" src="https://i.imgur.com/gol0fCj.png">
+            <img class="header_img" src="https://i.imgur.com/I7vq7C9.png">
         </section>
 
         <section class="Correo">

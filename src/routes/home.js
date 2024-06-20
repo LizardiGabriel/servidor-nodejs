@@ -383,7 +383,7 @@ async function generateCorreo(correo,liga){
 <body>
     <main class="ContenidoCorreo">
         <section class="header">
-            <img class="header_img" src="https://i.imgur.com/gol0fCj.png">
+            <img class="header_img" src="https://i.imgur.com/f2picBm.png">
         </section>
 
         <section class="Correo">

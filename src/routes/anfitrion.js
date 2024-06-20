@@ -360,7 +360,7 @@ async function setInvitacion(req, res) {
                     <body>
                         <main class="ContenidoCorreo">
                             <section class="header">
-                                <img class="header_img" src="https://i.imgur.com/iaW86XO.png">
+                                <img class="header_img" src="https://i.imgur.com/wlg9PC4.png">
                             </section>
 
                             <section class="Correo">
@@ -635,7 +635,7 @@ async function setInvitacion(req, res) {
                     <body>
                         <main class="ContenidoCorreo">
                             <section class="header">
-                                <img class="header_img" src="https://i.imgur.com/iaW86XO.png">
+                                <img class="header_img" src="https://i.imgur.com/wlg9PC4.png">
                             </section>
 
                             <section class="Correo">
