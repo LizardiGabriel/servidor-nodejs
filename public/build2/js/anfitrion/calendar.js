@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 title: reunion.titulo_reunion,
                                 start: fechaFormateada,
                                 end: fechaFormateada,
-                                location: "Num sala " + reunion.id_sala,
+                                location: "Sala:" + reunion.id_sala,
                                 url: "/anfitrion/reuniones/ConsultarDatos.html?idReunion=" + reunion.id_reunion + "&" + "fecha_i=" + fecha.fecha_repeticion + "&" + "fecha_f=" + fecha.fecha_repeticion + "&" + "hora_i=" + fecha.hora_inicio_repeticion + "&" + "hora_f=" + fecha.hora_fin_repeticion + "&" + "idRepeticion=" + fecha.id_repeticion,
                                 timeStart: fecha.hora_inicio_repeticion,
                                 timeEnd: fecha.hora_fin_repeticion
@@ -79,13 +79,13 @@ function formatearFecha(fechaString) {
 function showModal(dateStr, eventos) {
     document.getElementById('modalDate').innerText = dateStr;
     const modalEvents = document.getElementById('modalEvents');
-    modalEvents.innerHTML = `Número de reuniones: ${eventos.length}<br><br>`;
+    modalEvents.innerHTML = `<p class="tantasReunionesEvent">${eventos.length} reuniones</p><br><br>`;
 
     eventos.forEach(event => {
         const eventDiv = document.createElement('div');
-        eventDiv.innerHTML = `<strong>${event.title}</strong><br>
-                              Location: ${event.location}<br>
-                              Time: ${event.timeStart} - ${event.timeEnd}<br>`;
+        eventDiv.innerHTML = `<strong class="tituloReunionEvent">${(event.title)}</strong><br>
+                              <p class="detallesReunionEvent detallesReunionEvent-e">${event.location}</p><br>
+                              <p class="detallesReunionEvent">${event.timeStart} - ${event.timeEnd}</p><br>`;
         const detailsButton = document.createElement('button');
         detailsButton.innerText = 'Detalles';
         detailsButton.onclick = function() {

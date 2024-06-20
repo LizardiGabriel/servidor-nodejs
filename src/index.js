@@ -455,7 +455,7 @@ app.get('/seguridad/getAgendas', seguridad.getReunionesAll);
 
 app.get('/seguridad/getAgendaID', seguridad.getReunionById);
 app.get('/seguridad/getAgendaID/:id', seguridad.getReunionByIdAll);
-app.use('/seguridad/verDatosInv.html', express.static('./public/build2/views/seguridad/consultarDatosDelInvitado.html'));
+app.use('/seguridad/verDatosInv.html', express.static('./public/build2/views/seguridad/ConsultarDatosDelInvitado.html'));
 app.use('/seguridad/EditarDatosPersonales.html', express.static('./public/build2/views/seguridad/EditarDatosPersonales.html'));
 app.use('/seguridad/escanearQR.html', express.static('./public/build2/views/seguridad/scanearQr.html'));
 app.get('/seguridad/getFotoPerfil', admin.getFotoAdmin);
@@ -613,7 +613,7 @@ app.all('*', (req, res) => {
 
 
 app.listen(3000, () => {
-  console.log('Servidor HTTP listo en localhost:3000');
+  console.log('Servidor HTTP listo en localhost:3001');
 });
 
 
