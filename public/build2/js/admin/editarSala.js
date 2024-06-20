@@ -1,8 +1,9 @@
 var salita = 1;
 
-window.onload = function () {
-    cargarDatos();
-}
+document.addEventListener('DOMContentLoaded',async function() {
+  console.log("Es hora de cargar dato")
+  cargarDatos();
+});
 
 function cargarDatos() {
     console.log("Cargando datos");
@@ -34,6 +35,7 @@ function cargarDatos() {
 }
 
 function enviarForm() {
+  cargarDatos();
   const nombreSala = document.getElementById("nombreSala").value;
   const cupoMaximo = document.getElementById("cupoMaxSala").value;
   const piso = document.getElementById("pisoSala").value;

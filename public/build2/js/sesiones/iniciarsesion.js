@@ -53,7 +53,7 @@ function checkCredenciales() {
         });
         break;
       case 500:
-        Swal.fire({
+        modal.fire({
           icon: "error",
           text: data.error,
         });
