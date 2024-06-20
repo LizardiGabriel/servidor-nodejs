@@ -6,6 +6,7 @@ const passwordForm = document.getElementById("passwordForm");
 const passwordFormR = document.getElementById("passwordFormR");
 
 const loginEmail = document.getElementById("loginEmail");
+const correoInv = document.getElementById("correoInv");
 const emailForm = document.getElementById("emailForm");
 
 const nombre = document.getElementById("nombre");
@@ -86,7 +87,7 @@ const validateTitle = (title) => {
 //DESC
 const validateDesc = (desc) => {
   //return desc.length < 60;
-  return desc.trim() !== '' && desc.length < 20;
+  return desc.trim() !== '' && desc.length < 60;
 }
 //DATE
 function getTodayDate() {
@@ -199,6 +200,16 @@ if (loginEmail != null)
     else
       emailForm.innerHTML = '';
   });
+  
+  if (correoInv != null)
+    correoInv.addEventListener('input', () => {
+      let valor = correoInv.value;
+      //Valido Email
+      if (!validateEmail(valor))
+        correoInv.innerHTML = msgErrorEmail;
+      else
+      correoInv.innerHTML = '';
+    });
 /* Validación mientras se detecta el teclado */
 /* Confirmación de la contraseña */
 if (loginPasswordR != null)
@@ -212,7 +223,7 @@ if (loginPasswordR != null)
       passwordFormR.innerHTML = '';
     }
   });
-
+  correoInv
 /* Campo de login */
 if (loginEmail != null)
   loginEmail.addEventListener('input', () => {
@@ -416,11 +427,10 @@ if (document.getElementById('dateID') != null) {
     const inputDate = this.value;
     const minDate = getTodayDate();
   
-    // Configura la fecha mínima cada vez que se ingresa algo, por si acaso no se estableció correctamente al cargar la página
     this.setAttribute('min', minDate);
   
     if (inputDate >= minDate) {
-      document.getElementById('dateFormID').innerHTML = ''; // Oculta el mensaje de error si la fecha es válida
+      document.getElementById('dateFormID').innerHTML = ''; 
     } else {
       document.getElementById('dateFormID').innerHTML = '<p class="msg-error-form">La fecha debe ser igual o posterior a la fecha de hoy.</p>';
     }
@@ -433,22 +443,19 @@ if (document.getElementById('time1ID') != null) {
     const endTimeInput = document.getElementById('time2ID');
   
     if (startTime) {
-      // Suponiendo que ambos campos son elementos de hora y aceptan valores en formato "HH:MM"
+      
       const startTimeParts = startTime.split(':');
       let hour = parseInt(startTimeParts[0], 10);
       let minutes = parseInt(startTimeParts[1], 10);
   
-      // Asegurándonos de que el tiempo mínimo de fin sea al menos 1 minuto después del inicio
       minutes += 1;
       if (minutes === 60) {
         minutes = 0;
         hour += 1;
       }
   
-      // Formateando la hora para asegurar el cumplimiento del formato "HH:MM"
       const minEndTime = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   
-      // Configurando el valor mínimo para la hora de fin
       endTimeInput.setAttribute('min', minEndTime);
     }
   });
@@ -460,7 +467,6 @@ if (document.getElementById('time2ID') != null) {
     const startTimeInput = document.getElementById('time1ID').value;
     const endTimeForm = document.getElementById('timeFormID');
   
-    // Validar que la hora de fin no sea antes de la hora de inicio
     if (endTime <= startTimeInput) {
       endTimeForm.innerHTML = '<p class="msg-error-form">La hora de fin debe ser posterior a la hora de inicio</p>';
     } else {

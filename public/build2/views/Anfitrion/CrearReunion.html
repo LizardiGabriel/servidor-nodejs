@@ -10,6 +10,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+      .msg-error-form{
+        max-width: 100%;
+        margin-top: 1rem;
+        font-size: 1.6rem;
+      }
+    </style>
 </head>
 
 <body>
@@ -24,16 +31,16 @@
                 <div class="form-group col-12 has-validation Formulario__inputGroup">
                     <label for="titulo_reunion" class="Formulario__inputGroup__label">Título de la reunión:</label>
                     <input class="form-control form-control-lg Formulario__inputGroup__input" type="text" id="titleID" name="titulo_reunion" required>
+                    <div id="titleFormID"></div>
                 </div>
               </div>
-              <div id="titleFormID"></div>
               <div class="row w-100">
                 <div class="form-group col-md-12 has-validation Formulario__inputGroup">
                   <label for="descripcion_reunion" class="Formulario__inputGroup__label">Descripción de la reunión:</label>
                   <input class="form-control form-control-lg Formulario__inputGroup__input" type="text" id="descID" name="descripcion_reunion" required>
+                  <div id="descFormID"></div>
                 </div>
               </div>
-              <div id="descFormID"></div>
               <div class="row w-100">
                 <div class="form-group col-md-4 has-validation Formulario__inputGroup">
                   <label class="Formulario__inputGroup__label" for="fecha_reunion">Fecha de inicio de la reunión:</label>
