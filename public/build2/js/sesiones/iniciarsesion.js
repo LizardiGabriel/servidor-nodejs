@@ -27,8 +27,8 @@ function checkCredenciales() {
     },
     body: JSON.stringify({
 
-      email: "anfitrion@test.com",
-      password: "password",
+      email: "dany.17.com@hotmail.com",
+      password: "$2b$11$jgFn3QqOiAjY2jAFLTjYVOZPdBQLoffXjPAIbpDQ0hp9wCa06f35K",
       Recuerdame: Recuerdame
     })
   })

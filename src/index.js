@@ -132,6 +132,7 @@ const rutas = [
     ['/js/invitado/invitacion.js', '../public/build2/js/invitado/invitacion.js'],
     ['/js/invitado/RegistrarInformacionPersonal.js', '../public/build2/js/invitado/RegistrarInformacionPersonal.js'],
     ['/js/invitado/headers.js', '../public/build2/js/invitado/headers.js'],
+    ['/img/icons/trash.png', '../public/build2/img/icons/trash.png'],
     
     //Rutas de js para Seguridad
     ['/js/seguridad/seguridad.js', '../public/build2/js/seguridad/seguridad.js'],
