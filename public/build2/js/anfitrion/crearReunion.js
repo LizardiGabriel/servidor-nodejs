@@ -52,8 +52,8 @@ function agregarFecha() {
     const tablaFechasRepetir = document.getElementById('tablaFechasRepetir');
     const fila = document.createElement('tr');
     fila.innerHTML = `
-        <td><input type="date" class="form-control form-control-lg Formulario__inputGroup__input" name="fechaRepetir" style="position: relative;" required></td>
-
+        <td><input type="date" class="form-control form-control-lg Formulario__inputGroup__input" name="fechaRepetir" id="dateID" style="position: relative;" required></td>
+        <td><div id="dateFormID"></div></td>
         <td><button class="addFecha__boton" onclick="eliminarFila(this)">Eliminar</button></td>
     `;
     tablaFechasRepetir.appendChild(fila);
@@ -151,6 +151,7 @@ function crearReunion() {
 
 function ReagendarReunion() {
     const fecha_reunion = document.getElementById('dateID').value;
+    event.preventDefault();
     const envJson = {
         idReunion: idReunion,
         idRep: idRep,
@@ -158,41 +159,57 @@ function ReagendarReunion() {
     };
     console.log(envJson);
 
-    fetch('reunionesReagendar', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(envJson)
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('data:', data);
-            if (data.respuesta === 'true') {
-                modal.fire({
-                    title: "Reunión reagendada",
-                    icon: "success",
-                    text: "La reunión se ha actualizado exitosamente",
-                }).then(() => {
-                    window.location.href = '/anfitrion/reuniones.html';
-                });
-            } else {
-                modal.fire({
-                    title: "Error",
-                    icon: "error",
-                    text: data.error,
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            modal.fire({
-                title: "Error",
-                icon: "error",
-                text: data.error,
-            });
-        });
+    if (validarFechaReagendar(fecha_reunion)) {
 
+        modal.fire({
+            timer: undefined,
+            icon: 'question',
+            title: "¿Desea continuar?",
+            html: `Se reagendara la reunión a la fecha: ${fecha_reunion}<br>`,
+            showDenyButton: true,
+            confirmButtonText: "Aceptar",
+            denyButtonText: `Cancelar`
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                fetch('reunionesReagendar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(envJson)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('data:', data);
+                        if (data.respuesta === 'true') {
+                            modal.fire({
+                                title: "Reunión reagendada",
+                                icon: "success",
+                                text: "La reunión se ha actualizado exitosamente",
+                            }).then(() => {
+                                window.location.href = '/anfitrion/reuniones.html';
+                            });
+                        } else {
+                            modal.fire({
+                                title: "Error",
+                                icon: "error",
+                                text: data.error,
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        modal.fire({
+                            title: "Error",
+                            icon: "error",
+                            text: data.error,
+                        });
+                    });
+
+            }
+        });
+    }
 }
 
 
@@ -228,8 +245,8 @@ botonAddFecha.addEventListener("click", (evt) => {
 
 //Funciones auxiliares 
 function convertirHora12a24(hora12) {
-    const hora = hora12.slice(0, -2);  // Quitar los últimos dos caracteres (PM o AM)
-    const modificador = hora12.slice(-2);  // Extraer AM o PM
+    const hora = hora12.slice(0, -2);
+    const modificador = hora12.slice(-2);
 
     let [horas, minutos] = hora.split(':');
 
@@ -243,6 +260,18 @@ function convertirHora12a24(hora12) {
 
     const hora24 = `${horas.toString().padStart(2, '0')}:${minutos}`;
     return hora24;
+}
+
+function validarFechaReagendar(fecha) {
+    let flag = true
+
+    if (fecha) {
+    } else {
+        flag = false;
+        document.getElementById("dateFormID").innerHTML = `<p class="msg-error-form">Ingrese una fecha</p>`;
+    }
+
+    return flag;
 }
 
 function validarNewReunion(titulo, descripcion, fecha, horaInicio, horaFin, nombreSala) {
@@ -270,24 +299,24 @@ function validarNewReunion(titulo, descripcion, fecha, horaInicio, horaFin, nomb
     if (!horaInicio || !horaFin || horaInicio >= horaFin) {
         flag = false;
         document.getElementById("timeFormID").innerHTML = `<p class="msg-error-form">Ingrese un horario correcto</p>`;
-    }else{
+    } else {
         document.getElementById("timeFormID").innerHTML = ``;
     }
 
-    if(fecha){
-    }else{
+    if (fecha) {
+    } else {
         flag = false;
         document.getElementById("dateFormID").innerHTML = `<p class="msg-error-form">Ingrese una fecha</p>`;
     }
 
     if (nombreSala) {
         if (!validateTextWithSpacesNumber(nombreSala)) {
-          flag = false;
+            flag = false;
         }
-      } else {
+    } else {
         flag = false;
         document.getElementById("nombreSalaForm").innerHTML = `<p class="msg-error-form">Favor de especificar un nombre de sala</p>`
-      }
+    }
 
     return flag;
 }

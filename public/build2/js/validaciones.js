@@ -6,6 +6,7 @@ const passwordForm = document.getElementById("passwordForm");
 const passwordFormR = document.getElementById("passwordFormR");
 
 const loginEmail = document.getElementById("loginEmail");
+const correoInv = document.getElementById("correoInv");
 const emailForm = document.getElementById("emailForm");
 
 const nombre = document.getElementById("nombre");
@@ -19,6 +20,12 @@ const apmForm = document.getElementById("apmForm");
 
 const telefono = document.getElementById("telefono");
 const telefonoForm = document.getElementById("telefonoForm");
+
+const empresa = document.getElementById("empresa");
+const empresaForm = document.getElementById("empresaForm");
+
+const identificacion = document.getElementById("identificacion");
+const identificacionForm = document.getElementById("identificacionForm");
 
 const checkbox1 = document.getElementById("rolSeguridad");
 const checkbox2 = document.getElementById("rolAnfitrion");
@@ -80,7 +87,7 @@ const validateTitle = (title) => {
 //DESC
 const validateDesc = (desc) => {
   //return desc.length < 60;
-  return desc.trim() !== '' && desc.length < 20;
+  return desc.trim() !== '' && desc.length < 60;
 }
 //DATE
 function getTodayDate() {
@@ -193,6 +200,16 @@ if (loginEmail != null)
     else
       emailForm.innerHTML = '';
   });
+  
+  if (correoInv != null)
+    correoInv.addEventListener('input', () => {
+      let valor = correoInv.value;
+      //Valido Email
+      if (!validateEmail(valor))
+        correoInv.innerHTML = msgErrorEmail;
+      else
+      correoInv.innerHTML = '';
+    });
 /* Validación mientras se detecta el teclado */
 /* Confirmación de la contraseña */
 if (loginPasswordR != null)
@@ -206,7 +223,7 @@ if (loginPasswordR != null)
       passwordFormR.innerHTML = '';
     }
   });
-
+  correoInv
 /* Campo de login */
 if (loginEmail != null)
   loginEmail.addEventListener('input', () => {
@@ -263,6 +280,30 @@ if (telefono != null) {
       telefonoForm.innerHTML = `<p class="msg-error-form">El télefono no es valido</p>`
     else
       telefonoForm.innerHTML = ``
+  })
+}
+
+/* Campo de empresa */
+if (empresa != null) {
+  empresa.addEventListener('input', () => {
+    let valor = empresa.value;
+    //Valido empresa
+    if (!validateTextWithSpacesNumber(valor))
+      empresaForm.innerHTML = `<p class="msg-error-form">La empresa no es valida</p>`
+    else
+      empresaForm.innerHTML = ``
+  })
+}
+
+/* Campo de identificacion */
+if (identificacion != null) {
+  identificacion.addEventListener('input', () => {
+    let valor = identificacion.value;
+    //Valido identificacion
+    if (valor == "INE" || valor == "Pasaporte" || valor == "Visa") 
+      identificacionForm.innerHTML = ``
+    else
+      identificacionForm.innerHTML = `<p class="msg-error-form">Favor de elegir una opción</p>`
   })
 }
 
@@ -381,54 +422,55 @@ if (desc != null) {
   })
 }
 
-document.getElementById('dateID').addEventListener('input', function() {
-  const inputDate = this.value;
-  const minDate = getTodayDate();
-
-  // Configura la fecha mínima cada vez que se ingresa algo, por si acaso no se estableció correctamente al cargar la página
-  this.setAttribute('min', minDate);
-
-  if (inputDate >= minDate) {
-    document.getElementById('dateFormID').innerHTML = ''; // Oculta el mensaje de error si la fecha es válida
-  } else {
-    document.getElementById('dateFormID').innerHTML = '<p class="msg-error-form">La fecha debe ser igual o posterior a la fecha de hoy.</p>';
-  }
-});
-
-document.getElementById('time1ID').addEventListener('input', function() {
-  const startTime = this.value;
-  const endTimeInput = document.getElementById('time2ID');
-
-  if (startTime) {
-    // Suponiendo que ambos campos son elementos de hora y aceptan valores en formato "HH:MM"
-    const startTimeParts = startTime.split(':');
-    let hour = parseInt(startTimeParts[0], 10);
-    let minutes = parseInt(startTimeParts[1], 10);
-
-    // Asegurándonos de que el tiempo mínimo de fin sea al menos 1 minuto después del inicio
-    minutes += 1;
-    if (minutes === 60) {
-      minutes = 0;
-      hour += 1;
+if (document.getElementById('dateID') != null) {
+  document.getElementById('dateID').addEventListener('input', function() {
+    const inputDate = this.value;
+    const minDate = getTodayDate();
+  
+    this.setAttribute('min', minDate);
+  
+    if (inputDate >= minDate) {
+      document.getElementById('dateFormID').innerHTML = ''; 
+    } else {
+      document.getElementById('dateFormID').innerHTML = '<p class="msg-error-form">La fecha debe ser igual o posterior a la fecha de hoy.</p>';
     }
+  });
+}
 
-    // Formateando la hora para asegurar el cumplimiento del formato "HH:MM"
-    const minEndTime = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+if (document.getElementById('time1ID') != null) {
+  document.getElementById('time1ID').addEventListener('input', function() {
+    const startTime = this.value;
+    const endTimeInput = document.getElementById('time2ID');
+  
+    if (startTime) {
+      
+      const startTimeParts = startTime.split(':');
+      let hour = parseInt(startTimeParts[0], 10);
+      let minutes = parseInt(startTimeParts[1], 10);
+  
+      minutes += 1;
+      if (minutes === 60) {
+        minutes = 0;
+        hour += 1;
+      }
+  
+      const minEndTime = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  
+      endTimeInput.setAttribute('min', minEndTime);
+    }
+  });
+}
 
-    // Configurando el valor mínimo para la hora de fin
-    endTimeInput.setAttribute('min', minEndTime);
-  }
-});
-
-document.getElementById('time2ID').addEventListener('input', function() {
-  const endTime = this.value;
-  const startTimeInput = document.getElementById('time1ID').value;
-  const endTimeForm = document.getElementById('timeFormID');
-
-  // Validar que la hora de fin no sea antes de la hora de inicio
-  if (endTime <= startTimeInput) {
-    endTimeForm.innerHTML = '<p class="msg-error-form">La hora de fin debe ser posterior a la hora de inicio</p>';
-  } else {
-    endTimeForm.innerHTML = '';
-  }
-});
+if (document.getElementById('time2ID') != null) {
+  document.getElementById('time2ID').addEventListener('input', function() {
+    const endTime = this.value;
+    const startTimeInput = document.getElementById('time1ID').value;
+    const endTimeForm = document.getElementById('timeFormID');
+  
+    if (endTime <= startTimeInput) {
+      endTimeForm.innerHTML = '<p class="msg-error-form">La hora de fin debe ser posterior a la hora de inicio</p>';
+    } else {
+      endTimeForm.innerHTML = '';
+    }
+  });
+}

@@ -48,7 +48,7 @@ function enviarForm() {
             modal.fire({
               title: "Error",
               icon: "error",
-              text: "Error al crear sala:" + response.statusText,
+              text: "A ocurrido un error, favor de intentar más tarde" + response.statusText,
             });
             console.error('Error al crear sala:', response.statusText);
           }

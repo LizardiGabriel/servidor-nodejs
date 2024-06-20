@@ -27,8 +27,13 @@ function checkCredenciales() {
     },
     body: JSON.stringify({
 
+<<<<<<< HEAD
       email: "dany.17.com@hotmail.com",
       password: "$2b$11$jgFn3QqOiAjY2jAFLTjYVOZPdBQLoffXjPAIbpDQ0hp9wCa06f35K",
+=======
+      email: email,
+      password: password,
+>>>>>>> 137cf8a4b37230236ea0a71ccae7030cee3d1adf
       Recuerdame: Recuerdame
     })
   })
@@ -53,7 +58,7 @@ function checkCredenciales() {
         });
         break;
       case 500:
-        Swal.fire({
+        modal.fire({
           icon: "error",
           text: data.error,
         });
