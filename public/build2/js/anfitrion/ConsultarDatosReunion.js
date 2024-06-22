@@ -4,34 +4,46 @@ window.onload = function () {
 
 function addminutes(initialT, minAdd) {
     const today = new Date();
-    console.log(today);
-    const timeParts = initialT.split(':');
-    const date = new Date(today.getFullYear(), today.getMonth(), today.getDate(), parseInt(timeParts[0]), parseInt(timeParts[1]));
-    date.setMinutes(date.getMinutes() + parseInt(minAdd));
+    console.log('Fecha actual:', today);
 
+    // Descomponer la hora inicial en componentes y crear un objeto de fecha
+    const timeParts = initialT.split(':');
+    const minutesPart = parseInt(timeParts[1].slice(0, -2));
+    const amPm = timeParts[1].slice(-2);
+    const hourPart = parseInt(timeParts[0]) % 12; // Convertir 12 a 0 para las horas
+    const date = new Date(today.getFullYear(), today.getMonth(), today.getDate(), hourPart, minutesPart);
+
+    // Ajustar correctamente las horas si es PM
+    if (amPm === "PM") {
+        date.setHours(date.getHours() + 12);
+    }
+
+    console.log('Fecha con hora inicial:', date);
+
+    // Añadir los minutos
+    date.setMinutes(date.getMinutes() + parseInt(minAdd));
+    console.log('Fecha después de añadir minutos:', date);
+
+    // Formatear la fecha de vuelta a formato 12 horas con AM/PM
     let hours = date.getHours();
     const minutes = date.getMinutes().toString().padStart(2, "0");
     const isAM = hours < 12;
-    if (hours > 12) {
-        hours -= 12;
-    } else if (hours === 0) {
-        hours = 12;  // Trata la medianoche como 12 AM
-    }
-    const formattedTime = hours.toString().padStart(2, "0") + ":" + minutes + (isAM ? " AM" : " PM");
-    console.log(formattedTime);
+    if (hours >= 12) hours -= 12;
+    if (hours === 0) hours = 12; // Tratar medianoche como 12 AM
+
+    const formattedTime = hours.toString().padStart(2, '0') + ":" + minutes + (isAM ? "AM" : "PM");
+    console.log('Hora formateada:', formattedTime);
     return formattedTime;
 }
+
 
 
 let url = window.location.href;
 let urlParams = new URLSearchParams(window.location.search);
 console.log(urlParams);
-const idRepeticion = urlParams.get('idRepeticion');
 const idReunion = parseInt(urlParams.get('idReunion'));
-const fecha = urlParams.get('fecha_i');
-const hora_i = urlParams.get('hora_i');
-const hora_f = urlParams.get('hora_f');
-const idRep = parseInt(urlParams.get('idRep'));
+const idRepeticion = urlParams.get('idRepeticion');
+console.log(idRepeticion);
 
 function cargarDatos() {
     console.log("Cargando datos"); url
@@ -42,10 +54,9 @@ function cargarDatos() {
             document.getElementById('reunionId').value = data.id_reunion;
             document.getElementById('reunionTitulo').value = data.titulo_reunion;
             document.getElementById('sala').value = data.nombreSala;
-            document.getElementById('reunionFecha').value = fecha;
-            document.getElementById('horarioInicio').value = hora_i;
-            document.getElementById('horarioFin').value = hora_f;
-
+            document.getElementById('reunionFecha').value =data.fechasRepeticion.find(repeticion =>repeticion.id_repeticion == idRepeticion).fecha_repeticion;
+            document.getElementById('horarioInicio').value = data.fechasRepeticion.find(repeticion =>repeticion.id_repeticion == idRepeticion).hora_inicio_repeticion;
+            document.getElementById('horarioFin').value = data.fechasRepeticion.find(repeticion =>repeticion.id_repeticion == idRepeticion).hora_fin_repeticion;
             for (const invitado of data.infoInvitados) {
                 if (invitado.es_colado_invitado === 1)
                     fetchInvitadoByEmail(invitado, data.id_reunion);
@@ -91,7 +102,7 @@ function cargarDatos() {
 document.getElementById("aumentar30").addEventListener('click', function () {
     let datos = {
         id_reunion: idRepeticion,
-        hora_fin_repeticion: addminutes(hora_f, 30)
+        hora_fin_repeticion: addminutes(document.getElementById('horarioFin').value, 30)
     }
     console.log(datos);
     fetch("/anfitrion/reuniones/hora", {
@@ -108,11 +119,13 @@ document.getElementById("aumentar30").addEventListener('click', function () {
             return response.json();  // Convertimos la respuesta a JSON
         })
         .then(data => {
+            
             modal.fire({
                 title: "Tiempo aumentado",
                 icon: "success",
                 text: "Se han agregado 30 minutos a la reunión",
             })
+            cargarDatos();
             console.log('Success:', data);  // Manipulamos los datos recibidos
         })
         .catch(error => {
@@ -123,7 +136,7 @@ document.getElementById("aumentar30").addEventListener('click', function () {
 document.getElementById("aumentar60").addEventListener('click', function () {
     let datos = {
         id_reunion: idRepeticion,
-        hora_fin_repeticion: addminutes(hora_f, 60)
+        hora_fin_repeticion: addminutes(document.getElementById('horarioFin').value, 60)
     }
     console.log(datos);
     fetch("/anfitrion/reuniones/hora", {
@@ -145,7 +158,7 @@ document.getElementById("aumentar60").addEventListener('click', function () {
                 icon: "success",
                 text: "Se han agregado 60 minutos a la reunión",
             })
-            //cargarDatos();
+            cargarDatos();
             console.log('Success:', data);  // Manipulamos los datos recibidos
         })
         .catch(error => {
@@ -163,7 +176,7 @@ document.getElementById("botonAgregar").addEventListener('click', function () {
 });
 
 document.getElementById("reagendar").addEventListener('click', function () {
-    window.location.href = "/anfitrion/crearReunion?idReunion=" + idReunion + "&" + "hora_i=" + hora_i + "&" + "hora_f=" + hora_f + "&" + "idRep=" + idRep;
+    window.location.href = "/anfitrion/crearReunion?idReunion=" + idReunion + "&" + "hora_i=" + document.getElementById('horarioInicio').value + "&" + "hora_f=" + document.getElementById('horarioFin').value + "&" + "idRep=" + idRepeticion;
 });
 
 function enviarInvitacion() {
