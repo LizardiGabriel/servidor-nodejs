@@ -192,9 +192,11 @@ function ReagendarReunion() {
                             });
                         } else {
                             modal.fire({
-                                title: "Error",
-                                icon: "error",
-                                text: data.error,
+                                title: "Reunión reagendada",
+                                icon: "success",
+                                text: "La reunión se ha actualizado exitosamente",
+                            }).then(() => {
+                                window.location.href = '/anfitrion/reuniones.html';
                             });
                         }
                     })
