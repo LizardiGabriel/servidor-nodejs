@@ -7,23 +7,51 @@ async function obtenerSalas() {
     const response = await fetch('/admin/catalogo/salas');
     const salas = await response.json();
 
-    // Limpiar el arreglo 'info'
-    info.length = 0;
+    switch (response.status) {
+      case 200:
+            // Limpiar el arreglo 'info'
+        info.length = 0;
 
-    // Agregar cada sala al arreglo 'info'
-    salas.forEach(sala => {
-      info.push({
-        id: sala.id_sala,
-        nombreSala: sala.nombre_sala,
-        estado: sala.estatus_sala,
-        cupoMax: sala.capacidad_sala,
-        numeroS: sala.numero_sala,
-        pisoS: sala.piso_sala
-      });
-    });
+          // Agregar cada sala al arreglo 'info'
+          salas.forEach(sala => {
+            info.push({
+            id: sala.id_sala,
+            nombreSala: sala.nombre_sala,
+            estado: sala.estatus_sala,
+            cupoMax: sala.capacidad_sala,
+            numeroS: sala.numero_sala,
+            pisoS: sala.piso_sala
+            });
+          });
 
     console.log('Salas cargadas:', info);
-    return info;
+        break;
+      case 401:
+        modal.fire({
+          icon: "error",
+          text: data.error,
+        });
+        break;
+      case 404:
+        modal.fire({
+          title: "Error",
+          icon: "error",
+          text: data.error,
+        });
+        break;
+      case 500:
+        modal.fire({
+          title: "Error",
+          icon: "error",
+          text: "A ocurrido un error, favor de intentar más tarde",
+        });
+        break;
+      default:
+          break;
+}
+
+return (response.status == 200 ? info : []);
+
   } catch (error) {
     console.error('Error al obtener salas:', error);
     return [];

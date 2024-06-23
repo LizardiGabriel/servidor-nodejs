@@ -16,8 +16,7 @@ const { getInvitadoByIdBD, getInvitadoByIdEmailBD, setNewInvitadoBD, setNewColad
 const { setNewInvitacionBD, getDetallesReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD, getReunionesNuebasByIdBD } = require('../tools/peticiones');
 const {getInvitadoByEmailBD,updateInvitadoBDtoInvitacion, updatePassInvitadoBD, getReunionesConRepeticionByIdOfInvitadoBD, getReunionesNuebasBD} = require('../tools/peticiones');
 const { getInvitacionBy_IdInvitado_IdReunionBD } = require('../tools/peticiones');
-const{putInfoInvitadoToReunionBD, createColadoBD,getReunionByIdBD} = require('../tools/peticiones');
-
+const{putInfoInvitadoToReunionBD, createColadoBD,getReunionByIdBD,getFotoFromInvitadoBD,updateInvitadoWithFotoBD} = require('../tools/peticiones');
 
 
 
@@ -26,7 +25,7 @@ async function logout(req, res) {
     req.session.destroy();
     res.redirect('/');
 }
-
+//----------------funciones auxiliares ----------------------
 function getemail(jsonToken){
     let email = "";
     jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
@@ -37,6 +36,11 @@ function getemail(jsonToken){
         }
     });
     return email;
+}
+
+function esCadenaBase64Valida(str) {
+    const base64Regex = /^data:image\/[a-zA-Z0-9]+;base64,[a-zA-Z0-9+/=]+$/;
+    return base64Regex.test(str);
 }
 
 function getIdInvitado(jsonToken){
@@ -64,11 +68,9 @@ function getidSeleccionado(jsonToken){
 }
 
 
-
 function generateTokenInvitado(email, idInvitado, rolNum, newCount, changeFirstPass) {
     return jwt.sign({ email: email, idInvitado: idInvitado, rol: rolNum, newCount: newCount, changeFirstPass: changeFirstPass }, process.env.SECRET_KEY, { expiresIn: '60m' });
 }
-
 
 
 async function guardarImagenDesdeBase64(base64Data, nombreArchivo) {
@@ -138,6 +140,15 @@ function encodeImageToBase64(filePath) {
 }
 
 
+async function getUserEmail(req,res){
+    console.log('=============================mensaje -->Se intento obtener del correo');
+    if(req.session){
+        res.json({ email: getemail(req.session.jwt) }); 
+    }
+    else {
+        res.status(403).send('No autorizado');
+    }
+}
 
 
 async function Pruebaguardar( req, res)  {
@@ -595,7 +606,7 @@ async function aceptarReunion(req, res){
 <body>
     <main class="ContenidoCorreo">
         <section class="header">
-            <img class="header_img" src="https://i.imgur.com/gol0fCj.png">
+            <img class="header_img" src="https://i.imgur.com/I7vq7C9.png">
         </section>
 
         <section class="Correo">
@@ -993,7 +1004,7 @@ async function recuperarQr(req,res){
 <body>
     <main class="ContenidoCorreo">
         <section class="header">
-            <img class="header_img" src="https://i.imgur.com/gol0fCj.png">
+            <img class="header_img" src="https://i.imgur.com/I7vq7C9.png">
         </section>
 
         <section class="Correo">
@@ -1035,14 +1046,56 @@ async function recuperarQr(req,res){
     res.status(200).json({ message: 'succesful', status: 200});
 }
 
+async function getUsuarioByEmail(req, res) {
+    console.log('========================= get Usuario By email: ', req.params)
+    const { email } = req.params;
+    const invitado = await getInvitadoByIdEmailBD(email.replace(/^:/, ''));
+    res.json(invitado);
+}
 
+function getIdUser(jsonToken){
+    let idUser = "";
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            idUser= decoded.idUsuario;
+        }
+    });
+    return idUser;
+}
+async function getFotoInvitado(req, res){
+    const idUsuario = getIdUser(req.session.jwt);
+    console.log('idInvitado: ', idUsuario)
+    const fotito = await getFotoFromInvitadoBD(idUsuario);
+    res.status(200).json({foto: fotito});
+}
 
+async function updateInvitado(req, res) {
+    console.log("Back updateInvitado");
+    const {id, email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, fotoUsuario } = req.body;
+    console.log(req.body);
+    console.log('id: ', id, 'email: ', email, 'nombre: ', nombre, 'apellidoPaterno: ', apellidoPaterno);
+    //const id_final = id.replace(/^:/, '');
 
+    if (fotoUsuario && esCadenaBase64Valida(fotoUsuario)) {
+        const extensionfoto = await obtenerExtensionDeBase64(fotoUsuario);
+        const rutafoto = await guardarImagenDesdeBase64(fotoUsuario, "fotografia_invitado" + id + "." + extensionfoto);
+        console.log(rutafoto);
+        const usuarioActualizado = await updateInvitadoWithFotoBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono, rutafoto);
+        console.log('usuarioActualizado: ', usuarioActualizado);
+        res.status(200).json({ message: 'Usuario actualizado correctamente' });
+    } else if (fotoUsuario) {
+        console.error('Cadena base64 inválida para fotoUsuario.');
+        const usuarioActualizadoNoFoto = await updateInvitadoWithFotoBDD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono, '');
+        res.status(201).json({ message: 'Usuario actualizado pero fotoUsuario inválido o ausente' });
 
-
-
-
-
+    } else {
+        console.error('fotoUsuario está undefined o es inválido.');
+        const usuarioActualizadoNoFoto = await updateInvitadoWithFotoBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono, '');
+        res.status(201).json({ message: 'Usuario actualizado pero fotoUsuario inválido o ausente' });
+    }
+}
 
 
 
@@ -1058,7 +1111,12 @@ module.exports = {
     obtenerDetallesReunion,
     guardarQR,
     aceptarReunion,
-    recuperarQr
+    recuperarQr,
+    getUserEmail,
+    getUsuarioByEmail,
+    getFotoInvitado,
+    updateInvitado
+
     
 };
 

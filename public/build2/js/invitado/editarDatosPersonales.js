@@ -1,25 +1,25 @@
-document.addEventListener('DOMContentLoaded',async function() {
+document.addEventListener('DOMContentLoaded', async function () {
   traerDatos();
 });
 
 async function traerDatos() {
   try {
-    const response = await fetch('/anfitrion/getemail');
+    const response = await fetch('/invitado/getemail');
     const data = await response.json();
     console.log(data);
     var datosUsuario = await getData(data.email);  // Usar await aquí garantiza que esperamos el resultado
-    const nombre = document.getElementById("nombre");
-    nombre.value = datosUsuario.nombre_usuario;
-    const ApellidoPat = document.getElementById("app");
-    ApellidoPat.value = datosUsuario.apellido_paterno_usuario;
-    const ApellidoMat = document.getElementById("apm");
-    ApellidoMat.value = datosUsuario.apellido_materno_usuario;
-    /* const email= document.getElementById("inputEmail");
-    email.placeholder=data.email; */
-    const Tel = document.getElementById("telefono");
-    Tel.value = datosUsuario.telefono_usuario;
-    const foto = document.getElementById("profile-image");
-    foto.src = datosUsuario.foto_usuario;
+    console.log(datosUsuario);
+    const nombre= document.getElementById("nombre");
+    nombre.value=datosUsuario.nombre_invitado;
+    const ApellidoPat= document.getElementById("app");
+    ApellidoPat.value=datosUsuario.apellido_paterno_invitado;
+    const ApellidoMat= document.getElementById("apm");
+    ApellidoMat.value=datosUsuario.apellido_materno_invitado;
+    const Tel= document.getElementById("telefono");
+    Tel.value = datosUsuario.telefono_invitado;
+    const foto = document.getElementById('profile-image');
+    foto.src = datosUsuario.foto_invitado;
+
   } catch (error) {
     modal.fire({
       title: "Error",
@@ -30,25 +30,9 @@ async function traerDatos() {
   }
 }
 
-async function getData(correo) {
-  try {
-      const response = await fetch('/anfitrion/catalogo/usuarioEmail/:'+correo);
-      const data = await response.json();
-      return data;  // Asegura que data sea devuelta de la función
-  } catch (error) {
-    modal.fire({
-      title: "Error",
-      icon: "error",
-      text: "Error fetching data:" + error,
-    });
-      console.error('Error fetching data:', error);
-      return null;  // Devolver null o algún indicativo de error
-  }
-}
-
 async function updateData(){
   try {
-      const response = await fetch('/anfitrion/getemail');
+      const response = await fetch('/invitado/getemail');
       const data = await response.json();
       var datosUsuario = await getData(data.email);
       console.log(datosUsuario);
@@ -63,7 +47,8 @@ async function updateData(){
   const file_foto = document.getElementById("file-input").files[0];
 
   let datatoSend={
-      email:datosUsuario.email_usuario,
+      id:datosUsuario.id_invitado,
+      email:datosUsuario.email_invitado,
       nombre: nombre,
       apellidoPaterno:ApellidoPat,
       apellidoMaterno:ApellidoMat,
@@ -91,7 +76,7 @@ async function updateData(){
           const reader = new FileReader();
           reader.onloadend = function() {
             datatoSend.fotoUsuario = reader.result; // Añade la foto en formato Base64 al objeto data
-            enviarData(datatoSend, datosUsuario.id_usuario);
+            enviarData(datatoSend, datosUsuario.id_invitado);
             
             //Volvemos todo a la normalidad
             document.querySelector('.navbar__profile-container').style.backgroundImage = `url('${reader.result}')`
@@ -128,32 +113,50 @@ document.getElementById('cancelarProfile').addEventListener('click', function() 
   document.getElementById("telefonoForm").innerHTML = ``
 });
 
+async function getData(correo) {
+  try {
+      // Remover el ':' adicional del inicio de la URL si no es necesario
+      const response = await fetch('/invitado/catalogo/usuarioEmail/:'+correo);
+      const data = await response.json();
+      console.log(data);
+      return data;  // Asegura que data sea devuelta de la función
+  } catch (error) {
+    modal.fire({
+      title: "Error",
+      icon: "error",
+      text: "Error fetching data:" + error,
+    });
+      console.error('Error fetching data:', error);
+      return null;  // Devolver null o algún indicativo de error
+  }
+}
+
 function enviarData(data,id_usuario) {
   console.log(data);
-  fetch('/anfitrion/catalogo/usuarios/:'+id_usuario, {
-    method: 'PUT',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-      modal.fire({
-        title: "Operación Exitosa",
-        icon: "success",
-        text: "Sus datos han sido modificados correctamente"
+      fetch('/invitado/catalogo/usuarios/:'+id_usuario, {
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
       })
-      console.log('Respuesta del servidor:', data);
-    })
-    .catch(error => {
-      modal.fire({
-        title: "Error",
-        icon: "error",
-        text: "Error al mandar los datos:" + error,
+      .then(response => response.json())
+        .then(data => {
+          modal.fire({
+            title: "Operación Exitosa",
+            icon: "success",
+            text: "Sus datos han sido modificados correctamente"
+          })
+          console.log('Respuesta del servidor:', data);
+      })
+      .catch(error => {
+        modal.fire({
+          title: "Error",
+          icon: "error",
+          text: "Error al mandar los datos:" + error,
+        });
+        console.error('Error al mandar los datos:', error);
       });
-      console.error('Error al mandar los datos:', error);
-    });
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -179,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function() {
               const reader = new FileReader();
               reader.onload = function(e) {
                 profileImage.src = e.target.result;
-                fetch(`/anfitrion/getFotoPerfil`)
+                fetch(`/invitado/getFotoPerfil`)
                   /* modal.fire({
                       icon: 'success',
                       title: 'Imagen subida con éxito',
@@ -193,7 +196,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function validaEditData(nombre, app, apm, telefono) {
-  
   let flag = true;
   //Validación de nombre
   if (nombre) {
@@ -203,7 +205,7 @@ function validaEditData(nombre, app, apm, telefono) {
   } else {
     flag = false;
     document.getElementById("nombreForm").innerHTML = `<p class="msg-error-form">Favor de especificar un nombre</p>`
-    }
+  }
 
   //Validación de apellido paterno
   if (app) {

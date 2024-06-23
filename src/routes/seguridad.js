@@ -1,17 +1,116 @@
 const express = require('express');
 const { log } = require('console');
 const { getReunionesBD, getUsuarioByIdBD,getReunionByIdBD,getSalaByIdBD,getInvitacionByIdBD,getInvitadoByIdBD,getInvitadoByNameBD,getInvitacionesByIdInv, getDetallesReunionByIdBD,
-    getInvitacionesByIdReunionBD
+    getInvitacionesByIdReunionBD,getUsuarioByEmailBD,updateUsuarioBD
 } = require('../tools/peticiones');
 const { response } = require('express');
 const { json } = require('body-parser');
 const {confirmarDispositivosBD,confirmarAutomovilesBD,registrarHoraEnBD,obtenerDetallesInvitacionAnfiBD, getInvitacionByIdSeguridadBD, obtenerDetallesInvitacionSeguridadBD} = require("../tools/petiAdmin");
-
+const jwt = require('jsonwebtoken');
+const path = require('path');
+const fs = require('fs');
 
 async function logout(req, res) {
     console.log('mensaje --> logout');
     req.session.destroy();
     res.redirect('/');
+}
+
+async function guardarImagenDesdeBase64(base64Data, nombreArchivo) {
+    // Eliminar la cabecera de datos URL si existe (data:image/png;base64,)
+    const base64Image = base64Data.split(';base64,').pop();
+
+    // Especificar la ruta donde se guardará la imagen
+    const filePath2 = 'uploads/'+nombreArchivo;
+    const filePath = path.join('public/build2/uploads',nombreArchivo);
+    // Decodificar la imagen y guardarla
+    fs.writeFile(filePath, base64Image, {encoding: 'base64'}, (error) => {
+        if (error) {
+            console.error('Error al guardar la imagen:', error);
+        } else {
+            console.log('Imagen guardada correctamente:', filePath);
+        }
+    });
+    return filePath2;
+    
+}
+
+//------------------------Funciones auxiliares----------------
+function getemail(jsonToken){
+    let email = "";
+    jwt.verify(jsonToken, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) {
+            return -1;
+        } else {
+            email= decoded.email;
+        }
+    });
+    return email;
+}
+function esCadenaBase64Valida(str) {
+    const base64Regex = /^data:image\/[a-zA-Z0-9]+;base64,[a-zA-Z0-9+/=]+$/;
+    return base64Regex.test(str);
+}
+
+async function obtenerExtensionDeBase64(cadenaBase64) {
+    const resultado = cadenaBase64.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
+    if (resultado && resultado.length > 1) {
+        const tipoMime = resultado[1];
+        switch (tipoMime) {
+            case 'image/jpeg':
+                return 'jpg';
+            case 'image/png':
+                return 'png';
+            case 'image/gif':
+                return 'gif';
+            default:
+                return ''; 
+        }
+    }
+    return '';
+    }
+
+//-----------------------------------------------
+async function getUserEmail(req,res){
+    console.log('=============================mensaje -->Se intento obtener del correo');
+    if(req.session){
+        res.json({ email: getemail(req.session.jwt) }); 
+    }
+    else {
+        res.status(403).send('No autorizado');
+    }
+}
+async function getUsuarioByEmail(req, res) {
+    console.log('========================= get Usuario By email: ', req.params)
+    const { email } = req.params;
+    const usuario = await getUsuarioByEmailBD(email.replace(/^:/, ''));
+    res.json(usuario);
+}
+
+async function updateUsuario(req, res) {
+    const { id } = req.params;
+    const { email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, fotoUsuario } = req.body;
+    console.log(req.body);
+    console.log('id: ', id, 'email: ', email, 'nombre: ', nombre, 'apellidoPaterno: ', apellidoPaterno);
+    const id_final = id.replace(/^:/, '');
+
+    if (fotoUsuario && esCadenaBase64Valida(fotoUsuario)) {
+        const extensionfoto = await obtenerExtensionDeBase64(fotoUsuario);
+        const rutafoto = await guardarImagenDesdeBase64(fotoUsuario, "fotografia_usuario" + id_final + "." + extensionfoto);
+        console.log(rutafoto);
+        const usuarioActualizado = await updateUsuarioBD(id_final, email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, rutafoto);
+        console.log('usuarioActualizado: ', usuarioActualizado);
+        res.status(200).json({ message: 'Usuario actualizado correctamente' });
+    } else if (fotoUsuario) {
+        console.error('Cadena base64 inválida para fotoUsuario.');
+        const usuarioActualizadoNoFoto = await updateUsuarioBD(id_final, email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, '');
+        res.status(201).json({ message: 'Usuario actualizado pero fotoUsuario inválido o ausente' });
+
+    } else {
+        console.error('fotoUsuario está undefined o es inválido.');
+        const usuarioActualizadoNoFoto = await updateUsuarioBD(id_final, email, nombre, apellidoPaterno, apellidoMaterno, telefono, id_rol, '');
+        res.status(201).json({ message: 'Usuario actualizado pero fotoUsuario inválido o ausente' });
+    }
 }
 
 
@@ -245,7 +344,9 @@ module.exports = {
     getSeguridadInfo_idInv_idReu,
     registrarHora,
     confirmarAutomovil,
-    confirmarDispositivo
-    
+    confirmarDispositivo,
+    getUserEmail,
+    getUsuarioByEmail,
+    updateUsuario
     
 };

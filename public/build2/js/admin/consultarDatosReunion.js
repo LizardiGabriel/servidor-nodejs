@@ -1,6 +1,7 @@
-window.onload = function () {
+document.addEventListener('DOMContentLoaded',async function() {
   cargarDatos();
-}
+});
+
 
 function cargarDatos() {
   console.log("Cargando datos");

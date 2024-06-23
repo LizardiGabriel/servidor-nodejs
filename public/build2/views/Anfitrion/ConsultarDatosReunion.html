@@ -64,13 +64,11 @@
                         <div class="col-md-4">
                             <label for="correos" class="Nlabel">Correo electrónico:</label>
                             <input type="text" class="Ninput" id="correoInv" name="correos" required>
-                            <div class="invalid-feedback">
-                                Ingrese su correo electrónico.
-                            </div>
+                            <div id="emailForm"></div>
                         </div>
                         <div class="col-md-4">
                             <label for="acompanantes" class="Nlabel">Número de acompañantes:</label>
-                            <input type="number" class="Ninput" id="acompanantesInv" name="acompanantes" required>
+                            <input type="number" class="Ninput" id="acompanantesInv" min="0" max="5" step="1" value="0" name="acompanantes" required>
                             <div class="invalid-feedback">
                                 Ingrese el número de acompañantes.
                             </div>
@@ -125,6 +123,7 @@
     <script src="/build/js/header.js"></script>
     <script src="../../js/anfitrion.js"></script>
     <script src="../../js/anfitrion/ConsultarDatosReunion.js"></script>
+    <script src="../../js/validaciones.js"></script>
 
 </body>
 

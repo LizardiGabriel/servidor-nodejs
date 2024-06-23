@@ -17,6 +17,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!--SiderBar-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+      .msg-error-form{
+        max-width: 100%;
+        margin-top: 1rem;
+        font-size: 1.6rem;
+      }
+    </style>
 
 </head>
 
@@ -27,148 +34,233 @@
     <div id="contenedor_main">
         <div class="registrarInforPersonal">
             <section class="cRegistro">
-                <h1 class="title-example text-center">Registro de información personal</h1>
-                <form id="formularioDatosPersonales" class="Formulario needs-validation paragraph-example" novalidate>
-                    <div class="informacionPersonal">
-                        <h3 class="personal__titulo subtitle-example">Datos personales</h3>
-                        <div class="NombreCompleto">
-                            <div class="form-group has-validation">
-                                <label for="nombre" class="labelControl">Nombre:*</label>
-                                <input type="text" id="nombre" class="form-control form-control-lg inputControl" placeholder="Nombre" required>
-                                <div class="invalid-feedback">Ingrese su Nombre.</div>
-                            </div>
-                            <div class="form-group has-validation">
-                                <label for="apellidoPaterno" class="labelControl">Apellido paterno:*</label>
-                                <input type="text" id="apellidoPaterno" class="form-control form-control-lg inputControl" placeholder="Apellido paterno" required>
-                                <div class="invalid-feedback">Ingrese su Apellido paterno.</div>
-                            </div>
-                            <div class="form-group has-validation">
-                                <label for="apellidoMaterno" class="labelControl">Apellido materno:*</label>
-                                <input type="text" id="apellidoMaterno" class="form-control form-control-lg inputControl" placeholder="Apellido materno" required>
-                                <div class="invalid-feedback">Ingrese su apellido materno.</div>
-                            </div>
-                                </div>
-                        <div class="contacto">
-                            <div class="form-group has-validation">
-                                <label for="telefono" class="labelControl">Número de teléfono:*</label>
-                                <input type="tel" id="telefono" class="form-control form-control-lg inputControl" placeholder="Ingrese su número telefónico" pattern="[0-9]{10}" required>
-                                <div class="invalid-feedback">Ingrese un número telefónico válido.</div>
-                            </div>
-                            <div class="form-group has-validation">
-                                <label for="empresa" class="labelControl">Empresa a la que pertenece:*</label>
-                                <input type="text" id="empresa" class="form-control form-control-lg inputControl" placeholder="Ingrese su Empresa de procedencia" required>
-                                <div class="invalid-feedback">Ingrese su empresa de procedencia.</div>
-                            </div>
+              <h1 class="title-example text-center">Registro de información personal</h1>
+              <div id="formularioDatosPersonales" class="Formulario needs-validation paragraph-example">
+                <div class="informacionPersonal">
+                    <h3 class="personal__titulo subtitle-example">Datos personales</h3>
+                    <div class="NombreCompleto">
+                        <div class="form-group has-validation col-md-4" style="max-width: 100%;">
+                          <label for="nombre" class="labelControl">Nombre:*</label>
+                          <input type="text" id="nombre" class="form-control form-control-lg inputControl" placeholder="Nombre" required>
+                          <div id="nombreForm"></div>
                         </div>
-                        <div class="identificacion">
-                            <div class="form-group has-validation">
-                                <label for="identificacion" class="labelControl">Identificación oficial a presentar:*</label>
-                                <select id="identificacion" class="custom-select form-control-lg inputControl" required>
-                                    <option value="">Elija una opción...</option>
-                                    <option value="INE">INE</option>
-                                    <option value="Pasaporte">Pasaporte</option>
-                                    <option value="Visa">Visa</option>
-                                </select>
-                                <div class="invalid-feedback">Debe elegir una de las opciones.</div>
-                            </div>
-                            <div class="form-group has-validation">
-                                <label for="foto" class="form-label labelControl">Fotografía reciente</label>
-                                <input class="form-control form-control-lg inputControl" type="file" id="foto" accept="image/*" required>
-                                <div class="invalid-feedback">Debe subir un archivo.</div>
-                            </div>
+                        <div class="form-group has-validation col-md-4" style="max-width: 100%;">
+                          <label for="apellidoPaterno" class="labelControl">Apellido paterno:*</label>
+                          <input type="text" id="app" class="form-control form-control-lg inputControl" placeholder="Apellido paterno" required>
+                          <div id="appForm"></div>
+                        </div>
+                        <div class="form-group has-validation col-md-4" style="max-width: 100%;">
+                          <label for="apellidoMaterno" class="labelControl">Apellido materno:*</label>
+                          <input type="text" id="apm" class="form-control form-control-lg inputControl" placeholder="Apellido materno" required>
+                          <div id="apmForm"></div>
                         </div>
                     </div>
-                    <input class="confirm__btn" type="submit" value="Enviar">
-                </form>
-
+                    <div class="contacto">
+                      <div class="form-group has-validation col-md-6" style="max-width: 100%;">
+                        <label for="telefono" class="labelControl">Número de teléfono:*</label>
+                        <input type="tel" id="telefono" class="form-control form-control-lg inputControl" placeholder="Ingrese su número telefónico" pattern="[0-9]{10}" required>
+                        <div id="telefonoForm"></div>
+                      </div>
+                      <div class="form-group has-validation col-md-6" style="max-width: 100%;">
+                        <label for="empresa" class="labelControl">Empresa a la que pertenece:*</label>
+                        <input type="text" id="empresa" class="form-control form-control-lg inputControl" placeholder="Ingrese su Empresa de procedencia" required>
+                        <div id="empresaForm"></div>
+                      </div>
+                    </div>
+                    <div class="identificacion">
+                      <div class="form-group has-validation col-md-6" style="max-width: 100%;">
+                        <label for="identificacion" class="labelControl">Identificación oficial a presentar:*</label>
+                        <select id="identificacion" class="custom-select form-control-lg inputControl" required>
+                          <option value="">Elija una opción...</option>
+                          <option value="INE">INE</option>
+                          <option value="Pasaporte">Pasaporte</option>
+                          <option value="Visa">Visa</option>
+                        </select>
+                        <div id="identificacionForm"></div>
+                      </div>
+                      <div class="form-group has-validation col-md-6" style="max-width: 100%;">
+                        <label for="foto" class="form-label labelControl">Fotografía reciente</label>
+                        <input class="form-control form-control-lg inputControl" type="file" id="foto" accept="image/*" required>
+                        <div id="fotoForm"></div>
+                      </div>
+                    </div>
+                </div>
+                <button class="confirm__btn" type="submit" onclick="subir()">Enviar</button>
+              </div>
             </section>
-
         </div>
     </div>
 </main>
 
 <div id="footers"></div>
 
+<!-- Estilos para el Swal -->
+<style>
+  .titleSize{
+    font-size: 4rem;
+  }
+  .contentSize{
+    font-size: 2rem !important;
+  }
+  .buttonSize{
+    font-size: 2rem !important;
+  }
+  .iconSize{
+    font-size: 1.5rem;
+  }
+</style>
 <script>
-    /* Función para los modales */
-    const modal = Swal.mixin({
-        timer: 3000,
-        timerProgressBar: true,
-        background: "#fbfff1",
-        showConfirmButton: true,
-        confirmButtonColor: "#89b6b1",
-        cancelButtonColor: "#305272",
-        width: "50%",
-        customClass: {
-            title: "titleSize",
-            htmlContainer: "contentSize",
-            confirmButton: "buttonSize",
-            icon: "iconSize",
-        }
-    })
-
-    const formularioDatosPersonales = document.getElementById('formularioDatosPersonales');
-    formularioDatosPersonales.addEventListener('submit', function(event) {
-        event.preventDefault(); // Evitar el envío del formulario por defecto
-
-        const nombre = document.getElementById('nombre').value;
-        const apellidoPaterno = document.getElementById('apellidoPaterno').value;
-        const apellidoMaterno = document.getElementById('apellidoMaterno').value;
-        const telefono = document.getElementById('telefono').value;
-        const empresa = document.getElementById('empresa').value;
-        const identificacion = document.getElementById("identificacion").value;
-        const foto = document.getElementById("foto").files[0];
-
-        let data = {
-            nombre: nombre,
-            apellidoPat: apellidoPaterno,
-            apellidoMa: apellidoMaterno,
-            tel: telefono,
-            empresa: empresa,
-            identificacion: identificacion,
-        };
-
-        if (foto) {
-            const reader = new FileReader();
-            reader.onloadend = function() {
-                data.foto = reader.result; // Añade la foto en formato Base64 al objeto data
-                enviarData(data);
-            };
-            reader.readAsDataURL(foto);
-        } else {
-            enviarData(data); // Enviar sin foto si no se seleccionó ninguna
-        }
-    });
-
-    function enviarData(data) {
-        fetch('/invitado/registrarinformacion', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Respuesta del servidor:', data);
-                window.location.href = data.ruta;
-            })
-            .catch(error => {
-                console.error('Error al mandar datos:', error)
-                modal.fire({
-                    title: "Error",
-                    icon: "error",
-                    text: error,
-                });
-            });
+    function subir (){
+      const nombre = document.getElementById('nombre').value;
+      const apellidoPaterno = document.getElementById('app').value;
+      const apellidoMaterno = document.getElementById('apm').value;
+      const telefono = document.getElementById('telefono').value;
+      const empresa = document.getElementById('empresa').value;
+      const identificacion = document.getElementById("identificacion").value;
+      const foto = document.getElementById("foto").files[0];
+  
+      let data = {
+          nombre: nombre,
+          apellidoPat: apellidoPaterno,
+          apellidoMa: apellidoMaterno,
+          tel: telefono,
+          empresa: empresa,
+          identificacion: identificacion,
+      };
+  
+      if(validaData(nombre, apellidoPaterno, apellidoMaterno, telefono, empresa, identificacion, foto)){
+        modal.fire({
+          timer: undefined,
+          icon: 'question',
+          title: "¿Desea continuar?",
+          html: `Sus datos de perfil para su cuenta son: <br>
+          Nombre: ${nombre} ${apellidoPaterno} ${apellidoMaterno}, <br>
+          Telefono: ${telefono}, <br>
+          Empresa: ${empresa}, <br>
+          Identificacion: ${identificacion}`,
+          showDenyButton: true,
+          confirmButtonText: "Subir datos personales",
+          denyButtonText: `Cancelar`
+        }).then((result) => {
+          if (result.isConfirmed) {
+            if (foto) {
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    data.foto = reader.result; // Añade la foto en formato Base64 al objeto data
+                    enviarData(data);
+                };
+                reader.readAsDataURL(foto);
+            } else {
+                enviarData(data); // Enviar sin foto si no se seleccionó ninguna
+            }
+          } else if (result.isDenied) {
+            
+          }
+        });
+      }
     }
 
+    async function enviarData(data) {
+      fetch('/invitado/registrarinformacion', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log('Respuesta del servidor:', data);
+          window.location.href = data.ruta;
+      })
+      .catch(error => {
+          console.error('Error al mandar datos:', error)
+          modal.fire({
+              title: "Error",
+              icon: "error",
+              text: error,
+          });
+      });
+    }
 
+    function validaData(nombre, app, apm, telefono, empresa, identificacion, foto){
+      let flag = true;
+      //Validación de nombre
+      if (nombre) {
+        if (!validateTextWithSpacesWithoutNumber(nombre)) {
+          flag = false;
+        }
+      } else {
+        flag = false;
+        document.getElementById("nombreForm").innerHTML = `<p class="msg-error-form">Favor de especificar un nombre</p>`
+      }
 
+      //Validación de apellido paterno
+      if (app) {
+        if (!validateTextWithoutSpacesNumber(app)) {
+          flag = false;
+        }
+      } else {
+        flag = false;
+        document.getElementById("appForm").innerHTML = `<p class="msg-error-form">Favor de especificar un apellido paterno</p>`
+      }
+
+      //Validación de apellido materno
+      if (apm) {
+        if (!validateTextWithoutSpacesNumber(apm)) {
+          flag = false;
+        }
+      } else {
+        flag = false;
+        document.getElementById("apmForm").innerHTML = `<p class="msg-error-form">Favor de especificar un apellido materno</p>`
+      }
+
+      //Validación de telefono
+      if (telefono) {
+        if (!validatePhoneNumber(telefono)) { 
+          flag = false;
+        }
+      } else {
+        flag = false;
+        document.getElementById("telefonoForm").innerHTML = `<p class="msg-error-form">Favor de especificar un número teléfonico</p>`
+      }
+
+      //Validación de empresa
+      if(empresa){
+        if(!validateTextWithSpacesNumber(empresa)){
+          flag = false;
+        }
+      } else{
+        flag = false;
+        document.getElementById("empresaForm").innerHTML = `<p class="msg-error-form">Favor de especificar una empresa a la que pertenece</p>`
+      }
+
+      //Validacion de identificacion
+      if(!(identificacion == "INE" || identificacion == "Pasaporte" || identificacion == "Visa")){
+        flag = false;
+        document.getElementById("identificacionForm").innerHTML = `<p class="msg-error-form">Favor de seleccionar la identificacion a presentar</p>`
+      }
+
+      //Validacion de la foto
+      if(foto){
+        // Validar el tipo MIME del archivo
+        if (!foto.type.startsWith('image/')) {
+            flag = false;
+            document.getElementById("fotoForm").innerHTML = `<p class="msg-error-form">Favor de subir una foto tipo imagen</p>`
+        }
+      }else{
+        flag = false;
+        document.getElementById("fotoForm").innerHTML = `<p class="msg-error-form">Favor de subir una foto</p>`
+      }
+
+      return flag;
+    }
 </script>
 <script src="../../js/invitado/headers.js"></script>
+<script src="../../js/invitado/invitado.js"></script>
 <script src="../../js/header.js"></script>
 <script src="../../js/sidebar.js"></script>
+<script src="../js/validaciones.js"></script>
 
 <!--<script src="../../js/registrarInformacionPersonal.js"></script>-->
 <script src="../../js/plantilla-formularios.js"></script>

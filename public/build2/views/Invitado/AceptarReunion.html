@@ -36,10 +36,16 @@
                 <form novalidate>
                     <!-- Información de Acompañantes -->
                      <div class="acompanantes">
-                         <div id="acompanantesAgregados"><span>Lista de acompañantes:</span></div>
+                         <div id="acompanantesAgregados" class="invisibleNone"><span>Lista de acompañantes:</span></div>
                          <div>
-                             <label class="instruccion">¿Desea agregar acompañantes? Puede agregar hasta 5 acompañantes</label>
-                             <div id="acompanantesHabilitada">
+                            <div class="flex baseAReunion">
+                                <label class="instruccion">¿Desea agregar acompañantes? Puede agregar hasta 5 acompañantes</label>
+                                <select name="" id="siONoAcompanantes">
+                                    <option value="si">Sí</option>
+                                    <option value="no" selected>No</option>
+                                </select>
+                            </div>
+                             <div id="acompanantesHabilitada" class="invisibleNone">
                                  <div class="form-group Correo has-validation">
                                      <label class="labelControl">Correo electrónico del acompañante*:</label>
                                      <input type="email" class="form-control form-control-lg inputControl mb-25rem" id="loginEmail" placeholder="email@example.com">
@@ -54,10 +60,16 @@
 
                      <div class="dispositivos">
                          <!-- Información de Dispositivos -->
-                         <div id="dispositivosAgregados"><span>Lista de dispositivos:</span></div>
+                         <div id="dispositivosAgregados" class="invisibleNone"><span>Lista de dispositivos:</span></div>
                          <div>
-                             <label class="instruccion">¿Llevará algun dispositivo?</label>
-                             <div id="dispositivosHabilitada">
+                            <div class="flex baseAReunion">
+                                <label class="instruccion">¿Llevará algun dispositivo?</label>
+                                <select name="" id="siONoDispositivos">
+                                    <option value="si">Sí</option>
+                                    <option value="no" selected>No</option>
+                                </select>
+                            </div>
+                             <div id="dispositivosHabilitada" class="invisibleNone">
                                  <div class="form-group">
                                      <label class="labelControl">Tipo de Dispositivo*:</label>
                                      <input class="form-control form-control-lg inputControl" type="text" placeholder="Tipo de Dispositivo">
@@ -79,10 +91,16 @@
 
                      <div class="automoviles">
                          <!-- Información de Automóvil -->
-                         <div id="automovilesAgregados"><span>Lista de automoviles</span></div>
+                         <div id="automovilesAgregados" class="invisibleNone"><span>Lista de automoviles</span></div>
                          <div>
-                             <label class="instruccion">¿Llegará en automóvil propio?</label>
-                             <div id="automovilHabilitada">
+                            <div class="flex baseAReunion">
+                                <label class="instruccion">¿Llegará en automóvil propio?</label>
+                                <select name="" id="siONoAutomoviles">
+                                    <option value="si">Sí</option>
+                                    <option value="no" selected>No</option>
+                                </select>
+                            </div>
+                             <div id="automovilHabilitada" class="invisibleNone">
                                  <div class="form-group">
                                      <label class="labelControl">Número de Placa*:</label>
                                      <input class="form-control form-control-lg inputControl" type="text" placeholder="Número de Placa">
@@ -120,6 +138,21 @@
 
 <div id="footers"></div>
 
+<!-- Estilos para el Swal -->
+<style>
+  .titleSize{
+    font-size: 4rem;
+  }
+  .contentSize{
+    font-size: 2rem !important;
+  }
+  .buttonSize{
+    font-size: 2rem !important;
+  }
+  .iconSize{
+    font-size: 1.5rem;
+  }
+</style>
 <script>
     window.onload = function() {
         obtenerDetallesReunion();
@@ -168,8 +201,8 @@
             if (email && colados.length < maxAcompanantes) {
                 colados.push(email);
                 const div = document.createElement('div');
-                div.classList.add("comoTal")
-                div.innerHTML = `<span>${cuentaA}) </span> ${email}`;
+                div.classList.add("comoTal");
+                div.innerHTML = `<div class="flex cuentaA"><p class="size16rem"><span>${cuentaA}) </span> ${email}</p><div class="imgTrashBorrar"><img src="../../img/icons/trash.png" alt="Borrar"></div></div>`;
                 document.getElementById('acompanantesAgregados').appendChild(div);
                 document.querySelector('#acompanantesHabilitada input[type="email"]').value = '';
                 cuentaA++;
@@ -185,8 +218,8 @@
             if (tipo && marca && numeroSerie) {
                 dispositivos.push({ tipo, marca, numeroSerie });
                 const div = document.createElement('div');
-                div.classList.add("comoTal")
-                div.innerHTML = `<span>${cuentaB}) </span> ${tipo}, ${marca}, ${numeroSerie}`;
+                div.classList.add("comoTal");
+                div.innerHTML = `<div class="flex" id="cuentaA"><p class="size16rem"><span>${cuentaB}) </span> ${tipo}, ${marca}, ${numeroSerie}</p><div class="imgTrashBorrar"><img src="../../img/icons/trash.png" alt="Borrar"></div></div>`;
                 document.getElementById('dispositivosAgregados').appendChild(div);
                 document.querySelector('#dispositivosHabilitada input[placeholder="Tipo de Dispositivo"]').value = '';
                 document.querySelector('#dispositivosHabilitada input[placeholder="Marca del Dispositivo"]').value = '';
@@ -203,14 +236,32 @@
             if (placa && marca && modelo && color) {
                 automoviles.push({ placa, marca, modelo, color });
                 const div = document.createElement('div');
-                div.classList.add("comoTal")
-                div.innerHTML = `<span>${cuentaC}) </span> ${placa}, ${marca}, ${modelo}, ${color}`;
+                div.classList.add("comoTal");
+                div.innerHTML = `<div class="flex" id="cuentaA"><p class="size16rem"><span>${cuentaC}) </span> ${placa}, ${marca}, ${modelo}, ${color}</p><div class="imgTrashBorrar"><img src="../../img/icons/trash.png" alt="Borrar"></div></div>`;
                 document.getElementById('automovilesAgregados').appendChild(div);
                 document.querySelector('#automovilHabilitada input[placeholder="Número de Placa"]').value = '';
                 document.querySelector('#automovilHabilitada input[placeholder="Marca"]').value = '';
                 document.querySelector('#automovilHabilitada input[placeholder="Modelo"]').value = '';
                 document.querySelector('#automovilHabilitada input[placeholder="Color"]').value = '';
                 cuentaC++;
+            }
+        });
+
+        document.addEventListener('click', function(event) {
+            if (event.target.closest('.imgTrashBorrar')) {
+                const div = event.target.closest('.comoTal');
+                const divPrincipalMain = event.target.closest('.flex');
+
+                if(divPrincipalMain.classList.contains('cuentaA')){
+                    cuentaA = 1;
+                    colados.pop();
+                } else if(divPrincipalMain.classList.contains('cuentaB')){
+                    cuentaB = 1;
+                } else if(divPrincipalMain.classList.contains('cuentaC')){
+                    cuentaC = 1;
+                }
+
+                div.remove();
             }
         });
 
@@ -242,7 +293,6 @@
                     });
                 });
 
-
             console.log(JSON.stringify(data, null, 2));
 
             // enviar datos al servidor
@@ -250,6 +300,43 @@
         });
     });
 </script>
+
+
+<script>
+    document.getElementById('siONoAcompanantes').addEventListener('change', function() {
+            const selectedValue = this.value;
+            if (selectedValue === 'si') {
+                document.getElementById('acompanantesAgregados').classList.remove('invisibleNone');
+                document.getElementById('acompanantesHabilitada').classList.remove('invisibleNone');
+            } else if (selectedValue === 'no') {
+                document.getElementById('acompanantesAgregados').classList.add('invisibleNone');
+                document.getElementById('acompanantesHabilitada').classList.add('invisibleNone');
+            }
+    });
+
+    document.getElementById('siONoDispositivos').addEventListener('change', function() {
+            const selectedValue = this.value;
+            if (selectedValue === 'si') {
+                document.getElementById('dispositivosAgregados').classList.remove('invisibleNone');
+                document.getElementById('dispositivosHabilitada').classList.remove('invisibleNone');
+            } else if (selectedValue === 'no') {
+                document.getElementById('dispositivosAgregados').classList.add('invisibleNone');
+                document.getElementById('dispositivosHabilitada').classList.add('invisibleNone');
+            }
+    });
+
+    document.getElementById('siONoAutomoviles').addEventListener('change', function() {
+            const selectedValue = this.value;
+            if (selectedValue === 'si') {
+                document.getElementById('automovilesAgregados').classList.remove('invisibleNone');
+                document.getElementById('automovilHabilitada').classList.remove('invisibleNone');
+            } else if (selectedValue === 'no') {
+                document.getElementById('automovilesAgregados').classList.add('invisibleNone');
+                document.getElementById('automovilHabilitada').classList.add('invisibleNone');
+            }
+    });
+</script>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -362,6 +449,7 @@
 
 
 <script src="../../js/invitado/headers.js"></script>
+<script src="../../js/invitado/invitado.js"></script>
 <script src="../../js/header.js"></script>
 <script src="../../js/sidebar.js"></script>
 <script src="../../js/plantilla-formularios.js"></script>
