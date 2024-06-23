@@ -534,6 +534,10 @@ app.use('/invitado/home/invitado.html', express.static('./public/build2/views/In
 app.use('/invitado/invitacion.html', express.static('./public/build2/views/Invitado/RegistrarInformacionPersonal.html'));
 app.post('/invitado/registrarinformacion', invitado.setDataInvitado);
 app.get('/invitado/obtenerInfoInvitado', invitado.getInvitadoByEmail);
+app.get('/invitado/getemail',invitado.getUserEmail);
+app.get('/invitado/catalogo/usuarioEmail/:email', invitado.getUsuarioByEmail);
+app.get('/ivitado/getFotoPerfil', invitado.getFotoInvitado);
+app.put('/invitado/catalogo/usuarios/:id',invitado.updateInvitado);
 
 app.use('/invitado/cambiarContrasena.html', express.static('./public/build2/views/Invitado/cambiarContrasena.html'));
 app.post('/invitado/cambiar', invitado.cambiarContrasena);
