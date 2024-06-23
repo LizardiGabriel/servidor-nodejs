@@ -8,16 +8,17 @@ async function traerDatos() {
     const data = await response.json();
     console.log(data);
     var datosUsuario = await getData(data.email);  // Usar await aquí garantiza que esperamos el resultado
+    console.log(datosUsuario);
     const nombre= document.getElementById("nombre");
-    nombre.value=datosUsuario.nombre_usuario;
+    nombre.value=datosUsuario.nombre_invitado;
     const ApellidoPat= document.getElementById("app");
-    ApellidoPat.value=datosUsuario.apellido_paterno_usuario;
+    ApellidoPat.value=datosUsuario.apellido_paterno_invitado;
     const ApellidoMat= document.getElementById("apm");
-    ApellidoMat.value=datosUsuario.apellido_materno_usuario;
+    ApellidoMat.value=datosUsuario.apellido_materno_invitado;
     const Tel= document.getElementById("telefono");
-    Tel.value = datosUsuario.telefono_usuario;
+    Tel.value = datosUsuario.telefono_invitado;
     const foto = document.getElementById('profile-image');
-    foto.src = datosUsuario.foto_usuario;
+    foto.src = datosUsuario.foto_invitado;
 
   } catch (error) {
     modal.fire({
@@ -46,7 +47,8 @@ async function updateData(){
   const file_foto = document.getElementById("file-input").files[0];
 
   let datatoSend={
-      email:datosUsuario.email_usuario,
+      id:datosUsuario.id_invitado,
+      email:datosUsuario.email_invitado,
       nombre: nombre,
       apellidoPaterno:ApellidoPat,
       apellidoMaterno:ApellidoMat,
@@ -74,7 +76,7 @@ async function updateData(){
           const reader = new FileReader();
           reader.onloadend = function() {
             datatoSend.fotoUsuario = reader.result; // Añade la foto en formato Base64 al objeto data
-            enviarData(datatoSend, datosUsuario.id_usuario);
+            enviarData(datatoSend, datosUsuario.id_invitado);
             
             //Volvemos todo a la normalidad
             document.querySelector('.navbar__profile-container').style.backgroundImage = `url('${reader.result}')`
@@ -116,6 +118,7 @@ async function getData(correo) {
       // Remover el ':' adicional del inicio de la URL si no es necesario
       const response = await fetch('/invitado/catalogo/usuarioEmail/:'+correo);
       const data = await response.json();
+      console.log(data);
       return data;  // Asegura que data sea devuelta de la función
   } catch (error) {
     modal.fire({

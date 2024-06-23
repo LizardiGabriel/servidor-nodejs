@@ -202,7 +202,6 @@ async function getInvitadoByIdEmailBD(email) {
         console.error('Error al obtener invitado:', error);
         return null;
     }
-
 }
 
 async function getInvitadosBD() {
@@ -456,6 +455,31 @@ async function updateInvitadoBD(id, email, nombre, apellidoPaterno, apellidoMate
                 apellido_paterno_invitado: apellidoPaterno,
                 apellido_materno_invitado: apellidoMaterno,
                 telefono_invitado: telefono
+            }
+        });
+        if (invitadoActualizado != null) {
+            return { message: 'Invitado actualizado correctamente', status: 200 };
+        } else {
+            return { message: 'Error al actualizar invitado', status: 500 };
+        }
+    } catch (error) {
+        console.error('Error al actualizar invitado:', error);
+        return { message: 'Error al actualizar invitado', status: 500 };
+    }
+}
+
+async function updateInvitadoWithFotoBD(id, email, nombre, apellidoPaterno, apellidoMaterno, telefono,fotoUsuario) {
+    console.log('peticion a la bd de updateInvitado');
+    try {
+        const invitadoActualizado = await prisma.invitado.update({
+            where: { id_invitado: Number(id) },
+            data: {
+                email_invitado: email,
+                nombre_invitado: nombre,
+                apellido_paterno_invitado: apellidoPaterno,
+                apellido_materno_invitado: apellidoMaterno,
+                telefono_invitado: telefono,
+                foto_invitado: fotoUsuario
             }
         });
         if (invitadoActualizado != null) {
@@ -1172,8 +1196,24 @@ async function getFotoFromUsuarioBD(idUsuario) {
         console.error('Error al actualizar invitado:', error);
         return 500;
     }
-
 }
+
+async function getFotoFromInvitadoBD(idInvitado) {
+    console.log('peticion a la bd de getFotoFromInvitadoBD, idInvitado: ', idUsuario);
+    try {
+        const user = await prisma.invitado.findUnique({
+            where: { id_invitado: idInvitado },
+            select: { foto_invitado: true },
+        });
+
+        return user.foto_invitado;
+
+    } catch (error) {
+        console.error('Error al actualizar invitado:', error);
+        return 500;
+    }
+}
+
 
 async function getInvitacionBy_IdInvitado_IdReunionBD(idInvitado, idReunion) {
     console.log('peticion a la bd de getInvitacionBy_IdInvitado_IdReunionBD, idInvitado: ', idInvitado, 'idReunion: ', idReunion);
@@ -1331,6 +1371,7 @@ module.exports = {
     updateInvitadoBD,
     updateInvitadoBDtoInvitacion,
     deleteInvitadoBD,
+    updateInvitadoWithFotoBD,
 
     getReunionesAdminBD,
     getInvitacionesAdminBD,
@@ -1345,6 +1386,7 @@ module.exports = {
     getReunionesNuebasBD,
 
     getFotoFromUsuarioBD,
+    getFotoFromInvitadoBD,
 
     putInfoInvitadoToReunionBD,
 
