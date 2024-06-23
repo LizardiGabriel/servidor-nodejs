@@ -1,13 +1,12 @@
-document.addEventListener('DOMContentLoaded',async function() {
+document.addEventListener('DOMContentLoaded', async function () {
   traerDatos();
 });
 
 async function traerDatos() {
   try {
-    const response = await fetch('/admin/getemail');
+    const response = await fetch('/invitado/getemail');
     const data = await response.json();
-    /* const fotoResponse = fetch(`/admin/getFotoPerfil`);
-    const fotico = await fotoResponse.json(); */
+    console.log(data);
     var datosUsuario = await getData(data.email);  // Usar await aquí garantiza que esperamos el resultado
     const nombre= document.getElementById("nombre");
     nombre.value=datosUsuario.nombre_usuario;
@@ -32,7 +31,7 @@ async function traerDatos() {
 
 async function updateData(){
   try {
-      const response = await fetch('/admin/getemail');
+      const response = await fetch('/invitado/getemail');
       const data = await response.json();
       var datosUsuario = await getData(data.email);
       console.log(datosUsuario);
@@ -76,7 +75,7 @@ async function updateData(){
           reader.onloadend = function() {
             datatoSend.fotoUsuario = reader.result; // Añade la foto en formato Base64 al objeto data
             enviarData(datatoSend, datosUsuario.id_usuario);
-
+            
             //Volvemos todo a la normalidad
             document.querySelector('.navbar__profile-container').style.backgroundImage = `url('${reader.result}')`
             contenedor.classList.add("view");
@@ -115,7 +114,7 @@ document.getElementById('cancelarProfile').addEventListener('click', function() 
 async function getData(correo) {
   try {
       // Remover el ':' adicional del inicio de la URL si no es necesario
-      const response = await fetch('/admin/catalogo/usuarioEmail/:'+correo);
+      const response = await fetch('/invitado/catalogo/usuarioEmail/:'+correo);
       const data = await response.json();
       return data;  // Asegura que data sea devuelta de la función
   } catch (error) {
@@ -131,7 +130,7 @@ async function getData(correo) {
 
 function enviarData(data,id_usuario) {
   console.log(data);
-      fetch('/admin/catalogo/usuarios/:'+id_usuario, {
+      fetch('/invitado/catalogo/usuarios/:'+id_usuario, {
           method: 'PUT',
           headers: {
               'Content-Type': 'application/json'
@@ -180,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function() {
               const reader = new FileReader();
               reader.onload = function(e) {
                 profileImage.src = e.target.result;
-                fetch(`/admin/getFotoPerfil`)
+                fetch(`/invitado/getFotoPerfil`)
                   /* modal.fire({
                       icon: 'success',
                       title: 'Imagen subida con éxito',

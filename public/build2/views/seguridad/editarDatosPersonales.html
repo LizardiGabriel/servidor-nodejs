@@ -19,6 +19,23 @@
 
       .w-80{
         width: 80%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .w-80p{
+        width: 80%;
+      }
+
+      .labelStart{
+        justify-content: start;
+        width: 80%;
+        margin: 0 0 1rem 2rem;
+      }
+
+      .contenedorUser__left__circle__icon:hover{
+        display: none;
       }
     </style>
 </head>
@@ -32,7 +49,7 @@
                   <img id="profile-image" src="../../img/usuario.png">
                   <div class="contenedorUser__left__circle__icon" id="upload-icon">
                       <img src="../../img/icons/ico-camara.png" title="Subir foto">
-                      <input type="file" class="file-input" accept=".png, .jpg, .jpeg" id="file-input">
+                      <input type="file" class="file-input" accept=".png, .jpg, .jpeg" id="file-input" disabled>
                   </div>
               </div>
           </div>
@@ -41,43 +58,36 @@
                 <h1 class="profileHeroSA__left__titulo">Tus datos personales</h1>
             </div>
             <div class="profileHeroSA__right">
-                <div class="profileHeroSA__right__inputProfile">
-                    <label class="profileHeroSA__right__inputProfile__label">Nombre(s)*</label>
+                <div class="profileHeroSA__right__inputProfile w-80">
+                    <label class="profileHeroSA__right__inputProfile__label labelStart">Nombre(s)*</label>
                     <div class="profileHeroSA__right__inputProfile__content">
                         <input class="inputSA" type="text" value="Juan " disabled id="nombre">
                     </div>
-                    <div id="nombreForm" class="w-80"></div>
+                    <div id="nombreForm" class="w-80p"></div>
                 </div>
-                <div class="profileHeroSA__right__inputProfile">
-                    <label class="profileHeroSA__right__inputProfile__label">Apellido paterno*</label>
+                <div class="profileHeroSA__right__inputProfile w-80">
+                    <label class="profileHeroSA__right__inputProfile__label labelStart">Apellido paterno*</label>
                     <div class="profileHeroSA__right__inputProfile__content">
                         <input class="inputSA" type="text" value="Perez" disabled id="app">
                     </div>
-                    <div id="appForm" class="w-80"></div>
+                    <div id="appForm" class="w-80p"></div>
                 </div>
-                <div class="profileHeroSA__right__inputProfile">
-                    <label class="profileHeroSA__right__inputProfile__label">Apellido materno*</label>
+                <div class="profileHeroSA__right__inputProfile w-80">
+                    <label class="profileHeroSA__right__inputProfile__label labelStart">Apellido materno*</label>
                     <div class="profileHeroSA__right__inputProfile__content">
                         <input class="inputSA" type="text" value="Hernandez" disabled id="apm">
                     </div>
-                    <div id="apmForm" class="w-80"></div>
+                    <div id="apmForm" class="w-80p"></div>
                 </div>
-                <!-- <div class="profileHeroSA__right__inputProfile">
-                    <label class="profileHeroSA__right__inputProfile__label">Correo electrónico*</label>   
-                    <div class="profileHeroSA__right__inputProfile__content">
-                        <input class="inputSA" type="email" value="example@email.com" disabled id="loginEmail">
-                    </div>
-                    <div id="emailForm"></div>
-                </div> -->
                 
-                <div class="profileHeroSA__right__inputProfile">
-                    <label class="profileHeroSA__right__inputProfile__label">Número telefónico*</label>
+                <div class="profileHeroSA__right__inputProfile w-80">
+                    <label class="profileHeroSA__right__inputProfile__label labelStart">Número telefónico*</label>
                     <div class="profileHeroSA__right__inputProfile__content">
                         <input class="inputSA" type="tel" min="0" value="55 666 777 88" pattern="[0-9\s]{10,15}" disabled id="telefono">
                     </div>
-                    <div id="telefonoForm" class="w-80"></div>
+                    <div id="telefonoForm" class="w-80p"></div>
                 </div>
-                <div class="profileHeroSA__right__buttonContainer view" id="buttonsEdit">
+                <div class="profileHeroSA__right__buttonContainer view w-80" id="buttonsEdit">
                     <button class="profileHeroSA__right__buttonContainer__buttonEdit" id="editProfile">Editar</button>   
                     <div class="profileHeroSA__right__buttonContainer__button" style="display: none;" id="contenedorEdit">
                         <button class="profileHeroSA__right__buttonContainer__button__secundario" id="cancelarProfile">Cancelar</button>
@@ -89,61 +99,6 @@
       </div>   
   </main>
     
-    <!-- <main class="contenidoPrincipal">
-        <div class="profileHeroSA">
-                <div class="profileHeroSA__left">
-                    <h1 class="profileHeroSA__left__titulo">Tus datos personales</h1>
-                </div>
-                <div class="profileHeroSA__right">
-                    <div class="profileHeroSA__right__inputProfile">
-                        <label class="profileHeroSA__right__inputProfile__label">Nombre(s)*</label>
-                        <div class="profileHeroSA__right__inputProfile__content">
-                            <input class="inputSA" type="text" placeholder="Juan " disabled id="inputNom">
-                        </div>
-                    </div>
-                    <div class="profileHeroSA__right__inputProfile">
-                        <label class="profileHeroSA__right__inputProfile__label">Apellido Paterno*</label>
-                        <div class="profileHeroSA__right__inputProfile__content">
-                            <input class="inputSA" type="text" placeholder="Perez" disabled id="inputApePat">
-                        </div>
-                    </div>
-                    <div class="profileHeroSA__right__inputProfile">
-                        <label class="profileHeroSA__right__inputProfile__label">Apellido Materno*</label>
-                        <div class="profileHeroSA__right__inputProfile__content">
-                            <input class="inputSA" type="text" placeholder="Hernandez" disabled id="inputApeMat">
-                        </div>
-                    </div>
-                    <div class="profileHeroSA__right__inputProfile">
-                        <label class="profileHeroSA__right__inputProfile__label">Correo Electrónico*</label>   
-                        <div class="profileHeroSA__right__inputProfile__content">
-                            <input class="inputSA" type="email" placeholder="example@email.com" disabled id="inputEmail">
-                        </div>
-                    </div>
-                    
-                    <div class="profileHeroSA__right__inputProfile">
-                        <label class="profileHeroSA__right__inputProfile__label">Número telefónico*</label>
-                        <div class="profileHeroSA__right__inputProfile__content">
-                            <input class="inputSA" type="tel" min="0" placeholder="55 666 777 88" pattern="[0-9\s]{10,15}" disabled id="inputTel">
-                        </div>
-                    </div>
-                    <div class="profileHeroSA__right__inputProfile" id="SeccionFoto" style="display: none;">
-                        <label  class="profileHeroSA__right__inputProfile__label">Fotografia</label>
-                        <div class="profileHeroSA__right__inputProfile__content">
-                            <input class="inputSA" type="file" accept="image/*"  id="inputFoto">
-                        </div>
-                    </div>
-                    <div class="profileHeroSA__right__buttonContainer view" id="buttonsEdit">
-                        <button class="profileHeroSA__right__buttonContainer__buttonEdit" id="editProfile">Editar</button>   
-                        <div class="profileHeroSA__right__buttonContainer__button" style="display: none;" id="contenedorEdit">
-                            <button class="profileHeroSA__right__buttonContainer__button__secundario" id="cancelarProfile">Cancelar</button>
-                            <button class="profileHeroSA__right__buttonContainer__button__primario" id="guardarProfile" onclick="updateData()">Guardar</button>
-                        </div>
-                    </div>
-                    
-                </div>
-        </div>   
-    </main> -->
-
     <div id="footers"></div>
 
     <!-- Estilos para el Swal -->

@@ -43,10 +43,25 @@
 
 <div id="footers"></div>
 
+<!-- Estilos para el Swal -->
+<style>
+  .titleSize{
+    font-size: 4rem;
+  }
+  .contentSize{
+    font-size: 2rem !important;
+  }
+  .buttonSize{
+    font-size: 2rem !important;
+  }
+  .iconSize{
+    font-size: 1.5rem;
+  }
+</style>
 <script>
-    window.onload = function () {
+    document.addEventListener('DOMContentLoaded',async function() {
         obtenerReuniones();
-    }
+    })
 
     function obtenerReuniones() {
         fetch('reunionesConfirmadas')
@@ -102,6 +117,7 @@
 </script>
 
 <script src="../../js/invitado/headers.js"></script>
+<script src="../../js/invitado/invitado.js"></script>
 <script src="../../js/header.js"></script>
 <script src="../../js/sidebar.js"></script>
 <script src="../../js/plantilla-formularios.js"></script>

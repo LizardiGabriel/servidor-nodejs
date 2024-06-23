@@ -1,4 +1,8 @@
-document.addEventListener('DOMContentLoaded',async function() {
+document.addEventListener('DOMContentLoaded', async function () {
+  traerDatos();
+});
+
+async function traerDatos() {
   try {
     const response = await fetch('/seguridad/getemail');
     const data = await response.json();
@@ -23,7 +27,7 @@ document.addEventListener('DOMContentLoaded',async function() {
     });
     console.error('Error fetching data:', error);
   }
-});
+}
 
 async function updateData(){
   try {
@@ -50,6 +54,11 @@ async function updateData(){
       idRol:datosUsuario.rol_usuario,
   }
 
+  let activarBoton = document.getElementById('editProfile');
+  let contenedor = document.getElementById('buttonsEdit');
+  let contenedorEdit = document.getElementById('contenedorEdit');
+  let foto = document.getElementById('upload-icon');  //NO ESTA IMPLEMENTADA EN HTML
+
   if (validaEditData(nombre, ApellidoPat, ApellidoMat, Tel)) {
     modal.fire({
       timer: undefined,
@@ -64,8 +73,20 @@ async function updateData(){
         if (file_foto) {
           const reader = new FileReader();
           reader.onloadend = function() {
-              datatoSend.fotoUsuario = reader.result; // Añade la foto en formato Base64 al objeto data
-              enviarData(datatoSend,datosUsuario.id_usuario);
+            datatoSend.fotoUsuario = reader.result; // Añade la foto en formato Base64 al objeto data
+            enviarData(datatoSend, datosUsuario.id_usuario);
+            
+            //Volvemos todo a la normalidad
+            document.querySelector('.navbar__profile-container').style.backgroundImage = `url('${reader.result}')`
+            contenedor.classList.add("view");
+            contenedorEdit.style.display = "none";
+            activarBoton.style.display = '';
+            foto.style.display = 'none'
+            document.getElementById('nombre').disabled = true;
+            document.getElementById('app').disabled = true;
+            document.getElementById('apm').disabled = true;
+            document.getElementById('telefono').disabled = true;
+            document.getElementById('file-input').disabled = true;
           };
           reader.readAsDataURL(file_foto);
         } else {
@@ -73,11 +94,22 @@ async function updateData(){
             enviarData(datatoSend,datosUsuario.id_usuario);
         }
       } else if (result.isDenied) {
-        
+        document.getElementById("nombreForm").innerHTML = ``
+        document.getElementById("appForm").innerHTML = ``
+        document.getElementById("apmForm").innerHTML = ``
+        document.getElementById("telefonoForm").innerHTML = ``
       }
     });
   }
 }
+
+document.getElementById('cancelarProfile').addEventListener('click', function() {
+  traerDatos();
+  document.getElementById("nombreForm").innerHTML = ``
+  document.getElementById("appForm").innerHTML = ``
+  document.getElementById("apmForm").innerHTML = ``
+  document.getElementById("telefonoForm").innerHTML = ``
+});
 
 async function getData(correo) {
   try {
@@ -135,7 +167,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
   fileInput.addEventListener('change', function(event) {
       const file = event.target.files[0];
-      let imageHeader = document.querySelector('.navbar__profile-container')
       if (file) {
           if (file.size > 5 * 1024 * 1024) {
               modal.fire({
@@ -148,7 +179,6 @@ document.addEventListener("DOMContentLoaded", function() {
               const reader = new FileReader();
               reader.onload = function(e) {
                 profileImage.src = e.target.result;
-                imageHeader.style.backgroundImage = `url('${e.target.result}')`
                 fetch(`/seguridad/getFotoPerfil`)
                   /* modal.fire({
                       icon: 'success',

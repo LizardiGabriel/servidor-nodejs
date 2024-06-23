@@ -1,30 +1,33 @@
 document.addEventListener('DOMContentLoaded',async function() {
-  try {
-  const response = await fetch('/anfitrion/getemail');
-  const data = await response.json();
-  var datosUsuario = await getData(data.email);  // Usar await aquí garantiza que esperamos el resultado
-  const nombre= document.getElementById("nombre");
-  nombre.value=datosUsuario.nombre_usuario;
-  const ApellidoPat= document.getElementById("app");
-  ApellidoPat.value=datosUsuario.apellido_paterno_usuario;
-  const ApellidoMat= document.getElementById("apm");
-  ApellidoMat.value=datosUsuario.apellido_materno_usuario;
-  /* const email= document.getElementById("inputEmail");
-  email.placeholder=data.email; */
-  const Tel= document.getElementById("telefono");
-  Tel.value = datosUsuario.telefono_usuario;
-  const foto = document.getElementById("profile-image");
-  foto.src = datosUsuario.foto_usuario;  
+  traerDatos();
+});
 
+async function traerDatos() {
+  try {
+    const response = await fetch('/anfitrion/getemail');
+    const data = await response.json();
+    var datosUsuario = await getData(data.email);  // Usar await aquí garantiza que esperamos el resultado
+    const nombre = document.getElementById("nombre");
+    nombre.value = datosUsuario.nombre_usuario;
+    const ApellidoPat = document.getElementById("app");
+    ApellidoPat.value = datosUsuario.apellido_paterno_usuario;
+    const ApellidoMat = document.getElementById("apm");
+    ApellidoMat.value = datosUsuario.apellido_materno_usuario;
+    /* const email= document.getElementById("inputEmail");
+    email.placeholder=data.email; */
+    const Tel = document.getElementById("telefono");
+    Tel.value = datosUsuario.telefono_usuario;
+    const foto = document.getElementById("profile-image");
+    foto.src = datosUsuario.foto_usuario;
   } catch (error) {
     modal.fire({
       title: "Error",
       icon: "error",
       text: "Error al fetching data:" + error,
     });
-  console.error('Error fetching data:', error);
+    console.error('Error fetching data:', error);
+  }
 }
-});
 
 async function getData(correo) {
   try {
@@ -67,9 +70,12 @@ async function updateData(){
       idRol:datosUsuario.rol_usuario,
   }
 
-  console.log("Sacar modal")
+  let activarBoton = document.getElementById('editProfile');
+  let contenedor = document.getElementById('buttonsEdit');
+  let contenedorEdit = document.getElementById('contenedorEdit');
+  let foto = document.getElementById('upload-icon');  //NO ESTA IMPLEMENTADA EN HTML
+
   if (validaEditData(nombre, ApellidoPat, ApellidoMat, Tel)) {
-    console.log("Sacar modal")
     modal.fire({
       timer: undefined,
       icon: 'question',
@@ -83,8 +89,20 @@ async function updateData(){
         if (file_foto) {
           const reader = new FileReader();
           reader.onloadend = function() {
-              datatoSend.fotoUsuario = reader.result; // Añade la foto en formato Base64 al objeto data
-              enviarData(datatoSend,datosUsuario.id_usuario);
+            datatoSend.fotoUsuario = reader.result; // Añade la foto en formato Base64 al objeto data
+            enviarData(datatoSend, datosUsuario.id_usuario);
+            
+            //Volvemos todo a la normalidad
+            document.querySelector('.navbar__profile-container').style.backgroundImage = `url('${reader.result}')`
+            contenedor.classList.add("view");
+            contenedorEdit.style.display = "none";
+            activarBoton.style.display = '';
+            foto.style.display = 'none'
+            document.getElementById('nombre').disabled = true;
+            document.getElementById('app').disabled = true;
+            document.getElementById('apm').disabled = true;
+            document.getElementById('telefono').disabled = true;
+            document.getElementById('file-input').disabled = true;
           };
           reader.readAsDataURL(file_foto);
         } else {
@@ -92,11 +110,22 @@ async function updateData(){
             enviarData(datatoSend,datosUsuario.id_usuario);
         }
       } else if (result.isDenied) {
-        
+        document.getElementById("nombreForm").innerHTML = ``
+        document.getElementById("appForm").innerHTML = ``
+        document.getElementById("apmForm").innerHTML = ``
+        document.getElementById("telefonoForm").innerHTML = ``
       }
     });
   }
 }
+
+document.getElementById('cancelarProfile').addEventListener('click', function() {
+  traerDatos();
+  document.getElementById("nombreForm").innerHTML = ``
+  document.getElementById("appForm").innerHTML = ``
+  document.getElementById("apmForm").innerHTML = ``
+  document.getElementById("telefonoForm").innerHTML = ``
+});
 
 function enviarData(data,id_usuario) {
   console.log(data);
@@ -137,7 +166,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
   fileInput.addEventListener('change', function(event) {
       const file = event.target.files[0];
-      let imageHeader = document.querySelector('.navbar__profile-container')
       if (file) {
           if (file.size > 5 * 1024 * 1024) {
               modal.fire({
@@ -150,7 +178,6 @@ document.addEventListener("DOMContentLoaded", function() {
               const reader = new FileReader();
               reader.onload = function(e) {
                 profileImage.src = e.target.result;
-                imageHeader.style.backgroundImage = `url('${e.target.result}')`
                 fetch(`/anfitrion/getFotoPerfil`)
                   /* modal.fire({
                       icon: 'success',
@@ -176,7 +203,6 @@ function validaEditData(nombre, app, apm, telefono) {
     flag = false;
     document.getElementById("nombreForm").innerHTML = `<p class="msg-error-form">Favor de especificar un nombre</p>`
     }
-  console.log("Entro a validat", flag)
 
   //Validación de apellido paterno
   if (app) {
@@ -187,7 +213,6 @@ function validaEditData(nombre, app, apm, telefono) {
     flag = false;
     document.getElementById("appForm").innerHTML = `<p class="msg-error-form">Favor de especificar un apellido paterno</p>`
   }
-  console.log("Entro a validat", flag)
 
   //Validación de apellido materno
   if (apm) {
@@ -198,7 +223,6 @@ function validaEditData(nombre, app, apm, telefono) {
     flag = false;
     document.getElementById("apmForm").innerHTML = `<p class="msg-error-form">Favor de especificar un apellido materno</p>`
   }
-  console.log("Entro a validat", flag)
 
   //Validación de telefono
   if (telefono) {
@@ -209,6 +233,6 @@ function validaEditData(nombre, app, apm, telefono) {
     flag = false;
     document.getElementById("telefonoForm").innerHTML = `<p class="msg-error-form">Favor de especificar un número teléfonico</p>`
   }
-  console.log("Entro a validat", flag)
+
   return flag;
 }

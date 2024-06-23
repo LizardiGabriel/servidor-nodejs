@@ -105,6 +105,8 @@ const rutas = [
     //Rutas para la edición de cuentas personales
     ['/js/admin/editarDatosPersonales.js', '../public/build2/js/admin/editarDatosPersonales.js'],
     ['/js/anfitrion/editarDatosPersonales.js', '../public/build2/js/anfitrion/editarDatosPersonales.js'],
+    ['/js/seguridad/editarDatosPersonales.js', '../public/build2/js/seguridad/editarDatosPersonales.js'],
+    ['/js/invitado/editarDatosPersonales.js', '../public/build2/js/invitado/editarDatosPersonales.js'],
     
     //Rutas para la gestión de usuarios (SuperAdmin)
     ['/js/admin/gestionUsuarios.js', '../public/build2/js/admin/gestionUsuarios.js'],
@@ -129,6 +131,7 @@ const rutas = [
     ['/js/anfitrion/ListaReuniones.js', '../public/build2/js/anfitrion/ListaReuniones.js'],
 
     //Rutas de js para Invitado
+    ['/js/invitado/invitado.js', '../public/build2/js/invitado/invitado.js'],
     ['/js/invitado/invitacion.js', '../public/build2/js/invitado/invitacion.js'],
     ['/js/invitado/RegistrarInformacionPersonal.js', '../public/build2/js/invitado/RegistrarInformacionPersonal.js'],
     ['/js/invitado/headers.js', '../public/build2/js/invitado/headers.js'],
@@ -138,7 +141,6 @@ const rutas = [
     ['/js/seguridad/seguridad.js', '../public/build2/js/seguridad/seguridad.js'],
     ['/js/seguridad/headers.js', '../public/build2/js/seguridad/headers.js'],
     ['/js/seguridad/consultarDetallesInvitado.js', '../public/build2/js/seguridad/consultarDetallesInvitado.js'],
-    ['/js/seguridad/editarDatosPersonales.js', '../public/build2/js/seguridad/editarDatosPersonales.js'],
     ['/js/seguridad/visualizarAgendaDelDia.js', '../public/build2/js/seguridad/visualizarAgendaDelDia.js'],
     ['/js/seguridad/escanearQR.js', '../public/build2/js/seguridad/escanearQR.js'],
     ['/js/consultarDatosDelInvitado.js', '../public/build2/js/consultarDetallesInvitado.js'],
@@ -252,7 +254,8 @@ app.get('/get-nombre', (req, res) => {
 app.use('/admin', (req, res, next) => {
     if(req.session) {
         let rol = getRol(req.session.jwt);
-        if(rol !== 1) {
+        if (rol !== 1) {
+            return res.redirect('/home/login.html');
             return res.status(401).json({error: 'Unauthorized', status: 401});
         } else {
             if(rol === 1) {
@@ -441,10 +444,12 @@ app.use('/seguridad', (req, res, next) => {
         if (rol === 3) {
             next();
         } else {
+            return res.redirect('/home/login.html');
             res.status(401).send('Unauthorized');
         }
-    }else
-        return res.status(401).json({error: 'Unauthorized', status: 401});
+    } else
+        return res.redirect('/home/login.html');
+        //return res.status(401).json({error: 'Unauthorized', status: 401});
 });
 
 
@@ -492,10 +497,12 @@ app.use('/invitado', async (req, res, next) => {
         if (rol === 4) {
             next();
         } else {
+            return res.redirect('/home/login.html');
             res.status(401).send('Unauthorized pipipi');
         }
     } else
-        return res.status(401).json({error: 'Unauthorized cual', status: 401});
+        return res.redirect('/home/login.html');
+        //return res.status(401).json({error: 'Unauthorized cual', status: 401});
 });
 
 app.use('/invitado/home', async (req, res, next) => {

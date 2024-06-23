@@ -2,8 +2,28 @@ var ejemplo = document.getElementById('headers');
 ejemplo.insertAdjacentHTML('beforeend', returnHTML());
 
 function returnHTML() {
+  console.log(window.location.pathname);
+  //Reuniones pendientes
+  let optionPendientes = `<div id="" class="sidebar__menu-option" onclick="reunionesPendientes();">`;
+
+  //Reuniones agendadas
+  let optionAgendada = `<div id="" class="sidebar__menu-option" onclick="reunionesAgendadas();">`;
+
+  //Para ver sus datos en el header
+  let optionPerfil = `<a href="mis-datos.html">Mis datos</a>`
+
+  //Ponemos activo la opción en la que se encuentra
+  if (window.location.pathname == "/invitado/home/pendientes.html" || window.location.pathname == "/invitado/home/aceptarReunion") {
+    optionPendientes = `<div id="" class="sidebar__menu-option option__active" onclick="reunionesPendientes();">`
+  } else if (window.location.pathname == "/invitado/home/agendadas.html") {
+    optionAgendada = `<div id="" class="sidebar__menu-option option__active" onclick="reunionesAgendadas();">`
+  } else if (window.location.pathname == "/invitado/invitacion.html" || window.location.pathname == "/invitado/cambiarContrasena.html") {
+    optionPendientes = `<div id="" style="display:none" class="sidebar__menu-option option__active" onclick="reunionesAgendadas();">`
+    optionAgendada = `<div id="" style="display:none" class="sidebar__menu-option option__active" onclick="reunionesAgendadas();`
+    optionPerfil = ``
+  }
+
     return `
-    
         <nav class="sidebar close">
     <div class="header">
         <div class="sidebar__marca">
@@ -25,9 +45,7 @@ function returnHTML() {
     </div>
     <div id="sidebar__list" class="sidebar__menu"  style="grid-template-columns:repeat(2, 6rem)">
     
-        
-        <a href="/invitado/home/pendientes.html" >
-        <div id="" class="sidebar__menu-option option__active">
+        ${optionPendientes}
             <div class="icon st0" title="RegistrarInfo">
                 <svg fill="#F9D8C1" x="0px" y="0" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                      class="bi bi-clipboard2-fill" viewBox="0 0 16 16">
@@ -42,10 +60,8 @@ function returnHTML() {
                 <p class="option__text">Reuniones Pendientes</p>
             </div>
         </div>
-        </a>
         
-        <a href="/invitado/home/agendadas.html" >
-        <div id="" class="sidebar__menu-option">
+        ${optionAgendada}
             <div class="icon" title="RecuperarQR">
                 <svg fill="#F9D8C1" x="0" y="0" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                      class="bi bi-qr-code" viewBox="0 0 16 16">
@@ -62,7 +78,6 @@ function returnHTML() {
                 <p class="option__text">Reuniones Agendadas</p>
             </div>
         </div>
-        </a>
         
         <!--
         <a href="/" >
@@ -120,8 +135,8 @@ function returnHTML() {
                 <div class="nav-item dropdown">
                     <button class="navbar__profile-container nav-link profile-button" onclick="toggleMenu()">
                         <div id="user-menu" style="display: none;">
-                            <a href="mis-datos.html">Mis datos</a>
-                            <a href="log-out">Cerrar sesión</a>
+                            ${optionPerfil}
+                            <a href="#" onclick="logout()">Cerrar sesión</a>
                         </div>
                     </button>
                 </div>
@@ -129,9 +144,6 @@ function returnHTML() {
         </div>
     </nav>
 </header>
-
-            
-            
     `;
 
 }
@@ -147,6 +159,27 @@ function returnHTML2() {
         <p class="copyright">Copyright. Todos los derechos reservados. BeeMeet © 2024</p>
     </footer>`;
 }
+
+var element = document.querySelector('.navbar__profile-container');
+
+fetch(`/invitado/getFotoPerfil`)
+.then(response => response.json())
+.then(data => {
+    console.log(data);
+  element.style.backgroundImage = `url('${data.foto}')`;
+  element.style.backgroundSize = "100% 100%"; // Abarca el 100% del ancho y ajusta la altura automáticamente
+  element.style.backgroundRepeat = "no-repeat"; // No repetir la imagen
+  element.style.backgroundPosition = "center center"; // Centrar la imagen
+    console.log(element.style.backgroundImage);
+}
+)
+.catch(error => {
+  element.style.backgroundImage = "url('../img/usuario.webp')";
+  element.style.backgroundSize = "100% 100%"; // Abarca el 100% del ancho y ajusta la altura automáticamente
+  element.style.backgroundRepeat = "no-repeat"; // No repetir la imagen
+  element.style.backgroundPosition = "center center"; // Centrar la imagen
+    console.log(error);
+});
 
 /*function returnHTML2() {
     return `
