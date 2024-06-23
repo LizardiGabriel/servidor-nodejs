@@ -64,40 +64,95 @@
 </main>
 <div id="footers"></div>
 
+<!-- Estilos para el Swal -->
+<style>
+  .titleSize{
+    font-size: 4rem;
+  }
+  .contentSize{
+    font-size: 2rem !important;
+  }
+  .buttonSize{
+    font-size: 2rem !important;
+  }
+  .iconSize{
+    font-size: 1.5rem;
+  }
+</style>
 <script>
-    async function cambiarCon(){
-        event.preventDefault();
-        var password = document.getElementById('loginPassword').value;
-        var passwordR = document.getElementById('loginPasswordR').value;
-        console.log('param password', password);
-        console.log('param passwordR', passwordR);
-        if (password != passwordR) {
-            alert('Las contraseñas no coinciden');
-            return;
-        }else{
-            fetch('/invitado/cambiar', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
+  /* Función para los modales */
+  const modal = Swal.mixin({
+      timer: 3000,
+      timerProgressBar: true,
+      background: "#fbfff1",
+      showConfirmButton: true,
+      confirmButtonColor: "#89b6b1",
+      cancelButtonColor: "#305272",
+      denyButtonColor: "#305272",
+      width: "50%",
+      customClass: {
+        title: "titleSize",
+        htmlContainer: "contentSize",
+        confirmButton: "buttonSize",
+        cancelButton: "buttonSize",
+        denyButton: "buttonSize",
+        icon: "iconSize",
+      }
+    })
 
-                    password: password
-                })
+    async function cambiarCon(){
+      let password = document.getElementById('loginPassword').value;
+      let passwordR = document.getElementById('loginPasswordR').value;
+      console.log('param password', password);
+      console.log('param passwordR', passwordR);
+      //Verificamos si tiene valor
+      if(password){
+        if(passwordR){
+          if(validatePassword(password) == "OK"){
+            fetch('/invitado/cambiar', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                  password: password
+              })
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        alert('Error: ' + data.error);
-                    } else {
-                        console.log(data);
-                        window.location.href = data.ruta;
-                    }
-                })
-                .catch(error => {
-                    alert('Error al procesar la solicitud: ' + error);
-                });
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                  modal.fire({
+                    title: "Error",
+                    icon: "error",
+                    text: 'Error: ' + data.error,
+                  });
+                } else {
+                    console.log(data);
+                    modal.fire({
+                      title: "Su contraseña ha sido actualizada",
+                      icon: "success",
+                      text: "Su contraseña ha sido actualizada correctamente",
+                    }).then((result) => {
+                      window.location.href = data.ruta;
+                    })
+                }
+            })
+            .catch(error => {
+              modal.fire({
+                title: "Error",
+                icon: "error",
+                text: 'Error al procesar la solicitud: ' + error,
+              });
+            });
+          }else{
+            passwordFormR.innerHTML = `<p class="msg-error-form">La contraseña no coincide</p>`
+          }
+        }else{
+          passwordFormR.innerHTML = `<p class="msg-error-form">La contraseña no coincide</p>`
         }
+      }else{
+        passwordForm.innerHTML = '<p class="msg-error-form">Favor de introducir una contraseña</p>'
+      }
     }
 
 
