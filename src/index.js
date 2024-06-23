@@ -452,12 +452,14 @@ app.use('/seguridad/seguridad.html', express.static('./public/build2/views/segur
 app.get('/seguridad/logout', seguridad.logout);
 app.use('/seguridad/visualizarAgenda.html', express.static('./public/build2/views/seguridad/visualizarAgendaDia.html'));
 app.get('/seguridad/getAgendas', seguridad.getReunionesAll);
-
+app.get('/seguridad/getemail',seguridad.getUserEmail);
+app.get('/seguridad/catalogo/usuarioEmail/:email', seguridad.getUsuarioByEmail);
+app.put('/seguridad/catalogo/usuarios/:id', seguridad.updateUsuario);
 
 app.get('/seguridad/getAgendaID', seguridad.getReunionById);
 app.get('/seguridad/getAgendaID/:id', seguridad.getReunionByIdAll);
 app.use('/seguridad/verDatosInv.html', express.static('./public/build2/views/seguridad/ConsultarDatosDelInvitado.html'));
-app.use('/seguridad/EditarDatosPersonales.html', express.static('./public/build2/views/seguridad/EditarDatosPersonales.html'));
+app.use('/seguridad/EditarDatosPersonales.html', express.static('./public/build2/views/seguridad/editarDatosPersonales.html'));
 app.use('/seguridad/escanearQR.html', express.static('./public/build2/views/seguridad/scanearQr.html'));
 app.get('/seguridad/getFotoPerfil', admin.getFotoAdmin);
 app.post('/seguridad/registrarHora', seguridad.registrarHora);
