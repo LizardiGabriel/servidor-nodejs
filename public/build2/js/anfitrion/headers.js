@@ -41,7 +41,7 @@ function returnHTML() {
         </div>
         <div id="sidebar__list" class="sidebar__menu" style="grid-template-columns:repeat(3, 6rem)">
             ${optionReuniones}
-                <div class="icon" title="Usuarios">
+                <div class="icon" title="Consultar Reunión">
                     <svg fill="#F9D8C1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;"
                         xml:space="preserve">
@@ -59,7 +59,7 @@ function returnHTML() {
                 </div>
             </div>
             ${optionAgendar}
-                <div class="icon" title="Reuniones">
+                <div class="icon" title="Agendar Reunión">
                     <svg fill="#F9D8C1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
                         <g>
