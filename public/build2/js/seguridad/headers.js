@@ -36,7 +36,7 @@ function returnHTML() {
         </div>
         <div id="sidebar__list" class="sidebar__menu" style="grid-template-columns:repeat(2, 6rem)">
             ${optionQR}
-                <div class="icon" title="Usuarios">
+                <div class="icon" title="Escanear QR">
                     <svg fill="#F9D8C1" x="0" y="0" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                         class="bi bi-qr-code-scan" viewBox="0 0 16 16">
                         <path
@@ -54,7 +54,7 @@ function returnHTML() {
                 </div>
             </div>
             ${optionAgenda}
-                <div class="icon" title="Reuniones">
+                <div class="icon" title="Visualizar Agenda">
                     <svg fill="#F9D8C1" x="0" y="0" xmlns="http://www.w3.org/2000/svg"  fill="currentColor"
                         class="bi bi-person-lines-fill" viewBox="0 0 16 16">
                         <path

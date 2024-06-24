@@ -155,11 +155,45 @@
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+
+function eliminarAcceso(id_acceso, button, typeAction){
+    console.log(id_acceso, typeAction.trim());
+    if(typeAction.trim() == "salida"){
+        const row = button.closest('td');
+        console.log(row)
+        const rowUp = row.previousElementSibling;
+        console.log(rowUp);
+        rowUp.innerHTML = ""
+        row.innerHTML = ""
+        row.insertAdjacentHTML("beforeend", `<button onclick="eliminarAcceso(${id_acceso}, this, 'registro')">Eliminar</button>`)
+        
+
+    }else if(typeAction.trim() == "registro"){
+        button.closest('tr').remove();
+    }
+    fetch("/seguridad/eliminarAcceso", {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id_acceso: id_acceso, typeAction: typeAction.trim() }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+    let idReunion = 0;
+    let idInvitado = 0;
+    let idInvitacion = 0;
+
     ola();
     function ola () {
-            let idReunion = 0;
-            let idInvitado = 0;
-            let idInvitacion = 0;
+            
             let url = new URLSearchParams(location.search);
 
             idReunion = url.get('idReunion');
@@ -171,7 +205,7 @@
                 idInvitado: idInvitado,
                 idInvitacion: idInvitacion
             }
-
+            console.log(idReunion, idInvitado, idInvitacion);
             fetch("/seguridad/reuniones/invitadoInf", {
                 method: "POST",
                 headers: {
@@ -179,60 +213,58 @@
                 },
                 body: JSON.stringify(data),
             })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Success:', data);
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                idInvitacion = data.id_invitacion;
+                document.getElementById("fotitoInvitado").src = data.invitado.foto_invitado;
+                document.getElementById("nombre_invitado").value = `${data.invitado.nombre_invitado} ${data.invitado.apellido_paterno_invitado} ${data.invitado.apellido_materno_invitado}`;
+                document.getElementById("nombre_anfitrion").value = `${data.reunion.usuario.nombre_usuario} ${data.reunion.usuario.apellido_paterno_usuario} ${data.reunion.usuario.apellido_materno_usuario}`;
+                document.getElementById("empresa_invitado").value = data.invitado.empresa_invitado;
+                document.getElementById("identificacion_invitado").value = data.invitado.identificacion_invitado;
+                document.getElementById("piso_sala").value = data.reunion.sala.piso_sala;
+                document.getElementById("numero_sala").value = data.reunion.sala.numero_sala;
 
-                    document.getElementById("fotitoInvitado").src = data.invitado.foto_invitado;
-                    document.getElementById("nombre_invitado").value = `${data.invitado.nombre_invitado} ${data.invitado.apellido_paterno_invitado} ${data.invitado.apellido_materno_invitado}`;
-                    document.getElementById("nombre_anfitrion").value = `${data.reunion.usuario.nombre_usuario} ${data.reunion.usuario.apellido_paterno_usuario} ${data.reunion.usuario.apellido_materno_usuario}`;
-                    document.getElementById("empresa_invitado").value = data.invitado.empresa_invitado;
-                    document.getElementById("identificacion_invitado").value = data.invitado.identificacion_invitado;
-                    document.getElementById("piso_sala").value = data.reunion.sala.piso_sala;
-                    document.getElementById("numero_sala").value = data.reunion.sala.numero_sala;
-
-                    let tablaDispositivos = document.getElementById("tabla_dispositivos");
-                    data.dispositivo_electronico.forEach(dispositivo => {
-                        let fila = document.createElement("tr");
-                        fila.innerHTML = `
-                            <td>${dispositivo.marca_dispositivo_electronico}</td>
-                            <td>${dispositivo.modelo_dispositivo_electronico}</td>
-                            <td>${dispositivo.no_serie_dispositivo_electronico}</td>
-                            <td><input type="checkbox" class="dispositivoPresente" value="${dispositivo.id_dispositivo_electronico}"></td>
-                        `;
-                        tablaDispositivos.appendChild(fila);
-                    });
-
-                    let tablaAutos = document.getElementById("tabla_carros");
-                    data.Automovil.forEach(carro => {
-                        let fila = document.createElement("tr");
-                        fila.innerHTML = `
-                        <td>${carro.marca_automovil}</td>
-                        <td>${carro.modelo_automovil}</td>
-                        <td>${carro.matricula_automovil}</td>
-                        <td>${carro.color_automovil}</td>
-                        <td><input type="checkbox" class="automovilPresente" value="${carro.id_automovil}"></td>
+                let tablaDispositivos = document.getElementById("tabla_dispositivos");
+                data.dispositivo_electronico.forEach(dispositivo => {
+                    let fila = document.createElement("tr");
+                    fila.innerHTML = `
+                        <td>${dispositivo.marca_dispositivo_electronico}</td>
+                        <td>${dispositivo.modelo_dispositivo_electronico}</td>
+                        <td>${dispositivo.no_serie_dispositivo_electronico}</td>
+                        <td><input type="checkbox" class="dispositivoPresente" value="${dispositivo.id_dispositivo_electronico}" name="registroDisp"></td>
                     `;
-                        tablaAutos.appendChild(fila);
-                    });
-
-                    let tablaAcceso = document.getElementById("tabla_acceso");
-                    data.acceso.forEach(acceso => {
-                        const row = tablaAcceso.insertRow();
-                        row.insertCell(0).textContent = acceso.hora_entrada;
-                        row.insertCell(1).textContent = acceso.hora_salida;
-                        const deleteCell = row.insertCell(2);
-                        const deleteButton = document.createElement("button");
-                        deleteButton.textContent = "Eliminar";
-                        deleteButton.onclick = function () {
-                            row.remove();
-                        };
-                        deleteCell.appendChild(deleteButton);
-                    });
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
+                    tablaDispositivos.appendChild(fila);
                 });
+
+                let tablaAutos = document.getElementById("tabla_carros");
+                data.Automovil.forEach(carro => {
+                    let fila = document.createElement("tr");
+                    fila.innerHTML = `
+                    <td>${carro.marca_automovil}</td>
+                    <td>${carro.modelo_automovil}</td>
+                    <td>${carro.matricula_automovil}</td>
+                    <td>${carro.color_automovil}</td>
+                    <td><input type="checkbox" class="automovilPresente" value="${carro.id_automovil}"></td>
+                `;
+                    tablaAutos.appendChild(fila);
+                });
+
+                let tablaAcceso = document.getElementById("tabla_acceso");
+                data.Acceso.forEach(acceso => {
+                    let typeAction;
+                    const row = tablaAcceso.insertRow();
+                    row.insertCell(0).textContent = acceso.hora_entrada_acceso.split(",")[1];
+                    row.insertCell(1).textContent = acceso.hora_salida_acceso.split(",")[1];
+                    typeAction = (acceso.hora_salida_acceso) ? "salida" : "registro"
+                    const deleteCell = row.insertCell(2);
+                    const deleteButton = document.createElement("button");
+                    deleteCell.insertAdjacentHTML("beforeend", `<button onclick="eliminarAcceso(${acceso.id_acceso}, this, ${"'"+typeAction+"'"})">Eliminar</button>`)
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
 
             document.getElementById("btnEntrada").onclick = function () {
                 registrarHora("entrada");
@@ -241,47 +273,67 @@
             document.getElementById("btnSalida").onclick = function () {
                 registrarHora("salida");
             };
-
+            
             function registrarHora(tipo) {
                 const tablaAcceso = document.getElementById("tabla_acceso");
-                const currentTime = new Date().toLocaleTimeString();
-
-                if (tipo === "entrada") {
-                    const row = tablaAcceso.insertRow();
-                    row.insertCell(0).textContent = currentTime;
-                    row.insertCell(1).textContent = "";
-
-                    const deleteCell = row.insertCell(2);
-                    const deleteButton = document.createElement("button");
-                    deleteButton.textContent = "Eliminar";
-                    deleteButton.onclick = function () {
-                        row.remove();
-                    };
-                    deleteCell.appendChild(deleteButton);
-
-                } else if (tipo === "salida") {
-                    const lastRow = tablaAcceso.rows[tablaAcceso.rows.length - 1];
-                    if (lastRow && lastRow.cells[1].textContent === "") {
-                        lastRow.cells[1].textContent = currentTime;
-                    } else {
+                tablaAcceso.innerHTML = '';
+                const currentTime = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+                console.log(idInvitacion, currentTime, tipo);
+                fetch("/seguridad/registrarHora", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ idInvitacion: idInvitacion, idReunion: idReunion, hora: currentTime, tipo }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+                
+                fetch("/seguridad/reuniones/invitadoInf", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    let tablaAcceso = document.getElementById("tabla_acceso");
+                    data.Acceso.forEach(acceso => {
+                        let typeAction;
                         const row = tablaAcceso.insertRow();
-                        row.insertCell(0).textContent = "";
-                        row.insertCell(1).textContent = currentTime;
-
+                        row.insertCell(0).textContent = acceso.hora_entrada_acceso.split(",")[1];
+                        row.insertCell(1).textContent = acceso.hora_salida_acceso.split(",")[1];
+                        typeAction = (acceso.hora_salida_acceso) ? "salida" : "registro"
                         const deleteCell = row.insertCell(2);
                         const deleteButton = document.createElement("button");
-                        deleteButton.textContent = "Eliminar";
-                        deleteButton.onclick = function () {
-                            row.remove();
-                        };
-                        deleteCell.appendChild(deleteButton);
-                    }
-                }
+                        deleteCell.insertAdjacentHTML("beforeend", `<button onclick="eliminarAcceso(${acceso.id_acceso}, this, ${"'"+typeAction+"'"})">Eliminar</button>`)
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
             }
 
             document.getElementById('confirmarDispositivos').addEventListener('click', async () => {
-                const dispositivos = Array.from(document.querySelectorAll('.dispositivoPresente:checked')).map(checkbox => checkbox.value);
-                if (dispositivos.length === 0) {
+                const tablaDispositivos= document.getElementById('tabla_dispositivos');
+                const filasDisp= tablaDispositivos.getElementsByTagName('tr');
+                let filasCheck=[];
+                for (let i = 0; i < filasDisp.length; i++) {
+                    const checkbox = filasDisp[i].querySelector('td:last-child input[type="checkbox"]');
+                    if (checkbox.checked) {
+                        console.log(checkbox);
+                        filasCheck.push(checkbox.value);
+                    }
+                }
+                console.log(filasCheck);
+            
+                if (filasCheck.length === 0) {
                     // Mostrar mensaje de error porque no se seleccionó ningún dispositivo
                     Swal.fire({
                         icon: 'error',
@@ -291,11 +343,11 @@
                     });
                     return; // Detener la ejecución
                 }
-                if (dispositivos.length > 0) {
+                if (filasCheck.length > 0) {
                     const response = await fetch('/seguridad/confirmarDispositivo', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ idInvitacion: idInvitacion, dispositivos })
+                        body: JSON.stringify({ idInvitacion: idInvitacion, dispositivos: filasCheck })
                     });
                     const result = await response.json();
                     console.log(result);
@@ -319,10 +371,21 @@
 
                 }
             });
-
+        
             document.getElementById('confirmarAutomoviles').addEventListener('click', async () => {
-                const automoviles = Array.from(document.querySelectorAll('.automovilPresente:checked')).map(checkbox => checkbox.value);
-                if (automoviles.length === 0) {
+                const tablaCarros= document.getElementById('tabla_carros');
+                const filasCar= tablaCarros.getElementsByTagName('tr');
+                let filasCheck=[];
+                for (let i = 0; i < filasCar.length; i++) {
+                    const checkbox = filasCar[i].querySelector('td:last-child input[type="checkbox"]');
+                    if (checkbox.checked) {
+                        console.log(checkbox);
+                        filasCheck.push(checkbox.value);
+                    }
+                }
+                console.log(filasCheck);
+
+                if (filasCheck.length === 0) {
                     // Mostrar mensaje de error porque no se seleccionó ningún dispositivo
                     Swal.fire({
                         icon: 'error',
@@ -332,11 +395,11 @@
                     });
                     return; // Detener la ejecución
                 }
-                if (automoviles.length > 0) {
+                if (filasCheck.length > 0) {
                     const response = await fetch('/seguridad/confirmarAutomovil', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ idInvitacion: idInvitacion, automoviles })
+                        body: JSON.stringify({ idInvitacion: idInvitacion, automoviles:filasCheck })
                     });
                     const result = await response.json();
                     console.log(result);

@@ -70,7 +70,8 @@ async function loadTableData() {
   tbody.innerHTML = '';
 
   data.forEach(item => {
-    const row = document.createElement('tr');
+    if(item.tipoU !== "SuperAdmin"){
+      const row = document.createElement('tr');
     row.innerHTML = `
         <td class="id">${item.id}</td>
         <td class="nombre">${item.nombre}</td>
@@ -82,6 +83,7 @@ async function loadTableData() {
         </td>
     `;
     tbody.appendChild(row);
+    }
   });
 
   cargarFiltros();

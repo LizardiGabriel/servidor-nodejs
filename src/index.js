@@ -470,7 +470,7 @@ app.get('/seguridad/getFotoPerfil', admin.getFotoAdmin);
 app.post('/seguridad/registrarHora', seguridad.registrarHora);
 app.post('/seguridad/confirmarDispositivo', seguridad.confirmarDispositivo);
 app.post('/seguridad/confirmarAutomovil', seguridad.confirmarAutomovil);
-
+app.delete('/seguridad/eliminarAcceso', seguridad.eliminarAcceso); 
 
 //app.post('/seguridad/registrarDispositivo', seguridad.registrarDispositivo);
 //app.post('/seguridad/registrarAutomovil', seguridad.registrarAutomovil);
@@ -538,6 +538,7 @@ app.get('/invitado/getemail',invitado.getUserEmail);
 app.get('/invitado/catalogo/usuarioEmail/:email', invitado.getUsuarioByEmail);
 app.get('/ivitado/getFotoPerfil', invitado.getFotoInvitado);
 app.put('/invitado/catalogo/usuarios/:id',invitado.updateInvitado);
+app.get('/invitado/catalogo/colados/:id',invitado.getColadoByIdInvitado);
 
 app.use('/invitado/cambiarContrasena.html', express.static('./public/build2/views/Invitado/cambiarContrasena.html'));
 app.post('/invitado/cambiar', invitado.cambiarContrasena);
