@@ -6,6 +6,7 @@ async function traerDatos() {
   try {
     const response = await fetch('/anfitrion/getemail');
     const data = await response.json();
+    console.log(data);
     var datosUsuario = await getData(data.email);  // Usar await aquí garantiza que esperamos el resultado
     const nombre = document.getElementById("nombre");
     nombre.value = datosUsuario.nombre_usuario;
