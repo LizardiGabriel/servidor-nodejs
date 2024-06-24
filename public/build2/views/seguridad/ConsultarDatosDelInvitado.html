@@ -155,11 +155,13 @@
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    let idReunion = 0;
+    let idInvitado = 0;
+    let idInvitacion = 0;
+
     ola();
     function ola () {
-            let idReunion = 0;
-            let idInvitado = 0;
-            let idInvitacion = 0;
+            
             let url = new URLSearchParams(location.search);
 
             idReunion = url.get('idReunion');
@@ -171,7 +173,7 @@
                 idInvitado: idInvitado,
                 idInvitacion: idInvitacion
             }
-
+            console.log(idReunion, idInvitado, idInvitacion);
             fetch("/seguridad/reuniones/invitadoInf", {
                 method: "POST",
                 headers: {
@@ -182,7 +184,7 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log('Success:', data);
-
+                    idInvitacion = data.id_invitacion;
                     document.getElementById("fotitoInvitado").src = data.invitado.foto_invitado;
                     document.getElementById("nombre_invitado").value = `${data.invitado.nombre_invitado} ${data.invitado.apellido_paterno_invitado} ${data.invitado.apellido_materno_invitado}`;
                     document.getElementById("nombre_anfitrion").value = `${data.reunion.usuario.nombre_usuario} ${data.reunion.usuario.apellido_paterno_usuario} ${data.reunion.usuario.apellido_materno_usuario}`;
@@ -198,7 +200,7 @@
                             <td>${dispositivo.marca_dispositivo_electronico}</td>
                             <td>${dispositivo.modelo_dispositivo_electronico}</td>
                             <td>${dispositivo.no_serie_dispositivo_electronico}</td>
-                            <td><input type="checkbox" class="dispositivoPresente" value="${dispositivo.id_dispositivo_electronico}"></td>
+                            <td><input type="checkbox" class="dispositivoPresente" value="${dispositivo.id_dispositivo_electronico}" name="registroDisp"></td>
                         `;
                         tablaDispositivos.appendChild(fila);
                     });
@@ -243,8 +245,27 @@
             };
 
             function registrarHora(tipo) {
+                
                 const tablaAcceso = document.getElementById("tabla_acceso");
                 const currentTime = new Date().toLocaleTimeString();
+                console.log(idInvitacion, currentTime, tipo);
+                fetch("/seguridad/registrarHora", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ idInvitacion: idInvitacion, idReunion: idReunion, hora: currentTime, tipo }),
+                }
+                )
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                
+               
 
                 if (tipo === "entrada") {
                     const row = tablaAcceso.insertRow();
@@ -280,7 +301,20 @@
             }
 
             document.getElementById('confirmarDispositivos').addEventListener('click', async () => {
-                const dispositivos = Array.from(document.querySelectorAll('.dispositivoPresente:checked')).map(checkbox => checkbox.value);
+                const tablaDispositivos= document.getElementById('tabla_dispositivos');
+                const filasDisp= tablaDispositivos.getElementsByTagName('tr');
+                let filasCheck=[];
+                for (let i = 0; i < filasDisp.length; i++) {
+                    const checkbox = filasDisp[i].querySelector('td:last-child input[type="checkbox"]');
+                    if (checkbox.checked) {
+                        filasCheck.push(filasDisp[i]);
+                    }
+                }
+                console.log(filasCheck[0]);
+
+                const dispositivos = Array.from(document.getElementsByName('registroDisp')).map(checkbox => checkbox.value);
+                console.log(document.getElementsByName('registroDisp'));
+            
                 if (dispositivos.length === 0) {
                     // Mostrar mensaje de error porque no se seleccionó ningún dispositivo
                     Swal.fire({
@@ -291,6 +325,7 @@
                     });
                     return; // Detener la ejecución
                 }
+                console.log(dispositivos);
                 if (dispositivos.length > 0) {
                     const response = await fetch('/seguridad/confirmarDispositivo', {
                         method: 'POST',
@@ -319,7 +354,7 @@
 
                 }
             });
-
+        
             document.getElementById('confirmarAutomoviles').addEventListener('click', async () => {
                 const automoviles = Array.from(document.querySelectorAll('.automovilPresente:checked')).map(checkbox => checkbox.value);
                 if (automoviles.length === 0) {

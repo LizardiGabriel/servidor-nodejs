@@ -292,9 +292,10 @@ async function getSeguridadInfo_idInv_idReu(req,res){
 
 
 async function registrarHora(req, res) {
-    const { idInvitacion, hora, tipo } = req.body;
+    const { idInvitacion, idReunion, hora, tipo } = req.body;
+    console.log('Datos recibidos:', req.body);
     try {
-        const invitacionActualizada = await registrarHoraEnBD(idInvitacion, hora, tipo);
+        const invitacionActualizada = await registrarHoraEnBD(idInvitacion, idReunion, hora, tipo);
         if (invitacionActualizada) {
             res.json({ status: 'success' });
         } else {
@@ -309,6 +310,7 @@ async function registrarHora(req, res) {
 
 
 async function confirmarDispositivo(req, res) {
+    console.log("Datos recibidos Dispositivo: ", req.body);
     const { idInvitacion, dispositivos } = req.body;
     try {
         await confirmarDispositivosBD(idInvitacion, dispositivos);
@@ -320,6 +322,7 @@ async function confirmarDispositivo(req, res) {
 }
 
 async function confirmarAutomovil(req, res) {
+    console.log("Datos recibidos Automovil: ", req.body);
     const { idInvitacion, automoviles } = req.body;
     try {
         await confirmarAutomovilesBD(idInvitacion, automoviles);
