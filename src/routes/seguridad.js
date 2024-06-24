@@ -5,7 +5,7 @@ const { getReunionesBD, getUsuarioByIdBD,getReunionByIdBD,getSalaByIdBD,getInvit
 } = require('../tools/peticiones');
 const { response } = require('express');
 const { json } = require('body-parser');
-const {confirmarDispositivosBD,confirmarAutomovilesBD,registrarHoraEnBD,obtenerDetallesInvitacionAnfiBD, getInvitacionByIdSeguridadBD, obtenerDetallesInvitacionSeguridadBD} = require("../tools/petiAdmin");
+const {eliminarAccesoBD,confirmarDispositivosBD,confirmarAutomovilesBD,registrarHoraEnBD,obtenerDetallesInvitacionAnfiBD, getInvitacionByIdSeguridadBD, obtenerDetallesInvitacionSeguridadBD} = require("../tools/petiAdmin");
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const fs = require('fs');
@@ -292,9 +292,10 @@ async function getSeguridadInfo_idInv_idReu(req,res){
 
 
 async function registrarHora(req, res) {
-    const { idInvitacion, hora, tipo } = req.body;
+    const { idInvitacion, idReunion, hora, tipo } = req.body;
+    console.log('Datos recibidos:', req.body);
     try {
-        const invitacionActualizada = await registrarHoraEnBD(idInvitacion, hora, tipo);
+        const invitacionActualizada = await registrarHoraEnBD(idInvitacion, idReunion, hora, tipo);
         if (invitacionActualizada) {
             res.json({ status: 'success' });
         } else {
@@ -309,6 +310,7 @@ async function registrarHora(req, res) {
 
 
 async function confirmarDispositivo(req, res) {
+    console.log("Datos recibidos Dispositivo: ", req.body);
     const { idInvitacion, dispositivos } = req.body;
     try {
         await confirmarDispositivosBD(idInvitacion, dispositivos);
@@ -320,6 +322,7 @@ async function confirmarDispositivo(req, res) {
 }
 
 async function confirmarAutomovil(req, res) {
+    console.log("Datos recibidos Automovil: ", req.body);
     const { idInvitacion, automoviles } = req.body;
     try {
         await confirmarAutomovilesBD(idInvitacion, automoviles);
@@ -329,6 +332,18 @@ async function confirmarAutomovil(req, res) {
         res.status(500).json({ status: 'error', message: 'Error al confirmar automóviles' });
     }
 }
+
+async function eliminarAcceso(req, res) {
+    console.log("Datos recibidos Eliminar Acceso: ", req.body);
+    const { id_acceso, typeAction } = req.body;
+    try {
+        await eliminarAccesoBD(id_acceso, typeAction);
+        res.json({ status: 'success' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: 'error', message: 'Error al eliminar acceso' });
+    }
+}   
 
 
 //Visualizar agenda
@@ -347,6 +362,7 @@ module.exports = {
     confirmarDispositivo,
     getUserEmail,
     getUsuarioByEmail,
-    updateUsuario
+    updateUsuario,
+    eliminarAcceso
     
 };
