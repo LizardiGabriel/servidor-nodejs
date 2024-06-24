@@ -470,7 +470,7 @@ app.get('/seguridad/getFotoPerfil', admin.getFotoAdmin);
 app.post('/seguridad/registrarHora', seguridad.registrarHora);
 app.post('/seguridad/confirmarDispositivo', seguridad.confirmarDispositivo);
 app.post('/seguridad/confirmarAutomovil', seguridad.confirmarAutomovil);
-
+app.delete('/seguridad/eliminarAcceso', seguridad.eliminarAcceso); 
 
 //app.post('/seguridad/registrarDispositivo', seguridad.registrarDispositivo);
 //app.post('/seguridad/registrarAutomovil', seguridad.registrarAutomovil);

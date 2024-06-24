@@ -5,7 +5,7 @@ const { getReunionesBD, getUsuarioByIdBD,getReunionByIdBD,getSalaByIdBD,getInvit
 } = require('../tools/peticiones');
 const { response } = require('express');
 const { json } = require('body-parser');
-const {confirmarDispositivosBD,confirmarAutomovilesBD,registrarHoraEnBD,obtenerDetallesInvitacionAnfiBD, getInvitacionByIdSeguridadBD, obtenerDetallesInvitacionSeguridadBD} = require("../tools/petiAdmin");
+const {eliminarAccesoBD,confirmarDispositivosBD,confirmarAutomovilesBD,registrarHoraEnBD,obtenerDetallesInvitacionAnfiBD, getInvitacionByIdSeguridadBD, obtenerDetallesInvitacionSeguridadBD} = require("../tools/petiAdmin");
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const fs = require('fs');
@@ -333,6 +333,18 @@ async function confirmarAutomovil(req, res) {
     }
 }
 
+async function eliminarAcceso(req, res) {
+    console.log("Datos recibidos Eliminar Acceso: ", req.body);
+    const { id_acceso, typeAction } = req.body;
+    try {
+        await eliminarAccesoBD(id_acceso, typeAction);
+        res.json({ status: 'success' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: 'error', message: 'Error al eliminar acceso' });
+    }
+}   
+
 
 //Visualizar agenda
 module.exports = {
@@ -350,6 +362,7 @@ module.exports = {
     confirmarDispositivo,
     getUserEmail,
     getUsuarioByEmail,
-    updateUsuario
+    updateUsuario,
+    eliminarAcceso
     
 };

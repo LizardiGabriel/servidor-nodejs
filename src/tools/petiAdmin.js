@@ -332,6 +332,7 @@ async function obtenerDetallesInvitacionSeguridadBD(id_invitacion) {
                 },
                 dispositivo_electronico: {
                     select: {
+                        id_dispositivo_electronico: true,
                         no_serie_dispositivo_electronico: true,
                         modelo_dispositivo_electronico: true,
                         marca_dispositivo_electronico: true
@@ -339,6 +340,7 @@ async function obtenerDetallesInvitacionSeguridadBD(id_invitacion) {
                 },
                 Automovil: {
                     select: {
+                        id_automovil: true,
                         color_automovil: true,
                         marca_automovil: true,
                         matricula_automovil: true,
@@ -351,6 +353,14 @@ async function obtenerDetallesInvitacionSeguridadBD(id_invitacion) {
                         isConfirmed: true
                     }
                 },
+                Acceso: {
+                    select: {
+                        id_acceso: true,
+                        hora_entrada_acceso: true,
+                        hora_salida_acceso: true,
+                        nota_acceso: true
+                    }
+                }
             }
 
 
@@ -426,7 +436,7 @@ async function registrarHoraEnBD(idInvitacion, idReunion, hora, tipo) {
             data: {
                 
                 hora_entrada_acceso: fechaActual,
-                hora_salida_acceso: fechaActual,
+                hora_salida_acceso: "",
                 nota_acceso: 'Entrada',
                 invitacion: {
                     connect: {
@@ -468,53 +478,77 @@ async function registrarHoraEnBD(idInvitacion, idReunion, hora, tipo) {
 
 
 async function confirmarDispositivosBD(idInvitacion, dispositivos) {
-    const dispos = await prisma.dispositivo_electronico.findMany({
+    const salida= await prisma.acceso.findMany({
         where: {
-            id_dispositivo_electronico: idDispositivo,
-            id_invitacion: idInvitacion,
-            no_serie_dispositivo_electronico: noSerie,
-            modelo_dispositivo_electronico: modelo,
-            marca_dispositivo_electronico: marca,
-            checka: 1,
-
-        }
+            id_invitacion: parseInt(idInvitacion),
+        },
+        orderBy: {
+            id_acceso: 'desc',
+        },
+        take: 1,
     });
-    for (let disp of dispos) {
-        await prisma.acceso_dispositivo_electronico.create({
-            data: {
-                id_dispositivo_electronico: disp.id_dispositivo_electronico,
-                id_invitacion: idInvitacion,
-                checka: 1
-            }
-        });
-    }
+
+    console.log(dispositivos);
+    dispositivos.forEach(dispositivo => {
+        console.log(dispositivo[0]);
+        crearAccesosDispositivos(salida[0].id_acceso, dispositivos[0])
+    });
+}
+
+async function crearAccesosDispositivos(id_acceso, dispositivo) {
+    return await prisma.acceso_dispositivo_electronico.create({
+        data: {
+            id_acceso: id_acceso,
+            id_dispositivo_electronico: parseInt(dispositivo),
+            checka: 1
+        }
+    })
 }
 
 async function confirmarAutomovilesBD(idInvitacion, automoviles) {
-    const autos = await prisma.automovil.findMany({
+    const salida= await prisma.acceso.findMany({
         where: {
-            id_automovil: idAutomovil,
-            id_invitacion: idInvitacion,
-            color_automovil: color,
-            matricula_automovil: matricula,
-            marca_automovil: marca,
-            modelo_automovil: modelo,
-            checka: 1,
-
-        }
+            id_invitacion: parseInt(idInvitacion),
+        },
+        orderBy: {
+            id_acceso: 'desc',
+        },
+        take: 1,
     });
-    for (let auto of autos) {
-        await prisma.acceso_automovil.create({
-            data: {
-                id_automovil: auto.id_automovil,
-                id_invitacion: idInvitacion,
-                checka: 1
-            }
-        });
-    }
+
+    console.log(automoviles);
+    automoviles.forEach(automovil => {
+        console.log(automovil[0]);
+        crearAccesosCarro(salida[0].id_acceso, automovil[0])
+    });
 }
 
+async function crearAccesosCarro(id_acceso, carro) {
+    return await prisma.acceso_automovil.create({
+        data: {
+            id_acceso: id_acceso,
+            id_automovil: parseInt(carro),
+            checka: 1
+        }
+    })
+}
 
+async function eliminarAccesoBD(id_acceso, typeAction) {
+    if (typeAction == "registro") {
+        return await prisma.acceso.delete({
+            where: {
+                id_acceso: id_acceso
+            }
+        });
+    } else {
+        return await prisma.acceso.update({
+            where: { id_acceso: id_acceso },
+            data: {
+                hora_salida_acceso: "",
+            }
+        })
+    }
+}
 
 
 
@@ -526,7 +560,8 @@ module.exports = {
     obtenerDetallesInvitacionSeguridadBD,
     registrarHoraEnBD,
     confirmarAutomovilesBD,
-    confirmarDispositivosBD
+    confirmarDispositivosBD,
+    eliminarAccesoBD
 
 
 };
