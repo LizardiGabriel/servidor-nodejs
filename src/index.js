@@ -538,6 +538,7 @@ app.get('/invitado/getemail',invitado.getUserEmail);
 app.get('/invitado/catalogo/usuarioEmail/:email', invitado.getUsuarioByEmail);
 app.get('/ivitado/getFotoPerfil', invitado.getFotoInvitado);
 app.put('/invitado/catalogo/usuarios/:id',invitado.updateInvitado);
+app.get('/invitado/catalogo/colados/:id',invitado.getColadoByIdInvitado);
 
 app.use('/invitado/cambiarContrasena.html', express.static('./public/build2/views/Invitado/cambiarContrasena.html'));
 app.post('/invitado/cambiar', invitado.cambiarContrasena);

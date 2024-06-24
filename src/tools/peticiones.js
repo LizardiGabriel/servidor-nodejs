@@ -50,6 +50,21 @@ async function getUsersByEmailBD(correo) {
     }
 }
 
+async function getColadoByIdInvitadoBD(idInvitado) {
+    console.log('peticion a la bd  getColadoByIdInvitadoBD');
+    try {
+        const colado = await prisma.colado.findFirst({
+            where: {
+                id_invitado: parseInt(idInvitado) ,
+            },
+        });
+        return colado;
+    } catch (error) {
+        console.error('Error al obtener colado:', error);
+        return null;
+    }
+}
+
 async function createUserBD({ email, hashedPassword, nombre, apellido_paterno, apellido_materno, telefono, rol, foto_usuario }) {
     console.log('peticion a la bd de createUser');
 
@@ -1398,6 +1413,7 @@ module.exports = {
     updateDateRepBD,
 
     getReunionesNuebasByIdBD,
+    getColadoByIdInvitadoBD,
 
     getInvitacionesByIdReunionBD
 
