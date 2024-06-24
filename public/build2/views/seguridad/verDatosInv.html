@@ -38,38 +38,57 @@
 </head>
 
 <body>
-    <h1>CONSULTAR DATOS DEL INVITADO</h1>
-    <div>
-        <label>Nombre Invitado:</label>
-        <input type="text" id="nombreInvitado" disabled>
-    </div>
-    <div>
-        <label>Nombre anfitrión:</label>
-        <input type="text" id="nombreAnfitrion" disabled>
-    </div>
-    <div>
-        <label>Empresa / Organización:</label>
-        <input type="text" id="empresaOrganizacion" disabled>
-    </div>
-    <div>
-        <label>Celular:</label>
-        <input type="text" id="celular" disabled>
-    </div>
-    <div>
-        <label>Tipo de Automovil:</label>
-        <input type="text" id="tipoVehiculo" disabled>
-        <label>Placas:</label>
-        <input type="text" id="placas" disabled>
-    </div>
-    <div>
-        <label>Identificación Personal a presentar:</label>
-        <input type="text" id="identificacion" disabled>
-    </div>
-    <div>
-        <label>Piso #:</label>
-        <input type="text" id="piso" disabled>
-        <label>Sala #:</label>
-        <input type="text" id="sala" disabled>
+    <div class="HeroInvitado">
+        <h1 class="consultaForm__titulo text-center">Datos del invitado</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="HeroInvitadoImg " style="border-radius: 50%;">
+                    <img src="../../img/examples/sample-dwight-k-schrute.jpg" style="width: 100% ; height: 100%;"
+                        alt="Invitado">
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label HeroInvitadolabel">Invitado:</label>
+                        <div class="col-sm-9">
+                            <input class="form-control HeroInvitadoinput" type="text" value="José Manuel Perez"
+                                disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label HeroInvitadolabel">Anfitrión:</label>
+                        <div class="col-sm-9">
+                            <input class="form-control HeroInvitadoinput" type="text" value="Nombre Anfitrión"
+                                disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label HeroInvitadolabel">Empresa /Organización:</label>
+                        <div class="col-sm-9">
+                            <input class="form-control HeroInvitadoinput" type="text"
+                                value="Super Secret Intelligence" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label HeroInvitadolabel">Identificación a presentar:</label>
+                        <div class="col-sm-9">
+                            <input class="form-control HeroInvitadoinput" type="text" value="INE" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label HeroInvitadolabel">Número de piso:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control HeroInvitadoinput" type="number" value="21" disabled>
+                        </div>
+                        <label class="col-sm-3 col-form-label HeroInvitadolabel">Número de sala:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control HeroInvitadoinput" type="number" value="6" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div>
         <h2>Acompañantes</h2>
