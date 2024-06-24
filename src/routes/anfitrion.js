@@ -406,7 +406,7 @@ async function setInvitacion(req, res) {
                                             <tr>
                                                 <td class="tg-1" colspan="6">
                                                     <h3 id="bold-font">Fechas:</h3>
-                                                    <input type="date" id="fecha" class="inputTabla" value="${repeticiones.map(rep => `${rep.fecha_repeticion}`).join(", ")}" readonly disabled>
+                                                    <input type="text" id="fecha" class="inputTabla" value="${repeticiones.map(rep => `${rep.fecha_repeticion}`).join(", ")}" readonly disabled>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -681,7 +681,7 @@ async function setInvitacion(req, res) {
                                             <tr>
                                                 <td class="tg-1" colspan="6">
                                                     <h3 id="bold-font">Fechas:</h3>
-                                                    <input type="date" id="fecha" class="inputTabla" value="${repeticiones.map(rep => `${rep.fecha_repeticion}`).join(", ")}" readonly disabled>
+                                                    <input type="text" id="fecha" class="inputTabla" value="${repeticiones.map(rep => `${rep.fecha_repeticion}`).join(", ")}" readonly disabled>
                                                 </td>
                                             </tr>
                                             <tr>
