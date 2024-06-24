@@ -19,29 +19,39 @@ const modal = Swal.mixin({
 })
 
 window.onload = function () {
-  if (window.location.pathname == "/invitado/invitado.html")
+  if (window.location.pathname == "/invitado/home/invitado.html")
     obtenerDatos();
 }
 
-function obtenerDatos() {
+async function obtenerDatos() {
   console.log('ObtenerDatos');
-  fetch('/get-nombre')
-    .then(response => response.json())
-    .then(data => {
-      console.log('Datos de la sesión:', data);
-      let nombrehtml = document.getElementById('nameGet');
-      nombrehtml.innerHTML = data.nombre;
-    })
-    .catch((error) => {
-      console.error('Error al obtener los datos de la sesión:', error);
-      modal.fire({
-        title: "Error",
-        icon: "error",
-        text: error,
-      });
-    }
-    );
+  const response = await fetch('/invitado/getemail');
+  const data = await response.json();
+  var datosUsuario = await getData(data.email);
+  console.log('Datos de la sesión:', data);
+  let nombrehtml = document.getElementById('nameGet');
+  nombrehtml.innerHTML = datosUsuario.nombre_invitado+" "+datosUsuario.apellido_paterno_invitado;
+ 
 }
+
+async function getData(correo) {
+  try {
+      // Remover el ':' adicional del inicio de la URL si no es necesario
+      const response = await fetch('/invitado/catalogo/usuarioEmail/:'+correo);
+      const data = await response.json();
+      console.log(data);
+      return data;  // Asegura que data sea devuelta de la función
+  } catch (error) {
+    modal.fire({
+      title: "Error",
+      icon: "error",
+      text: "Error fetching data:" + error,
+    });
+      console.error('Error fetching data:', error);
+      return null;  // Devolver null o algún indicativo de error
+  }
+}
+
 
 function logout() {
   modal.fire({
