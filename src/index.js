@@ -357,6 +357,15 @@ app.use('/seguridad/uploads', (req, res) => {
 });
 
 
+app.use('/invitado/home/uploads', (req, res) => {
+    // obtener la peticion actual
+    const rutaArchivo = '../public/build2/uploads' + req.path;
+    res.status(200).sendFile(path.join(__dirname, rutaArchivo));
+});
+
+
+
+
 app.get('/admin/test', (req, res) => {
   console.log('test');
   console.log(req.session);
@@ -527,6 +536,8 @@ app.use('/invitado/home', async (req, res, next) => {
 
 //app.get('/externo/logout', externo.logout);
 
+
+
 app.get('/invitado/home/log-out', invitado.logout);
 app.use('/invitado/home/mis-datos.html', express.static('./public/build2/views/Invitado/misDatos.html'));
 
@@ -536,7 +547,7 @@ app.post('/invitado/registrarinformacion', invitado.setDataInvitado);
 app.get('/invitado/obtenerInfoInvitado', invitado.getInvitadoByEmail);
 app.get('/invitado/getemail',invitado.getUserEmail);
 app.get('/invitado/catalogo/usuarioEmail/:email', invitado.getUsuarioByEmail);
-app.get('/ivitado/getFotoPerfil', invitado.getFotoInvitado);
+app.get('/invitado/getFotoPerfil', invitado.getFotoInvitado);
 app.put('/invitado/catalogo/usuarios/:id',invitado.updateInvitado);
 app.get('/invitado/catalogo/colados/:id',invitado.getColadoByIdInvitado);
 

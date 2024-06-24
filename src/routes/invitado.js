@@ -142,9 +142,11 @@ function encodeImageToBase64(filePath) {
 
 
 async function getUserEmail(req,res){
-    console.log('=============================mensaje -->Se intento obtener del correo');
+    console.log('===> mensaje -->Se intento obtener del correo');
     if(req.session){
-        res.json({ email: getemail(req.session.jwt) }); 
+        const email = getemail(req.session.jwt);
+        console.log('email:', email);
+        res.json({ email: email }); 
     }
     else {
         res.status(403).send('No autorizado');
@@ -1716,15 +1718,15 @@ function getIdUser(jsonToken){
         if (err) {
             return -1;
         } else {
-            idUser= decoded.idUsuario;
+            idUser= decoded.idInvitado;
         }
     });
     return idUser;
 }
 async function getFotoInvitado(req, res){
-    const idUsuario = getIdUser(req.session.jwt);
-    console.log('idInvitado: ', idUsuario)
-    const fotito = await getFotoFromInvitadoBD(idUsuario);
+    const idInvitado = getIdUser(req.session.jwt);
+    console.log('idInvitado: ', idInvitado)
+    const fotito = await getFotoFromInvitadoBD(idInvitado);
     res.status(200).json({foto: fotito});
 }
 

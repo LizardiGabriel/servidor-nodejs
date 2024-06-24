@@ -358,9 +358,12 @@ async function obtenerDetallesInvitacionSeguridadBD(id_invitacion) {
                         id_acceso: true,
                         hora_entrada_acceso: true,
                         hora_salida_acceso: true,
-                        nota_acceso: true
+                        nota_acceso: true,
+                        acceso_dispositivo_electronico: true,
+                        acceso_automovil: true
                     }
                 }
+
             }
 
 

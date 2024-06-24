@@ -1214,10 +1214,10 @@ async function getFotoFromUsuarioBD(idUsuario) {
 }
 
 async function getFotoFromInvitadoBD(idInvitado) {
-    console.log('peticion a la bd de getFotoFromInvitadoBD, idInvitado: ', idUsuario);
+    console.log('peticion a la bd de getFotoFromInvitadoBD, idInvitado: ', idInvitado);
     try {
         const user = await prisma.invitado.findUnique({
-            where: { id_invitado: idInvitado },
+            where: { id_invitado: Number(idInvitado) },
             select: { foto_invitado: true },
         });
 
