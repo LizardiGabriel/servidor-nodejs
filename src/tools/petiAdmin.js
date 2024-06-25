@@ -435,19 +435,19 @@ async function registrarHoraEnBD(idInvitacion, idReunion, hora, tipo) {
     const fechaActual = new Date().toLocaleString("es-MX", { timeZone: "America/Mexico_City" });
 
     if (tipo === 'entrada') {
-        return await prisma.acceso.create({
+        return prisma.acceso.create({
             data: {
-                
+
                 hora_entrada_acceso: fechaActual,
                 hora_salida_acceso: "",
                 nota_acceso: 'Entrada',
                 invitacion: {
                     connect: {
-                        id_invitacion: parseInt(idInvitacion)
+                        id_invitacion: Number(idInvitacion)
                     }
                 },
-                reunion:{
-                    connect:{
+                reunion: {
+                    connect: {
                         id_reunion: Number(idReunion)
                     }
                 }
@@ -455,21 +455,26 @@ async function registrarHoraEnBD(idInvitacion, idReunion, hora, tipo) {
             }
         });
     } else {
+        console.log('salida --> debug ---> idInvitacion:', idInvitacion, 'idReunion:', idReunion);
         const salida= await prisma.acceso.findMany({
             where: {
-                id_invitacion: parseInt(idInvitacion),
+                id_invitacion: Number(idInvitacion),
+                id_reunion: Number(idReunion)
             },
             orderBy: {
                 id_acceso: 'desc',
             },
             take: 1
-            
+
+
         });
 
-        console.log('Salida:', salida[0].id_acceso);
-        return await prisma.acceso.update({
+        console.log('accesos con idInvitacion:', idInvitacion, 'idReunion:', idReunion, 'salida:', salida);
+
+        return prisma.acceso.update({
             where: {
-                id_acceso: salida[0].id_acceso
+                id_acceso: salida[0].id_acceso,
+
             },
             data: {
                 hora_salida_acceso: fechaActual,
@@ -537,20 +542,29 @@ async function crearAccesosCarro(id_acceso, carro) {
 }
 
 async function eliminarAccesoBD(id_acceso, typeAction) {
-    if (typeAction == "registro") {
-        return await prisma.acceso.delete({
-            where: {
-                id_acceso: id_acceso
-            }
-        });
-    } else {
-        return await prisma.acceso.update({
-            where: { id_acceso: id_acceso },
-            data: {
-                hora_salida_acceso: "",
-            }
-        })
+
+    try{
+        if (typeAction == "registro") {
+            return await prisma.acceso.delete({
+                where: {
+                    id_acceso: id_acceso
+                }
+            });
+        } else {
+            return await prisma.acceso.update({
+                where: { id_acceso: id_acceso },
+                data: {
+                    hora_salida_acceso: "",
+                }
+            })
+        }
+
     }
+    catch (error) {
+        console.error('Error al eliminar el acceso:', error);
+        return { error: 'Error al eliminar el acceso' };
+    }
+
 }
 
 

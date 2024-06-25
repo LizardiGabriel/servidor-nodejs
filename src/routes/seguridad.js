@@ -294,11 +294,11 @@ async function getSeguridadInfo_idInv_idReu(req,res){
 
 async function registrarHora(req, res) {
     const { idInvitacion, idReunion, hora, tipo } = req.body;
-    console.log('Datos recibidos:', req.body);
+    console.log('--> funcion "registrarHora", parametros:', req.body);
     try {
         const invitacionActualizada = await registrarHoraEnBD(idInvitacion, idReunion, hora, tipo);
         if (invitacionActualizada) {
-            res.json({ status: 'success' });
+            res.status(200).json({ status: 'success' });
         } else {
             res.status(404).json({ status: 'error', message: 'Invitación no encontrada' });
         }
