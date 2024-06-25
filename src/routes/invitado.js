@@ -313,7 +313,7 @@ async function aceptarReunion(req, res){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BeeCoders - QR Reunión</title>
+    <title>BeeCoders - Invitación a Reunión</title>
     <style type="text/css">
         body {
             background-color: #f9f8f8;
@@ -354,6 +354,10 @@ async function aceptarReunion(req, res){
             padding: 4rem;
         }
 
+        table {
+            min-width: 100%;
+        }
+
         .saludo,
         .correoDiv,
         .contraDiv,
@@ -364,8 +368,7 @@ async function aceptarReunion(req, res){
             align-items: center;
         }
 
-        .firma,
-        .qrReunion {
+        .firma {
             display: flex;
             align-content: center;
             justify-content: center;
@@ -399,8 +402,7 @@ async function aceptarReunion(req, res){
             width: 75%;
         }
 
-        .imagen,
-        .QR {
+        .imagen {
             width: 15rem;
         }
 
@@ -485,8 +487,7 @@ async function aceptarReunion(req, res){
                 font-size: 1rem;
             }
 
-            .imagen,
-            .QR {
+            .imagen {
                 width: 10rem;
             }
 
@@ -511,24 +512,278 @@ async function aceptarReunion(req, res){
                 margin: auto 0px;
             }
         }
+    </style>
+</head>
 
-        @media screen and (max-width: 555px) {
+<body>
+    <main class="ContenidoCorreo">
+        <section class="header">
+            <img class="header_img" src="https://i.imgur.com/wlg9PC4.png">
+        </section>
+
+        <section class="Correo">
+            <div class="Informacion">
+                <div class="saludo">
+                    <h3>Hola</h3>
+                    <input type="text" id="correoInvitado" class="inputCorreo" value="${correoInv}" readonly disabled>
+                </div>
+                <p>El motivo por el cuál has recibido este correo electrónico es porque has sido invitado a la siguiente
+                    reunión:</p>
+            </div>
+            <div class="Tabla tg-wrap">
+                <table class="tg">
+                    <thead>
+                        <tr>
+                            <th class="tg-2" colspan="7">
+                                <h1 id="bold-font">Detalle de la Reunión</h1>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="tg-1" colspan="2">
+                                <h3 id="bold-font">Nombre de la reunión:</h3>
+                                <input type="text" id="${reunion.titulo_reunion}" class="inputTabla"
+                                    value="Daily Meeting equipo BeeCoders" readonly disabled>
+                            </td>
+                            <td class="tg-1" colspan="4">
+                                <h3 id="bold-font">Descripción:</h3>
+                                <input type="text" id="${reunion.descripcion_reunion}" class="inputTabla descripcion"
+                                    value="Conocer los avances del desarrollo del proyecto “BeeMeet” por parte del equipo “BeeCoders”"
+                                    readonly disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-1" colspan="2" rowspan="4">
+                                <img class="imagen" src="https://i.imgur.com/tTgwfr6.png[/img]">
+                            </td>
+                            <td class="tg-1" colspan="4">
+                                <h3 id="bold-font">Anfitrión:</h3>
+                                <input type="text" id="nombreAnfi" class="inputTabla"
+                                    value="${anfitrion.nombre_usuario} ${anfitrion.apellido_paterno_usuario}" readonly
+                                    disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-1" colspan="2">
+                                <h3 id="bold-font">Piso:</h3>
+                                <input type="number" id="piso" class="inputTabla" value="${sala.piso_sala}" readonly
+                                    disabled>
+                            </td>
+                            <td class="tg-1" colspan="2">
+                                <h3 id="bold-font">Sala:</h3>
+                                <input type="text" id="sala" class="inputTabla" value="${sala.nombre_sala}" readonly
+                                    disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-1" colspan="4">
+                                <h3 id="bold-font">Fecha:</h3>
+                                <input type="text" id="fecha" class="inputTabla"
+                                    value="${repeticiones.map(rep => `${rep.fecha_repeticion}`).join(", ")}" readonly
+                                    disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-1" colspan="2">
+                                <h3 id="bold-font">Hora de Inicio:</h3>
+                                <input type="text" id="horaInicio" class="inputTabla"
+                                    value="${repeticiones.map(rep => `${rep.hora_inicio_repeticion}`).join(" , ")}"
+                                    readonly disabled>
+                            </td>
+                            <td class="tg-1" colspan="2">
+                                <h3 id="bold-font">Hora de Fin:</h3>
+                                <input type="text" id="horaFin" class="inputTabla"
+                                    value="${repeticiones.map(rep => `${rep.hora_fin_repeticion}`).join(" , ")}" readonly
+                                    disabled>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="DatosCuenta">
+                <p>Para poder aceptar esta invitación debes seguir los siguientes pasos:</p>
+		    <ul>
+			<li>Inicia sesión con la cuenta que con anterioridad creaste. </li>
+			<li>Una vez iniciada tu sesión, dirígete desde el menú lateral al apartado de >>Reuniones pendientes<<,
+                        desde ahí podrás visualizar una tarjeta con los datos de esta reunión.</li>
+                	<li>Acepta o elimina la invitación. Si decides aceptar la invitación, recuerda que será necesario que completes el registro de los acompañantes, dispositivos o automóviles que llevarás a esta nueva reunión. </li>
+		    </ul>
+            </div>
+            <div class="firma">
+                <h3>ATTE:</h3>
+                <p id="BeeCoders"> BeeCoders &#128029;</p>
+            </div>
+        </section>
+
+        <section class="footer"><img class="footer_img" src="https://i.imgur.com/MyTjwOi.png" alt="footer">
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
+        `;
+            }else{
+                emailText =  `<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeeCoders - Invitación a Reunión</title>
+    <style type="text/css">
+        body {
+            background-color: #f9f8f8;
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            font-family: Arial, sans-serif;
+        }
+
+        .ContenidoCorreo {
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            max-width: 80%;
+            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.33);
+            border-radius: 10px;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .header .header_img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .footer .footer_img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .ContenidoCorreo .Correo {
+            max-width: 80%;
+            padding: 4rem;
+        }
+
+        table {
+            min-width: 100%;
+        }
+
+        .saludo,
+        .correoDiv,
+        .contraDiv,
+        .enlaceSesion {
+            margin-left: 2rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .firma {
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .firma #BeeCoders {
+            font-size: 1.3rem;
+        }
+
+        input {
+            border: none;
+            font-size: 1.1rem;
+            overflow: hidden;
+            color: #48716E;
+            font-weight: bold;
+        }
+
+        .inputTabla {
+            color: #333333;
+            font-weight: 400;
+            width: 100%;
+            white-space: pre-wrap;
+        }
+
+        input .inputCorreo {
+            min-width: 70%;
+        }
+
+        #enlace {
+            width: 75%;
+        }
+
+        .imagen {
+            width: 15rem;
+        }
+
+        h3,
+        h2 {
+            padding-right: 0.5rem;
+        }
+
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+            margin: 0px auto;
+        }
+
+        .tg-wrap {
+            margin-bottom: 3rem;
+            margin-top: 3rem;
+        }
+
+        .tg th,
+        .tg td {
+            border-color: #48716E;
+            border-style: solid;
+            border-width: 3px;
+            font-size: 14px;
+            font-weight: normal;
+            overflow: hidden;
+            padding: 10px 5px;
+            word-break: normal;
+        }
+
+        .tg .tg-1,
+        .tg .tg-2 {
+            background-color: #dbf1ee;
+            border-color: #48716e;
+            color: #333333;
+            text-align: left;
+            vertical-align: middle
+        }
+
+        .tg .tg-2 {
+            text-align: center;
+        }
+
+        #bold-font {
+            font-weight: bold;
+        }
+
+        @media only screen and (max-width: 800px) {
 
             body,
             input {
-                font-size: 0.6rem;
-            }
-
-            .ContenidoCorreo {
-                max-width: 90%;
+                font-size: 0.8rem;
             }
 
             .ContenidoCorreo .Correo {
-                max-width: 90%;
-                padding: 0.8rem;
+                max-width: 80%;
+                padding: 2rem;
             }
 
             input {
+
                 text-align: center;
             }
 
@@ -541,23 +796,39 @@ async function aceptarReunion(req, res){
             .contraDiv,
             .enlaceSesion {
                 margin-left: 0rem;
-                margin-bottom: 1rem;
+                margin-bottom: 1.5rem;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
             }
 
             .firma #BeeCoders {
-                font-size: 0.8rem;
+                font-size: 1rem;
             }
 
             .imagen {
-                width: 6rem;
+                width: 10rem;
             }
 
             .tg th,
             .tg td {
-                font-size: 8px;
+                font-size: 10px;
+            }
+        }
+
+        @media screen and (max-width: 767px) {
+            .tg {
+                width: auto !important;
+            }
+
+            .tg col {
+                width: auto !important;
+            }
+
+            .tg-wrap {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                margin: auto 0px;
             }
         }
     </style>
@@ -573,10 +844,10 @@ async function aceptarReunion(req, res){
             <div class="Informacion">
                 <div class="saludo">
                     <h3>Hola</h3>
-                    <input type="text" id="nombreInvitado" class="inputNombre" value="${invitado.email_invitado} "
-                        readonly disabled>
+                    <input type="text" id="correoInvitado" class="inputCorreo" value="${correoInv}" readonly disabled>
                 </div>
-                <p>Ya está confirmada tu asistencia a la siguiente reunión:</p>
+                <p>El motivo por el cuál has recibido este correo electrónico es porque has sido invitado a la siguiente
+                    reunión:</p>
             </div>
             <div class="Tabla tg-wrap">
                 <table class="tg">
@@ -589,68 +860,82 @@ async function aceptarReunion(req, res){
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="tg-1" rowspan="5">
-                                <img class="imagen" src="https://i.imgur.com/tTgwfr6.png[/img]">
-                            </td>
-                            <td class="tg-1" colspan="6">
-                                <h3 id="bold-font">Anfitrión:</h3>
-                                <input type="text" id="nombreAnfi" class="inputTabla" value="${anfitrion.nombre_usuario} ${anfitrion.apellido_paterno_usuario}"
-                                    readonly disabled>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tg-1" colspan="3">
-                                <h3 id="bold-font">Piso:</h3>
-                                <input type="number" id="piso" class="inputTabla" value="${sala.piso_sala}" readonly disabled>
-                            </td>
-                            <td class="tg-1" colspan="3">
-                                <h3 id="bold-font">Sala:</h3>
-                                <input type="text" id="sala" class="inputTabla" value="${sala.nombre_sala}" readonly disabled>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tg-1" colspan="6">
-                                <h3 id="bold-font">Fecha:</h3>
-                                <input type="text" id="fecha" class="inputTabla" value="${repeticiones.map(rep => `${rep.fecha_repeticion}`).join(", ")}" readonly disabled>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tg-1" colspan="3">
-                                <h3 id="bold-font">Hora de Inicio:</h3>
-                                <input type="text" id="horaInicio" class="inputTabla" value="${repeticiones.map(rep => `${rep.hora_inicio_repeticion}`).join(", ")}" readonly
-                                    disabled>
-                            </td>
-                            <td class="tg-1" colspan="3">
-                                <h3 id="bold-font">Hora de Fin:</h3>
-                                <input type="text" id="horaFin" class="inputTabla" value="${repeticiones.map(rep => `${rep.hora_fin_repeticion}`).join(", ")}" readonly
-                                    disabled>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tg-2">
+                            <td class="tg-1" colspan="2">
                                 <h3 id="bold-font">Nombre de la reunión:</h3>
                                 <input type="text" id="${reunion.titulo_reunion}" class="inputTabla"
                                     value="Daily Meeting equipo BeeCoders" readonly disabled>
                             </td>
-                            <td class="tg-1" colspan="6">
+                            <td class="tg-1" colspan="4">
                                 <h3 id="bold-font">Descripción:</h3>
                                 <input type="text" id="${reunion.descripcion_reunion}" class="inputTabla descripcion"
                                     value="Conocer los avances del desarrollo del proyecto “BeeMeet” por parte del equipo “BeeCoders”"
                                     readonly disabled>
                             </td>
                         </tr>
+                        <tr>
+                            <td class="tg-1" colspan="2" rowspan="4">
+                                <img class="imagen" src="https://i.imgur.com/tTgwfr6.png[/img]">
+                            </td>
+                            <td class="tg-1" colspan="4">
+                                <h3 id="bold-font">Anfitrión:</h3>
+                                <input type="text" id="nombreAnfi" class="inputTabla"
+                                    value="${anfitrion.nombre_usuario} ${anfitrion.apellido_paterno_usuario}" readonly
+                                    disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-1" colspan="2">
+                                <h3 id="bold-font">Piso:</h3>
+                                <input type="number" id="piso" class="inputTabla" value="${sala.piso_sala}" readonly
+                                    disabled>
+                            </td>
+                            <td class="tg-1" colspan="2">
+                                <h3 id="bold-font">Sala:</h3>
+                                <input type="text" id="sala" class="inputTabla" value="${sala.nombre_sala}" readonly
+                                    disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-1" colspan="4">
+                                <h3 id="bold-font">Fecha:</h3>
+                                <input type="text" id="fecha" class="inputTabla"
+                                    value="${repeticiones.map(rep => `${rep.fecha_repeticion}`).join(" , ")}" readonly
+                                    disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-1" colspan="2">
+                                <h3 id="bold-font">Hora de Inicio:</h3>
+                                <input type="text" id="horaInicio" class="inputTabla"
+                                    value="${repeticiones.map(rep => `${rep.hora_inicio_repeticion}`).join(" , ")}"
+                                    readonly disabled>
+                            </td>
+                            <td class="tg-1" colspan="2">
+                                <h3 id="bold-font">Hora de Fin:</h3>
+                                <input type="text" id="horaFin" class="inputTabla"
+                                    value="${repeticiones.map(rep => `${rep.hora_fin_repeticion}`).join(" , ")}" readonly
+                                    disabled>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
             <div class="DatosCuenta">
-                <p>No olvides que el día de la reunión deberás presentar el siguiente QR que contiene toda la
-                    información que registraste de tus datos personales, es importante que lo muestres para poder
-                    accesar al edificio:
-                </p>
-                <div class="qrReunion">
-                    <img src="cid:imagen1" alt="Foto qr">
+                <p>Los datos de la cuenta con la que podrás ingresar a nuestra plataforma, son los siguientes:</p>
+                <div class="correoDiv">
+                    <h3 id="bold-font">Correo Usuario:</h3>
+                    <input type="text" class="usuario inputCorreo" id="usuario" value="${correoInv}" readonly disabled>
                 </div>
-                <p>En caso de que pierdas este QR, siempre podrás recuperarlo a través de la cuenta que creaste. </p>
+                <div class="contraDiv">
+                    <h3 id="bold-font">Contraseña:</h3>
+                    <input type="text" class="contra inputCorreo" id="contra" value="${password}" readonly disabled>
+                </div>
+                <p>Después de iniciar sesión, es necesario que llenes el formulario de datos personales y posteriormente
+                    cambies
+                    tu contraseña para que el registro de tu cuenta se complete exitosamente.</p>
+                <p>Una vez completo tu registro debes ir desde el menú lateral al apartado de >>Reuniones pendientes<<,
+                        desde ahí podrás aceptar o eliminar la invitación a la reunión a la que fuiste invitado por
+                        medio de este correo.</p>
             </div>
             <div class="firma">
                 <h3>ATTE:</h3>
@@ -658,8 +943,8 @@ async function aceptarReunion(req, res){
             </div>
         </section>
 
-        <section class="footer">
-            <img class="footer_img" src="https://i.imgur.com/MyTjwOi.png">
+        <section class="footer"><img class="footer_img" src="https://i.imgur.com/MyTjwOi.png" alt="footer">
+
         </section>
 
     </main>
@@ -667,294 +952,6 @@ async function aceptarReunion(req, res){
 </body>
 
 </html>
-        `;
-            }else{
-                emailText =  `<html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>BeeCoders - Invitación a Reunión</title>
-                    <style type="text/css">
-                        body {
-                            background-color: #f9f8f8;
-                            display: flex;
-                            flex-direction: column;
-                            align-content: center;
-                            justify-content: center;
-                            align-items: center;
-                            font-size: 1.1rem;
-                            font-family: Arial, sans-serif;
-                        }
-
-                        .ContenidoCorreo {
-                            display: flex;
-                            flex-direction: column;
-                            align-content: center;
-                            justify-content: center;
-                            align-items: center;
-                            max-width: 80%;
-                            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.33);
-                            border-radius: 10px;
-                            margin-top: 2rem;
-                            margin-bottom: 2rem;
-                        }
-                        .header .header_img {
-                            max-width: 100%;
-                            border-radius: 10px;
-                        }
-                        .footer .footer_img {
-                            max-width: 100%;
-                            border-radius: 10px;
-                        }
-                        .ContenidoCorreo .Correo {
-                            max-width: 80%;
-                            padding: 4rem;
-                        }
-                        .saludo,
-                        .correoDiv,
-                        .contraDiv,
-                        .enlaceSesion {
-                            margin-left: 2rem;
-                            display: flex;
-                            flex-direction: row;
-                            align-items: center;
-                        }
-                        .firma {
-                            display: flex;
-                            align-content: center;
-                            justify-content: center;
-                            align-items: center;
-                        }
-                        .firma #BeeCoders {
-                            font-size: 1.3rem;
-                        }
-                        input {
-                            border: none;
-                            font-size: 1.1rem;
-                            overflow: hidden;
-                            color: #48716E;
-                            font-weight: bold;
-                        }
-                        .inputTabla {
-                            color: #333333;
-                            font-weight: 400;
-                            width: 100%;
-                            white-space: pre-wrap;
-                        }
-                        input .inputCorreo {
-                            min-width: 70%;
-                        }
-                        #enlace {
-                            width: 75%;
-                        }
-                        .imagen {
-                            width: 15rem;
-                        }
-                        h3,
-                        h2 {
-                            padding-right: 0.5rem;
-                        }
-                        .tg {
-                            border-collapse: collapse;
-                            border-spacing: 0;
-                            margin: 0px auto;
-                        }
-                        .tg-wrap {
-                            margin-bottom: 3rem;
-                            margin-top: 3rem;
-                        }
-                        .tg th,
-                        .tg td {
-                            border-color: #48716E;
-                            border-style: solid;
-                            border-width: 3px;
-                            font-size: 14px;
-                            font-weight: normal;
-                            overflow: hidden;
-                            padding: 10px 5px;
-                            word-break: normal;
-                        }
-                        .tg .tg-1,
-                        .tg .tg-2 {
-                            background-color: #dbf1ee;
-                            border-color: #48716e;
-                            color: #333333;
-                            text-align: left;
-                            vertical-align: middle
-                        }
-                        .tg .tg-2 {
-                            text-align: center;
-                        }
-                        #bold-font {
-                            font-weight: bold;
-                        }
-
-                        @media only screen and (max-width: 800px) {
-
-                            body,
-                            input {
-                                font-size: 0.8rem;
-                            }
-                            .ContenidoCorreo .Correo {
-                                max-width: 80%;
-                                padding: 2rem;
-                            }
-                            input{
-                                
-                                text-align: center;
-                            }
-                            #inicioSesion {
-                                padding-right: 0;
-                            }
-                            .saludo,
-                            .correoDiv,
-                            .contraDiv,
-                            .enlaceSesion {
-                                margin-left: 0rem;
-                                margin-bottom: 1.5rem;
-                                display: flex;
-                                flex-direction: column;
-                                align-items: center;
-                            }
-                            .firma #BeeCoders {
-                                font-size: 1rem;
-                            }
-
-                            .imagen {
-                                width: 10rem;
-                            }
-
-                            .tg th,
-                            .tg td {
-                                font-size: 10px;
-                            }
-                        }
-
-                        @media screen and (max-width: 767px) {
-                            .tg {
-                                width: auto !important;
-                            }
-                            .tg col {
-                                width: auto !important;
-                            }
-                            .tg-wrap {
-                                overflow-x: auto;
-                                -webkit-overflow-scrolling: touch;
-                                margin: auto 0px;
-                            }
-                        }
-                    </style>
-                </head>
-
-                <body>
-                    <main class="ContenidoCorreo">
-                        <section class="header">
-                            <img class="header_img" src="https://i.imgur.com/wlg9PC4.png">
-                        </section>
-
-                        <section class="Correo">
-                            <div class="Informacion">
-                                <div class="saludo">
-                                    <h3>Hola</h3>
-                                    <input type="text" id="correoInvitado" class="inputCorreo" value="${correoInv}" readonly
-                                        disabled>
-                                </div>
-                                <p>El motivo por el cuál has recibido este correo electrónico es porque has sido invitado a la siguiente
-                                    reunión:</p>
-                            </div>
-                            <div class="Tabla tg-wrap">
-                                <table class="tg">
-                                    <thead>
-                                        <tr>
-                                            <th class="tg-2" colspan="7">
-                                                <h1 id="bold-font">Detalle de la Reunión</h1>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="tg-1" rowspan="5">
-                                                <img class="imagen" src="https://i.imgur.com/tTgwfr6.png[/img]">
-                                            </td>
-                                            <td class="tg-1" colspan="6">
-                                                <h3 id="bold-font">Anfitrión:</h3>
-                                                <input type="text" id="nombreAnfi" class="inputTabla" value="${anfitrion.nombre_usuario} ${anfitrion.apellido_paterno_usuario}"
-                                                    readonly disabled>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-1" colspan="3">
-                                                <h3 id="bold-font">Piso:</h3>
-                                                <input type="number" id="piso" class="inputTabla" value="${sala.piso_sala}" readonly disabled>
-                                            </td>
-                                            <td class="tg-1" colspan="3">
-                                                <h3 id="bold-font">Sala:</h3>
-                                                <input type="text" id="sala" class="inputTabla" value="${sala.nombre_sala}" readonly disabled>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-1" colspan="6">
-                                                <h3 id="bold-font">Fechas:</h3>
-                                                <input type="text" id="fecha" class="inputTabla" value="${repeticiones.map(rep => `${rep.fecha_repeticion}`).join(", ")}" readonly disabled>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-1" colspan="3">
-                                                <h3 id="bold-font">Hora de Inicio:</h3>
-                                                <input type="text" id="horaInicio" class="inputTabla" value="${repeticiones.map(rep => `${rep.hora_inicio_repeticion}`).join(", ")}" readonly
-                                                    disabled>
-                                            </td>
-                                            <td class="tg-1" colspan="3">
-                                                <h3 id="bold-font">Hora de Fin:</h3>
-                                                <input type="text" id="horaFin" class="inputTabla" value="${repeticiones.map(rep => `${rep.hora_fin_repeticion}`).join(", ")}" readonly
-                                                    disabled>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-2">
-                                                <h3 id="bold-font">Nombre de la reunión:</h3>
-                                                <input type="text" id="nombreReunion" class="inputTabla"
-                                                    value="${reunion.titulo_reunion}" readonly disabled>
-                                            </td>
-                                            <td class="tg-1" colspan="6">
-                                                <h3 id="bold-font">Descripción:</h3>
-                                                <input type="text" id="decripcion" class="inputTabla descripcion"
-                                                    value="${descripcion}"
-                                                    readonly disabled>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="DatosCuenta">
-                                <p>Los datos de la cuenta con la que podrás ingresar a nuestra plataforma, son los siguientes:</p>
-                                <div class="correoDiv">
-                                    <h3 id="bold-font">Correo Usuario:</h3>
-                                    <input type="text" class="usuario inputCorreo" id="usuario" value="${correoInv}" readonly
-                                        disabled>
-                                </div>
-                                <div class="contraDiv">
-                                    <h3 id="bold-font">Contraseña:</h3>
-                                    <input type="text" class="contra inputCorreo" id="contra" value="${password}" readonly disabled>
-                                </div>
-                                <p>Después de iniciar sesión, es necesario que llenes el formulario de invitado y posteriormente cambies
-                                    tu contraseña para que finalmente se te permita acceder a la reunión con un código QR único.</p>
-                            </div>
-                            <div class="firma">
-                                <h3>ATTE:</h3>
-                                <p id="BeeCoders"> BeeCoders &#128029;</p>
-                            </div>
-                        </section>
-
-                        <section class="footer"><img class="footer_img" src="https://i.imgur.com/MyTjwOi.png" alt="footer">
-                            
-                        </section>
-
-                    </main>
-
-                </body>
-
-                </html>
 
         `;
             }
@@ -988,9 +985,7 @@ async function aceptarReunion(req, res){
     const invitacionbyid =await getInvitacionByIdBD(idInvitacion);
     const rutaQr=path.join('public/build2',invitacionbyid.qr_acceso);
     let imageContent = fs.readFileSync(rutaQr);
-    let emailText = `<html lang="en">
-
-<head>
+    let emailText = `<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BeeCoders - QR Reunión</title>
@@ -1032,6 +1027,10 @@ async function aceptarReunion(req, res){
         .ContenidoCorreo .Correo {
             max-width: 80%;
             padding: 4rem;
+        }
+
+        table {
+            min-width: 100%;
         }
 
         .saludo,
@@ -1139,6 +1138,10 @@ async function aceptarReunion(req, res){
             .ContenidoCorreo .Correo {
                 max-width: 80%;
                 padding: 2rem;
+            }
+
+            .Tabla {
+                min-width: 85%;
             }
 
             input {
@@ -1269,54 +1272,61 @@ async function aceptarReunion(req, res){
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="tg-1" rowspan="5">
-                                <img class="imagen" src="https://i.imgur.com/tTgwfr6.png[/img]">
-                            </td>
-                            <td class="tg-1" colspan="6">
-                                <h3 id="bold-font">Anfitrión:</h3>
-                                <input type="text" id="nombreAnfi" class="inputTabla" value="${anfitrion.nombre_usuario} ${anfitrion.apellido_paterno_usuario}"
-                                    readonly disabled>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tg-1" colspan="3">
-                                <h3 id="bold-font">Piso:</h3>
-                                <input type="number" id="piso" class="inputTabla" value="${sala.piso_sala}" readonly disabled>
-                            </td>
-                            <td class="tg-1" colspan="3">
-                                <h3 id="bold-font">Sala:</h3>
-                                <input type="text" id="sala" class="inputTabla" value="${sala.nombre_sala}" readonly disabled>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tg-1" colspan="6">
-                                <h3 id="bold-font">Fecha:</h3>
-                                <input type="text" id="fecha" class="inputTabla" value="${repeticiones.map(rep => `${rep.fecha_repeticion}`).join(", ")}" readonly disabled>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tg-1" colspan="3">
-                                <h3 id="bold-font">Hora de Inicio:</h3>
-                                <input type="text" id="horaInicio" class="inputTabla" value="${repeticiones.map(rep => `${rep.hora_inicio_repeticion}`).join(", ")}" readonly
-                                    disabled>
-                            </td>
-                            <td class="tg-1" colspan="3">
-                                <h3 id="bold-font">Hora de Fin:</h3>
-                                <input type="text" id="horaFin" class="inputTabla" value="${repeticiones.map(rep => `${rep.hora_fin_repeticion}`).join(", ")}" readonly
-                                    disabled>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tg-2">
+                            <td class="tg-1" colspan="2">
                                 <h3 id="bold-font">Nombre de la reunión:</h3>
                                 <input type="text" id="${reunion.titulo_reunion}" class="inputTabla"
                                     value="Daily Meeting equipo BeeCoders" readonly disabled>
                             </td>
-                            <td class="tg-1" colspan="6">
+                            <td class="tg-1" colspan="4">
                                 <h3 id="bold-font">Descripción:</h3>
                                 <input type="text" id="${reunion.descripcion_reunion}" class="inputTabla descripcion"
                                     value="Conocer los avances del desarrollo del proyecto “BeeMeet” por parte del equipo “BeeCoders”"
                                     readonly disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-1" colspan="2" rowspan="4">
+                                <img class="imagen" src="https://i.imgur.com/tTgwfr6.png[/img]">
+                            </td>
+                            <td class="tg-1" colspan="4">
+                                <h3 id="bold-font">Anfitrión:</h3>
+                                <input type="text" id="nombreAnfi" class="inputTabla"
+                                    value="${anfitrion.nombre_usuario} ${anfitrion.apellido_paterno_usuario}" readonly
+                                    disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-1" colspan="2">
+                                <h3 id="bold-font">Piso:</h3>
+                                <input type="number" id="piso" class="inputTabla" value="${sala.piso_sala}" readonly
+                                    disabled>
+                            </td>
+                            <td class="tg-1" colspan="2">
+                                <h3 id="bold-font">Sala:</h3>
+                                <input type="text" id="sala" class="inputTabla" value="${sala.nombre_sala}" readonly
+                                    disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-1" colspan="4">
+                                <h3 id="bold-font">Fecha:</h3>
+                                <input type="text" id="fecha" class="inputTabla"
+                                    value="${repeticiones.map(rep => `${rep.fecha_repeticion}`).join(" , ")}" readonly
+                                    disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-1" colspan="2">
+                                <h3 id="bold-font">Hora de Inicio:</h3>
+                                <input type="text" id="horaInicio" class="inputTabla"
+                                    value="${repeticiones.map(rep => `${rep.hora_inicio_repeticion}`).join(" , ")}"
+                                    readonly disabled>
+                            </td>
+                            <td class="tg-1" colspan="2">
+                                <h3 id="bold-font">Hora de Fin:</h3>
+                                <input type="text" id="horaFin" class="inputTabla"
+                                    value="${repeticiones.map(rep => `${rep.hora_fin_repeticion}`).join(" , ")}" readonly
+                                    disabled>
                             </td>
                         </tr>
                     </tbody>
@@ -1330,7 +1340,19 @@ async function aceptarReunion(req, res){
                 <div class="qrReunion">
                     <img src="cid:imagen1" alt="Foto qr">
                 </div>
-                <p>En caso de que pierdas este QR, siempre podrás recuperarlo a través de la cuenta que creaste. </p>
+                <p>En caso de que pierdas este QR siempre podrás recuperarlo a través de la cuenta que creaste, para
+                    ello deberás seguir los siguientes pasos:
+                <ul>
+                    <li>Inicia sesión con tu correo y contraseña.</li>
+                    <li>Una vez iniciada tu sesión, dirígete desde el menú lateral a la opción de >>Reuniones Agendadas
+                        <<. </li>
+                    <li>Desde la tabla de reuniones agendadas identifica el renglón de la reunión cuyo QR perdiste.</li>
+                    <li>Solicita la recuperación de QR dando clic en el ícono de la columna >>Recuperar<<. </li>
+                    <li>Revisa la bandeja de entrada de tu correo electrónico ya que por ese medio te llegará la
+                        recuperación de tu QR.</li>
+                </ul>
+
+                </p>
             </div>
             <div class="firma">
                 <h3>ATTE:</h3>
@@ -1462,13 +1484,6 @@ async function recuperarQr(req,res){
             font-weight: bold;
         }
 
-        .inputTabla {
-            color: #333333;
-            font-weight: 400;
-            width: 100%;
-            white-space: pre-wrap;
-        }
-
         input .inputCorreo {
             min-width: 70%;
         }
@@ -1486,43 +1501,6 @@ async function recuperarQr(req,res){
         h2 {
             padding-right: 0.5rem;
         }
-
-        .tg {
-            border-collapse: collapse;
-            border-spacing: 0;
-            margin: 0px auto;
-        }
-
-        .tg-wrap {
-            margin-bottom: 3rem;
-            margin-top: 3rem;
-        }
-
-        .tg th,
-        .tg td {
-            border-color: #48716E;
-            border-style: solid;
-            border-width: 3px;
-            font-size: 14px;
-            font-weight: normal;
-            overflow: hidden;
-            padding: 10px 5px;
-            word-break: normal;
-        }
-
-        .tg .tg-1,
-        .tg .tg-2 {
-            background-color: #dbf1ee;
-            border-color: #48716e;
-            color: #333333;
-            text-align: left;
-            vertical-align: middle
-        }
-
-        .tg .tg-2 {
-            text-align: center;
-        }
-
         #bold-font {
             font-weight: bold;
         }
@@ -1568,26 +1546,6 @@ async function recuperarQr(req,res){
                 width: 10rem;
             }
 
-            .tg th,
-            .tg td {
-                font-size: 10px;
-            }
-        }
-
-        @media screen and (max-width: 767px) {
-            .tg {
-                width: auto !important;
-            }
-
-            .tg col {
-                width: auto !important;
-            }
-
-            .tg-wrap {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                margin: auto 0px;
-            }
         }
 
         @media screen and (max-width: 555px) {
@@ -1633,10 +1591,6 @@ async function recuperarQr(req,res){
                 width: 6rem;
             }
 
-            .tg th,
-            .tg td {
-                font-size: 8px;
-            }
         }
     </style>
 </head>
@@ -1651,19 +1605,21 @@ async function recuperarQr(req,res){
             <div class="Informacion">
                 <div class="saludo">
                     <h3>Hola</h3>
-                    <input type="text" id="nombreInvitado" class="inputNombre" value="${invitado.nombre_invitado} ${invitado.apellido_paterno_invitado}"
-                        readonly disabled>
+                    <input type="text" id="nombreInvitado" class="inputNombre"
+                        value="${invitado.nombre_invitado} ${invitado.apellido_paterno_invitado}" readonly disabled>
                 </div>
                 <p>Solicitaste la recuperación de QR para la siguiente reunión: <b>${reunion.titulo_reunion}</b></p>
             </div>
             <div class="DatosCuenta">
-                <p>No olvides que el día de la reunión deberás presentar el siguiente QR que contiene toda la
-                    información que registraste de tus datos personales, es importante que lo muestres para poder
-                    accesar al edificio:
-                </p>
+                <p>Tu QR recuperado es el siguiente: </p>
                 <div class="qrReunion">
                     <img src="cid:imagen1" alt="Foto qr">
                 </div>
+                <p>Este QR contiene toda la información que registraste de tus datos personales y los datos específicos
+                    de acompañantes, dispositivos y automóvil para esta reunión. Recuerda que el QR es de tipo único
+                    para la reunión a la que está asociada tu invitación.
+                    El día de la reunión en la entrada del edificio te solicitarán este QR para que puedas accesar.
+                </p>
             </div>
             <div class="firma">
                 <h3>ATTE:</h3>
