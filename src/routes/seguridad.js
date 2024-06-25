@@ -148,6 +148,7 @@ async function getReunionesAll(req, res) {
                 // const invitado = await getInvitadoByIdBD(invitacion.id_invitado);
 
                 const invitaciones = await getInvitacionesByIdReunionBD(reunion.id_reunion);
+                if(invitaciones !== null)
                 for (const invitacion of invitaciones) {
                     try {
                         console.log('invitacion--->', invitacion.id_invitado);
@@ -173,7 +174,7 @@ async function getReunionesAll(req, res) {
 
 
                         };
-                        console.log('respuesta--->', respuesta);
+                        console.log('respuesta--->', respuesta);getInvitadoByIdBD
                         reunionesInfo.push(respuesta);
 
 

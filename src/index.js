@@ -146,6 +146,10 @@ const rutas = [
     ['/js/consultarDatosDelInvitado.js', '../public/build2/js/consultarDetallesInvitado.js'],
     ['/js/qrCode.min.js', '../public/build2/js/seguridad/qrCode.min.js'],
     ['/js/scanQR.js', '../public/build2/js/seguridad/scanQR.js'],
+    ['/seguridad/html5-qrcode.min.js', '../public/build2/js/html5-qrcode.min.js'],
+
+    // sweetalert2@11
+    ['/seguridad/sweetalert211.min.js', '../public/build2/js/sweetalert211.min.js'],
     
 
     //Rutas de css de toda la interfaz

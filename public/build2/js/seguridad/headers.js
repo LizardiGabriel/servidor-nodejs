@@ -18,9 +18,11 @@ function returnHTML() {
     <nav class="sidebar close">
         <div class="header">
             <div class="sidebar__marca">
+            <a href="/seguridad/seguridad.html">
                 <div class="sidebar__imagen">
-                    <img src="../../img/BeeMeet2.png" alt="Logo">
+                    <img src="/img/BeeMeet2.png" alt="Logo">
                 </div>
+            </a>
                 <div class="sidebar__texto">
                     <p class="sidebar__texto-marca">BeeMeet</p>
                     <p class="sidebar__texto-slogan">Seguridad</p>
