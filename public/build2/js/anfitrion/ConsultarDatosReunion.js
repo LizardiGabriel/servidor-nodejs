@@ -312,6 +312,10 @@ function cancelarReunion(id_reunion) {
                 title: "Reunion cancelada",
                 icon: "success",
                 text: "La reunion se ha cancelada exitosamente",
+                willClose: () => {
+                    // Redireccionar al usuario después de que el modal se cierre
+                    window.location.href = '/anfitrion/anfitrion.html';
+                }
             })
         })
         .catch(error => {
@@ -319,6 +323,10 @@ function cancelarReunion(id_reunion) {
                 title: "Error",
                 icon: "error",
                 text: "Error: " + error,
+                willClose: () => {
+                    // Redireccionar al usuario después de que el modal se cierre
+                    window.location.href = '/anfitrion/anfitrion.html';
+                }
             })
             console.error('Error:', error);  // Manejamos cualquier error
         });
