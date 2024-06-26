@@ -342,7 +342,7 @@ async function setNewUsuario(req, res) {
         <body>
             <main class="ContenidoCorreo">
                 <section class="header">
-                    <img class="header_img" src="https://i.imgur.com/ZFs6sWm.png">
+                    <img class="header_img" src="https://i.imgur.com/ISI3vqy.png">
                 </section>
 
                 <section class="Correo">
