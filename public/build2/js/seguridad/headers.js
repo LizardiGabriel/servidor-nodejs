@@ -19,7 +19,7 @@ function returnHTML() {
         <div class="header">
             <div class="sidebar__marca">
             <a href="/seguridad/seguridad.html">
-                <div class="sidebar__imagen">
+                <div class="sidebar__imagen" onclick="homeSeguridad()">
                     <img src="/img/BeeMeet2.png" alt="Logo">
                 </div>
             </a>

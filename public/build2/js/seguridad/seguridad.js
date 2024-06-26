@@ -92,3 +92,7 @@ function scannerQR() {
 function agendaDelDia() {
   window.location.href = `/seguridad/visualizarAgenda.html`
 }
+
+function homeSeguridad() {
+  window.location.href = `/seguridad/seguridad.html`
+}

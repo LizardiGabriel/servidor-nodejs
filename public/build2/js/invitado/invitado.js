@@ -98,3 +98,7 @@ function reunionesPendientes() {
 function reunionesAgendadas() {
   window.location.href = `/invitado/home/agendadas.html`
 }
+
+function homeInvitado(){
+  window.location.href = `/invitado/home/invitado.html`
+}

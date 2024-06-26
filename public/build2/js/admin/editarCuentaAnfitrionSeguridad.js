@@ -30,6 +30,8 @@ function cargarDatos() {
           } else if (data.rol_usuario === "Anfitrion") {
               document.getElementById('rolAnfitrion').checked = true;
           }
+          document.getElementById('rolSeguridad').disabled = true;
+          document.getElementById('rolAnfitrion').disabled = true;
       })
       .catch(error => {
           console.log(error);

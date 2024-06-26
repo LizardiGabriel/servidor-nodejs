@@ -33,10 +33,10 @@
                 <table class="tabla table table-hover table-bordered table-sm" id="Tabla">
                     <thead class="tabla__cabecera">
                         <tr>
-                            <th scope="col" data-sort="accion" class="cabecera">Acción</th>
                             <th scope="col" data-sort="nombreInvi" class="cabecera">Nombre del invitado</th>
                             <th scope="col" data-sort="horario" class="cabecera">Fecha y hora</th>
                             <th scope="col" data-sort="nombreAnfi" class="cabecera">Nombre del anfitrión</th>
+                            <th scope="col" data-sort="accion" class="cabecera">Acción</th>
                         </tr>
                     </thead>
                     <tbody class="tabla__cuerpo">
@@ -99,12 +99,12 @@
                 // Concatenar las fechas y horas de repeticiones
 
                 fila.innerHTML = `
-                <td class="accion">
-                  <button class="btn btn-sm visualizar" data-id="${reunion.id_inv}" onclick="verDetallesInv(${reunion.id_inv}, ${reunion.id_reunion})"><img src="../../img/icons/ico-view.svg"></button>
-                </td>
                 <td class="nombreI">${reunion.nombre_inv}</td>
                 <td class="horario">${reunion.fecha_reunion}</td>
                 <td class="nombreA">${reunion.nombre_user} ${reunion.apellidoP_user} ${reunion.apellidoM_user}</td>
+                <td class="accion">
+                  <button class="btn btn-sm visualizar" data-id="${reunion.id_inv}" onclick="verDetallesInv(${reunion.id_inv}, ${reunion.id_reunion})"><img src="../../img/icons/ico-view.svg"></button>
+                </td>
                 `;
                 tbody.appendChild(fila);
             }

@@ -9,6 +9,8 @@ function returnHTML() {
   let optionAgendar = `<div id="" class="sidebar__menu-option" onclick="reuniones2()">`
   //Salas
   let optionSalas = `<div id="" class="sidebar__menu-option" onclick="refSalas()">`
+  //Home
+  //let optionHome = `<div id="" class="sidebar__menu-option" onclick="home()">`
 
   //Ponemos activo la opción en la que se encuentra
   if (window.location.pathname == "/anfitrion/reuniones.html" || window.location.pathname == "/anfitrion/reuniones/ConsultarDatos.html") {
@@ -17,13 +19,15 @@ function returnHTML() {
     optionAgendar = `<div id="" class="sidebar__menu-option option__active" onclick="reuniones2()">`
   } else if (window.location.pathname == "/anfitrion/salas.html") {
     optionSalas = `<div id="" class="sidebar__menu-option option__active" onclick="refSalas()">`
+  }else if(window.location.pathname == "/anfitrion/anfitrion.html"){
+    optionHome = `<div id=""  onclick="home()">`
   }
 
     return `
         <nav class="sidebar close">
         <div class="header">
             <div class="sidebar__marca">
-                <div class="sidebar__imagen">
+                <div class="sidebar__imagen" onclick="homeAnfitrion()">
                     <img src="../../img/BeeMeet2.png" alt="Logo">
                 </div>
                 <div class="sidebar__texto">

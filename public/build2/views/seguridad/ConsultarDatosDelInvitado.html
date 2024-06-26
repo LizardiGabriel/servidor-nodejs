@@ -170,7 +170,7 @@ function eliminarAcceso(id_acceso, button, typeAction){
         console.log(rowUp);
         rowUp.innerHTML = ""
         row.innerHTML = ""
-        row.insertAdjacentHTML("beforeend", `<button onclick="eliminarAcceso(${id_acceso}, this, 'registro')">Eliminar</button>`)
+        row.insertAdjacentHTML("beforeend", `<button class="btn btn-sm eliminar" onclick="eliminarAcceso(${id_acceso}, this, 'registro')"><img src="../../img/icons/ico-trash.svg" alt="Eliminar"></button>`)
         
 
     }else if(typeAction.trim() == "registro"){
@@ -264,7 +264,7 @@ function eliminarAcceso(id_acceso, button, typeAction){
                     typeAction = (acceso.hora_salida_acceso) ? "salida" : "registro"
                     const deleteCell = row.insertCell(2);
                     const deleteButton = document.createElement("button");
-                    deleteCell.insertAdjacentHTML("beforeend", `<button onclick="eliminarAcceso(${acceso.id_acceso}, this, ${"'"+typeAction+"'"})">Eliminar</button>`)
+                    deleteCell.insertAdjacentHTML("beforeend", `<button class="btn btn-sm eliminar" onclick="eliminarAcceso(${acceso.id_acceso}, this, ${"'"+typeAction+"'"})"><img src="../../img/icons/ico-trash.svg" alt="Eliminar"></button>`)
                 });
             })
             .catch((error) => {
@@ -317,7 +317,7 @@ function eliminarAcceso(id_acceso, button, typeAction){
                         typeAction = (acceso.hora_salida_acceso) ? "salida" : "registro"
                         const deleteCell = row.insertCell(2);
                         const deleteButton = document.createElement("button");
-                        deleteCell.insertAdjacentHTML("beforeend", `<button onclick="eliminarAcceso(${acceso.id_acceso}, this, ${"'"+typeAction+"'"})">Eliminar</button>`)
+                        deleteCell.insertAdjacentHTML("beforeend", `<button  class="btn btn-sm eliminar" onclick="eliminarAcceso(${acceso.id_acceso}, this, ${"'"+typeAction+"'"})"><img src="../../img/icons/ico-trash.svg" alt="Eliminar"></button>`)
                     });
                 })
                 .catch((error) => {
