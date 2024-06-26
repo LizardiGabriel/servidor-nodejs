@@ -27,7 +27,7 @@ function returnHTML() {
         <nav class="sidebar close">
     <div class="header">
         <div class="sidebar__marca">
-            <div class="sidebar__imagen">
+            <div class="sidebar__imagen" onclick="homeInvitado()">
                 <img src="../../img/BeeMeet2.png" alt="Logo">
             </div>
             <div class="sidebar__texto">

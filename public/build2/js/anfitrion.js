@@ -57,4 +57,7 @@ function refCuenta() {
 function reuniones2() {
     window.location.href = '/anfitrion/crearReunion';
 }
+function homeAnfitrion(){
+  window.location.href = '/anfitrion/anfitrion.html';
+}
 

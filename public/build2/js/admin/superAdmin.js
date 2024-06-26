@@ -129,7 +129,8 @@ function gestionarUsuarios(){
     window.location.href = "/admin/catalogo/gestionarusuarios.html";
 }
 
-
-
+function homeAdmin() {
+    window.location.href = "/admin/admin.html";
+}
 
 
