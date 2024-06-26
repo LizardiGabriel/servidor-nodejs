@@ -433,7 +433,7 @@ app.post('/anfitrion/reuniones/delInvitado', anfitrion.deleteInvitado);
 
 app.use('/anfitrion/reuniones/ConsultarDatosInvitado.html', express.static('./public/build2/views/Anfitrion/ConsultarDatosInvitado.html'));
 app.post('/anfitrion/reuniones/invitadoInf', anfitrion.getInfo_idInv_idReu);
-
+app.post('/anfitrion/reuniones/cancelarReu', anfitrion.cancelarReunion);
 
 
 

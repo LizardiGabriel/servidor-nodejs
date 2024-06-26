@@ -868,7 +868,7 @@ async function getInvitadoByEmail(req, res) {
 }
 
 async function getUsuarioByEmail(req, res) {
-    console.log('========================= get Usuario By email: ', req.params)
+    console.log('========================= get Usuario By email: ', req.params);
     const { email } = req.params;
     const usuario = await getUsuarioByEmailBD(email.replace(/^:/, ''));
     res.json(usuario);
@@ -931,6 +931,13 @@ async function reagendarReunion(req, res) {
     res.status(200).json({ message: 'Reunion reagendada correctamente' });
 }
 
+async function cancelarReunion(req,res){
+    const{id_reunion}=req.body;
+    console.log('========================= Cancelar reunion: ', id_reunion);
+    const reunion= await getReunionByIdBD(id_reunion);
+    console.log(reunion);
+}
+
 module.exports = {
     logout,
     getReunionesAnfitrion,
@@ -945,5 +952,6 @@ module.exports = {
     updateHoraReunion,
     deleteInvitado,
     getInfo_idInv_idReu,
-    reagendarReunion
+    reagendarReunion,
+    cancelarReunion
 };
