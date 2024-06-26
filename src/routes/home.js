@@ -183,7 +183,7 @@ async function generateCorreo(correo,liga){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BeeCoders - Recuperar contraseña</title>
+    <title>BeeMeet - Recuperar contraseña</title>
     <style type="text/css">
         body {
             background-color: #f9f8f8;

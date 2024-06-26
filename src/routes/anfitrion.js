@@ -184,7 +184,7 @@ async function setInvitacion(req, res) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BeeCoders - Invitación a Reunión</title>
+    <title>BeeMeet - Invitación a Reunión</title>
     <style type="text/css">
         body {
             background-color: #f9f8f8;
@@ -505,7 +505,7 @@ async function setInvitacion(req, res) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BeeCoders - Invitación a Reunión</title>
+    <title>BeeMeet - Invitación a Reunión</title>
     <style type="text/css">
         body {
             background-color: #f9f8f8;
