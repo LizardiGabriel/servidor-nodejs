@@ -678,7 +678,6 @@ async function getInvitacionesByIdReunionBD(id_reunion) {
         if (invitaciones.length === 0) {
             return null;
         }
-
         return invitaciones;
     } catch (error) {
         console.error('Error al obtener las invitaciones para la reunión:', error);

@@ -5,10 +5,10 @@ const path = require('path');
 const { getReunionesBD,
     getReunionesConRepeticionByIdOfUserBD,
     getSalasBD, setNewReunionBD,
-    getInvitadoByEmailBD, setNewInvitadoBD, setNewInvitacionBD,
+    getInvitadoByEmailBD, getInvitadoByIdBD,setNewInvitadoBD, setNewInvitacionBD,
     getReunionByIdBD, getSalaByIdBD, getUsuarioByIdBD, getDetallesReunionByIdBD, getUsuarioByEmailBD,
-    updateHoraReunionBD, deleteInvitadoBD, getInvitacionBy_IdInvitado_IdReunionBD, updateDateRepBD
-
+    updateHoraReunionBD, deleteInvitadoBD, getInvitacionBy_IdInvitado_IdReunionBD, updateDateRepBD,
+    getInvitacionesByIdReunionBD
 } = require('../tools/peticiones');
 
 const { getReunionAdminByIdBD, getReunionAnfitrionByIdBD, obtenerDetallesInvitacionAnfiBD } = require('../tools/petiAdmin');
@@ -936,6 +936,334 @@ async function cancelarReunion(req,res){
     console.log('========================= Cancelar reunion: ', id_reunion);
     const reunion= await getReunionByIdBD(id_reunion);
     console.log(reunion);
+    const detreunion = await getDetallesReunionByIdBD(id_reunion);
+    const sala = await getSalaByIdBD(reunion.id_sala);
+    const anfitrion = await getUsuarioByIdBD(reunion.id_usuario);
+    const repeticiones = detreunion.Repeticion;
+    const invitaciones= await getInvitacionesByIdReunionBD(id_reunion);
+    for(const invitacion of invitaciones){
+        const invitado= await getInvitadoByIdBD(invitacion.id_invitado);
+        console.log(invitado);
+        let emailText = `<html lang="en">
+
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>BeeMeet - Invitación a Reunión</title>
+            <style type="text/css">
+                body {
+                    background-color: #f9f8f8;
+                    display: flex;
+                    flex-direction: column;
+                    align-content: center;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 1.1rem;
+                    font-family: Arial, sans-serif;
+                }
+        
+                .ContenidoCorreo {
+                    display: flex;
+                    flex-direction: column;
+                    align-content: center;
+                    justify-content: center;
+                    align-items: center;
+                    max-width: 80%;
+                    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.33);
+                    border-radius: 10px;
+                    margin-top: 2rem;
+                    margin-bottom: 2rem;
+                }
+        
+                .header .header_img {
+                    max-width: 100%;
+                    border-radius: 10px;
+                }
+        
+                .footer .footer_img {
+                    max-width: 100%;
+                    border-radius: 10px;
+                }
+        
+                .ContenidoCorreo .Correo {
+                    max-width: 80%;
+                    padding: 4rem;
+                }
+        
+                table {
+                    min-width: 100%;
+                }
+        
+                .saludo,
+                .correoDiv,
+                .contraDiv,
+                .enlaceSesion {
+                    margin-left: 2rem;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                }
+        
+                .firma {
+                    display: flex;
+                    align-content: center;
+                    justify-content: center;
+                    align-items: center;
+                }
+        
+                .firma #BeeCoders {
+                    font-size: 1.3rem;
+                }
+        
+                input {
+                    border: none;
+                    font-size: 1.1rem;
+                    overflow: hidden;
+                    color: #48716E;
+                    font-weight: bold;
+                }
+        
+                .inputTabla {
+                    color: #333333;
+                    font-weight: 400;
+                    width: 100%;
+                    white-space: pre-wrap;
+                }
+        
+                input .inputCorreo {
+                    min-width: 70%;
+                }
+        
+                #enlace {
+                    width: 75%;
+                }
+        
+                .imagen {
+                    width: 15rem;
+                }
+        
+                h3,
+                h2 {
+                    padding-right: 0.5rem;
+                }
+        
+                .tg {
+                    border-collapse: collapse;
+                    border-spacing: 0;
+                    margin: 0px auto;
+                }
+        
+                .tg-wrap {
+                    margin-bottom: 3rem;
+                    margin-top: 3rem;
+                }
+        
+                .tg th,
+                .tg td {
+                    border-color: #48716E;
+                    border-style: solid;
+                    border-width: 3px;
+                    font-size: 14px;
+                    font-weight: normal;
+                    overflow: hidden;
+                    padding: 10px 5px;
+                    word-break: normal;
+                }
+        
+                .tg .tg-1,
+                .tg .tg-2 {
+                    background-color: #dbf1ee;
+                    border-color: #48716e;
+                    color: #333333;
+                    text-align: left;
+                    vertical-align: middle
+                }
+        
+                .tg .tg-2 {
+                    text-align: center;
+                }
+        
+                #bold-font {
+                    font-weight: bold;
+                }
+        
+                @media only screen and (max-width: 800px) {
+        
+                    body,
+                    input {
+                        font-size: 0.8rem;
+                    }
+        
+                    .ContenidoCorreo .Correo {
+                        max-width: 80%;
+                        padding: 2rem;
+                    }
+        
+                    input {
+        
+                        text-align: center;
+                    }
+        
+                    #inicioSesion {
+                        padding-right: 0;
+                    }
+        
+                    .saludo,
+                    .correoDiv,
+                    .contraDiv,
+                    .enlaceSesion {
+                        margin-left: 0rem;
+                        margin-bottom: 1.5rem;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                    }
+        
+                    .firma #BeeCoders {
+                        font-size: 1rem;
+                    }
+        
+                    .imagen {
+                        width: 10rem;
+                    }
+        
+                    .tg th,
+                    .tg td {
+                        font-size: 10px;
+                    }
+                }
+        
+                @media screen and (max-width: 767px) {
+                    .tg {
+                        width: auto !important;
+                    }
+        
+                    .tg col {
+                        width: auto !important;
+                    }
+        
+                    .tg-wrap {
+                        overflow-x: auto;
+                        -webkit-overflow-scrolling: touch;
+                        margin: auto 0px;
+                    }
+                }
+            </style>
+        </head>
+        
+        <body>
+            <main class="ContenidoCorreo">
+                <section class="header">
+                    <img class="header_img" src="https://i.imgur.com/wlg9PC4.png">
+                </section>
+        
+                <section class="Correo">
+                    <div class="Informacion">
+                        <div class="saludo">
+                            <h3>Hola</h3>
+                            <input type="text" id="correoInvitado" class="inputCorreo" value="${invitado.email_invitado}" readonly disabled>
+                        </div>
+                        <p>El motivo por el cuál has recibido este correo electrónico es porque has sido invitado a la siguiente
+                            reunión:</p>
+                    </div>
+                    <div class="Tabla tg-wrap">
+                        <table class="tg">
+                            <thead>
+                                <tr>
+                                    <th class="tg-2" colspan="7">
+                                        <h1 id="bold-font">Detalle de la Reunión</h1>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="tg-1" colspan="2">
+                                        <h3 id="bold-font">Nombre de la reunión:</h3>
+                                        <input type="text" id=nombreReu"" class="inputTabla"
+                                            value="${reunion.titulo_reunion}" readonly disabled>
+                                    </td>
+                                    <td class="tg-1" colspan="4">
+                                        <h3 id="bold-font">Descripción:</h3>
+                                        <input type="text" id="descripcion" class="inputTabla descripcion"
+                                            value="${reunion.descripcion_reunion}" readonly disabled>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-1" colspan="2" rowspan="4">
+                                        <img class="imagen" src="https://i.imgur.com/tTgwfr6.png[/img]">
+                                    </td>
+                                    <td class="tg-1" colspan="4">
+                                        <h3 id="bold-font">Anfitrión:</h3>
+                                        <input type="text" id="nombreAnfi" class="inputTabla"
+                                            value="${anfitrion.nombre_usuario} ${anfitrion.apellido_paterno_usuario}" readonly
+                                            disabled>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-1" colspan="2">
+                                        <h3 id="bold-font">Piso:</h3>
+                                        <input type="number" id="piso" class="inputTabla" value="${sala.piso_sala}" readonly
+                                            disabled>
+                                    </td>
+                                    <td class="tg-1" colspan="2">
+                                        <h3 id="bold-font">Sala:</h3>
+                                        <input type="text" id="sala" class="inputTabla" value="${sala.nombre_sala}" readonly
+                                            disabled>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-1" colspan="4">
+                                        <h3 id="bold-font">Fecha:</h3>
+                                        <input type="text" id="fecha" class="inputTabla"
+                                            value="${repeticiones.map(rep => `${rep.fecha_repeticion}`).join(", ")}" readonly
+                                            disabled>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-1" colspan="2">
+                                        <h3 id="bold-font">Hora de Inicio:</h3>
+                                        <input type="text" id="horaInicio" class="inputTabla"
+                                            value="s"
+                                            readonly disabled>
+                                    </td>
+                                    <td class="tg-1" colspan="2">
+                                        <h3 id="bold-font">Hora de Fin:</h3>
+                                        <input type="text" id="horaFin" class="inputTabla"
+                                            value="${repeticiones.map(rep => `${rep.hora_fin_repeticion}`).join(" , ")}" readonly
+                                            disabled>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="DatosCuenta">
+                        <p>Para poder aceptar esta invitación debes seguir los siguientes pasos:</p>
+                    <ul>
+                    <li>Inicia sesión con la cuenta que con anterioridad creaste. </li>
+                    <li>Una vez iniciada tu sesión, dirígete desde el menú lateral al apartado de >>Reuniones pendientes<<,
+                                desde ahí podrás visualizar una tarjeta con los datos de esta reunión.</li>
+                            <li>Acepta o elimina la invitación. Si decides aceptar la invitación, recuerda que será necesario que completes el registro de los acompañantes, dispositivos o automóviles que llevarás a esta nueva reunión. </li>
+                    </ul>
+                    </div>
+                    <div class="firma">
+                        <h3>ATTE:</h3>
+                        <p id="BeeCoders"> BeeCoders &#128029;</p>
+                    </div>
+                </section>
+        
+                <section class="footer"><img class="footer_img" src="https://i.imgur.com/MyTjwOi.png" alt="footer">
+        
+                </section>
+        
+            </main>
+        
+        </body>
+        
+        </html>
+        `;
+        const envio = await mail(emailText,invitado.email_invitado,'BeeCoders-Cancelación reunion');
+
+    }
 }
 
 module.exports = {
