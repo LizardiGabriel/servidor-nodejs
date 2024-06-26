@@ -193,6 +193,8 @@ async function updateDateRepBD(id,fecha) {
 async function deleteSalaBD(id) {
     console.log('peticion a la bd de deleteSala');
     try {
+
+        // aqui hacer la validacion cuando se quiera eliminar una sala que tenga reuniones asociadas
         const salaEliminada = await prisma.sala.delete({
             where: { id_sala: Number(id) }
         });
