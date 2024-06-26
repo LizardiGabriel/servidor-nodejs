@@ -296,7 +296,7 @@ function validarNewReunion(titulo, descripcion, fecha, horaInicio, horaFin, nomb
     } else {
         flag = false;
         document.getElementById("descFormID").innerHTML = `<p class="msg-error-form">Ingrese una descripción</p>`;
-    }
+  }
 
     if (!horaInicio || !horaFin || horaInicio >= horaFin) {
         flag = false;

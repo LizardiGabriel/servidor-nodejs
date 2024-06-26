@@ -437,40 +437,45 @@ if (document.getElementById('dateID') != null) {
   });
 }
 
+//Validamos la hora de inicio de la reunión
 if (document.getElementById('time1ID') != null) {
-  document.getElementById('time1ID').addEventListener('input', function() {
-    const startTime = this.value;
-    const endTimeInput = document.getElementById('time2ID');
-  
-    if (startTime) {
-      
-      const startTimeParts = startTime.split(':');
-      let hour = parseInt(startTimeParts[0], 10);
-      let minutes = parseInt(startTimeParts[1], 10);
-  
-      minutes += 1;
-      if (minutes === 60) {
-        minutes = 0;
-        hour += 1;
-      }
-  
-      const minEndTime = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-  
-      endTimeInput.setAttribute('min', minEndTime);
-    }
-  });
+
+  // Evento blur en el input de hora fin
+  document.getElementById('time1ID').addEventListener('blur', validarHora);
+  document.getElementById('time1ID').addEventListener('dblclick', validarHora);
+
+  // También capturar el evento change
+  document.getElementById('time1ID').addEventListener('change', validarHora);
+  $('#time1ID').on('clockpicker:done', validarHora);
 }
 
+//Validamos la hora fin de la reunión
 if (document.getElementById('time2ID') != null) {
-  document.getElementById('time2ID').addEventListener('input', function() {
-    const endTime = this.value;
-    const startTimeInput = document.getElementById('time1ID').value;
-    const endTimeForm = document.getElementById('timeFormID');
-  
-    if (endTime <= startTimeInput) {
-      endTimeForm.innerHTML = '<p class="msg-error-form">La hora de fin debe ser posterior a la hora de inicio</p>';
+  // Evento blur en el input de hora fin
+  document.getElementById('time2ID').addEventListener('blur', validarHora);
+  document.getElementById('time2ID').addEventListener('dblclick', validarHora);
+
+  // También capturar el evento change
+  document.getElementById('time2ID').addEventListener('change', validarHora);
+  $('#time2ID').on('clockpicker:done', validarHora);
+}
+
+function validarHora() {
+  const endTime = document.getElementById('time2ID').value;
+  const startTimeInput = document.getElementById('time1ID').value;
+  const endTimeForm = document.getElementById('timeFormID');
+  console.log('End Time:', endTime, 'Start Time:', startTimeInput);
+  if (startTimeInput) {
+    if (endTimeForm) {
+      if (endTime <= startTimeInput) {
+          endTimeForm.innerHTML = '<p class="msg-error-form">La hora de fin debe ser posterior a la hora de inicio</p>';
+        } else {
+          endTimeForm.innerHTML = '';
+        }
+      } else {
+        endTimeForm.innerHTML = '<p class="msg-error-form">Favor de introducir la hora fin de la reunión</p>';
+      }
     } else {
-      endTimeForm.innerHTML = '';
-    }
-  });
+    endTimeForm.innerHTML = '<p class="msg-error-form">Favor de introducir la hora inicio de la reunión</p>';
+  }
 }
