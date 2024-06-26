@@ -148,6 +148,7 @@ async function getReunionesAll(req, res) {
                 // const invitado = await getInvitadoByIdBD(invitacion.id_invitado);
 
                 const invitaciones = await getInvitacionesByIdReunionBD(reunion.id_reunion);
+                if(invitaciones !== null)
                 for (const invitacion of invitaciones) {
                     try {
                         console.log('invitacion--->', invitacion.id_invitado);
@@ -173,7 +174,7 @@ async function getReunionesAll(req, res) {
 
 
                         };
-                        console.log('respuesta--->', respuesta);
+                        console.log('respuesta--->', respuesta);getInvitadoByIdBD
                         reunionesInfo.push(respuesta);
 
 
@@ -293,11 +294,11 @@ async function getSeguridadInfo_idInv_idReu(req,res){
 
 async function registrarHora(req, res) {
     const { idInvitacion, idReunion, hora, tipo } = req.body;
-    console.log('Datos recibidos:', req.body);
+    console.log('--> funcion "registrarHora", parametros:', req.body);
     try {
         const invitacionActualizada = await registrarHoraEnBD(idInvitacion, idReunion, hora, tipo);
         if (invitacionActualizada) {
-            res.json({ status: 'success' });
+            res.status(200).json({ status: 'success' });
         } else {
             res.status(404).json({ status: 'error', message: 'Invitación no encontrada' });
         }

@@ -390,16 +390,17 @@ async function generateCorreo(correo,liga){
             <div class="Informacion">
                 <div class="saludo">
                     <h3>Hola</h3>
-                    <input type="text" id="nombreInvitado" class="inputNombre" value="${correo}"
-                        readonly disabled>
+                    <input type="text" id="nombreInvitado" class="inputNombre" value="${correo}" readonly disabled>
                 </div>
             </div>
             <div class="DatosToken">
-                <p>Solicitaste la recuperación de tu contraseña,Dirígite al siguiente enlace para que puedas configurar tu nueva contraseña: </p>
+                <p>Solicitaste la recuperación de tu contraseña, dirígite al siguiente enlace para que puedas configurar
+                    tu nueva contraseña: </p>
                 <div class="enlaceSesion">
                     <p type="url" class="enlace" id="enlace">${liga}</p>
-                        
                 </div>
+                <p>Es necesario que la contraseña nueva que configures cuente con una longitud de 10 a 20 caractéres,
+                    además debe incluir mínimo dos números, dos caracteres especiales y una letra mayúscula.</p>
             </div>
             <div class="firma">
                 <h3>ATTE:</h3>
@@ -413,6 +414,7 @@ async function generateCorreo(correo,liga){
 
     </main>
 </body>
+
 </html>
     `;
     const envio = await mail(emailText, correo,'BeeCoders-Recuperacion de contraseña');

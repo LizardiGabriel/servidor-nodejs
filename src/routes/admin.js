@@ -272,14 +272,10 @@ async function setNewUsuario(req, res) {
                     color: #48716E;
                     font-weight: bold;
                 }
-                .inputTabla {
-                    color: #333333;
-                    font-weight: 400;
-                    width: 100%;
-                    white-space: pre-wrap;
-                }
-                input .inputCorreo {
+
+                .inputCorreo {
                     min-width: 70%;
+                    font-size: 1.1rem;
                 }
                 #enlace {
                     width: 75%;
@@ -290,37 +286,6 @@ async function setNewUsuario(req, res) {
                 h3,
                 h2 {
                     padding-right: 0.5rem;
-                }
-                .tg {
-                    border-collapse: collapse;
-                    border-spacing: 0;
-                    margin: 0px auto;
-                }
-                .tg-wrap {
-                    margin-bottom: 3rem;
-                    margin-top: 3rem;
-                }
-                .tg th,
-                .tg td {
-                    border-color: #48716E;
-                    border-style: solid;
-                    border-width: 3px;
-                    font-size: 14px;
-                    font-weight: normal;
-                    overflow: hidden;
-                    padding: 10px 5px;
-                    word-break: normal;
-                }
-                .tg .tg-1,
-                .tg .tg-2 {
-                    background-color: #dbf1ee;
-                    border-color: #48716e;
-                    color: #333333;
-                    text-align: left;
-                    vertical-align: middle
-                }
-                .tg .tg-2 {
-                    text-align: center;
                 }
                 #bold-font {
                     font-weight: bold;
@@ -340,6 +305,9 @@ async function setNewUsuario(req, res) {
                         
                         text-align: center;
                     }
+		    .inputCorreo {
+                    	margin-top:0.2rem;
+                    }
                     #inicioSesion {
                         padding-right: 0;
                     }
@@ -348,38 +316,25 @@ async function setNewUsuario(req, res) {
                     .contraDiv,
                     .enlaceSesion {
                         margin-left: 0rem;
-                        margin-bottom: 1.5rem;
                         display: flex;
                         flex-direction: column;
                         align-items: center;
+			justify-content: center;
+			text-align: center;
                     }
+                    .correoDiv{
+			margin-bottom:0.1rem;
+		    }
+                    .contraDiv{
+			margin-bottom:1.5rem;
+		    }
+
                     .firma #BeeCoders {
                         font-size: 1rem;
                     }
 
-                    .imagen {
-                        width: 10rem;
-                    }
-
-                    .tg th,
-                    .tg td {
-                        font-size: 10px;
-                    }
                 }
 
-                @media screen and (max-width: 767px) {
-                    .tg {
-                        width: auto !important;
-                    }
-                    .tg col {
-                        width: auto !important;
-                    }
-                    .tg-wrap {
-                        overflow-x: auto;
-                        -webkit-overflow-scrolling: touch;
-                        margin: auto 0px;
-                    }
-                }
             </style>
         </head>
 
@@ -391,16 +346,17 @@ async function setNewUsuario(req, res) {
 
                 <section class="Correo">
                     <div class="DatosCuenta">
-                        <h3>Hola ${nombre} , bienvenido a BEE MET</h3>
+                        <h3>Hola ${nombre} , bienvenido a BeeMeet.</h3>
                         <p>Los datos de la cuenta con la que podrás ingresar a nuestra plataforma, son los siguientes:</p>
                         <div class="correoDiv">
                             <h3 id="bold-font">Correo Usuario:</h3>
-                            <h2 type="text" class="usuario inputCorreo" id="usuario">${email}</h2>
+                            <p type="text" class="usuario inputCorreo" id="usuario">${email}</p>
                         </div>
                         <div class="contraDiv">
                             <h3 id="bold-font">Contraseña:</h3>
                             <input type="text" class="contra inputCorreo" id="contra" value="${previuscont}" readonly disabled>
                         </div>
+			<p>Una vez que inicies sesión es necesario que configures una nueva contraseña para tu cuenta.</p>
                     </div>
                     <div class="firma">
                         <h3>ATTE:</h3>
@@ -415,7 +371,6 @@ async function setNewUsuario(req, res) {
         </body>
 
         </html>
-
         `;
         const envio = await mail(emailText, email,'BeeCoders-Nuevo usuario');
         res.status(200).json({ message: nuevoUsuario });

@@ -9,7 +9,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="../../css/app.css">
     <!--SiderBar-->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Estilos para el Swal -->
+    <style>
+        .titleSize{
+            font-size: 4rem;
+        }
+        .contentSize{
+            font-size: 2rem !important;
+        }
+        .buttonSize{
+            font-size: 2rem !important;
+        }
+        .iconSize{
+            font-size: 1.5rem;
+        }
+    </style>
+
+
 </head>
 
 <body>
@@ -21,7 +38,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="HeroInvitadoImg">
-                        <img src="../../img/examples/sample-dwight-k-schrute.jpg" class="img-fluid rounded-circle"
+                        <img src="../../img/usuario.webp" class="img-fluid rounded-circle"
                             alt="Invitado" id="fotitoInvitado">
                     </div>
                 </div>
@@ -42,7 +59,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label HeroInvitadolabel">Empresa/ Organización:</label>
+                            <label class="col-sm-3 col-form-label HeroInvitadolabel">Empresa/ organización:</label>
                             <div class="col-sm-9">
                                 <input id="empresa_invitado" class="form-control HeroInvitadoinput" type="text"
                                     value="Super Secret Intelligence" disabled>
@@ -76,8 +93,8 @@
                     <table class="tabla table table-hover table-bordered table-sm" id="TablaEntradasSalidas">
                         <thead class="tabla__cabecera">
                             <tr>
-                                <th scope="col" data-sort="Dispositivos" class="cabecera">Hora de Entrada</th>
-                                <th scope="col" data-sort="NumSerie" class="cabecera">Hora de Salida</th>
+                                <th scope="col" data-sort="Dispositivos" class="cabecera">Hora de entrada</th>
+                                <th scope="col" data-sort="NumSerie" class="cabecera">Hora de salida</th>
                                 <th scope="col" data-sort="Eliminar" class="cabecera">Eliminar registro</th>
                             </tr>
                         </thead>
@@ -91,14 +108,14 @@
                 <button id="btnSalida" class="BotonesEyS__Salida">Salida</button>
             </div>
             <div class="HeroDispositivos">
-                <h2>Dispositivos Electrónicos</h2>
+                <h2>Dispositivos electrónicos</h2>
                 <div class="__Tabla table-responsive paragraph-example">
                     <table class="tabla table table-hover table-bordered table-sm" id="TablaDispositivos">
                         <thead class="tabla__cabecera">
                             <tr>
                                 <th scope="col" data-sort="Dispositivos" class="cabecera">Marca</th>
                                 <th scope="col" data-sort="NumSerie" class="cabecera">Modelo</th>
-                                <th scope="col" data-sort="NumSerie" class="cabecera">Número de Serie</th>
+                                <th scope="col" data-sort="NumSerie" class="cabecera">Número de serie</th>
                                 <th scope="col" data-sort="NumSerie" class="cabecera">Presente</th>
                             </tr>
                         </thead>
@@ -138,23 +155,11 @@
     <div id="footers"></div>
 
 
-<!-- Estilos para el Swal -->
-<style>
-  .titleSize{
-    font-size: 4rem;
-  }
-  .contentSize{
-    font-size: 2rem !important;
-  }
-  .buttonSize{
-    font-size: 2rem !important;
-  }
-  .iconSize{
-    font-size: 1.5rem;
-  }
-</style>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
+
+    <script src="/seguridad/sweetalert211.min.js"></script>
+
+
+    <script>
 
 function eliminarAcceso(id_acceso, button, typeAction){
     console.log(id_acceso, typeAction.trim());
@@ -428,7 +433,6 @@ function eliminarAcceso(id_acceso, button, typeAction){
     <script src="../../js/seguridad/headers.js"></script>
     <script src="../../js/header.js"></script>
     <script src="../../js/sidebar.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
