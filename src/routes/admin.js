@@ -210,7 +210,7 @@ async function setNewUsuario(req, res) {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>BeeCoders - Invitación a Reunión</title>
+            <title>BeeMeet - Invitación a Reunión</title>
             <style type="text/css">
                 body {
                     background-color: #f9f8f8;
@@ -266,6 +266,7 @@ async function setNewUsuario(req, res) {
                     font-size: 1.3rem;
                 }
                 input {
+                    background: #f9f8f8;
                     border: none;
                     font-size: 1.1rem;
                     overflow: hidden;

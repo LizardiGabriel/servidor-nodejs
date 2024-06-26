@@ -313,7 +313,7 @@ async function aceptarReunion(req, res){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BeeCoders - Invitación a Reunión</title>
+    <title>BeeMeet - Invitación a Reunión</title>
     <style type="text/css">
         body {
             background-color: #f9f8f8;
@@ -543,14 +543,13 @@ async function aceptarReunion(req, res){
                         <tr>
                             <td class="tg-1" colspan="2">
                                 <h3 id="bold-font">Nombre de la reunión:</h3>
-                                <input type="text" id="${reunion.titulo_reunion}" class="inputTabla"
-                                    value="Daily Meeting equipo BeeCoders" readonly disabled>
+                                <input type="text" id=nombreReu"" class="inputTabla"
+                                    value="${reunion.titulo_reunion}" readonly disabled>
                             </td>
                             <td class="tg-1" colspan="4">
                                 <h3 id="bold-font">Descripción:</h3>
-                                <input type="text" id="${reunion.descripcion_reunion}" class="inputTabla descripcion"
-                                    value="Conocer los avances del desarrollo del proyecto “BeeMeet” por parte del equipo “BeeCoders”"
-                                    readonly disabled>
+                                <input type="text" id="descripcion" class="inputTabla descripcion"
+                                    value="${reunion.descripcion_reunion}" readonly disabled>
                             </td>
                         </tr>
                         <tr>
@@ -632,7 +631,7 @@ async function aceptarReunion(req, res){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BeeCoders - Invitación a Reunión</title>
+    <title>BeeMeet - Invitación a Reunión</title>
     <style type="text/css">
         body {
             background-color: #f9f8f8;
@@ -862,14 +861,13 @@ async function aceptarReunion(req, res){
                         <tr>
                             <td class="tg-1" colspan="2">
                                 <h3 id="bold-font">Nombre de la reunión:</h3>
-                                <input type="text" id="${reunion.titulo_reunion}" class="inputTabla"
-                                    value="Daily Meeting equipo BeeCoders" readonly disabled>
+                                <input type="text" id=nombreReu"" class="inputTabla"
+                                    value="${reunion.titulo_reunion}" readonly disabled>
                             </td>
                             <td class="tg-1" colspan="4">
                                 <h3 id="bold-font">Descripción:</h3>
-                                <input type="text" id="${reunion.descripcion_reunion}" class="inputTabla descripcion"
-                                    value="Conocer los avances del desarrollo del proyecto “BeeMeet” por parte del equipo “BeeCoders”"
-                                    readonly disabled>
+                                <input type="text" id="descripcion" class="inputTabla descripcion"
+                                    value="${reunion.descripcion_reunion}" readonly disabled>
                             </td>
                         </tr>
                         <tr>
@@ -988,7 +986,7 @@ async function aceptarReunion(req, res){
     let emailText = `<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BeeCoders - QR Reunión</title>
+    <title>BeeMeet - QR Reunión</title>
     <style type="text/css">
         body {
             background-color: #f9f8f8;
@@ -1274,14 +1272,13 @@ async function aceptarReunion(req, res){
                         <tr>
                             <td class="tg-1" colspan="2">
                                 <h3 id="bold-font">Nombre de la reunión:</h3>
-                                <input type="text" id="${reunion.titulo_reunion}" class="inputTabla"
-                                    value="Daily Meeting equipo BeeCoders" readonly disabled>
+                                <input type="text" id=nombreReu"" class="inputTabla"
+                                    value="${reunion.titulo_reunion}" readonly disabled>
                             </td>
                             <td class="tg-1" colspan="4">
                                 <h3 id="bold-font">Descripción:</h3>
-                                <input type="text" id="${reunion.descripcion_reunion}" class="inputTabla descripcion"
-                                    value="Conocer los avances del desarrollo del proyecto “BeeMeet” por parte del equipo “BeeCoders”"
-                                    readonly disabled>
+                                <input type="text" id="descripcion" class="inputTabla descripcion"
+                                    value="${reunion.descripcion_reunion}" readonly disabled>
                             </td>
                         </tr>
                         <tr>
@@ -1413,7 +1410,7 @@ async function recuperarQr(req,res){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BeeCoders - Recuperar QR</title>
+    <title>BeeMeet - Recuperar QR</title>
     <style type="text/css">
         body {
             background-color: #f9f8f8;
