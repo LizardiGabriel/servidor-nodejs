@@ -26,8 +26,8 @@ function checkCredenciales() {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      email: "anfitrion@test.com",
-      password: "password",
+      email: email,
+      password: password,
       Recuerdame: Recuerdame
     })
   })
