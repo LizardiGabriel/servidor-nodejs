@@ -266,6 +266,7 @@ async function setNewUsuario(req, res) {
                     font-size: 1.3rem;
                 }
                 input {
+                    background: #f9f8f8;
                     border: none;
                     font-size: 1.1rem;
                     overflow: hidden;

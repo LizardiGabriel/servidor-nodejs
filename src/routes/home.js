@@ -231,6 +231,10 @@ async function generateCorreo(correo,liga){
             align-items: center;
         }
 
+        .enlaceSesion{
+            min-width: 90%;
+        }
+
         .firma,
         .divToken,
         .enlaceSesion {
@@ -253,7 +257,6 @@ async function generateCorreo(correo,liga){
             border: none;
             font-size: 1.1rem;
             overflow: hidden;
-            color: #48716E;
             font-weight: bold;
         }
 
@@ -341,6 +344,7 @@ async function generateCorreo(correo,liga){
             }
 
             .ContenidoCorreo .Correo {
+                margin-top: 1rem;
                 max-width: 90%;
                 padding: 0.8rem;
             }
@@ -350,7 +354,11 @@ async function generateCorreo(correo,liga){
             }
 
             input {
-                text-align: center;
+                background: #f9f8f8;
+                border: none;
+                font-size: 0.6rem;
+                overflow: hidden;
+                font-weight: bold;
             }
 
             input .inputCorreo {
