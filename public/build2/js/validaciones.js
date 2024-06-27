@@ -72,7 +72,7 @@ const validatePassword = (password) => {
     return "Mayus";
   else if (!(password.match(/\d.*\d/)))
     return "Num";
-  else if (!(password.match(/[!@#$%^&*(),.?":{}|<>_-].*[!@#$%^&*(),.?":{}|<>_-]/)))
+  else if (!(password.match(/[!@#$%^&*(),.?"';:~[{}|<>=_-].*[!@#$%^&*(),.?"';:~[{}|<>=_-]/)))
     return "Symbol";
   else
     return "OK";

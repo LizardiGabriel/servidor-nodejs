@@ -153,8 +153,18 @@
     <script>
 
 function eliminarAcceso(id_acceso, button, typeAction){
-    console.log(id_acceso, typeAction.trim());
-    if(typeAction.trim() == "salida"){
+  console.log(id_acceso, typeAction.trim());
+  modal.fire({
+    timer: undefined,
+    icon: 'question',
+    title: "¿Desea continuar?",
+    html: `Eliminará un registro de ${typeAction.trim()}`,
+    showDenyButton: true,
+    confirmButtonText: "Confirmar",
+    denyButtonText: `Cancelar`
+  }).then((result) => {
+    if (result.isConfirmed) {
+      if(typeAction.trim() == "salida"){
         const row = button.closest('td');
         console.log(row)
         const rowUp = row.previousElementSibling;
@@ -163,24 +173,37 @@ function eliminarAcceso(id_acceso, button, typeAction){
         row.innerHTML = ""
         row.insertAdjacentHTML("beforeend", `<button class="btn btn-sm eliminar" onclick="eliminarAcceso(${id_acceso}, this, 'registro')"><img src="../../img/icons/ico-trash.svg" alt="Eliminar"></button>`)
         
-
-    }else if(typeAction.trim() == "registro"){
-        button.closest('tr').remove();
-    }
-    fetch("/seguridad/eliminarAcceso", {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id_acceso: id_acceso, typeAction: typeAction.trim() }),
-    })
-    .then(response => response.json())
-    .then(data => {
+      }else if(typeAction.trim() == "registro"){
+          button.closest('tr').remove();
+      }
+      fetch("/seguridad/eliminarAcceso", {
+          method: "DELETE",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id_acceso: id_acceso, typeAction: typeAction.trim() }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        modal.fire({
+          title: "Operación exitosa",
+          icon: "success",
+          text: "Registro eliminado",
+        })
         console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+      })
+      .catch((error) => {
+          console.error('Error:', error);
+          modal.fire({
+              title: "Error",
+              icon: "error",
+              text: data.error,
+          });
+      });
+    } else if (result.isDenied) {
+      
+    }
+  });
 }
 
     let idReunion = 0;
