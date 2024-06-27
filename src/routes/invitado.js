@@ -918,10 +918,6 @@ async function aceptarReunion(req, res){
             </div>
             <div class="DatosCuenta">
                 <p>Los datos de la cuenta con la que podrás ingresar a nuestra plataforma, son los siguientes:</p>
-                <div class="correoDiv">
-                    <h3 id="bold-font">Correo Usuario:</h3>
-                    <input type="text" class="usuario inputCorreo" id="usuario" value="${correoInv}" readonly disabled>
-                </div>
                 <div class="contraDiv">
                     <h3 id="bold-font">Contraseña:</h3>
                     <input type="text" class="contra inputCorreo" id="contra" value="${password}" readonly disabled>
