@@ -132,6 +132,7 @@ model dispositivo_electronico {
   no_serie_dispositivo_electronico String
   modelo_dispositivo_electronico   String
   marca_dispositivo_electronico    String
+  cheack_dispositivo_electronico   Int?
 
   invitacion                     Invitacion                       @relation(fields: [id_invitacion], references: [id_invitacion], onDelete: Cascade)
   acceso_dispositivo_electronico acceso_dispositivo_electronico[]
@@ -144,6 +145,7 @@ model Automovil {
   matricula_automovil String
   marca_automovil     String
   modelo_automovil    String
+  cheack_automovil    Int?
 
   invitacion       Invitacion         @relation(fields: [id_invitacion], references: [id_invitacion], onDelete: Cascade)
   acceso_automovil acceso_automovil[]
@@ -157,7 +159,6 @@ model Colado {
   invitado      Invitado   @relation(fields: [id_invitado], references: [id_invitado], onDelete: Cascade)
   Invitacion    Invitacion @relation(fields: [id_invitacion], references: [id_invitacion], onDelete: Cascade)
 }
-
 
 model acceso_dispositivo_electronico {
   id_acceso_dispositivo_electronico Int @id @default(autoincrement())

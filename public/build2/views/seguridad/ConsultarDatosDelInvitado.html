@@ -232,25 +232,42 @@ function eliminarAcceso(id_acceso, button, typeAction){
 
                 let tablaDispositivos = document.getElementById("tabla_dispositivos");
                 data.dispositivo_electronico.forEach(dispositivo => {
+                    let checked_dispositivo = 0;
+                    if (dispositivo.cheack_dispositivo_electronico === 1){
+                        checked_dispositivo = 1;
+                    }else{
+                        checked_dispositivo = 0;
+                    }
+
                     let fila = document.createElement("tr");
                     fila.innerHTML = `
                         <td>${dispositivo.marca_dispositivo_electronico}</td>
                         <td>${dispositivo.modelo_dispositivo_electronico}</td>
                         <td>${dispositivo.no_serie_dispositivo_electronico}</td>
-                        <td><input type="checkbox" class="dispositivoPresente" value="${dispositivo.id_dispositivo_electronico}" name="registroDisp"></td>
+                        <td><input type="checkbox" class="dispositivoPresente" value="${dispositivo.id_dispositivo_electronico}" name="registroDisp" ${checked_dispositivo === 1 ? 'checked' : ''}></td>
+
                     `;
+
                     tablaDispositivos.appendChild(fila);
                 });
 
                 let tablaAutos = document.getElementById("tabla_carros");
                 data.Automovil.forEach(carro => {
                     let fila = document.createElement("tr");
+
+                    let checked_carro = 0;
+                    if (carro.cheack_automovil === 1){
+                        checked_carro = 1;
+                    }else{
+                        checked_carro = 0;
+                    }
+
                     fila.innerHTML = `
                     <td>${carro.marca_automovil}</td>
                     <td>${carro.modelo_automovil}</td>
                     <td>${carro.matricula_automovil}</td>
                     <td>${carro.color_automovil}</td>
-                    <td><input type="checkbox" class="automovilPresente" value="${carro.id_automovil}"></td>
+                    <td><input type="checkbox" class="automovilPresente" value="${carro.id_automovil}" name="registroCarro" ${checked_carro === 1 ? 'checked' : ''}></td>
                 `;
                     tablaAutos.appendChild(fila);
                 });
