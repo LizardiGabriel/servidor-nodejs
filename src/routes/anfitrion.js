@@ -1155,7 +1155,7 @@ async function cancelarReunion(req,res){
             <body>
                 <main class="ContenidoCorreo">
                     <section class="header">
-                        <img class="header_img" src="https://i.imgur.com/wlg9PC4.png">
+                        <img class="header_img" src="https://i.imgur.com/FR9OWbH.png">
                     </section>
             
                     <section class="Correo">
@@ -1164,8 +1164,8 @@ async function cancelarReunion(req,res){
                                 <h3>Hola</h3>
                                 <input type="text" id="correoInvitado" class="inputCorreo" value="${invitado.email_invitado}" readonly disabled>
                             </div>
-                            <p>El motivo por el cuál has recibido este correo electrónico es porque has sido invitado a la siguiente
-                                reunión:</p>
+                            <p>El motivo por el cuál has recibido este correo electrónico es porque la reunión a la que habías sido 
+                            invitado fue cancelada, te dejamos los datos de la reunión cancelada para que lo tengas en cuenta</p>
                         </div>
                         <div class="Tabla tg-wrap">
                             <table class="tg">
@@ -1216,7 +1216,7 @@ async function cancelarReunion(req,res){
                                         <td class="tg-1" colspan="4">
                                             <h3 id="bold-font">Fecha:</h3>
                                             <input type="text" id="fecha" class="inputTabla"
-                                                value="${repeticiones.map(rep => `${rep.fecha_repeticion}`).join(", ")}" readonly
+                                                value="${repeticiones.map(rep => `${rep.fecha_repeticion}`).join("<br>")}" readonly
                                                 disabled>
                                         </td>
                                     </tr>
@@ -1224,7 +1224,7 @@ async function cancelarReunion(req,res){
                                         <td class="tg-1" colspan="2">
                                             <h3 id="bold-font">Hora de Inicio:</h3>
                                             <input type="text" id="horaInicio" class="inputTabla"
-                                                value="s"
+                                                value="${repeticiones.map(rep => `${rep.hora_inicio_repeticion}`).join(" , ")}"
                                                 readonly disabled>
                                         </td>
                                         <td class="tg-1" colspan="2">
@@ -1236,15 +1236,6 @@ async function cancelarReunion(req,res){
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
-                        <div class="DatosCuenta">
-                            <p>Para poder aceptar esta invitación debes seguir los siguientes pasos:</p>
-                        <ul>
-                        <li>Inicia sesión con la cuenta que con anterioridad creaste. </li>
-                        <li>Una vez iniciada tu sesión, dirígete desde el menú lateral al apartado de >>Reuniones pendientes<<,
-                                    desde ahí podrás visualizar una tarjeta con los datos de esta reunión.</li>
-                                <li>Acepta o elimina la invitación. Si decides aceptar la invitación, recuerda que será necesario que completes el registro de los acompañantes, dispositivos o automóviles que llevarás a esta nueva reunión. </li>
-                        </ul>
                         </div>
                         <div class="firma">
                             <h3>ATTE:</h3>

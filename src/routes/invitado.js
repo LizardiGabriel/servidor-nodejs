@@ -525,7 +525,6 @@ async function aceptarReunion(req, res){
             <div class="Informacion">
                 <div class="saludo">
                     <h3>Hola</h3>
-                    <input type="text" id="correoInvitado" class="inputCorreo" value="${correoInv}" readonly disabled>
                 </div>
                 <p>El motivo por el cuál has recibido este correo electrónico es porque has sido invitado a la siguiente
                     reunión:</p>
@@ -843,7 +842,6 @@ async function aceptarReunion(req, res){
             <div class="Informacion">
                 <div class="saludo">
                     <h3>Hola</h3>
-                    <input type="text" id="correoInvitado" class="inputCorreo" value="${correoInv}" readonly disabled>
                 </div>
                 <p>El motivo por el cuál has recibido este correo electrónico es porque has sido invitado a la siguiente
                     reunión:</p>
