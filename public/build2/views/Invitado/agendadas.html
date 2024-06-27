@@ -80,13 +80,20 @@
                     reuniones.forEach((reunion, index) => {
                         const fila = document.createElement('tr');
 
+                        console.log(reunion.fechasRepeticion)
+                        let contenidoFechas = ""
+                        reunion.fechasRepeticion.forEach((fecha, i) => {
+                          contenidoFechas +=  fecha.fecha_repeticion + "\n"
+                        })
+
+                        console.log(contenidoFechas)
                         fila.innerHTML = `
-                        <td>${reunion.id_reunion}</td>
-                        <td>${reunion.titulo_reunion}</td>
-                        <td>${reunion.fechasRepeticion.map(fecha => `${fecha.fecha_repeticion}`).join('')}</td>
-                        <td>${reunion.fechasRepeticion[0].hora_inicio_repeticion} - ${reunion.fechasRepeticion[0].hora_fin_repeticion}
+                        <td style="text-align:center; vertical-align:middle;">${reunion.id_reunion}</td>
+                        <td style="text-align:center; vertical-align:middle;">${reunion.titulo_reunion}</td>
+                        <td style="text-align:center; vertical-align:middle;"><p style="white-space: pre-line; text-align: center; font-family: inherit;">${contenidoFechas}</p></td>
+                        <td style="text-align:center; vertical-align:middle;">${reunion.fechasRepeticion[0].hora_inicio_repeticion} - ${reunion.fechasRepeticion[0].hora_fin_repeticion}
                         </td>
-                        <td>${reunion.nombreUsuario}</td>
+                        <td style="text-align:center; vertical-align:middle;">${reunion.nombreUsuario}</td>
                         <td class="acciones"><button class="btn btn-sm eliminar" onclick="recuperarQR(${reunion.invitaciones[0].id_invitacion},${reunion.id_reunion})"><img src="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/07/1499401426qr_icon.svg" alt="Escaner"></button></td>
                     `;
 

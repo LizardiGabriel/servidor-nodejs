@@ -53,9 +53,8 @@ function agregarFecha() {
     const fila = document.createElement('tr');
     fila.innerHTML = `
         <td><input type="date" class="form-control form-control-lg Formulario__inputGroup__input" name="fechaRepetir" id="dateID" style="position: relative;" required></td>
-        <td><div id="dateFormID"></div></td>
         <td><button class="addFecha__boton" onclick="eliminarFila(this)">Eliminar</button></td>
-    `;
+        `;
     tablaFechasRepetir.appendChild(fila);
 }
 function eliminarFila(boton) {

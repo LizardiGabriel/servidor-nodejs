@@ -19,63 +19,95 @@
     <div id="headers"></div>
 
     <main class="contenidoPrincipal">
-        <section class="consultarDatosInvitado">
-            <form id="formInvitado">
-                <div class="campo">
-                    <label for="nombreInvitado">Nombre del invitado:</label>
-                    <input type="text" id="nombreInvitado" disabled>
+        <div class="HeroInvitado">
+            <h1 class="consultaForm__titulo text-center">Datos del invitado</h1>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="HeroInvitadoImg" class="img-fluid" style="padding: 2rem;">
+                        <img src="../../img/usuario.webp" 
+                            alt="Invitado" id="fotoInvitado">
+                    </div>
                 </div>
-                <div class="campo">
-                    <label for="empresaInvitado">Empresa u organización:</label>
-                    <input type="text" id="empresaInvitado" disabled>
+                <div class="col-md-8">
+                    <div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label HeroInvitadolabel">Invitado:</label>
+                            <div class="col-sm-9">
+                                <input class="form-control HeroInvitadoinput" type="text" value="" id="nombreInvitado"
+                                    disabled>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label HeroInvitadolabel">Empresa / organización:</label>
+                            <div class="col-sm-9">
+                                <input class="form-control HeroInvitadoinput" type="text" id="empresaInvitado"
+                                    value="Super Secret Intelligence" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label HeroInvitadolabel">Número de piso:</label>
+                            <div class="col-sm-3">
+                                <input class="form-control HeroInvitadoinput" type="number" value="21" disabled>
+                            </div>
+                            <label class="col-sm-3 col-form-label HeroInvitadolabel">Número de sala:</label>
+                            <div class="col-sm-3">
+                                <input class="form-control HeroInvitadoinput" type="number" value="6" disabled>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="campo campoTabla">
-                    <p>Automóviles</p>
-                    <table class="campo__tabla" id="tablaCarros">
-                        <tbody>
-                        <tr>
-                            <th>Color</th>
-                            <th>Marca</th>
-                            <th>Matrícula</th>
-                            <th>Modelo</th>
-                        </tr>
+            </div>
+            <div class="HeroEntradasSalidas" style="margin-top: 2rem;">
+                <h2>Lista de acompañantes</h2>
+                <div class="__Tabla table-responsive paragraph-example">
+                    <table class="tabla table table-hover table-bordered table-sm" id="tablaAcompanantes">
+                        <thead class="tabla__cabecera">
+                            <tr>
+                                <th scope="col" data-sort="Dispositivos" class="cabecera">Nombre</th>
+                                <th scope="col" data-sort="NumSerie" class="cabecera">Correo electrónico</th>
+                                <th scope="col" data-sort="Eliminar" class="cabecera">Estatus</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tabla__cuerpo">
                         </tbody>
                     </table>
                 </div>
+            </div>
 
-                <div class="campo campoTabla">
-                    <p>Dispositivos electrónicos</p>
-                    <table class="campo__tabla" id="tablaDispositivos">
-                        <tbody>
-                        <tr>
-                            <th>Dispositivo</th>
-                            <th>Número de serie</th>
-                        </tr>
+            <div class="HeroDispositivos" style="margin-top: 2rem;">
+                <h2>Dispositivos electrónicos</h2>
+                <div class="__Tabla table-responsive paragraph-example">
+                    <table class="tabla table table-hover table-bordered table-sm" id="tablaDispositivos">
+                        <thead class="tabla__cabecera">
+                            <tr>
+                                <th scope="col" data-sort="Dispositivos" class="cabecera">Dispositivo</th>
+                                <th scope="col" data-sort="NumSerie" class="cabecera">Número de serie</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tabla__cuerpo">
                         </tbody>
                     </table>
                 </div>
-            </form>
-            <form class="segundaParte">
-                <div class="invitadoIMG">
-                    <img src="../../img/usuario.webp" alt="Usuario" id="fotoInvitado">
-                </div>
-                <div class="campo campoTabla">
-                    <p>Lista de acompañantes</p>
-                    <table class="campo__tabla" id="tablaAcompanantes">
-                        <tbody>
-                        <tr>
+            </div>
 
-                            <th>Nombre</th>
-                            <th>Correo electrónico</th>
-                            <th>Estatus</th>
-                        </tr>
+            <div class="HeroDispositivos" style="margin-top: 2rem;">
+                <h2>Automóvil</h2>
+                <div class="__Tabla table-responsive paragraph-example">
+                    <table class="tabla table table-hover table-bordered table-sm" id="tablaCarros">
+                        <thead class="tabla__cabecera">
+                            <tr>
+                                <th scope="col" data-sort="Dispositivos" class="cabecera">Color</th>
+                                <th scope="col" data-sort="NumSerie" class="cabecera">Marca</th>
+                                <th scope="col" data-sort="NumSerie" class="cabecera">Matrícula</th>
+                                <th scope="col" data-sort="NumSerie" class="cabecera">Modelo</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tabla__cuerpo">
                         </tbody>
                     </table>
                 </div>
-                <button class="botonReturn">Regresar</button>
-            </form>
-        </section>
+            </div>
+        </div>
     </main>
 
     <div id="footers"></div>
