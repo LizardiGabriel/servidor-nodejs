@@ -5,7 +5,9 @@ const { getReunionesBD, getUsuarioByIdBD,getReunionByIdBD,getSalaByIdBD,getInvit
 } = require('../tools/peticiones');
 const { response } = require('express');
 const { json } = require('body-parser');
-const {eliminarAccesoBD,confirmarDispositivosBD,confirmarAutomovilesBD,registrarHoraEnBD,obtenerDetallesInvitacionAnfiBD, getInvitacionByIdSeguridadBD, obtenerDetallesInvitacionSeguridadBD} = require("../tools/petiAdmin");
+const {eliminarAccesoBD,confirmarDispositivosBD,confirmarAutomovilesBD,registrarHoraEnBD,obtenerDetallesInvitacionAnfiBD, getInvitacionByIdSeguridadBD, obtenerDetallesInvitacionSeguridadBD,
+    getReunionByIdInvitacionBD
+} = require("../tools/petiAdmin");
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const fs = require('fs');
@@ -293,9 +295,15 @@ async function getSeguridadInfo_idInv_idReu(req,res){
 
 
 async function registrarHora(req, res) {
-    const { idInvitacion, idReunion, hora, tipo } = req.body;
+    let { idInvitacion, idReunion, hora, tipo } = req.body;
     console.log('--> funcion "registrarHora", parametros:', req.body);
     try {
+        console.log('>>>|||>>>> registrarHora >>>>>|||idInvitacion:', idInvitacion, 'idReunion:', idReunion, 'hora:', hora, 'tipo:', tipo);
+        if (!idReunion){
+            idReunion = await getReunionByIdInvitacionBD(idInvitacion);
+        }
+        console.log('>>>|||>>>> registrarHora >>>>>|||idReunion:', idReunion);
+
         const invitacionActualizada = await registrarHoraEnBD(idInvitacion, idReunion, hora, tipo);
         if (invitacionActualizada) {
             res.status(200).json({ status: 'success' });

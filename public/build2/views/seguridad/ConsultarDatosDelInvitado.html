@@ -304,6 +304,8 @@ function eliminarAcceso(id_acceso, button, typeAction){
                 .then(response => response.json())
                 .then(data => {
                     console.log('Success:', data);
+                    // Recargar la pagina
+                    location.reload();
                 })
                 .catch((error) => {
                     console.error('Error:', error);
