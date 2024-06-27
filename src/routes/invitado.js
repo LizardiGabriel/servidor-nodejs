@@ -79,7 +79,7 @@ async function guardarImagenDesdeBase64(base64Data, nombreArchivo) {
 
     // Especificar la ruta donde se guardará la imagen
     const filePath = path.join('public/build2/uploads',nombreArchivo);
-    const path2  = path.join('uploads',nombreArchivo);
+    const path2  = 'uploads/'+nombreArchivo;
     // Decodificar la imagen y guardarla
     fs.writeFile(filePath, base64Image, {encoding: 'base64'}, (error) => {
         if (error) {
