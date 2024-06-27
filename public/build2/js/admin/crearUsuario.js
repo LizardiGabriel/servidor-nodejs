@@ -58,9 +58,11 @@ function addUser() {
                     title: "Operación exitosa",
                     icon: "success",
                     text: "Usuario creado con éxito",
+                  }).then(() => {
+                    window.location.href = '/admin/catalogo/GestionDeUsuarios.html';
                   });
                   
-                  finishRedirect()
+                  /* finishRedirect() */
                 } else {
                   modal.fire({
                     title: "Error",

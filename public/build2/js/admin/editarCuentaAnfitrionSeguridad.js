@@ -94,8 +94,10 @@ function enviarForm() {
             title: "Operación exitosa",
             icon: "success",
             text: "Cuenta de usuario modificado correctamente",
-          });
-          finishRedirect();
+          }).then(() => {
+            window.location.href = '/admin/catalogo/GestionDeUsuarios.html';
+          });/* 
+          finishRedirect(); */
         } else {
             modal.fire({
               title: "Error",
