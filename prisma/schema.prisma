@@ -49,8 +49,8 @@ model Reunion {
   descripcion_reunion String
 
   Repeticion Repeticion[]
-  usuario    Usuario      @relation(fields: [id_usuario], references: [id_usuario])
-  sala       Sala         @relation(fields: [id_sala], references: [id_sala])
+  usuario    Usuario      @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade)
+  sala       Sala         @relation(fields: [id_sala], references: [id_sala], onDelete: Cascade)
   Invitacion Invitacion[]
   Acceso     Acceso[]
 }
@@ -64,7 +64,7 @@ model Repeticion {
   hora_fin_repeticion    String
   estatus_repeticion     String
 
-  reunion Reunion @relation(fields: [id_reunion], references: [id_reunion])
+  reunion Reunion @relation(fields: [id_reunion], references: [id_reunion], onDelete: Cascade)
 }
 
 model Invitado {
@@ -99,8 +99,8 @@ model Invitacion {
 
   es_colado_invitado Int?
 
-  reunion                 Reunion                   @relation(fields: [id_reunion], references: [id_reunion])
-  invitado                Invitado                  @relation(fields: [id_invitado], references: [id_invitado])
+  reunion                 Reunion                   @relation(fields: [id_reunion], references: [id_reunion], onDelete: Cascade)
+  invitado                Invitado                  @relation(fields: [id_invitado], references: [id_invitado], onDelete: Cascade)
   Acceso                  Acceso[]
   dispositivo_electronico dispositivo_electronico[]
   Automovil               Automovil[]
@@ -120,8 +120,8 @@ model Acceso {
   hora_entrada_acceso String
   hora_salida_acceso  String
 
-  invitacion                     Invitacion                       @relation(fields: [id_invitacion], references: [id_invitacion])
-  reunion                        Reunion                          @relation(fields: [id_reunion], references: [id_reunion])
+  invitacion                     Invitacion                       @relation(fields: [id_invitacion], references: [id_invitacion], onDelete: Cascade)
+  reunion                        Reunion                          @relation(fields: [id_reunion], references: [id_reunion], onDelete: Cascade)
   acceso_dispositivo_electronico acceso_dispositivo_electronico[]
   acceso_automovil               acceso_automovil[]
 }
@@ -133,7 +133,7 @@ model dispositivo_electronico {
   modelo_dispositivo_electronico   String
   marca_dispositivo_electronico    String
 
-  invitacion                     Invitacion                       @relation(fields: [id_invitacion], references: [id_invitacion])
+  invitacion                     Invitacion                       @relation(fields: [id_invitacion], references: [id_invitacion], onDelete: Cascade)
   acceso_dispositivo_electronico acceso_dispositivo_electronico[]
 }
 
@@ -145,7 +145,7 @@ model Automovil {
   marca_automovil     String
   modelo_automovil    String
 
-  invitacion       Invitacion         @relation(fields: [id_invitacion], references: [id_invitacion])
+  invitacion       Invitacion         @relation(fields: [id_invitacion], references: [id_invitacion], onDelete: Cascade)
   acceso_automovil acceso_automovil[]
 }
 
@@ -154,9 +154,10 @@ model Colado {
   id_invitado   Int
   id_invitacion Int
   isConfirmed   Int
-  invitado      Invitado   @relation(fields: [id_invitado], references: [id_invitado])
-  Invitacion    Invitacion @relation(fields: [id_invitacion], references: [id_invitacion])
+  invitado      Invitado   @relation(fields: [id_invitado], references: [id_invitado], onDelete: Cascade)
+  Invitacion    Invitacion @relation(fields: [id_invitacion], references: [id_invitacion], onDelete: Cascade)
 }
+
 
 model acceso_dispositivo_electronico {
   id_acceso_dispositivo_electronico Int @id @default(autoincrement())
@@ -164,8 +165,8 @@ model acceso_dispositivo_electronico {
   id_dispositivo_electronico        Int
   checka                            Int
 
-  acceso                  Acceso                  @relation(fields: [id_acceso], references: [id_acceso])
-  dispositivo_electronico dispositivo_electronico @relation(fields: [id_dispositivo_electronico], references: [id_dispositivo_electronico])
+  acceso                  Acceso                  @relation(fields: [id_acceso], references: [id_acceso], onDelete: Cascade)
+  dispositivo_electronico dispositivo_electronico @relation(fields: [id_dispositivo_electronico], references: [id_dispositivo_electronico], onDelete: Cascade)
 }
 
 // tabla para acceso de automovil
@@ -175,6 +176,6 @@ model acceso_automovil {
   id_automovil        Int
   checka              Int
 
-  acceso    Acceso    @relation(fields: [id_acceso], references: [id_acceso])
-  Automovil Automovil @relation(fields: [id_automovil], references: [id_automovil])
+  acceso    Acceso    @relation(fields: [id_acceso], references: [id_acceso], onDelete: Cascade)
+  Automovil Automovil @relation(fields: [id_automovil], references: [id_automovil], onDelete: Cascade)
 }

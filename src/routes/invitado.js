@@ -955,7 +955,7 @@ async function aceptarReunion(req, res){
             }
 
             // mandar el email, el email debe tener
-            console.log('emailText: ', emailText);
+            //console.log('emailText: ', emailText);
             const envio = await mail(emailText, colado,'BeeCoders-Invitación a reunión');
             console.log('envio: ', envio);
 

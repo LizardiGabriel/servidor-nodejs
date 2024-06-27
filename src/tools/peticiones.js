@@ -193,6 +193,7 @@ async function updateDateRepBD(id,fecha) {
 async function deleteSalaBD(id) {
     console.log('peticion a la bd de deleteSala');
     try {
+        // aqui hacer la validacion cuando se quiera eliminar una sala que tenga reuniones asociadas
         const salaEliminada = await prisma.sala.delete({
             where: { id_sala: Number(id) }
         });
@@ -202,7 +203,20 @@ async function deleteSalaBD(id) {
         return json({ error: 'Error al eliminar sala' });
     }
 }
-
+//
+async function deleteReunionBD(id) {
+    console.log('peticion a la bd de deleteSala');
+    try {
+        // aqui hacer la validacion cuando se quiera eliminar una sala que tenga reuniones asociadas
+        const reunionEliminada = await prisma.reunion.delete({
+            where: { id_reunion: Number(id) }
+        });
+        return reunionEliminada;
+    } catch (error) {
+        console.error('Error al eliminar sala:', error);
+        return json({ error: 'Error al eliminar sala' });
+    }
+}
 
 // invitados
 
@@ -676,7 +690,6 @@ async function getInvitacionesByIdReunionBD(id_reunion) {
         if (invitaciones.length === 0) {
             return null;
         }
-
         return invitaciones;
     } catch (error) {
         console.error('Error al obtener las invitaciones para la reunión:', error);
@@ -1386,6 +1399,7 @@ module.exports = {
     updateInvitadoBD,
     updateInvitadoBDtoInvitacion,
     deleteInvitadoBD,
+    deleteReunionBD,
     updateInvitadoWithFotoBD,
 
     getReunionesAdminBD,

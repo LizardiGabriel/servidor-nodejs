@@ -283,3 +283,51 @@ function eliminarInvitado(id_invitado) {
             console.error('Error:', error);  // Manejamos cualquier error
         });
 };
+
+document.getElementById("cancelarReu").addEventListener('click', function () {
+    console.log("Cancelar reunion");
+    cancelarReunion(idReunion);
+});
+
+function cancelarReunion(id_reunion) {
+    console.log("Se cancelara la reunion: " + id_reunion);
+    let datos = {
+        id_reunion: id_reunion
+    }
+    fetch("/anfitrion/reuniones/cancelarReu", {
+        method: 'POST',  // Cambiamos el método a PUT
+        headers: {
+            'Content-Type': 'application/json',  // Indicamos que el contenido será JSON
+        },
+        body: JSON.stringify(datos)  // Convertimos los datos a un string JSON
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();  // Convertimos la respuesta a JSON
+        })
+        .then(data => {
+            modal.fire({
+                title: "Reunion cancelada",
+                icon: "success",
+                text: "La reunion se ha cancelada exitosamente",
+                willClose: () => {
+                    // Redireccionar al usuario después de que el modal se cierre
+                    window.location.href = '/anfitrion/anfitrion.html';
+                }
+            })
+        })
+        .catch(error => {
+            modal.fire({
+                title: "Error",
+                icon: "error",
+                text: "Error: " + error,
+                willClose: () => {
+                    // Redireccionar al usuario después de que el modal se cierre
+                    window.location.href = '/anfitrion/anfitrion.html';
+                }
+            })
+            console.error('Error:', error);  // Manejamos cualquier error
+        });
+};
