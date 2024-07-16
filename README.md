@@ -1,5 +1,5 @@
 # backendADS
- servidor en node js
+ servidor en nodejs y express para gestionar las invitaciones y accesos a personas invitadas a reuniones en una empresa para facilitar el acceso y registro de los dispositivos y personas que tienen acceso a las reuniones.
 
 
 
