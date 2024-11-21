@@ -195,7 +195,6 @@
                 const response = await fetch(`/seguridad/getInvitadoById/${idInvitado}`);
                 if (response.ok) {
                     const invitado = await response.json();
-                    alert("respuesta" + invitado);
                     console.log(invitado);
                     actualizarCampos(invitado);
 

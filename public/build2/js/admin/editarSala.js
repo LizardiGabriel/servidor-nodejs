@@ -81,8 +81,10 @@ function enviarForm() {
               title: "Operación exitosa",
               icon: "success",
               text: "Sala editada correctamente",
+            }).then(() => {
+              window.location.href = '/admin/catalogo/GestionarSalas.html';
             });
-            finishRedirect();
+            /* finishRedirect(); */
           } else {
             modal.fire({
               title: "Error",

@@ -123,7 +123,7 @@
                 .then(response => response.json()) // Procesa la respuesta para convertirla en JSON
                 .then(data => {
                     console.log('Respuesta recibida:', data); // Maneja los datos recibidos
-                    Swal.fire({
+                    modal.fire({
                             title: "QR recuperado",
                             icon: "success",
                             text: "El QR ha sido enviado a tu correo electrónico",

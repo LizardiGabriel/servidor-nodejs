@@ -294,6 +294,27 @@ async function getInvitacionByIdSeguridadBD(idReunion, idInvitado) {
 
 }
 
+// get id reunon by id invitacion
+async function getReunionByIdInvitacionBD(idInvitacion) {
+    console.log('Petición a la BD de getReunionByIdInvitacionBD');
+    try {
+        // Obtener la invitación por su ID
+        const invitacion = await prisma.invitacion.findUnique({
+            where: { id_invitacion: Number(idInvitacion) }
+        });
+
+        if (!invitacion) {
+            throw new Error('Invitación no encontrada');
+        }
+
+        return invitacion.id_reunion;
+
+    } catch (error) {
+        console.error('Error al obtener la invitación:', error);
+        return { error: 'Error al obtener la invitación' };
+    }
+}
+
 async function obtenerDetallesInvitacionSeguridadBD(id_invitacion) {
     try {
         console.log('Petición a la BD de obtenerDetallesInvitacionSeguridadBD');
@@ -583,7 +604,9 @@ module.exports = {
     registrarHoraEnBD,
     confirmarAutomovilesBD,
     confirmarDispositivosBD,
-    eliminarAccesoBD
+    eliminarAccesoBD,
+
+    getReunionByIdInvitacionBD
 
 
 };

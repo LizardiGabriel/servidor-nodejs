@@ -155,12 +155,13 @@
 </style>
 <script>
     var maxAcompanantes = 0;
-    window.onload = function() {
+    document.addEventListener('DOMContentLoaded',async function() {
         obtenerDetallesReunion();
         traerDatos();
-    };
+    });
 
     async function obtenerDetallesReunion() {
+      console.log("Paso")
         fetch('obtenerDetallesReunion')
             .then(response => response.json())
             .then(data => {
@@ -175,6 +176,7 @@
     }
     
     async function traerDatos() {
+      console.log("Paso")
         try {
             const response = await fetch('/invitado/getemail');
             const data = await response.json();
@@ -229,7 +231,11 @@
                 document.querySelector('#acompanantesHabilitada input[type="email"]').value = '';
                 cuentaA++;
             } else if (colados.length >= maxAcompanantes) {
-                alert('No puede agregar más colados.');
+              modal.fire({
+                title: "Error",
+                icon: "error",
+                text: "No se puede agregar más colados.",
+              });
             }
         });
 
@@ -293,32 +299,58 @@
                 dispositivos,
                 automoviles
             };
-            fetch('aceptarReunionData', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('data:', data);
-                    //redirecccionamiento a agendadas.html
-                    window.location.href = 'agendadas.html';
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    modal.fire({
-                        title: "Error",
-                        icon: "error",
-                        text: data.error,
-                    });
+
+            modal.fire({
+      timer: undefined,
+      icon: 'question',
+      title: "¿Desea continuar?",
+      html: `Confirmará la asistencia a la reunión`,
+      showDenyButton: true,
+      confirmButtonText: "Confirmar",
+      denyButtonText: `Cancelar`
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch('aceptarReunionData', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('data:', data);
+                modal.fire({
+                  title: "Operación exitosa",
+                  icon: "success",
+                  text: "Reunión aceptada correctamente",
+                }).then(() => {
+                  window.location.href = 'agendadas.html';
                 });
+                //redirecccionamiento a agendadas.html
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                modal.fire({
+                    title: "Error",
+                    icon: "error",
+                    text: data.error,
+                });
+            });
+      } else if (result.isDenied) {
+        
+      }
+    });
+
+
+            
 
             console.log(JSON.stringify(data, null, 2));
 
             // enviar datos al servidor
-            alert('Datos enviados! Verifique la consola para ver el JSON.');
+            //alert('Datos enviados! Verifique la consola para ver el JSON.');
+
+            
         });
     });
 </script>
@@ -471,6 +503,7 @@
 
 <script src="../../js/invitado/headers.js"></script>
 <script src="../../js/header.js"></script>
+<script src="../../js/invitado/invitado.js"></script>
 <script src="../../js/sidebar.js"></script>
 <script src="../../js/plantilla-formularios.js"></script>
 <script src="../../js/validaciones.js"></script>

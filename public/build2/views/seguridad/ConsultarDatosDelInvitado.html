@@ -147,16 +147,24 @@
 
     <div id="footers"></div>
 
-
-
     <script src="/seguridad/sweetalert211.min.js"></script>
 
 
     <script>
 
 function eliminarAcceso(id_acceso, button, typeAction){
-    console.log(id_acceso, typeAction.trim());
-    if(typeAction.trim() == "salida"){
+  console.log(id_acceso, typeAction.trim());
+  modal.fire({
+    timer: undefined,
+    icon: 'question',
+    title: "¿Desea continuar?",
+    html: `Eliminará un registro de ${typeAction.trim()}`,
+    showDenyButton: true,
+    confirmButtonText: "Confirmar",
+    denyButtonText: `Cancelar`
+  }).then((result) => {
+    if (result.isConfirmed) {
+      if(typeAction.trim() == "salida"){
         const row = button.closest('td');
         console.log(row)
         const rowUp = row.previousElementSibling;
@@ -165,24 +173,37 @@ function eliminarAcceso(id_acceso, button, typeAction){
         row.innerHTML = ""
         row.insertAdjacentHTML("beforeend", `<button class="btn btn-sm eliminar" onclick="eliminarAcceso(${id_acceso}, this, 'registro')"><img src="../../img/icons/ico-trash.svg" alt="Eliminar"></button>`)
         
-
-    }else if(typeAction.trim() == "registro"){
-        button.closest('tr').remove();
-    }
-    fetch("/seguridad/eliminarAcceso", {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id_acceso: id_acceso, typeAction: typeAction.trim() }),
-    })
-    .then(response => response.json())
-    .then(data => {
+      }else if(typeAction.trim() == "registro"){
+          button.closest('tr').remove();
+      }
+      fetch("/seguridad/eliminarAcceso", {
+          method: "DELETE",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id_acceso: id_acceso, typeAction: typeAction.trim() }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        modal.fire({
+          title: "Operación exitosa",
+          icon: "success",
+          text: "Registro eliminado",
+        })
         console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+      })
+      .catch((error) => {
+          console.error('Error:', error);
+          modal.fire({
+              title: "Error",
+              icon: "error",
+              text: data.error,
+          });
+      });
+    } else if (result.isDenied) {
+      
+    }
+  });
 }
 
     let idReunion = 0;
@@ -304,6 +325,8 @@ function eliminarAcceso(id_acceso, button, typeAction){
                 .then(response => response.json())
                 .then(data => {
                     console.log('Success:', data);
+                    // Recargar la pagina
+                    location.reload();
                 })
                 .catch((error) => {
                     console.error('Error:', error);
@@ -350,7 +373,7 @@ function eliminarAcceso(id_acceso, button, typeAction){
             
                 if (filasCheck.length === 0) {
                     // Mostrar mensaje de error porque no se seleccionó ningún dispositivo
-                    Swal.fire({
+                    modal.fire({
                         icon: 'error',
                         title: 'Error',
                         text: 'Por favor, selecciona al menos un dispositivo para confirmar.',
@@ -368,19 +391,17 @@ function eliminarAcceso(id_acceso, button, typeAction){
                     console.log(result);
                     //muestra mensaje en pantalla de "guardado exitoso" si el resultado es success
                     if (result.status === 'success') {
-                        Swal.fire({
+                        modal.fire({
                             icon: 'success',
                             title: 'Guardado exitoso',
                             showConfirmButton: true,
-                            timer: 1500
                         });
                     } else {
-                        Swal.fire({
+                      modal.fire({
                             icon: 'error',
                             title: 'Error al guardar',
                             text: 'Ocurrió un error al guardar los dispositivos',
                             showConfirmButton: true,
-                            timer: 1500
                         });
                     }
 
@@ -402,7 +423,7 @@ function eliminarAcceso(id_acceso, button, typeAction){
 
                 if (filasCheck.length === 0) {
                     // Mostrar mensaje de error porque no se seleccionó ningún dispositivo
-                    Swal.fire({
+                    modal.fire({
                         icon: 'error',
                         title: 'Error',
                         text: 'Por favor, selecciona al menos un automovil para confirmar.',
@@ -420,19 +441,17 @@ function eliminarAcceso(id_acceso, button, typeAction){
                     console.log(result);
                     //muestra mensaje en pantalla de "guardado exitoso" si el resultado es success
                     if (result.status === 'success') {
-                        Swal.fire({
+                      modal.fire({
                             icon: 'success',
                             title: 'Guardado exitoso',
                             showConfirmButton: true,
-                            timer: 1500
                         });
                     } else {
-                        Swal.fire({
+                      modal.fire({
                             icon: 'error',
                             title: 'Error al guardar',
                             text: 'Ocurrió un error al guardar los dispositivos',
                             showConfirmButton: true,
-                            timer: 1500
                         });
                     }
                 }
